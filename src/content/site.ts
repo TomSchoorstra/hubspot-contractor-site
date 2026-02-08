@@ -22,7 +22,7 @@ export const site: SiteConfig = {
       href: "/case-studies",
     },
     {
-      label: "About",
+      label: "About Me",
       href: "/about",
     },
     {

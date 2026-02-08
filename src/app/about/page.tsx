@@ -3,10 +3,10 @@ import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import CTASection from "@/components/sections/CTASection";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-// import Image from "next/image";
+import Image from "next/image";
 
 export const metadata: Metadata = {
-  title: "About — Tom Schoorstra",
+  title: "About Me — Tom Schoorstra",
   description:
     "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
 };
@@ -18,7 +18,7 @@ export default function About() {
       <section className="gradient-mesh pt-20 pb-8 lg:pt-32 lg:pb-12">
         <Container>
           <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">
-            About
+            About Me
           </p>
           <h1 className="mt-4 text-4xl font-bold tracking-tight text-text sm:text-5xl lg:text-6xl">
             Tom Schoorstra
@@ -36,43 +36,14 @@ export default function About() {
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
             {/* Photo column — sticky on desktop */}
             <div className="lg:sticky lg:top-8 lg:self-start">
-              {/*
-                Replace placeholder with your photo:
-                <Image
-                  src="/about-photo.jpg"
-                  alt="Tom Schoorstra"
-                  width={560}
-                  height={746}
-                  className="h-auto w-full rounded-[var(--radius-lg)] object-cover"
-                  priority
-                />
-              */}
-              <div className="aspect-[3/4] overflow-hidden rounded-[var(--radius-lg)] border border-border bg-surface-2">
-                <div className="gradient-mesh flex h-full items-center justify-center">
-                  <svg
-                    width="64"
-                    height="64"
-                    viewBox="0 0 64 64"
-                    fill="none"
-                    className="text-text-muted/20"
-                    aria-hidden="true"
-                  >
-                    <circle
-                      cx="32"
-                      cy="24"
-                      r="10"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                    />
-                    <path
-                      d="M12 52c0-11.046 8.954-20 20-20s20 8.954 20 20"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                    />
-                  </svg>
-                </div>
-              </div>
+              <Image
+                src="/about-photo.jpeg"
+                alt="Tom Schoorstra"
+                width={560}
+                height={746}
+                className="h-auto w-full rounded-[var(--radius-lg)] object-cover"
+                priority
+              />
               <div className="mt-4 h-1 w-12 rounded-full bg-accent" aria-hidden="true" />
             </div>
 
