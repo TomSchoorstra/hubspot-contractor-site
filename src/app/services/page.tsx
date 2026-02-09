@@ -24,13 +24,19 @@ export default function Services() {
                 href={`/services/${service.slug}`}
                 className="group block"
               >
-                <Card interactive className="h-full">
+                <Card interactive className="h-full flex flex-col">
                   <h3 className="text-xl font-semibold text-text transition-colors group-hover:text-accent">
                     {service.title}
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-text-secondary">
                     {service.shortDescription}
                   </p>
+                  <span className="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
+                    Learn more
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
                 </Card>
               </Link>
             ))}
@@ -43,13 +49,19 @@ export default function Services() {
                 href={`/services/${service.slug}`}
                 className="group block md:w-[calc(50%-0.75rem)] lg:w-[calc(33.333%-1rem)]"
               >
-                <Card interactive className="h-full">
+                <Card interactive className="h-full flex flex-col">
                   <h3 className="text-xl font-semibold text-text transition-colors group-hover:text-accent">
                     {service.title}
                   </h3>
                   <p className="mt-3 text-base leading-relaxed text-text-secondary">
                     {service.shortDescription}
                   </p>
+                  <span className="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
+                    Learn more
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
                 </Card>
               </Link>
             ))}

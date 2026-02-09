@@ -23,7 +23,7 @@ export default function CaseStudies() {
                 href={`/case-studies/${study.slug}`}
                 className="group block"
               >
-                <Card interactive className="h-full">
+                <Card interactive className="h-full flex flex-col">
                   <div className="mb-3 flex gap-2 text-xs font-medium text-text-muted">
                     <span>{study.industry}</span>
                     <span>·</span>
@@ -35,6 +35,12 @@ export default function CaseStudies() {
                   <p className="mt-3 text-base leading-relaxed text-text-secondary">
                     {study.summary}
                   </p>
+                  <span className="mt-auto pt-4 inline-flex items-center gap-1 text-sm font-medium text-accent">
+                    Read case study
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" aria-hidden="true" className="transition-transform duration-200 group-hover:translate-x-1">
+                      <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                    </svg>
+                  </span>
                 </Card>
               </Link>
             ))}
