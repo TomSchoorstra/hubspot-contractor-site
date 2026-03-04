@@ -1,45 +1,29 @@
 "use client";
 
-import { useEffect, useRef, type ReactNode } from "react";
+import { useRef } from "react";
+import { motion, useInView } from "framer-motion";
 
-interface ScrollRevealProps {
-  children: ReactNode;
+export default function ScrollReveal({
+  children,
+  delay = 0,
+  className,
+}: {
+  children: React.ReactNode;
+  delay?: number;
   className?: string;
-}
-
-export default function ScrollReveal({ children, className = "" }: ScrollRevealProps) {
+}) {
   const ref = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-
-    const prefersReducedMotion = window.matchMedia(
-      "(prefers-reduced-motion: reduce)"
-    ).matches;
-
-    if (prefersReducedMotion) {
-      el.classList.add("scroll-reveal-visible");
-      return;
-    }
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          el.classList.add("scroll-reveal-visible");
-          observer.unobserve(el);
-        }
-      },
-      { threshold: 0.15 }
-    );
-
-    observer.observe(el);
-    return () => observer.disconnect();
-  }, []);
+  const inView = useInView(ref, { once: true, margin: "-80px" });
 
   return (
-    <div ref={ref} className={`scroll-reveal ${className}`}>
+    <motion.div
+      ref={ref}
+      initial={{ opacity: 0, y: 24 }}
+      animate={inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
+      transition={{ duration: 0.6, delay, ease: "easeOut" }}
+      className={className}
+    >
       {children}
-    </div>
+    </motion.div>
   );
 }

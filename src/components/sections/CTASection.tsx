@@ -15,18 +15,18 @@ export default function CTASection({
   return (
     <section className="py-16 lg:py-20">
       <Container>
-        <div className="relative overflow-hidden rounded-[var(--radius-xl)] border-2 border-accent/20 bg-accent-light p-8 lg:p-12">
-          <div className="absolute inset-0 gradient-blob-orange pointer-events-none" />
-          <div className="relative flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        <div className="relative overflow-hidden rounded-3xl bg-accent-light border-2 border-accent/15 px-8 py-14 lg:px-14">
+          <div className="absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-accent/8 blur-[60px] pointer-events-none" />
+          <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
             <div className="max-w-2xl">
-              <h2 className="text-2xl font-bold text-text lg:text-3xl">{title}</h2>
+              <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">{title}</h2>
               {description && (
-                <p className="mt-3 text-lg leading-relaxed text-text-secondary">{description}</p>
+                <p className="mt-4 text-lg leading-relaxed text-text-secondary">{description}</p>
               )}
             </div>
 
-            <div className="flex flex-wrap gap-4 md:flex-shrink-0">
-              <Button href={cta.href} variant="primary">
+            <div className="flex flex-wrap gap-4 lg:flex-shrink-0">
+              <Button href={cta.href} variant="primary" showArrow>
                 {cta.label}
               </Button>
               {secondaryCta && (

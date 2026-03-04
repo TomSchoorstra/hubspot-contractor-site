@@ -1,9 +1,10 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Button from "@/components/ui/Button";
 import CTASection from "@/components/sections/CTASection";
 import ScrollReveal from "@/components/ui/ScrollReveal";
-import Image from "next/image";
+import Badge from "@/components/ui/Badge";
 
 export const metadata: Metadata = {
   title: "About Me — Tom Schoorstra",
@@ -11,248 +12,264 @@ export const metadata: Metadata = {
     "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
 };
 
+const credentials = [
+  { value: "5+", label: "Years in HubSpot" },
+  { value: "20+", label: "Projects delivered" },
+  { value: "5", label: "HubSpot Hubs covered" },
+];
+
+const expertiseAreas = [
+  {
+    title: "HubSpot automation",
+    description: "Workflows that eliminate repetitive tasks — from lead routing and follow-ups to deal stage automation.",
+  },
+  {
+    title: "HubSpot consultancy",
+    description: "Strategic advice on portal setup, data architecture, and process design.",
+  },
+  {
+    title: "Integrations",
+    description: "Connecting HubSpot to Exact, WooCommerce, and the rest of your stack through Zapier and n8n.",
+  },
+  {
+    title: "Custom objects",
+    description: "Data structures that match your business model — with proper associations and reporting.",
+  },
+  {
+    title: "Pipeline optimization",
+    description: "Cleaning up deal stages, standardizing fields, and building dashboards sales leaders can actually trust.",
+  },
+];
+
+const toolGroups = [
+  {
+    label: "HubSpot",
+    tools: ["Marketing Hub", "Sales Hub", "Operations Hub", "Custom objects", "Workflows", "Data Studio", "HubSpot API"],
+  },
+  {
+    label: "Automation",
+    tools: ["Zapier", "n8n"],
+  },
+  {
+    label: "Sales & communication",
+    tools: ["Gong", "Chili Piper", "Aircall", "Typeform"],
+  },
+  {
+    label: "Productivity & IT",
+    tools: ["Google Workspace", "Jira", "Confluence", "1Password", "Trelica"],
+  },
+];
+
 export default function About() {
   return (
     <main>
-      {/* Hero — confident personal intro, not a generic page header */}
-      <section className="gradient-mesh pt-20 pb-8 lg:pt-32 lg:pb-12">
+      {/* Hero */}
+      <section className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
+        <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
+        <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
         <Container>
-          <p className="text-sm font-semibold uppercase tracking-[0.15em] text-accent">
-            About Me
-          </p>
-          <h1 className="mt-4 text-4xl font-bold tracking-tight text-text sm:text-5xl lg:text-6xl">
-            Tom Schoorstra
-          </h1>
-          <p className="mt-4 max-w-2xl text-xl leading-relaxed text-text-secondary lg:text-2xl">
-            Independent HubSpot specialist helping SMBs and scale-ups build
-            systems that actually work.
-          </p>
+          <div className="relative grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
+            <div className="space-y-6">
+              <Badge variant="teal">Independent HubSpot Specialist</Badge>
+              <h1 className="font-display text-5xl font-extrabold tracking-tight text-text lg:text-6xl xl:text-7xl">
+                Tom<br />
+                <span className="text-gradient-orange">Schoorstra.</span>
+              </h1>
+              <p className="max-w-xl text-xl leading-relaxed text-text-secondary">
+                Independent HubSpot contractor based in the Netherlands, focused on automation, RevOps, and systems that actually drive results.
+              </p>
+              <div className="flex flex-wrap gap-4 pt-2">
+                <Button href="/contact" variant="primary" size="lg" showArrow>
+                  Plan a call
+                </Button>
+                <Button href="/services" variant="secondary" size="lg">
+                  View services
+                </Button>
+              </div>
+            </div>
+
+            {/* Photo with geometric frame */}
+            <div className="relative mx-auto max-w-sm lg:max-w-none">
+              <div className="relative">
+                {/* Decorative border frame */}
+                <div className="absolute -top-3 -left-3 h-full w-full rounded-2xl border-2 border-accent/30" aria-hidden="true" />
+                <div className="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border-2 border-accent-2/30" aria-hidden="true" />
+                <Image
+                  src="/about-photo.jpeg"
+                  alt="Tom Schoorstra"
+                  width={480}
+                  height={640}
+                  className="relative z-10 h-auto w-full rounded-2xl object-cover shadow-lg"
+                  priority
+                />
+                {/* Orange accent bar */}
+                <div className="absolute bottom-0 left-0 right-0 z-20 rounded-b-2xl h-1 bg-accent" aria-hidden="true" />
+              </div>
+            </div>
+          </div>
         </Container>
       </section>
 
-      {/* Editorial split — sticky photo + scrolling narrative */}
-      <section className="py-16 lg:py-24">
+      {/* Credentials bar */}
+      <div className="border-b border-border bg-surface-2 py-8">
+        <Container>
+          <div className="grid grid-cols-3 gap-6 divide-x divide-border">
+            {credentials.map((cred) => (
+              <div key={cred.label} className="px-4 text-center sm:text-left first:pl-0">
+                <div className="font-display text-3xl font-bold text-accent lg:text-4xl">{cred.value}</div>
+                <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
+              </div>
+            ))}
+          </div>
+        </Container>
+      </div>
+
+      {/* Narrative + photo sticky */}
+      <section className="py-20 lg:py-28">
         <Container>
           <div className="grid grid-cols-1 gap-12 lg:grid-cols-[5fr_7fr] lg:gap-16">
-            {/* Photo column — sticky on desktop */}
-            <div className="lg:sticky lg:top-8 lg:self-start">
+            {/* Photo sticky */}
+            <div className="lg:sticky lg:top-24 lg:self-start">
               <Image
                 src="/about-photo.jpeg"
                 alt="Tom Schoorstra"
                 width={560}
                 height={746}
-                className="h-auto w-full rounded-[var(--radius-lg)] object-cover"
-                priority
+                className="hidden lg:block h-auto w-full rounded-2xl object-cover shadow-md"
               />
-              <div className="mt-4 h-1 w-12 rounded-full bg-accent" aria-hidden="true" />
+              {/* Quick facts card */}
+              <div className="mt-6 hidden lg:block rounded-2xl border border-border bg-surface p-6">
+                <h3 className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-4">
+                  Based in
+                </h3>
+                <p className="text-base font-semibold text-text">The Netherlands 🇳🇱</p>
+                <div className="mt-4 pt-4 border-t border-border-subtle">
+                  <h3 className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-4">
+                    Available for
+                  </h3>
+                  <div className="space-y-2">
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-accent flex-shrink-0" />
+                      <span className="text-sm text-text-secondary">Project-based work</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <span className="h-2 w-2 rounded-full bg-accent-2 flex-shrink-0" />
+                      <span className="text-sm text-text-secondary">Ongoing retainers</span>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
 
-            {/* Narrative content — scrolls alongside photo */}
+            {/* Scrolling narrative */}
             <div className="space-y-14 lg:space-y-16">
               <ScrollReveal>
-                <h2 className="text-2xl font-bold text-text lg:text-3xl">
-                  Background
-                </h2>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  I&apos;m Tom — an independent HubSpot contractor based in the
-                  Netherlands, focused on automation, RevOps, and scalable
-                  growth systems.
-                </p>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  I work with growing teams that know their HubSpot instance
-                  could do more, but don&apos;t have the in-house expertise to
-                  unlock it. Whether it&apos;s building workflows that eliminate
-                  hours of manual work, designing custom data structures, or
-                  connecting HubSpot to the rest of your stack — I help
-                  companies turn their CRM into a system that actually drives
-                  results.
-                </p>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  No agency overhead. No unnecessary complexity. Just focused
-                  execution on the things that move the needle.
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal>
-                <h2 className="text-2xl font-bold text-text lg:text-3xl">
-                  How I work
-                </h2>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  Every engagement starts with understanding what your team
-                  actually needs — not what looks impressive on a slide deck.
-                </p>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  I work pragmatically: solutions that fit your team&apos;s
-                  current maturity and scale when you&apos;re ready. I work
-                  iteratively: ship, learn, refine. And I always tie the work
-                  back to measurable outcomes — time saved, pipeline visibility,
-                  conversion rates, or revenue impact.
-                </p>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  If we can&apos;t measure it, we rethink the approach.
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal>
-                <h2 className="text-2xl font-bold text-text lg:text-3xl">
-                  Who I work with
-                </h2>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  Most of my clients are SMBs and scale-ups running HubSpot
-                  Marketing, Sales, or Operations Hub. They&apos;re typically
-                  led by RevOps, marketing, or sales leaders who need hands-on
-                  execution — not just another strategy deck.
-                </p>
-                <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                  Common situations I step into: messy pipelines that nobody
-                  trusts, manual processes eating up hours every week,
-                  disconnected tools that don&apos;t talk to each other, or a
-                  HubSpot portal that was set up once and never properly
-                  configured.
-                </p>
-              </ScrollReveal>
-
-              <ScrollReveal>
-                <h2 className="text-2xl font-bold text-text lg:text-3xl">
-                  Areas of expertise
-                </h2>
-                <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                  <div>
-                    <h3 className="text-base font-semibold text-text">
-                      HubSpot automation
-                    </h3>
-                    <p className="mt-1.5 text-base leading-relaxed text-text-secondary">
-                      Workflows that eliminate repetitive tasks — from lead
-                      routing and follow-ups to deal stage automation.
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Background</p>
+                  <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
+                    Who I am
+                  </h2>
+                  <div className="space-y-4 text-lg leading-relaxed text-text-secondary">
+                    <p>
+                      I&apos;m Tom — an independent HubSpot contractor based in the Netherlands, focused on automation, RevOps, and scalable growth systems.
                     </p>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-text">
-                      HubSpot consultancy
-                    </h3>
-                    <p className="mt-1.5 text-base leading-relaxed text-text-secondary">
-                      Strategic advice on portal setup, data architecture, and
-                      process design.
+                    <p>
+                      I work with growing teams that know their HubSpot instance could do more, but don&apos;t have the in-house expertise to unlock it. Whether it&apos;s building workflows that eliminate hours of manual work, designing custom data structures, or connecting HubSpot to the rest of your stack — I help companies turn their CRM into a system that actually drives results.
                     </p>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-text">
-                      Integrations
-                    </h3>
-                    <p className="mt-1.5 text-base leading-relaxed text-text-secondary">
-                      Connecting HubSpot to Exact, WooCommerce, and the rest of
-                      your stack through Zapier and n8n.
-                    </p>
-                  </div>
-                  <div>
-                    <h3 className="text-base font-semibold text-text">
-                      Custom objects
-                    </h3>
-                    <p className="mt-1.5 text-base leading-relaxed text-text-secondary">
-                      Data structures that match your business model — with
-                      proper associations and reporting.
-                    </p>
-                  </div>
-                  <div className="sm:col-span-2">
-                    <h3 className="text-base font-semibold text-text">
-                      Pipeline optimization
-                    </h3>
-                    <p className="mt-1.5 text-base leading-relaxed text-text-secondary">
-                      Cleaning up deal stages, standardizing fields, and
-                      building dashboards sales leaders can actually trust.
+                    <p>
+                      No agency overhead. No unnecessary complexity. Just focused execution on the things that move the needle.
                     </p>
                   </div>
                 </div>
               </ScrollReveal>
 
-              <ScrollReveal>
-                <h2 className="text-2xl font-bold text-text lg:text-3xl">
-                  Tools & platforms
-                </h2>
-                <div className="mt-6 grid gap-6 sm:grid-cols-2">
-                  <div>
-                    <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.1em] text-text-muted">
-                      HubSpot
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        "Marketing Hub",
-                        "Sales Hub",
-                        "Operations Hub",
-                        "Custom objects",
-                        "Workflows",
-                        "Data Studio",
-                        "HubSpot API",
-                      ].map((tool) => (
-                        <span
-                          key={tool}
-                          className="rounded-[var(--radius-md)] border border-border bg-surface px-3 py-1.5 text-sm font-medium text-text-secondary"
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.1em] text-text-muted">
-                      Automation
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {["Zapier", "n8n"].map((tool) => (
-                        <span
-                          key={tool}
-                          className="rounded-[var(--radius-md)] border border-border bg-surface px-3 py-1.5 text-sm font-medium text-text-secondary"
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.1em] text-text-muted">
-                      Sales & communication
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {["Gong", "Chili Piper", "Aircall", "Typeform"].map(
-                        (tool) => (
-                          <span
-                            key={tool}
-                            className="rounded-[var(--radius-md)] border border-border bg-surface px-3 py-1.5 text-sm font-medium text-text-secondary"
-                          >
-                            {tool}
-                          </span>
-                        )
-                      )}
-                    </div>
-                  </div>
-                  <div>
-                    <h3 className="mb-2 text-sm font-semibold uppercase tracking-[0.1em] text-text-muted">
-                      Productivity & IT
-                    </h3>
-                    <div className="flex flex-wrap gap-2">
-                      {[
-                        "Google Workspace",
-                        "Jira",
-                        "Confluence",
-                        "1Password",
-                        "Trelica",
-                      ].map((tool) => (
-                        <span
-                          key={tool}
-                          className="rounded-[var(--radius-md)] border border-border bg-surface px-3 py-1.5 text-sm font-medium text-text-secondary"
-                        >
-                          {tool}
-                        </span>
-                      ))}
-                    </div>
+              <ScrollReveal delay={0.05}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Approach</p>
+                  <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
+                    How I work
+                  </h2>
+                  <div className="space-y-4 text-lg leading-relaxed text-text-secondary">
+                    <p>
+                      Every engagement starts with understanding what your team actually needs — not what looks impressive on a slide deck.
+                    </p>
+                    <p>
+                      I work pragmatically: solutions that fit your team&apos;s current maturity and scale when you&apos;re ready. I work iteratively: ship, learn, refine. And I always tie the work back to measurable outcomes — time saved, pipeline visibility, conversion rates, or revenue impact.
+                    </p>
+                    <p>
+                      If we can&apos;t measure it, we rethink the approach.
+                    </p>
                   </div>
                 </div>
               </ScrollReveal>
 
-              {/* Inline CTA within the narrative flow */}
-              <ScrollReveal>
+              <ScrollReveal delay={0.05}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Clients</p>
+                  <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
+                    Who I work with
+                  </h2>
+                  <div className="space-y-4 text-lg leading-relaxed text-text-secondary">
+                    <p>
+                      Most of my clients are SMBs and scale-ups running HubSpot Marketing, Sales, or Operations Hub. They&apos;re typically led by RevOps, marketing, or sales leaders who need hands-on execution — not just another strategy deck.
+                    </p>
+                    <p>
+                      Common situations I step into: messy pipelines that nobody trusts, manual processes eating up hours every week, disconnected tools that don&apos;t talk to each other, or a HubSpot portal that was set up once and never properly configured.
+                    </p>
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.05}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Skills</p>
+                  <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
+                    Areas of expertise
+                  </h2>
+                  <div className="grid gap-4 sm:grid-cols-2">
+                    {expertiseAreas.map((area) => (
+                      <div
+                        key={area.title}
+                        className={`rounded-2xl border border-border bg-surface p-5 ${area.title === "Pipeline optimization" ? "sm:col-span-2" : ""}`}
+                      >
+                        <h3 className="font-semibold text-text">{area.title}</h3>
+                        <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+                          {area.description}
+                        </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.05}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Stack</p>
+                  <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
+                    Tools & platforms
+                  </h2>
+                  <div className="grid gap-6 sm:grid-cols-2">
+                    {toolGroups.map((group) => (
+                      <div key={group.label}>
+                        <h3 className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-muted">
+                          {group.label}
+                        </h3>
+                        <div className="flex flex-wrap gap-2">
+                          {group.tools.map((tool) => (
+                            <Badge key={tool} variant="neutral">
+                              {tool}
+                            </Badge>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.05}>
                 <div className="flex flex-wrap gap-4 border-t border-border pt-10">
-                  <Button href="/contact" variant="primary">
+                  <Button href="/contact" variant="primary" showArrow>
                     Plan a call
                   </Button>
                   <Button href="/services" variant="secondary">
