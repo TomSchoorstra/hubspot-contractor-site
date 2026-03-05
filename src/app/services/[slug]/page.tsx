@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
+import Button from "@/components/ui/Button";
 import CTASection from "@/components/sections/CTASection";
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";
@@ -68,21 +69,12 @@ export default async function ServiceDetail({
                 {service.shortDescription}
               </p>
               <div className="flex flex-wrap gap-4 pt-2">
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl bg-accent px-6 py-3 text-base font-semibold text-white shadow-sm transition-all hover:bg-accent-hover hover:shadow-md hover:-translate-y-px group"
-                >
-                  Plan a call
-                  <svg className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14">
-                    <path d="M2.5 7h9M7 2.5l4.5 4.5L7 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                  </svg>
-                </Link>
-                <Link
-                  href="/services"
-                  className="inline-flex items-center justify-center rounded-xl border-2 border-border bg-surface px-6 py-3 text-base font-semibold text-text transition-all hover:border-accent hover:shadow-md hover:-translate-y-px"
-                >
+                <Button href="/contact" variant="primary" size="md" showArrow>
+                  Talk about your project
+                </Button>
+                <Button href="/services" variant="secondary" size="md">
                   All services
-                </Link>
+                </Button>
               </div>
             </div>
 
@@ -132,7 +124,7 @@ export default async function ServiceDetail({
                       className="flex gap-4 rounded-2xl border border-border bg-surface p-6"
                     >
                       <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10">
-                        <svg className="h-3.5 w-3.5 text-accent" fill="none" viewBox="0 0 14 14">
+                        <svg aria-hidden="true" className="h-3.5 w-3.5 text-accent" fill="none" viewBox="0 0 14 14">
                           <path d="M2 7l4 4 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
@@ -158,7 +150,7 @@ export default async function ServiceDetail({
                   {service.deliverables.map((deliverable, index) => (
                     <div key={index} className="flex gap-3">
                       <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-accent-2/15">
-                        <svg className="h-3 w-3 text-accent-2" fill="none" viewBox="0 0 12 12">
+                        <svg aria-hidden="true" className="h-3 w-3 text-accent-2" fill="none" viewBox="0 0 12 12">
                           <path d="M1.5 6l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
@@ -203,7 +195,7 @@ export default async function ServiceDetail({
       <CTASection
         title="Ready to get started?"
         description="Tell me what you're working on and I'll let you know how I can help — no strings attached."
-        cta={{ label: "Book a call", href: "/contact" }}
+        cta={{ label: "Talk about your project", href: "/contact" }}
         secondaryCta={{ label: "See case studies", href: "/case-studies" }}
       />
     </main>

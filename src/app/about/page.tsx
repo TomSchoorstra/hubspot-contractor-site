@@ -80,7 +80,7 @@ export default function About() {
               </p>
               <div className="flex flex-wrap gap-4 pt-2">
                 <Button href="/contact" variant="primary" size="lg" showArrow>
-                  Plan a call
+                  See if we&apos;re a fit
                 </Button>
                 <Button href="/services" variant="secondary" size="lg">
                   View services
@@ -270,7 +270,7 @@ export default function About() {
               <ScrollReveal delay={0.05}>
                 <div className="flex flex-wrap gap-4 border-t border-border pt-10">
                   <Button href="/contact" variant="primary" showArrow>
-                    Plan a call
+                    Let&apos;s talk
                   </Button>
                   <Button href="/services" variant="secondary">
                     View services
@@ -285,7 +285,7 @@ export default function About() {
       <CTASection
         title="Want to see if this is a fit?"
         description="I'm always happy to have a no-pressure conversation about your HubSpot setup. Let's figure out if working together makes sense."
-        cta={{ label: "Book a call", href: "/contact" }}
+        cta={{ label: "Let's talk", href: "/contact" }}
         secondaryCta={{ label: "View case studies", href: "/case-studies" }}
       />
     </main>

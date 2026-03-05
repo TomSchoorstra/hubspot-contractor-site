@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
+
+export const metadata: Metadata = {
+  title: "Services — Tom Schoorstra",
+  description:
+    "Five focused HubSpot services: automation, consultancy, integrations, custom objects, and pipeline optimization — no agency overhead.",
+};
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CTASection from "@/components/sections/CTASection";
@@ -12,7 +19,7 @@ export default function Services() {
         eyebrow="Services"
         title="Building HubSpot that works for your team"
         subtitle={`Five focused services across automation, strategy, integrations, and data architecture — no agency overhead, just hands-on execution.`}
-        primaryCta={{ label: "Plan a call", href: "/contact" }}
+        primaryCta={{ label: "Talk about your project", href: "/contact" }}
         secondaryCta={{ label: "See case studies", href: "/case-studies" }}
       />
 
@@ -57,7 +64,7 @@ export default function Services() {
 
                     {/* Arrow */}
                     <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-xl border border-border bg-surface-2 transition-all duration-300 group-hover:border-accent group-hover:bg-accent group-hover:text-white text-text-muted">
-                      <svg className="h-5 w-5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 20 20">
+                      <svg aria-hidden="true" className="h-5 w-5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 20 20">
                         <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
@@ -72,7 +79,7 @@ export default function Services() {
       <CTASection
         title="Not sure which service fits?"
         description="Tell me what you're dealing with and I'll let you know how I can help — no strings attached."
-        cta={{ label: "Plan a call", href: "/contact" }}
+        cta={{ label: "Get in touch", href: "/contact" }}
         secondaryCta={{ label: "See case studies", href: "/case-studies" }}
       />
     </main>

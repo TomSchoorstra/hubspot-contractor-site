@@ -1,5 +1,12 @@
+import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
+
+export const metadata: Metadata = {
+  title: "Case Studies — Tom Schoorstra",
+  description:
+    "Real HubSpot projects, real results — from finance automation to full CRM architecture.",
+};
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Badge from "@/components/ui/Badge";
@@ -75,6 +82,7 @@ export default function CaseStudies() {
                       <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
                         Read case study
                         <svg
+                          aria-hidden="true"
                           className="h-4 w-4 transition-transform group-hover:translate-x-1"
                           fill="none"
                           viewBox="0 0 16 16"
@@ -94,7 +102,7 @@ export default function CaseStudies() {
       <CTASection
         title="Want similar results for your team?"
         description="Whether it's automation, integrations, or a full CRM cleanup — let's figure out what HubSpot can do for your business."
-        cta={{ label: "Plan a call", href: "/contact" }}
+        cta={{ label: "Let's talk", href: "/contact" }}
         secondaryCta={{ label: "View services", href: "/services" }}
       />
     </main>

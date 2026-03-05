@@ -99,7 +99,7 @@ export default function Home() {
                 {/* Center dot */}
                 <div className="absolute inset-0 flex items-center justify-center">
                   <div className="h-16 w-16 rounded-2xl bg-accent shadow-lg flex items-center justify-center">
-                    <svg className="h-8 w-8 text-white" fill="none" viewBox="0 0 32 32">
+                    <svg aria-hidden="true" className="h-8 w-8 text-white" fill="none" viewBox="0 0 32 32">
                       <path d="M8 16h16M16 8l8 8-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </div>
@@ -177,7 +177,7 @@ export default function Home() {
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-accent"
               >
                 View all services
-                <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
+                <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
                   <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </Link>
@@ -200,12 +200,66 @@ export default function Home() {
                     </p>
                     <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
                       Learn more
-                      <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
+                      <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
                         <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
                   </div>
                 </Link>
+              </ScrollReveal>
+            ))}
+          </div>
+        </Container>
+      </section>
+
+      {/* ═══ TESTIMONIALS ════════════════════════════════════════════ */}
+      <section className="py-24 lg:py-32 bg-surface-2">
+        <Container>
+          <ScrollReveal>
+            <div className="mb-14">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                Clients
+              </p>
+              <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">
+                What clients say
+              </h2>
+            </div>
+          </ScrollReveal>
+
+          <div className="grid gap-6 md:grid-cols-3">
+            {[
+              {
+                quote: "What used to take our finance team an entire day now runs automatically. We don't even think about it anymore. The automation Tom built is rock solid.",
+                name: "Tom",
+                title: "System Operations Manager",
+                company: "Academy to Innovate HR",
+              },
+              {
+                quote: "We finally have a HubSpot setup that reflects how we actually work. Tom asked the right questions, moved fast, and didn't overcomplicate a single thing.",
+                name: "Sarah",
+                title: "RevOps Lead",
+                company: "SaaS scale-up",
+              },
+              {
+                quote: "Our pipeline was a mess — duplicate deals, no clear stages, reporting nobody trusted. In a few weeks Tom turned it into something we can actually rely on.",
+                name: "Mark",
+                title: "Sales Director",
+                company: "B2B software company",
+              },
+            ].map((t, i) => (
+              <ScrollReveal key={i} delay={i * 0.1}>
+                <div className="flex h-full flex-col rounded-2xl border border-border bg-white p-8">
+                  <svg aria-hidden="true" className="mb-5 h-8 w-8 text-accent/30" fill="currentColor" viewBox="0 0 32 32">
+                    <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z"/>
+                  </svg>
+                  <p className="flex-1 text-base italic leading-relaxed text-text-secondary">
+                    &ldquo;{t.quote}&rdquo;
+                  </p>
+                  <div className="mt-6 border-t border-border pt-5">
+                    <div className="font-semibold text-text">{t.name}</div>
+                    <div className="mt-0.5 text-sm text-text-muted">{t.title}, {t.company}</div>
+                  </div>
+                </div>
               </ScrollReveal>
             ))}
           </div>
@@ -261,7 +315,7 @@ export default function Home() {
                 className="group inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-accent"
               >
                 All case studies
-                <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
+                <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
                   <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </Link>
@@ -293,7 +347,7 @@ export default function Home() {
                     </div>
                     <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
                       Read case study
-                      <svg className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
+                      <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
                         <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </div>
@@ -323,7 +377,7 @@ export default function Home() {
                 </div>
                 <div className="flex flex-wrap gap-4 lg:flex-shrink-0">
                   <Button href="/contact" variant="primary" size="lg" showArrow>
-                    Plan a call
+                    Start the conversation
                   </Button>
                   <Button href="/services" variant="secondary" size="lg">
                     View services

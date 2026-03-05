@@ -81,7 +81,7 @@ export default async function CaseStudyDetail({
                 href="/case-studies"
                 className="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-accent transition-colors"
               >
-                <svg className="h-4 w-4" fill="none" viewBox="0 0 16 16">
+                <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
                   <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
                 All case studies
@@ -179,7 +179,7 @@ export default async function CaseStudyDetail({
                   {caseStudy.solution.map((item, index) => (
                     <div key={index} className="flex gap-4">
                       <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-accent-2/15">
-                        <svg className="h-3 w-3 text-accent-2" fill="none" viewBox="0 0 12 12">
+                        <svg aria-hidden="true" className="h-3 w-3 text-accent-2" fill="none" viewBox="0 0 12 12">
                           <path d="M1.5 6l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
@@ -218,7 +218,7 @@ export default async function CaseStudyDetail({
                       href={`/case-studies/${prevStudy.slug}`}
                       className="group flex items-center gap-3 rounded-2xl border border-border bg-surface p-5 transition-all hover:border-accent/40 hover:shadow-md flex-1"
                     >
-                      <svg className="h-5 w-5 text-text-muted transition-transform group-hover:-translate-x-0.5" fill="none" viewBox="0 0 20 20">
+                      <svg aria-hidden="true" className="h-5 w-5 text-text-muted transition-transform group-hover:-translate-x-0.5" fill="none" viewBox="0 0 20 20">
                         <path d="M12 4L6 10l6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                       <div>
@@ -236,7 +236,7 @@ export default async function CaseStudyDetail({
                         <div className="text-xs font-medium text-text-muted">Next</div>
                         <div className="text-sm font-semibold text-text group-hover:text-accent transition-colors">{nextStudy.title}</div>
                       </div>
-                      <svg className="h-5 w-5 text-text-muted transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 20 20">
+                      <svg aria-hidden="true" className="h-5 w-5 text-text-muted transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 20 20">
                         <path d="M8 4l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
                     </Link>
@@ -251,7 +251,7 @@ export default async function CaseStudyDetail({
       <CTASection
         title="Want similar results in HubSpot?"
         description="Whether it's automating manual processes, cleaning up your CRM, or building custom integrations — let's talk about what HubSpot can do for your team."
-        cta={{ label: "Book a call", href: "/contact" }}
+        cta={{ label: "Let's talk", href: "/contact" }}
         secondaryCta={{ label: "View services", href: "/services" }}
       />
     </main>
