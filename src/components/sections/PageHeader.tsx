@@ -20,7 +20,7 @@ export default function PageHeader({
       <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
       <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
 
-      <Container size="narrow">
+      <Container>
         <div className="relative space-y-7">
           {eyebrow && (
             <p className="text-xs font-semibold uppercase tracking-widest text-accent">

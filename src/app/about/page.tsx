@@ -5,6 +5,7 @@ import Button from "@/components/ui/Button";
 import CTASection from "@/components/sections/CTASection";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Badge from "@/components/ui/Badge";
+import ExperienceTimer from "@/components/ui/ExperienceTimer";
 
 export const metadata: Metadata = {
   title: "About Me — Tom Schoorstra",
@@ -13,7 +14,6 @@ export const metadata: Metadata = {
 };
 
 const credentials = [
-  { value: "5+", label: "Years in HubSpot" },
   { value: "20+", label: "Projects delivered" },
   { value: "5", label: "HubSpot Hubs covered" },
 ];
@@ -114,6 +114,9 @@ export default function About() {
       <div className="border-b border-border bg-surface-2 py-8">
         <Container>
           <div className="grid grid-cols-3 gap-6 divide-x divide-border">
+            <div className="px-4 first:pl-0">
+              <ExperienceTimer />
+            </div>
             {credentials.map((cred) => (
               <div key={cred.label} className="px-4 text-center sm:text-left first:pl-0">
                 <div className="font-display text-3xl font-bold text-accent lg:text-4xl">{cred.value}</div>

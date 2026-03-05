@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import Button from "@/components/ui/Button";
@@ -7,6 +8,7 @@ import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Badge from "@/components/ui/Badge";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
+import ExperienceTimer from "@/components/ui/ExperienceTimer";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
 
@@ -20,8 +22,8 @@ const staggerItem: Variants = {
   show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } },
 };
 
-/* ─── Tool stack logos (text-based, no external images) ─────────── */
-const tools = ["HubSpot", "Zapier", "Exact", "WooCommerce", "Google Workspace", "Slack", "Jira"];
+/* ─── Tool stack logos ───────────────────────────────────────────── */
+const tools = ["HubSpot", "Zapier", "WooCommerce", "Google Workspace", "Slack", "Jira", "Chili Piper", "n8n", "Exact"];
 
 /* ─── Home results stats ─────────────────────────────────────────── */
 const homeStats = [
@@ -41,22 +43,19 @@ export default function Home() {
         <div className="absolute -top-32 -right-32 h-[600px] w-[600px] rounded-full bg-accent/8 blur-[100px] pointer-events-none" />
         <div className="absolute -bottom-20 -left-20 h-[400px] w-[400px] rounded-full bg-accent-2/6 blur-[80px] pointer-events-none" />
 
-        <Container className="relative z-10 py-24 lg:py-32">
+        <Container className="relative z-10 py-14 lg:py-20">
           <div className="grid grid-cols-1 gap-16 xl:grid-cols-[3fr_2fr] xl:items-center">
+
             {/* Left: Text */}
             <motion.div
               variants={staggerContainer}
               initial="hidden"
               animate="show"
-              className="space-y-8"
+              className="space-y-7"
             >
-              <motion.div variants={staggerItem}>
-                <Badge variant="teal">Independent HubSpot Contractor</Badge>
-              </motion.div>
-
               <motion.h1
                 variants={staggerItem}
-                className="font-display text-5xl font-extrabold leading-[1.05] tracking-tight text-text sm:text-6xl lg:text-7xl xl:text-8xl"
+                className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-text sm:text-5xl lg:text-6xl xl:text-7xl"
               >
                 HubSpot operations,{" "}
                 <span className="text-gradient-orange">done right.</span>
@@ -82,64 +81,134 @@ export default function Home() {
               </motion.div>
             </motion.div>
 
-            {/* Right: Geometric decoration */}
+            {/* Right: Photo + floating cards below — only shown at xl */}
             <motion.div
-              initial={{ opacity: 0, scale: 0.9 }}
-              animate={{ opacity: 1, scale: 1 }}
+              initial={{ opacity: 0, x: 30 }}
+              animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="relative hidden xl:block"
+              className="hidden xl:flex xl:flex-col xl:items-center xl:gap-5"
             >
-              {/* Layered circles */}
-              <div className="relative mx-auto h-[380px] w-[380px]">
-                <div className="absolute inset-0 rounded-full border-2 border-accent/10" />
-                <div className="absolute inset-8 rounded-full border-2 border-accent-2/15" />
-                <div className="absolute inset-16 rounded-full bg-accent/6" />
-                <div className="absolute inset-24 rounded-full bg-accent-2/8" />
+              {/* Photo frame — clean, no cards overlapping */}
+              <div className="relative w-full max-w-[300px]">
+                <div
+                  className="absolute -top-3 -left-3 h-full w-full rounded-2xl border-2 border-accent/30"
+                  aria-hidden="true"
+                />
+                <div
+                  className="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border-2 border-accent-2/30"
+                  aria-hidden="true"
+                />
+                <Image
+                  src="/about-photo.jpeg"
+                  alt="Tom Schoorstra — Independent HubSpot Contractor"
+                  width={480}
+                  height={640}
+                  className="relative z-10 h-auto w-full rounded-2xl object-cover object-top shadow-xl"
+                  priority
+                />
+                <div
+                  className="absolute bottom-0 left-0 right-0 z-20 h-1 rounded-b-2xl bg-accent"
+                  aria-hidden="true"
+                />
+              </div>
 
-                {/* Center dot */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="h-16 w-16 rounded-2xl bg-accent shadow-lg flex items-center justify-center">
-                    <svg aria-hidden="true" className="h-8 w-8 text-white" fill="none" viewBox="0 0 32 32">
-                      <path d="M8 16h16M16 8l8 8-8 8" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </div>
-                </div>
-
-                {/* Floating stat cards */}
+              {/* Floating stat cards — below the photo, no face overlap possible */}
+              <div className="flex items-start gap-3">
                 <motion.div
-                  animate={{ y: [0, -8, 0] }}
+                  animate={{ y: [0, -7, 0] }}
                   transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="absolute -top-4 -left-8 rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
+                  className="rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
                 >
                   <div className="text-xs font-medium text-text-muted">Time saved</div>
-                  <div className="font-display text-xl font-bold text-accent">15 hrs/week</div>
+                  <div className="font-display text-xl font-bold text-accent">15 hrs/wk</div>
                 </motion.div>
 
                 <motion.div
-                  animate={{ y: [0, 8, 0] }}
+                  animate={{ y: [0, 7, 0] }}
                   transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="absolute -bottom-4 -right-8 rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
+                  className="rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
                 >
-                  <div className="text-xs font-medium text-text-muted">Reporting speed</div>
+                  <div className="text-xs font-medium text-text-muted">Reporting</div>
                   <div className="font-display text-xl font-bold text-accent-2">50% faster</div>
                 </motion.div>
 
                 <motion.div
-                  animate={{ x: [0, 6, 0] }}
+                  animate={{ y: [0, -5, 0] }}
                   transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="absolute top-1/2 -right-16 -translate-y-1/2 rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
+                  className="rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
                 >
-                  <div className="text-xs font-medium text-text-muted">Systems connected</div>
-                  <div className="font-display text-xl font-bold text-text">3 in 1</div>
+                  <div className="text-xs font-medium text-text-muted">Connected</div>
+                  <div className="font-display text-xl font-bold text-text">3 systems</div>
                 </motion.div>
               </div>
             </motion.div>
+
           </div>
         </Container>
       </section>
 
+      {/* ═══ WHO I AM STRIP ══════════════════════════════════════════ */}
+      <ScrollReveal>
+        <section className="border-b border-border bg-surface-2 py-10 lg:py-12">
+          <Container>
+            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16">
+
+              {/* Left: Personal intro */}
+              <div>
+                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">
+                  About me
+                </p>
+                <p className="max-w-2xl text-lg leading-relaxed text-text-secondary">
+                  Independent HubSpot contractor based in the Netherlands. I help growing teams turn their CRM into a system that actually works — no agency overhead, no unnecessary complexity.
+                </p>
+                <Link
+                  href="/about"
+                  className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-text transition-colors hover:text-accent"
+                >
+                  More about me
+                  <svg
+                    aria-hidden="true"
+                    className="h-4 w-4 transition-transform group-hover:translate-x-1"
+                    fill="none"
+                    viewBox="0 0 16 16"
+                  >
+                    <path
+                      d="M3 8h10M8 3l5 5-5 5"
+                      stroke="currentColor"
+                      strokeWidth="1.5"
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                    />
+                  </svg>
+                </Link>
+              </div>
+
+              {/* Right: Key stats with live timer */}
+              <div className="flex flex-shrink-0 items-center gap-6 sm:gap-10">
+                <ExperienceTimer />
+                <div className="h-10 w-px bg-border" />
+                <div>
+                  <div className="font-display text-3xl font-bold text-accent lg:text-4xl">20+</div>
+                  <div className="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">
+                    Projects
+                  </div>
+                </div>
+                <div className="h-10 w-px bg-border" />
+                <div>
+                  <div className="font-display text-3xl font-bold text-accent lg:text-4xl">5</div>
+                  <div className="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">
+                    Hubs covered
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </Container>
+        </section>
+      </ScrollReveal>
+
       {/* ═══ TOOL STACK BAR ══════════════════════════════════════════ */}
-      <div className="border-y border-border bg-surface-2 py-6">
+      <div className="border-b border-border bg-surface-2 py-6">
         <Container>
           <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
             <span className="flex-shrink-0 text-xs font-semibold uppercase tracking-widest text-text-muted">
