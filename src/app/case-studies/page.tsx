@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "Case Studies — Tom Schoorstra",
   description:
     "Real HubSpot projects, real results — from finance automation to full CRM architecture.",
+  openGraph: {
+    title: "Case Studies — Tom Schoorstra",
+    description:
+      "Real HubSpot projects, real results — from finance automation to full CRM architecture.",
+    url: "/case-studies",
+  },
 };
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";

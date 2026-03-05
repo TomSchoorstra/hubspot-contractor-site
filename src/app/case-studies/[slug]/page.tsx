@@ -8,6 +8,7 @@ import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import Badge from "@/components/ui/Badge";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import { caseStudies } from "@/content/caseStudies";
+import { services } from "@/content/services";
 
 export async function generateStaticParams() {
   return caseStudies.map((caseStudy) => ({
@@ -33,6 +34,11 @@ export async function generateMetadata({
   return {
     title: `${caseStudy.title} — Case study — Tom Schoorstra`,
     description: caseStudy.summary,
+    openGraph: {
+      title: `${caseStudy.title} — Tom Schoorstra`,
+      description: caseStudy.summary,
+      url: `/case-studies/${slug}`,
+    },
   };
 }
 
@@ -208,6 +214,44 @@ export default async function CaseStudyDetail({
                 </div>
               </div>
             </ScrollReveal>
+
+            {/* Related services */}
+            {caseStudy.relatedServices.length > 0 && (() => {
+              const related = services.filter((s) => caseStudy.relatedServices.includes(s.slug));
+              if (related.length === 0) return null;
+              return (
+                <ScrollReveal>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                      Related services
+                    </p>
+                    <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
+                      How I can help you with this
+                    </h2>
+                    <div className="grid gap-4 sm:grid-cols-2">
+                      {related.map((s) => (
+                        <Link key={s.slug} href={`/services/${s.slug}`} className="group block">
+                          <div className="h-full rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)]">
+                            <h3 className="font-display text-lg font-bold text-text transition-colors group-hover:text-accent">
+                              {s.title}
+                            </h3>
+                            <p className="mt-2 text-sm leading-relaxed text-text-secondary">
+                              {s.shortDescription}
+                            </p>
+                            <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+                              Learn more
+                              <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
+                                <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                              </svg>
+                            </div>
+                          </div>
+                        </Link>
+                      ))}
+                    </div>
+                  </div>
+                </ScrollReveal>
+              );
+            })()}
 
             {/* Prev / Next navigation */}
             {(prevStudy || nextStudy) && (

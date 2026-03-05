@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   title: "About Me — Tom Schoorstra",
   description:
     "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
+  openGraph: {
+    title: "About Tom Schoorstra — Independent HubSpot Contractor",
+    description:
+      "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
+    url: "/about",
+  },
 };
 
 const credentials = [
@@ -58,6 +64,16 @@ const toolGroups = [
     label: "Productivity & IT",
     tools: ["Google Workspace", "Jira", "Confluence", "1Password", "Trelica"],
   },
+];
+
+const certifications = [
+  { name: "HubSpot Sales Hub Software", issuer: "HubSpot Academy", year: "2024", active: false },
+  { name: "Form Concierge Admin Certificate", issuer: "Chili Piper", year: "2022", active: false },
+  { name: "Inbound Marketing", issuer: "HubSpot Academy", year: "2022", active: false },
+  { name: "HubSpot Sales Software", issuer: "HubSpot Academy", year: "2022", active: false },
+  { name: "2020 HubSpot Champion User", issuer: "HubSpot Academy", year: "2020", active: false },
+  { name: "Inbound Marketing Certified", issuer: "HubSpot Academy", year: "2020", active: false },
+  { name: "Inbound Certified", issuer: "HubSpot", year: "2017", active: false },
 ];
 
 export default function About() {
@@ -239,6 +255,46 @@ export default function About() {
                         <p className="mt-2 text-sm leading-relaxed text-text-secondary">
                           {area.description}
                         </p>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </ScrollReveal>
+
+              <ScrollReveal delay={0.05}>
+                <div>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Certifications</p>
+                  <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
+                    Licenses &amp; certifications
+                  </h2>
+                  <div className="grid gap-3 sm:grid-cols-2">
+                    {certifications.map((cert) => (
+                      <div
+                        key={cert.name}
+                        className={`flex items-start gap-4 rounded-2xl border bg-surface p-4 ${
+                          cert.active
+                            ? "border-accent/30 bg-accent-light"
+                            : "border-border"
+                        }`}
+                      >
+                        <div className={`mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg ${
+                          cert.active ? "bg-accent text-white" : "bg-surface-2 text-text-muted"
+                        }`}>
+                          <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24">
+                            <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                          </svg>
+                        </div>
+                        <div className="min-w-0">
+                          <div className="flex items-center gap-2 flex-wrap">
+                            <p className="text-sm font-semibold text-text">{cert.name}</p>
+                            {cert.active && (
+                              <span className="inline-flex items-center rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-white">
+                                Active
+                              </span>
+                            )}
+                          </div>
+                          <p className="mt-0.5 text-xs text-text-muted">{cert.issuer} · {cert.year}</p>
+                        </div>
                       </div>
                     ))}
                   </div>

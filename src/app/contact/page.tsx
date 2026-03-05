@@ -5,6 +5,11 @@ import ContactForm from "@/components/forms/ContactForm";
 export const metadata: Metadata = {
   title: "Contact — Tom Schoorstra",
   description: "Let's talk about your HubSpot setup. I'll get back to you within one business day.",
+  openGraph: {
+    title: "Contact Tom Schoorstra — HubSpot Contractor",
+    description: "Let's talk about your HubSpot setup. I'll get back to you within one business day.",
+    url: "/contact",
+  },
 };
 
 const expectations = [

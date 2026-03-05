@@ -6,6 +6,7 @@ export type Service = {
   deliverables: string[];
   process: Array<{ title: string; description: string }>;
   faq: Array<{ q: string; a: string }>;
+  relatedCaseStudy?: string; // slug of a related case study
 };
 
 export const servicesHeroIntro =
@@ -66,6 +67,7 @@ export const services: Service[] = [
         a: "Yes — if your tools connect via Zapier, native HubSpot integrations, or APIs, I can include them in the automation flow. Common integrations include Slack, Exact, WooCommerce, and Google Workspace.",
       },
     ],
+    relatedCaseStudy: "finance-automation",
   },
   {
     slug: "consultancy",
@@ -171,6 +173,7 @@ export const services: Service[] = [
         a: "I create a detailed field mapping document that shows exactly which fields sync between systems, in which direction, and how conflicts are resolved. This becomes part of your documentation.",
       },
     ],
+    relatedCaseStudy: "finance-automation",
   },
   {
     slug: "custom-objects",
@@ -227,6 +230,7 @@ export const services: Service[] = [
         a: "Custom objects unlock new reporting dimensions. You can build dashboards that show metrics across your custom data, filter by associations, and create reports that weren't possible with standard objects alone.",
       },
     ],
+    relatedCaseStudy: "customer-lifecycle",
   },
   {
     slug: "pipeline-optimization",
@@ -277,5 +281,6 @@ export const services: Service[] = [
         a: "At minimum every 6 months, or whenever your sales process changes significantly — new product lines, team growth, or market shifts are all good triggers for a review.",
       },
     ],
+    relatedCaseStudy: "pipeline-consolidation",
   },
 ];

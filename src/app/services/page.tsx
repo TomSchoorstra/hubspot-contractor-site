@@ -6,6 +6,12 @@ export const metadata: Metadata = {
   title: "Services — Tom Schoorstra",
   description:
     "Five focused HubSpot services: automation, consultancy, integrations, custom objects, and pipeline optimization — no agency overhead.",
+  openGraph: {
+    title: "HubSpot Services — Tom Schoorstra",
+    description:
+      "Five focused HubSpot services: automation, consultancy, integrations, custom objects, and pipeline optimization — no agency overhead.",
+    url: "/services",
+  },
 };
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";

@@ -8,6 +8,7 @@ import ScrollReveal from "@/components/ui/ScrollReveal";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import Accordion from "@/components/ui/Accordion";
 import { services } from "@/content/services";
+import { caseStudies } from "@/content/caseStudies";
 
 export async function generateStaticParams() {
   return services.map((service) => ({
@@ -33,6 +34,11 @@ export async function generateMetadata({
   return {
     title: `${service.title} — Tom Schoorstra`,
     description: service.shortDescription,
+    openGraph: {
+      title: `${service.title} — Tom Schoorstra`,
+      description: service.shortDescription,
+      url: `/services/${slug}`,
+    },
   };
 }
 
@@ -49,8 +55,47 @@ export default async function ServiceDetail({
     notFound();
   }
 
+  const serviceSchema = {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "Service",
+        name: service.title,
+        description: service.shortDescription,
+        provider: {
+          "@type": "Person",
+          name: "Tom Schoorstra",
+          url: "https://tomschoorstra.com",
+        },
+        areaServed: {
+          "@type": "Country",
+          name: "Netherlands",
+        },
+      },
+      ...(service.faq.length > 0
+        ? [
+            {
+              "@type": "FAQPage",
+              mainEntity: service.faq.map((item) => ({
+                "@type": "Question",
+                name: item.q,
+                acceptedAnswer: {
+                  "@type": "Answer",
+                  text: item.a,
+                },
+              })),
+            },
+          ]
+        : []),
+    ],
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
+      />
       {/* Hero */}
       <header className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
         <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
@@ -188,6 +233,52 @@ export default async function ServiceDetail({
                 <Accordion items={service.faq} />
               </div>
             </ScrollReveal>
+
+            {/* Related case study */}
+            {service.relatedCaseStudy && (() => {
+              const related = caseStudies.find((cs) => cs.slug === service.relatedCaseStudy);
+              if (!related) return null;
+              return (
+                <ScrollReveal>
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-widest text-accent-2 mb-3">
+                      See it in practice
+                    </p>
+                    <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
+                      Real-world example
+                    </h2>
+                    <Link href={`/case-studies/${related.slug}`} className="group block">
+                      <div className="rounded-2xl border border-border bg-surface p-8 transition-all duration-300 hover:border-accent-2/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)]">
+                        <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+                          <div>
+                            <p className="text-sm font-medium text-text-muted mb-2">{related.industry} · {related.companySize}</p>
+                            <h3 className="font-display text-xl font-bold text-text transition-colors group-hover:text-accent-2">
+                              {related.title}
+                            </h3>
+                            <p className="mt-3 text-base leading-relaxed text-text-secondary max-w-xl">
+                              {related.summary}
+                            </p>
+                          </div>
+                          <div className="flex-shrink-0 flex items-center justify-center h-12 w-12 rounded-xl border border-border bg-surface-2 transition-all duration-300 group-hover:border-accent-2 group-hover:bg-accent-2 group-hover:text-white text-text-muted">
+                            <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 20 20">
+                              <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                            </svg>
+                          </div>
+                        </div>
+                        <div className="mt-6 flex flex-wrap gap-3 border-t border-border pt-5">
+                          {related.results.slice(0, 3).map((r) => (
+                            <div key={r.label} className="rounded-lg bg-surface-2 border border-border-subtle px-3 py-2">
+                              <div className="font-display text-lg font-bold text-accent">{r.value}</div>
+                              <div className="text-xs text-text-muted">{r.label}</div>
+                            </div>
+                          ))}
+                        </div>
+                      </div>
+                    </Link>
+                  </div>
+                </ScrollReveal>
+              );
+            })()}
           </div>
         </Container>
       </section>

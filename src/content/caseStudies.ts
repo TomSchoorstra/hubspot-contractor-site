@@ -9,6 +9,7 @@ export type CaseStudy = {
   solution: string[];
   results: Array<{ label: string; value: string }>;
   stack: string[];
+  relatedServices: string[]; // slugs of related services
 };
 
 export const caseStudiesHeroIntro =
@@ -46,6 +47,7 @@ export const caseStudies: CaseStudy[] = [
       { label: "Error rate", value: "Significantly reduced" },
     ],
     stack: ["HubSpot", "Zapier", "WooCommerce", "Exact"],
+    relatedServices: ["automation", "integrations"],
   },
   {
     slug: "customer-lifecycle",
@@ -78,6 +80,7 @@ export const caseStudies: CaseStudy[] = [
       { label: "Churn tracking", value: "Now possible" },
     ],
     stack: ["HubSpot", "Zapier", "Custom objects", "Backend integration"],
+    relatedServices: ["custom-objects"],
   },
   {
     slug: "pipeline-consolidation",
@@ -110,5 +113,6 @@ export const caseStudies: CaseStudy[] = [
       { label: "Forecast reliability", value: "Improved" },
     ],
     stack: ["HubSpot", "Pipeline management", "Custom objects"],
+    relatedServices: ["pipeline-optimization"],
   },
 ];
