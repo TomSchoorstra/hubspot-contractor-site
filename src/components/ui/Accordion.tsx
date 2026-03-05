@@ -35,7 +35,7 @@ export default function Accordion({
                 transition={{ duration: 0.2 }}
                 className="flex-shrink-0 text-accent"
               >
-                <svg className="h-5 w-5" fill="none" viewBox="0 0 20 20">
+                <svg aria-hidden="true" className="h-5 w-5" fill="none" viewBox="0 0 20 20">
                   <path
                     d="M10 4v12M4 10h12"
                     stroke="currentColor"

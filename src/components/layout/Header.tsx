@@ -72,7 +72,7 @@ function MobileMenuPortal({
                         className={`group flex items-center justify-between rounded-xl px-4 py-4 text-xl font-semibold transition-colors hover:bg-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${pathname === item.href ? "text-accent" : "text-text"}`}
                       >
                         {item.label}
-                        <svg className="h-4 w-4 text-text-muted transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
+                        <svg aria-hidden="true" className="h-4 w-4 text-text-muted transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
                           <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </Link>
@@ -92,7 +92,7 @@ function MobileMenuPortal({
                     className="flex items-center justify-center gap-2 w-full rounded-xl bg-accent px-6 py-4 text-center text-base font-semibold text-white transition-all hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
                   >
                     Plan a call
-                    <svg className="h-4 w-4" fill="none" viewBox="0 0 16 16">
+                    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
                       <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                     </svg>
                   </Link>
@@ -185,7 +185,7 @@ export default function Header() {
           className="hidden md:inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-accent-hover hover:shadow-md hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group"
         >
           Plan a call
-          <svg className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14">
+          <svg aria-hidden="true" className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14">
             <path d="M2.5 7h9M7 2.5l4.5 4.5L7 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </Link>

@@ -55,6 +55,7 @@ export default function Button({
 
   const arrow = showArrow ? (
     <svg
+      aria-hidden="true"
       className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
       fill="none"
       viewBox="0 0 14 14"

@@ -98,22 +98,6 @@ body {
   background-clip: text;
 }
 
-.text-gradient-teal {
-  background: linear-gradient(135deg, var(--accent-2) 0%, #00d4f5 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-}
-
-/* Abstract gradient decorations */
-.gradient-blob-orange {
-  background: radial-gradient(circle at 30% 50%, rgba(255, 92, 53, 0.08) 0%, transparent 60%);
-}
-
-.gradient-blob-teal {
-  background: radial-gradient(circle at 70% 50%, rgba(0, 164, 189, 0.07) 0%, transparent 60%);
-}
-
 .gradient-mesh {
   background:
     radial-gradient(at 20% 30%, rgba(255, 92, 53, 0.06) 0%, transparent 50%),
@@ -131,22 +115,3 @@ body {
   box-shadow: var(--shadow-glow-orange);
 }
 
-/* Scroll-reveal animations — fallback for CSS-only */
-.scroll-reveal {
-  opacity: 0;
-  transform: translateY(1.25rem);
-  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
-}
-
-.scroll-reveal-visible {
-  opacity: 1;
-  transform: translateY(0);
-}
-
-@media (prefers-reduced-motion: reduce) {
-  .scroll-reveal {
-    opacity: 1;
-    transform: none;
-    transition: none;
-  }
-}
