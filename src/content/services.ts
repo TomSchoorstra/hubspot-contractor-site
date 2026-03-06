@@ -6,6 +6,7 @@ export type Service = {
   deliverables: string[];
   process: Array<{ title: string; description: string }>;
   faq: Array<{ q: string; a: string }>;
+  metaDescription?: string;
   relatedCaseStudy?: string; // slug of a related case study
 };
 
@@ -18,6 +19,8 @@ export const services: Service[] = [
     title: "HubSpot automation",
     shortDescription:
       "Workflows that handle the busywork so your team can focus on selling.",
+    metaDescription:
+      "HubSpot automation services by an independent contractor. I build workflows that eliminate manual tasks, speed up lead response, and keep your team focused on selling. No agency overhead.",
     outcomes: [
       "Less time spent on repetitive manual tasks like data entry, follow-ups, and internal handoffs.",
       "Faster lead response times through automated routing and notification workflows.",
@@ -74,6 +77,8 @@ export const services: Service[] = [
     title: "HubSpot consultancy",
     shortDescription:
       "Sparring partner for your operational, tactical, and strategic HubSpot questions.",
+    metaDescription:
+      "Independent HubSpot consultant for SMBs and scale-ups. Portal audits, strategic roadmaps, and hands-on sparring — prioritized by impact, not by what looks good on a slide deck.",
     outcomes: [
       "A clear picture of what's working in your HubSpot portal and what's holding you back.",
       "Actionable recommendations prioritized by impact — not a 50-page report that collects dust.",
@@ -124,6 +129,8 @@ export const services: Service[] = [
     title: "Zapier & integrations",
     shortDescription:
       "Connect HubSpot to Exact, WooCommerce, Google Workspace, and the rest of your stack.",
+    metaDescription:
+      "HubSpot integrations via Zapier and native connectors. I connect HubSpot to Exact, WooCommerce, Google Workspace, and more — documented, tested, and built to last.",
     outcomes: [
       "Data flows automatically between HubSpot and your other tools — no more manual copying between systems.",
       "A single source of truth for customer data, regardless of where it originates.",
@@ -180,6 +187,8 @@ export const services: Service[] = [
     title: "Custom object development",
     shortDescription:
       "Data structures that match how your business actually works.",
+    metaDescription:
+      "HubSpot custom object development for Enterprise portals. I design data models that reflect your business, build clean associations, and set up reporting dashboards on your custom data.",
     outcomes: [
       "A data model that reflects your actual business — not one that forces you to work around HubSpot's defaults.",
       "Clean associations between custom objects and standard HubSpot records (contacts, companies, deals).",
@@ -237,6 +246,8 @@ export const services: Service[] = [
     title: "Pipeline reviews & optimization",
     shortDescription:
       "Clean pipelines, consistent processes, forecasts you can trust.",
+    metaDescription:
+      "HubSpot pipeline optimization for sales teams. I clean up deal stages, standardize fields, and build forecasting dashboards your leadership team can actually rely on.",
     outcomes: [
       "Pipeline stages that reflect your actual sales process — not a default template.",
       "Required fields and validation rules that keep data clean without slowing reps down.",

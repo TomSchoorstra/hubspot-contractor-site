@@ -45,7 +45,7 @@ export default function ExperienceTimer() {
   if (!elapsed) {
     return (
       <div className="text-center sm:text-left">
-        <div className="font-display text-3xl font-bold text-accent lg:text-4xl">8+ jaar</div>
+        <div className="font-display text-3xl font-bold text-accent lg:text-4xl">8+ yrs</div>
         <div className="mt-1 text-sm font-medium text-text-secondary">Years in HubSpot</div>
       </div>
     );
@@ -56,10 +56,10 @@ export default function ExperienceTimer() {
   return (
     <div className="text-center sm:text-left">
       <div className="font-display text-3xl font-bold text-accent lg:text-4xl">
-        {years} jaar
+        {years} yrs
       </div>
       <div className="mt-1 text-sm font-medium text-text-secondary tabular-nums">
-        {months} mnd · {days} d · {pad(hours)}:{pad(minutes)}:{pad(seconds)}
+        {months} mo · {days} d · {pad(hours)}:{pad(minutes)}:{pad(seconds)}
       </div>
     </div>
   );

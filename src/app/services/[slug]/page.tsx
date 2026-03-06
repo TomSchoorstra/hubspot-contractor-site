@@ -31,12 +31,14 @@ export async function generateMetadata({
     };
   }
 
+  const description = service.metaDescription ?? service.shortDescription;
+
   return {
     title: `${service.title} — Tom Schoorstra`,
-    description: service.shortDescription,
+    description,
     openGraph: {
       title: `${service.title} — Tom Schoorstra`,
-      description: service.shortDescription,
+      description,
       url: `/services/${slug}`,
     },
   };
