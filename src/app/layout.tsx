@@ -23,8 +23,14 @@ const syne = Syne({
 
 const siteUrl = "https://tomschoorstra.com";
 
+
 export const metadata: Metadata = {
   title: "Tom Schoorstra — HubSpot contractor",
+  icons: {
+    icon: "/favicon.svg",
+    shortcut: "/favicon.svg",
+    apple: "/favicon.svg",
+  },
   description:
     "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization. No agency overhead.",
   metadataBase: new URL(siteUrl),
