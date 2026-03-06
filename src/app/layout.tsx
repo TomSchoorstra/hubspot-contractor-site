@@ -20,7 +20,7 @@ const syne = Syne({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const siteUrl = "https://tomschoorstra.com"; // Update when live domain is known
+const siteUrl = "https://tomschoorstra.com";
 
 export const metadata: Metadata = {
   title: "Tom Schoorstra — HubSpot contractor",
@@ -59,7 +59,7 @@ const personSchema = {
   jobTitle: "Independent HubSpot Contractor",
   description:
     "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization.",
-  url: "https://tomschoorstra.com", // Update when live domain is known
+  url: "https://tomschoorstra.com",
   sameAs: ["https://www.linkedin.com/in/tom-schoorstra-807899113/"],
   knowsAbout: [
     "HubSpot",
