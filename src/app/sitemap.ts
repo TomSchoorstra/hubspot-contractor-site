@@ -2,44 +2,28 @@ import type { MetadataRoute } from "next";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
 
-const BASE_URL =
-  process.env.NEXT_PUBLIC_SITE_URL || "http://localhost:3000";
+const siteUrl = "https://tomschoorstra.com";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const staticRoutes: MetadataRoute.Sitemap = [
-    {
-      url: BASE_URL,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/services`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/case-studies`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/about`,
-      lastModified: new Date(),
-    },
-    {
-      url: `${BASE_URL}/contact`,
-      lastModified: new Date(),
-    },
+  const staticPages = [
+    { url: siteUrl, priority: 1.0, changeFrequency: "monthly" as const },
+    { url: `${siteUrl}/about`, priority: 0.8, changeFrequency: "monthly" as const },
+    { url: `${siteUrl}/services`, priority: 0.9, changeFrequency: "monthly" as const },
+    { url: `${siteUrl}/case-studies`, priority: 0.9, changeFrequency: "monthly" as const },
+    { url: `${siteUrl}/contact`, priority: 0.7, changeFrequency: "yearly" as const },
   ];
 
-  const serviceRoutes: MetadataRoute.Sitemap = services.map((service) => ({
-    url: `${BASE_URL}/services/${service.slug}`,
-    lastModified: new Date(),
+  const servicePages = services.map((service) => ({
+    url: `${siteUrl}/services/${service.slug}`,
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
   }));
 
-  const caseStudyRoutes: MetadataRoute.Sitemap = caseStudies.map(
-    (caseStudy) => ({
-      url: `${BASE_URL}/case-studies/${caseStudy.slug}`,
-      lastModified: new Date(),
-    })
-  );
+  const caseStudyPages = caseStudies.map((study) => ({
+    url: `${siteUrl}/case-studies/${study.slug}`,
+    priority: 0.8,
+    changeFrequency: "monthly" as const,
+  }));
 
-  return [...staticRoutes, ...serviceRoutes, ...caseStudyRoutes];
+  return [...staticPages, ...servicePages, ...caseStudyPages];
 }
