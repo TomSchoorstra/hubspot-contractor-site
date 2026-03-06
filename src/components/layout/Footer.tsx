@@ -45,6 +45,12 @@ export default function Footer() {
                   {item.label}
                 </Link>
               ))}
+              <Link
+                href="/blog"
+                className="block text-sm font-medium text-text-secondary transition-colors hover:text-accent focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 focus-visible:rounded-sm"
+              >
+                Blog
+              </Link>
             </nav>
           </div>
 

@@ -32,7 +32,7 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   description:
-    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization. No agency overhead.",
+    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
   metadataBase: new URL(siteUrl),
   openGraph: {
     type: "website",
@@ -40,7 +40,7 @@ export const metadata: Metadata = {
     siteName: "Tom Schoorstra",
     title: "Tom Schoorstra — HubSpot contractor",
     description:
-      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization. No agency overhead.",
+      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
     images: [
       {
         url: "/about-photo.jpeg", // Replace with a dedicated 1200×630 OG image when available
@@ -54,7 +54,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: "Tom Schoorstra — HubSpot contractor",
     description:
-      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization. No agency overhead.",
+      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
     images: ["/about-photo.jpeg"],
   },
 };
