@@ -34,13 +34,11 @@ function MobileMenuPortal({
             {/* Top Bar */}
             <div className="shrink-0 border-b border-border-subtle">
               <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
-                <Link
-                  href="/"
-                  onClick={onClose}
-                  className="font-display text-xl font-bold text-text"
-                >
-                  {site.name}
-                  <span className="text-accent">.</span>
+                <Link href="/" onClick={onClose} className="flex flex-col leading-none">
+                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">RevOps by</span>
+                  <span className="font-display text-base font-bold text-text">
+                    {site.name}<span className="text-accent">.</span>
+                  </span>
                 </Link>
                 <button
                   type="button"
@@ -146,12 +144,11 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link
-          href="/"
-          className="font-display text-xl font-bold text-text transition-colors hover:text-accent"
-        >
-          {site.name}
-          <span className="text-accent">.</span>
+        <Link href="/" className="flex flex-col leading-none transition-colors hover:text-accent group">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted group-hover:text-accent/70 transition-colors">RevOps by</span>
+          <span className="font-display text-base font-bold text-text group-hover:text-accent transition-colors">
+            {site.name}<span className="text-accent">.</span>
+          </span>
         </Link>
 
         {/* Desktop Navigation */}
