@@ -129,16 +129,21 @@ export default function About() {
       {/* Credentials bar */}
       <div className="border-b border-border bg-surface-2 py-8">
         <Container>
-          <div className="grid grid-cols-3 gap-6 divide-x divide-border">
-            <div className="px-4 first:pl-0">
-              <ExperienceTimer />
-            </div>
-            {credentials.map((cred) => (
-              <div key={cred.label} className="px-4 text-center sm:text-left first:pl-0">
-                <div className="font-display text-3xl font-bold text-accent lg:text-4xl">{cred.value}</div>
-                <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
+          <div className="flex justify-center">
+            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface px-8 py-5">
+              <div className="text-center text-xs font-medium uppercase tracking-wide text-text-muted">HubSpot experience</div>
+              <div className="grid grid-cols-3 gap-6 divide-x divide-border">
+                <div className="px-4 first:pl-0">
+                  <ExperienceTimer />
+                </div>
+                {credentials.map((cred) => (
+                  <div key={cred.label} className="px-4 text-center sm:text-left">
+                    <div className="font-display text-3xl font-bold text-accent lg:text-4xl">{cred.value}</div>
+                    <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
+                  </div>
+                ))}
               </div>
-            ))}
+            </div>
           </div>
         </Container>
       </div>

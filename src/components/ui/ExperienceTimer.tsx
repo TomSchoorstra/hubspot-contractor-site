@@ -34,22 +34,12 @@ function getElapsed() {
 }
 
 export default function ExperienceTimer() {
-  const [elapsed, setElapsed] = useState<ReturnType<typeof getElapsed> | null>(null);
+  const [elapsed, setElapsed] = useState(getElapsed);
 
   useEffect(() => {
-    setElapsed(getElapsed());
     const id = setInterval(() => setElapsed(getElapsed()), 1000);
     return () => clearInterval(id);
   }, []);
-
-  if (!elapsed) {
-    return (
-      <div className="text-center sm:text-left">
-        <div className="font-display text-3xl font-bold text-accent lg:text-4xl">8+ yrs</div>
-        <div className="mt-1 text-sm font-medium text-text-secondary">Years in HubSpot</div>
-      </div>
-    );
-  }
 
   const { years, months, days, hours, minutes, seconds } = elapsed;
 
