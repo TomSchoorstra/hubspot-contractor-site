@@ -45,7 +45,7 @@ export default function ExperienceTimer() {
 
   return (
     <div className="text-center sm:text-left">
-      <div className="font-display text-3xl font-bold text-accent lg:text-4xl">
+      <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">
         {years} yrs
       </div>
       <div className="mt-1 text-sm font-medium text-text-secondary tabular-nums">

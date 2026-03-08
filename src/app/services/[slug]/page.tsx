@@ -99,7 +99,7 @@ export default async function ServiceDetail({
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
       />
       {/* Hero */}
-      <header className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
+      <header className="relative overflow-hidden border-b border-border-subtle py-14 lg:py-28">
         <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
         <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
         <Container>
@@ -128,20 +128,20 @@ export default async function ServiceDetail({
             {/* Right: Quick stats */}
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-2xl border border-border bg-surface-2 p-5">
-                <div className="font-display text-3xl font-bold text-accent">
+                <div className="font-display text-2xl font-bold text-accent sm:text-3xl">
                   {service.deliverables.length}
                 </div>
                 <div className="mt-1 text-sm font-medium text-text-secondary">Deliverables</div>
               </div>
               <div className="rounded-2xl border border-border bg-surface-2 p-5">
-                <div className="font-display text-3xl font-bold text-accent-2">
+                <div className="font-display text-2xl font-bold text-accent-2 sm:text-3xl">
                   {service.process.length}
                 </div>
                 <div className="mt-1 text-sm font-medium text-text-secondary">Process steps</div>
               </div>
               <div className="col-span-2 rounded-2xl border border-border bg-surface-2 p-5">
                 <div className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-3">Outcomes</div>
-                <div className="font-display text-3xl font-bold text-text">
+                <div className="font-display text-2xl font-bold text-text sm:text-3xl">
                   {service.outcomes.length}
                 </div>
                 <div className="mt-1 text-sm font-medium text-text-secondary">Clear, measurable results</div>

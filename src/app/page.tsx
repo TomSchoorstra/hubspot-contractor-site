@@ -130,7 +130,7 @@ export default function Home() {
       <ScrollReveal>
         <section className="border-b border-border bg-surface-2 py-10 lg:py-12">
           <Container>
-            <div className="grid grid-cols-1 gap-8 lg:grid-cols-[1fr_auto] lg:items-center lg:gap-16">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-16">
               <div>
                 <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">About me</p>
                 <p className="max-w-2xl text-lg leading-relaxed text-text-secondary">
@@ -149,16 +149,16 @@ export default function Home() {
 
               <div className="flex flex-shrink-0 flex-col gap-3 rounded-2xl border border-border bg-surface-2 px-6 py-4">
                 <div className="text-center text-xs font-medium uppercase tracking-wide text-text-muted">HubSpot experience</div>
-                <div className="flex items-center gap-6 sm:gap-10">
+                <div className="flex items-center gap-4 sm:gap-10">
                   <ExperienceTimer />
                   <div className="h-10 w-px bg-border" />
                   <div>
-                    <div className="font-display text-3xl font-bold text-accent lg:text-4xl">20+</div>
+                    <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">20+</div>
                     <div className="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Projects</div>
                   </div>
                   <div className="h-10 w-px bg-border" />
                   <div>
-                    <div className="font-display text-3xl font-bold text-accent lg:text-4xl">5</div>
+                    <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">5</div>
                     <div className="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Hubs covered</div>
                   </div>
                 </div>
@@ -326,7 +326,7 @@ export default function Home() {
       <section className="py-16 lg:py-20">
         <Container>
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-3xl bg-accent-light border-2 border-accent/15 px-8 py-14 lg:px-14">
+            <div className="relative overflow-hidden rounded-3xl bg-accent-light border-2 border-accent/15 px-6 py-10 sm:px-8 sm:py-14 lg:px-14">
               <div className="absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-accent/6 blur-[60px] pointer-events-none" />
               <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
                 <div className="max-w-2xl">

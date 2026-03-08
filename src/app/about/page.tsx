@@ -87,7 +87,7 @@ export default function About() {
           <div className="relative grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
             <div className="space-y-6">
               <Badge variant="teal">Independent HubSpot Specialist</Badge>
-              <h1 className="font-display text-5xl font-extrabold tracking-tight text-text lg:text-6xl xl:text-7xl">
+              <h1 className="font-display text-4xl font-extrabold tracking-tight text-text sm:text-5xl lg:text-6xl xl:text-7xl">
                 Tom<br />
                 <span className="text-gradient-orange">Schoorstra.</span>
               </h1>
@@ -132,15 +132,18 @@ export default function About() {
           <div className="flex justify-center">
             <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface px-8 py-5">
               <div className="text-center text-xs font-medium uppercase tracking-wide text-text-muted">HubSpot experience</div>
-              <div className="grid grid-cols-3 gap-6 divide-x divide-border">
-                <div className="px-4 first:pl-0">
+              <div className="flex items-center gap-4 sm:gap-8">
+                <div>
                   <ExperienceTimer />
                 </div>
                 {credentials.map((cred) => (
-                  <div key={cred.label} className="px-4 text-center sm:text-left">
-                    <div className="font-display text-3xl font-bold text-accent lg:text-4xl">{cred.value}</div>
-                    <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
-                  </div>
+                  <>
+                    <div key={`divider-${cred.label}`} className="h-10 w-px bg-border flex-shrink-0" />
+                    <div key={cred.label}>
+                      <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">{cred.value}</div>
+                      <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
+                    </div>
+                  </>
                 ))}
               </div>
             </div>

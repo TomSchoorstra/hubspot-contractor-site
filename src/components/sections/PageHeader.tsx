@@ -15,7 +15,7 @@ export default function PageHeader({
   secondaryCta?: { label: string; href: string };
 }) {
   return (
-    <header className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
+    <header className="relative overflow-hidden border-b border-border-subtle py-14 lg:py-28">
       {/* Background decorations */}
       <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
       <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
@@ -32,7 +32,7 @@ export default function PageHeader({
           </h1>
 
           {subtitle && (
-            <p className="max-w-2xl text-xl leading-relaxed text-text-secondary">
+            <p className="max-w-2xl text-lg leading-relaxed text-text-secondary sm:text-xl">
               {subtitle}
             </p>
           )}

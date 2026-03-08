@@ -43,7 +43,7 @@ export default function Contact() {
       {/* Split layout */}
       <section className="py-16 lg:py-24">
         <Container>
-          <div className="grid grid-cols-1 gap-12 lg:grid-cols-[2fr_3fr] lg:gap-16">
+          <div className="grid grid-cols-1 gap-8 lg:grid-cols-[2fr_3fr] lg:gap-16">
 
             {/* Left: info panel */}
             <div className="space-y-8 lg:pt-2">

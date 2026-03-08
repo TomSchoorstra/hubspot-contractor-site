@@ -43,7 +43,7 @@ export default function BlogPage() {
 
                 <div className="flex flex-col gap-0">
                   {posts.map((post) => (
-                    <Link key={post.slug} href={`/blog/${post.slug}`} className="group relative pl-10 py-4">
+                    <Link key={post.slug} href={`/blog/${post.slug}`} className="group relative pl-8 py-4 sm:pl-10">
                       {/* Dot */}
                       <div className="absolute left-0 top-9 -translate-x-1/2 h-2.5 w-2.5 rounded-full border-2 border-accent bg-bg transition-colors group-hover:bg-accent" />
 

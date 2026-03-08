@@ -77,7 +77,7 @@ export default async function CaseStudyDetail({
   return (
     <main>
       {/* Hero */}
-      <header className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
+      <header className="relative overflow-hidden border-b border-border-subtle py-14 lg:py-28">
         <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
         <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
         <Container>
@@ -107,14 +107,14 @@ export default async function CaseStudyDetail({
       </header>
 
       {/* Results metrics bar */}
-      <div className="bg-accent-2 py-12">
+      <div className="bg-accent-2 py-10">
         <Container>
-          <div className="grid grid-cols-2 gap-6 lg:grid-cols-4">
+          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
             {caseStudy.results.map((result, i) => {
               const parsed = parseMetricValue(result.value);
               return (
                 <div key={i} className="min-w-0 text-center">
-                  <div className="font-display text-2xl font-bold text-white leading-tight break-words lg:text-3xl">
+                  <div className="font-display text-xl font-bold text-white leading-tight break-words sm:text-2xl lg:text-3xl">
                     {parsed ? (
                       <AnimatedNumber
                         value={parsed.number}
