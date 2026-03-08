@@ -1,5 +1,6 @@
 "use client";
 
+import React from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
@@ -92,33 +93,42 @@ export default function Home() {
                 <div className="absolute bottom-0 left-0 right-0 z-20 h-1 rounded-b-2xl bg-accent" aria-hidden="true" />
               </div>
 
-              <div className="flex items-start gap-3">
-                <motion.div
-                  animate={{ y: [0, -7, 0] }}
-                  transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-                  className="rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
-                >
-                  <div className="text-xs font-medium text-text-muted">Time saved</div>
-                  <div className="font-display text-xl font-bold text-accent">15 hrs/wk</div>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, 7, 0] }}
-                  transition={{ duration: 4, repeat: Infinity, ease: "easeInOut", delay: 0.5 }}
-                  className="rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
-                >
-                  <div className="text-xs font-medium text-text-muted">Reporting</div>
-                  <div className="font-display text-xl font-bold text-accent-2">50% faster</div>
-                </motion.div>
-
-                <motion.div
-                  animate={{ y: [0, -5, 0] }}
-                  transition={{ duration: 5, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-                  className="rounded-2xl border border-border bg-white px-4 py-3 shadow-lg"
-                >
-                  <div className="text-xs font-medium text-text-muted">Connected</div>
-                  <div className="font-display text-xl font-bold text-text">3 systems</div>
-                </motion.div>
+              {/* Floating tool logo cards */}
+              <div className="relative h-24 w-full">
+                {([
+                  { name: "HubSpot", delay: 0, amp: -8, x: "0%", icon: (
+                    <Image src="/logos/HubSpot_Logo.svg" alt="HubSpot" width={52} height={20} className="object-contain" />
+                  )},
+                  { name: "Zapier", delay: 0.6, amp: 7, x: "15%", icon: (
+                    <Image src="/logos/Zapier_idMPnFrbc7_0.svg" alt="Zapier" width={52} height={20} className="object-contain" />
+                  )},
+                  { name: "WooCommerce", delay: 1.1, amp: -6, x: "30%", icon: (
+                    <Image src="/logos/WooCommerce_logo_(2015).svg" alt="WooCommerce" width={52} height={20} className="object-contain" />
+                  )},
+                  { name: "Slack", delay: 0.3, amp: 9, x: "45%", icon: (
+                    <Image src="/logos/Slack_Symbol_0.svg" alt="Slack" width={52} height={20} className="object-contain" />
+                  )},
+                  { name: "n8n", delay: 0.9, amp: -7, x: "60%", icon: (
+                    <Image src="/logos/N8n.io_idanTsRSNX_0.svg" alt="n8n" width={52} height={20} className="object-contain" />
+                  )},
+                  { name: "Chili Piper", delay: 0.5, amp: 8, x: "74%", icon: (
+                    <Image src="/logos/Chili Piper_idovklU7ME_0.svg" alt="Chili Piper" width={28} height={11} className="object-contain" />
+                  )},
+                  { name: "Exact", delay: 0.7, amp: -9, x: "88%", icon: (
+                    <Image src="/logos/Exact_id4ip-rhAF_1.svg" alt="Exact" width={52} height={20} className="object-contain" />
+                  )},
+                ] as { name: string; delay: number; amp: number; x: string; icon: React.ReactNode }[]).map((tool) => (
+                  <motion.div
+                    key={tool.name}
+                    animate={{ y: [0, tool.amp, 0] }}
+                    transition={{ duration: 3.5 + tool.delay, repeat: Infinity, ease: "easeInOut", delay: tool.delay }}
+                    className="absolute flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-white shadow-lg p-2"
+                    style={{ left: tool.x, top: "50%", transform: "translateY(-50%)" }}
+                    title={tool.name}
+                  >
+                    {tool.icon}
+                  </motion.div>
+                ))}
               </div>
             </motion.div>
 
