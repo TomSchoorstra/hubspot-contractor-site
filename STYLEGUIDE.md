@@ -1,4 +1,4 @@
-# Style Guide — Tom Schoorstra HubSpot Contractor Site
+`# Style Guide — Tom Schoorstra HubSpot Contractor Site
 
 Complete reference for design decisions, components, and conventions used in this codebase. Keep this document updated when making structural changes.
 
