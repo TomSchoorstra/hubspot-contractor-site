@@ -201,7 +201,7 @@ export default function Home() {
             <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
               <div>
                 <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">What I do</p>
-                <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">Five ways I can help</h2>
+                <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">Six ways I can help</h2>
               </div>
               <Link
                 href="/services"

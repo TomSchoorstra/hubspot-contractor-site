@@ -294,4 +294,67 @@ export const services: Service[] = [
     ],
     relatedCaseStudy: "pipeline-consolidation",
   },
+  {
+    slug: "custom-app-cards",
+    title: "HubSpot custom app cards",
+    shortDescription:
+      "Custom sidebar cards that surface live CRM data where your team actually works — inside HubSpot.",
+    metaDescription:
+      "Custom HubSpot UI Extension cards for deal and contact sidebars. I build React-based app cards with serverless functions that surface live data from custom objects — no external hosting, no maintenance overhead.",
+    outcomes: [
+      "Live, contextual data visible directly in the deal or contact sidebar — no switching between tabs, reports, or external tools.",
+      "Custom UI that matches your team's workflow, showing exactly the data points that matter for each record.",
+      "Serverless architecture hosted inside HubSpot — nothing to deploy, maintain, or pay for outside your existing subscription.",
+      "Reduced reliance on workaround workflows, manual lookups, and dashboard-hopping to get operational context.",
+    ],
+    deliverables: [
+      "Discovery session to identify which data points your team needs at a glance and where they currently go to find them.",
+      "Card design spec covering layout, data sources, status logic, and color-coding rules.",
+      "React-based UI Extension built and tested in a HubSpot sandbox environment.",
+      "Serverless functions to fetch and process data from associated objects and properties.",
+      "Production deployment with verification on live records.",
+      "Documentation covering the card's data sources, logic, and how to request changes.",
+    ],
+    process: [
+      {
+        title: "Discovery",
+        description:
+          "I identify which data points your team needs at a glance and map out where that data currently lives in your portal.",
+      },
+      {
+        title: "Design",
+        description:
+          "We define the card layout, data sources, status logic, and color-coding rules before writing any code.",
+      },
+      {
+        title: "Development",
+        description:
+          "I build the React UI Extension and serverless functions inside HubSpot's platform, testing against sandbox data.",
+      },
+      {
+        title: "Rollout",
+        description:
+          "I deploy to production, verify with live records, configure visibility rules, and hand over documentation.",
+      },
+    ],
+    faq: [
+      {
+        q: "What HubSpot plan do I need?",
+        a: "UI Extensions require access to HubSpot Developer Projects, available on Sales Hub or Service Hub Professional and Enterprise plans.",
+      },
+      {
+        q: "Can the card pull data from custom objects?",
+        a: "Yes — reading from associated custom objects is one of the primary use cases. The card can fetch any property from any associated record and display it however makes sense for your team.",
+      },
+      {
+        q: "Does this require external hosting or infrastructure?",
+        a: "No. The serverless functions run inside HubSpot's own infrastructure. There's nothing to host, deploy, or maintain outside your portal — and no additional costs beyond your existing HubSpot subscription.",
+      },
+      {
+        q: "What kinds of cards can you build?",
+        a: "Any card that surfaces data your team needs while reviewing a record. Common examples: renewal or subscription status on deals, customer health scores on companies, contract expiration warnings, payment status from billing objects, onboarding progress, open support ticket summaries, compliance approval status, and cross-sell indicators based on purchased products.",
+      },
+    ],
+    relatedCaseStudy: "renewal-status-card",
+  },
 ];

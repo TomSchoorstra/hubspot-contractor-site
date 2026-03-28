@@ -115,4 +115,37 @@ export const caseStudies: CaseStudy[] = [
     stack: ["HubSpot", "Pipeline management", "Custom objects"],
     relatedServices: ["pipeline-optimization"],
   },
+  {
+    slug: "renewal-status-card",
+    title: "Live renewal status in the deal sidebar — no more tab-switching",
+    industry: "HR Software",
+    companySize: "50-200 employees",
+    summary:
+      "Sales reps were manually checking License objects before every deal review to determine renewal type. A custom HubSpot app card surfaced the answer directly in the deal sidebar.",
+    challenge: [
+      "Growth Account Executives had to navigate to the associated License object on every deal to check whether a subscription was active, cancelled, or absent",
+      "This manual lookup cost time on every deal review and was easy to skip under pressure",
+      "Missed or incorrect renewal assessments led to deals being handled with the wrong approach",
+    ],
+    approach: [
+      "Mapped the data flow from Deal to associated License object and identified the relevant subscription properties",
+      "Designed a three-state card with clear color-coding: green for auto-renewal active, yellow for manual renewal required, red for subscription cancelled",
+      "Built a React UI Extension with a serverless function that resolves the Deal-to-License association and fetches the subscription data",
+      "Scoped the card to appear only in the relevant pipeline to avoid noise for reps working other deal types",
+    ],
+    solution: [
+      "Reps now see the renewal status as soon as they open a deal — no navigation, no extra clicks",
+      "Three color-coded states make the required action immediately clear without any training",
+      "The card is read-only and runs entirely inside HubSpot's infrastructure — zero risk to existing data, nothing to maintain externally",
+      "Two API calls per load keep the card fast; tested at under two seconds from open to rendered",
+    ],
+    results: [
+      { label: "Context switching", value: "Eliminated" },
+      { label: "Data lookup time", value: "Seconds vs. minutes" },
+      { label: "Adoption", value: "Immediate" },
+      { label: "External hosting", value: "None required" },
+    ],
+    stack: ["HubSpot", "UI Extensions", "Serverless functions", "Custom objects"],
+    relatedServices: ["custom-app-cards", "custom-objects"],
+  },
 ];

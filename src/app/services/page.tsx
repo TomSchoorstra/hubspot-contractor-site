@@ -5,11 +5,11 @@ import PageHeader from "@/components/sections/PageHeader";
 export const metadata: Metadata = {
   title: "Services — Tom Schoorstra",
   description:
-    "Five focused HubSpot services: automation, consultancy, integrations, custom objects, and pipeline optimization — no agency overhead.",
+    "Six focused HubSpot services: automation, consultancy, integrations, custom objects, pipeline optimization, and custom app cards — no agency overhead.",
   openGraph: {
     title: "HubSpot Services — Tom Schoorstra",
     description:
-      "Five focused HubSpot services: automation, consultancy, integrations, custom objects, and pipeline optimization — no agency overhead.",
+      "Six focused HubSpot services: automation, consultancy, integrations, custom objects, pipeline optimization, and custom app cards — no agency overhead.",
     url: "/services",
   },
 };
@@ -24,7 +24,7 @@ export default function Services() {
       <PageHeader
         eyebrow="Services"
         title="Building HubSpot that works for your team"
-        subtitle={`Five focused services across automation, strategy, integrations, and data architecture — no agency overhead, just hands-on execution.`}
+        subtitle={`Six focused services across automation, strategy, integrations, data architecture, and custom UI extensions — no agency overhead, just hands-on execution.`}
         primaryCta={{ label: "Talk about your project", href: "/contact" }}
         secondaryCta={{ label: "See case studies", href: "/case-studies" }}
       />
