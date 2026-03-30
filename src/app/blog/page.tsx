@@ -31,7 +31,7 @@ export default function BlogPage() {
     <main>
       <PageHeader title="Blog" />
 
-      <section className="py-20 lg:py-28">
+      <section className="py-4 lg:py-6">
         <Container>
           {posts.length === 0 ? (
             <p className="text-text-muted">More posts coming soon.</p>

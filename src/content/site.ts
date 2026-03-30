@@ -22,6 +22,10 @@ export const site: SiteConfig = {
       href: "/case-studies",
     },
     {
+      label: "Blog",
+      href: "/blog",
+    },
+    {
       label: "About Me",
       href: "/about",
     },

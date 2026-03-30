@@ -55,18 +55,20 @@ export default async function BlogPost({
         <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
         <Container>
           <div className="relative max-w-2xl">
-            <Link
-              href="/blog"
-              className="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-accent transition-colors mb-8"
-            >
-              <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
-                <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-              </svg>
-              All posts
-            </Link>
-            <time className="text-xs font-semibold uppercase tracking-widest text-accent-2">
-              {formatDate(post.date)}
-            </time>
+            <div className="flex items-center justify-between mb-8">
+              <Link
+                href="/blog"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-accent transition-colors"
+              >
+                <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
+                  <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                All posts
+              </Link>
+              <time className="text-xs font-semibold uppercase tracking-widest text-accent-2">
+                {formatDate(post.date)}
+              </time>
+            </div>
             <h1 className="font-display mt-3 text-4xl font-extrabold tracking-tight text-text lg:text-5xl">
               {post.title}
             </h1>
