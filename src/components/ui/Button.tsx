@@ -1,12 +1,21 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { isValidElement, type ReactNode } from "react";
+import { trackCtaClick, trackEvent, type AnalyticsEventParams } from "@/lib/analytics";
 
 type ButtonProps = {
-  children: React.ReactNode;
+  children: ReactNode;
   variant?: "primary" | "secondary" | "ghost";
   size?: "sm" | "md" | "lg";
   className?: string;
   disabled?: boolean;
   showArrow?: boolean;
+  analyticsEvent?: string;
+  analyticsParams?: AnalyticsEventParams;
+  analyticsLabel?: string;
+  analyticsLocation?: string;
 } & (
   | {
       href: string;
@@ -20,6 +29,22 @@ type ButtonProps = {
     }
 );
 
+function getTextContent(node: ReactNode): string {
+  if (typeof node === "string" || typeof node === "number") {
+    return String(node);
+  }
+
+  if (Array.isArray(node)) {
+    return node.map(getTextContent).join(" ").trim();
+  }
+
+  if (isValidElement<{ children?: ReactNode }>(node)) {
+    return getTextContent(node.props.children as ReactNode);
+  }
+
+  return "";
+}
+
 export default function Button({
   children,
   href,
@@ -30,7 +55,12 @@ export default function Button({
   type = "button",
   disabled = false,
   showArrow = false,
+  analyticsEvent,
+  analyticsParams,
+  analyticsLabel,
+  analyticsLocation,
 }: ButtonProps) {
+  const pathname = usePathname();
   const baseStyles =
     "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 border-2 group";
 
@@ -73,8 +103,26 @@ export default function Button({
   const classes = `${baseStyles} ${sizeStyles[size]} ${variantStyles[variant]} ${disabledStyles} ${className ?? ""}`;
 
   if (href) {
+    const handleLinkClick = () => {
+      if (analyticsEvent) {
+        trackEvent(analyticsEvent, analyticsParams);
+        return;
+      }
+
+      if (href === "/contact") {
+        const resolvedLabel = analyticsLabel ?? getTextContent(children) ?? href;
+
+        trackCtaClick({
+          cta_label: resolvedLabel || href,
+          cta_location: analyticsLocation ?? pathname ?? "unknown",
+          destination: href,
+          ...analyticsParams,
+        });
+      }
+    };
+
     return (
-      <Link href={href} className={classes}>
+      <Link href={href} className={classes} onClick={handleLinkClick}>
         {children}
         {arrow}
       </Link>

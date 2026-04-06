@@ -6,6 +6,7 @@ import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
 import { site } from "@/content/site";
+import Button from "@/components/ui/Button";
 
 function MobileMenuPortal({
   open,
@@ -84,16 +85,14 @@ function MobileMenuPortal({
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: 0.35 }}
                 >
-                  <Link
+                  <Button
                     href="/contact"
-                    onClick={onClose}
-                    className="flex items-center justify-center gap-2 w-full rounded-xl bg-accent px-6 py-4 text-center text-base font-semibold text-white transition-all hover:bg-accent-hover focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                    className="w-full px-6 py-4 text-base"
+                    analyticsLocation="mobile_menu"
+                    showArrow
                   >
                     Plan a call
-                    <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
-                      <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </Link>
+                  </Button>
                 </motion.div>
               </div>
             </nav>
@@ -132,6 +131,10 @@ export default function Header() {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [open]);
+
+  useEffect(() => {
+    setOpen(false);
+  }, [pathname]);
 
   const navItems = site.nav.filter((item) => item.href !== "/contact");
 
@@ -177,15 +180,14 @@ export default function Header() {
         </nav>
 
         {/* Desktop CTA */}
-        <Link
+        <Button
           href="/contact"
-          className="hidden md:inline-flex items-center gap-2 rounded-xl bg-accent px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition-all duration-200 hover:bg-accent-hover hover:shadow-md hover:-translate-y-px focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group"
+          className="hidden md:inline-flex px-5 py-2.5 text-sm"
+          analyticsLocation="header"
+          showArrow
         >
           Plan a call
-          <svg aria-hidden="true" className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14">
-            <path d="M2.5 7h9M7 2.5l4.5 4.5L7 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-          </svg>
-        </Link>
+        </Button>
 
         {/* Mobile Hamburger */}
         <button

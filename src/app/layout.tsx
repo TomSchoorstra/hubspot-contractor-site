@@ -1,9 +1,12 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Syne } from "next/font/google";
+import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import Footer from "@/components/layout/Footer";
+import GoogleTagManager from "@/components/analytics/GoogleTagManager";
+import PageViewTracker from "@/components/analytics/PageViewTracker";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,6 +25,12 @@ const syne = Syne({
 });
 
 const siteUrl = "https://tomschoorstra.com";
+const siteEnv =
+  process.env.NEXT_PUBLIC_SITE_ENV ??
+  process.env.VERCEL_ENV ??
+  process.env.NODE_ENV;
+const gtmId = process.env.NEXT_PUBLIC_GTM_ID ?? "GTM-KXGDV2PF";
+const analyticsEnabled = Boolean(gtmId) && siteEnv === "production";
 
 
 export const metadata: Metadata = {
@@ -89,14 +98,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" data-site-env={siteEnv}>
       <body
         className={`${geistSans.variable} ${geistMono.variable} ${syne.variable} min-h-screen bg-bg text-text antialiased`}
       >
+        {analyticsEnabled && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
         />
+        {analyticsEnabled ? (
+          <Suspense fallback={null}>
+            <PageViewTracker />
+          </Suspense>
+        ) : null}
         <AnnouncementBanner />
         <Header />
         {children}

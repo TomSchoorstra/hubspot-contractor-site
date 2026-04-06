@@ -3,6 +3,7 @@
 import { useState, FormEvent, ChangeEvent, FocusEvent } from "react";
 import Button from "@/components/ui/Button";
 import { validateName, validateEmail, validateMessage } from "@/lib/validation";
+import { trackLead } from "@/lib/analytics";
 
 const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "";
 
@@ -113,6 +114,11 @@ export default function ContactForm() {
       });
 
       if (response.ok) {
+        trackLead({
+          form_name: "contact_form",
+          form_destination: "formspree",
+          page_path: window.location.pathname,
+        });
         setFormState("success");
         setFormData({
           name: "",

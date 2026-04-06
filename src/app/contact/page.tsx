@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
 import ContactForm from "@/components/forms/ContactForm";
+import TrackedAnchor from "@/components/analytics/TrackedAnchor";
 
 export const metadata: Metadata = {
   title: "Contact — Tom Schoorstra",
@@ -96,10 +97,12 @@ export default function Contact() {
                 <h2 className="font-display text-lg font-bold text-text mb-4">
                   Connect directly
                 </h2>
-                <a
+                <TrackedAnchor
                   href="https://www.linkedin.com/in/tom-schoorstra-807899113/"
                   target="_blank"
                   rel="noopener noreferrer"
+                  analyticsLabel="Tom Schoorstra on LinkedIn"
+                  analyticsLocation="contact_page"
                   className="group inline-flex items-center gap-3 rounded-xl border border-border bg-surface px-5 py-3.5 text-sm font-semibold text-text transition-all hover:border-accent hover:shadow-md"
                 >
                   <svg aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="currentColor" className="text-accent">
@@ -109,7 +112,7 @@ export default function Contact() {
                   <svg aria-hidden="true" className="h-4 w-4 text-text-muted transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 16 16">
                     <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                   </svg>
-                </a>
+                </TrackedAnchor>
               </div>
             </div>
 
