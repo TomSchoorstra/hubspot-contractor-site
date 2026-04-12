@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
+import remarkGfm from "remark-gfm";
 import Container from "@/components/ui/Container";
 import CTASection from "@/components/sections/CTASection";
 import { getAllPosts, getPost } from "@/lib/blog";
@@ -83,7 +84,7 @@ export default async function BlogPost({
       <section className="py-20 lg:py-28">
         <Container>
           <div className="prose-blog max-w-2xl">
-            <MDXRemote source={post.content} />
+            <MDXRemote source={post.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </div>
         </Container>
       </section>

@@ -187,4 +187,27 @@ body {
   color: var(--text-muted);
   font-style: italic;
 }
+.prose-blog table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 1.5rem;
+  font-size: 0.95rem;
+}
+.prose-blog thead tr {
+  border-bottom: 2px solid var(--border);
+}
+.prose-blog th {
+  text-align: left;
+  font-weight: 600;
+  color: var(--text);
+  padding: 0.6rem 1rem 0.6rem 0;
+}
+.prose-blog td {
+  padding: 0.6rem 1rem 0.6rem 0;
+  border-bottom: 1px solid var(--border-subtle);
+  vertical-align: top;
+}
+.prose-blog tr:last-child td {
+  border-bottom: none;
+}
 
