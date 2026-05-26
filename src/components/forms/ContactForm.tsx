@@ -1,9 +1,9 @@
 "use client";
 
-import { useState, FormEvent, ChangeEvent, FocusEvent } from "react";
+import { useState, useRef, FormEvent, ChangeEvent, FocusEvent } from "react";
 import Button from "@/components/ui/Button";
 import { validateName, validateEmail, validateMessage } from "@/lib/validation";
-import { trackLead } from "@/lib/analytics";
+import { trackLead, trackFormStart } from "@/lib/analytics";
 
 const FORMSPREE_ENDPOINT = process.env.NEXT_PUBLIC_FORMSPREE_ENDPOINT || "";
 
@@ -42,6 +42,7 @@ export default function ContactForm() {
   const [errors, setErrors] = useState<FormErrors>({});
   const [touched, setTouched] = useState<Record<string, boolean>>({});
   const [formState, setFormState] = useState<FormState>("idle");
+  const formStartFired = useRef(false);
 
   const validateField = (name: string, value: string): string | undefined => {
     switch (name) {
@@ -89,6 +90,13 @@ export default function ContactForm() {
     setErrors((prev) => ({ ...prev, [name]: error }));
   };
 
+  const handleFocus = () => {
+    if (!formStartFired.current) {
+      formStartFired.current = true;
+      trackFormStart({ form_name: "contact_form", page_path: window.location.pathname });
+    }
+  };
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
@@ -118,6 +126,8 @@ export default function ContactForm() {
           form_name: "contact_form",
           form_destination: "formspree",
           page_path: window.location.pathname,
+          value: 1,
+          currency: "EUR",
         });
         setFormState("success");
         setFormData({
@@ -184,6 +194,7 @@ export default function ContactForm() {
               value={formData.name}
               onChange={handleChange}
               onBlur={handleBlur}
+              onFocus={handleFocus}
               placeholder="Your name"
               aria-invalid={errors.name ? "true" : "false"}
               aria-describedby={errors.name ? "name-error" : undefined}
@@ -315,7 +326,7 @@ export default function ContactForm() {
             variant="primary"
             size="md"
             showArrow
-            disabled={formState === "submitting"}
+            disabled={formState === "submitting" || !FORMSPREE_ENDPOINT}
           >
             {formState === "submitting" ? "Sending..." : "Send message"}
           </Button>

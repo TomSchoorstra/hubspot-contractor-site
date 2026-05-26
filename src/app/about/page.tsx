@@ -1,3 +1,4 @@
+import React from "react";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
@@ -11,6 +12,7 @@ export const metadata: Metadata = {
   title: "About Me — Tom Schoorstra",
   description:
     "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
+  alternates: { canonical: "/about" },
   openGraph: {
     title: "About Tom Schoorstra — Independent HubSpot Contractor",
     description:
@@ -115,6 +117,7 @@ export default function About() {
                   alt="Tom Schoorstra"
                   width={480}
                   height={640}
+                  sizes="(max-width: 768px) 100vw, 480px"
                   className="relative z-10 h-auto w-full rounded-2xl object-cover shadow-lg"
                   priority
                 />
@@ -137,13 +140,13 @@ export default function About() {
                   <ExperienceTimer />
                 </div>
                 {credentials.map((cred) => (
-                  <>
-                    <div key={`divider-${cred.label}`} className="h-10 w-px bg-border flex-shrink-0" />
-                    <div key={cred.label}>
+                  <React.Fragment key={cred.label}>
+                    <div className="h-10 w-px bg-border flex-shrink-0" />
+                    <div>
                       <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">{cred.value}</div>
                       <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
                     </div>
-                  </>
+                  </React.Fragment>
                 ))}
               </div>
             </div>
@@ -162,6 +165,8 @@ export default function About() {
                 alt="Tom Schoorstra"
                 width={560}
                 height={746}
+                sizes="(max-width: 1024px) 0px, 560px"
+                loading="lazy"
                 className="hidden lg:block h-auto w-full rounded-2xl object-cover shadow-md"
               />
               {/* Quick facts card */}

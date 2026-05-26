@@ -1,6 +1,7 @@
 import type { MetadataRoute } from "next";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
+import { getAllPosts } from "@/lib/blog";
 
 const siteUrl = "https://tomschoorstra.com";
 
@@ -27,5 +28,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     changeFrequency: "monthly" as const,
   }));
 
-  return [...staticPages, ...servicePages, ...caseStudyPages];
+  const blogPosts = getAllPosts().map((post) => ({
+    url: `${siteUrl}/blog/${post.slug}`,
+    lastModified: new Date(post.date),
+    priority: 0.7,
+    changeFrequency: "monthly" as const,
+  }));
+
+  return [...staticPages, ...servicePages, ...caseStudyPages, ...blogPosts];
 }
