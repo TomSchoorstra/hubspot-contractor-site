@@ -58,3 +58,7 @@ export function trackOutboundClick(params: AnalyticsEventParams = {}) {
 export function trackLead(params: AnalyticsEventParams = {}) {
   trackEvent("generate_lead", params);
 }
+
+export function trackFormStart(params: AnalyticsEventParams = {}) {
+  trackEvent("form_start", params);
+}

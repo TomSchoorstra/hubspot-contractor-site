@@ -87,6 +87,7 @@ export default function Home() {
                   alt="Tom Schoorstra — Independent HubSpot Contractor"
                   width={480}
                   height={640}
+                  sizes="(max-width: 768px) 100vw, 480px"
                   className="relative z-10 h-auto w-full rounded-2xl object-cover object-top shadow-xl"
                   priority
                 />
