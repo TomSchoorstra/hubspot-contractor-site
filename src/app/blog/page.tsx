@@ -8,6 +8,7 @@ export const metadata: Metadata = {
   title: "Blog — Tom Schoorstra",
   description:
     "Practical insights on HubSpot, automation, and RevOps — straight from real projects.",
+  alternates: { canonical: "/blog" },
   openGraph: {
     title: "Blog — Tom Schoorstra",
     description:

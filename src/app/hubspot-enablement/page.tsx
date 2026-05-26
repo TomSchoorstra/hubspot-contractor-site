@@ -10,6 +10,7 @@ export const metadata: Metadata = {
   title: "HubSpot Tips for Slack | Tom Schoorstra",
   description:
     "Get a practical HubSpot tip delivered to your Slack workspace every Monday. Install once, no setup required.",
+  alternates: { canonical: "/hubspot-enablement" },
 };
 
 const steps = [

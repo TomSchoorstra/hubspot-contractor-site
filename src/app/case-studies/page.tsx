@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Case Studies — Tom Schoorstra",
   description:
     "Real HubSpot projects, real results — from finance automation to full CRM architecture.",
+  alternates: { canonical: "/case-studies" },
   openGraph: {
     title: "Case Studies — Tom Schoorstra",
     description:

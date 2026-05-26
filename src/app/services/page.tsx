@@ -6,6 +6,7 @@ export const metadata: Metadata = {
   title: "Services — Tom Schoorstra",
   description:
     "Six focused HubSpot services: automation, consultancy, integrations, custom objects, pipeline optimization, and custom app cards — no agency overhead.",
+  alternates: { canonical: "/services" },
   openGraph: {
     title: "HubSpot Services — Tom Schoorstra",
     description:

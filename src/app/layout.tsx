@@ -92,6 +92,19 @@ const personSchema = {
   },
 };
 
+const organizationSchema = {
+  "@context": "https://schema.org",
+  "@type": "ProfessionalService",
+  name: "Tom Schoorstra — HubSpot Contractor",
+  description:
+    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization.",
+  url: "https://tomschoorstra.com",
+  founder: { "@type": "Person", name: "Tom Schoorstra" },
+  areaServed: "NL",
+  knowsAbout: ["HubSpot", "CRM", "RevOps", "Marketing Automation"],
+  sameAs: ["https://www.linkedin.com/in/tom-schoorstra-807899113/"],
+};
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -106,6 +119,10 @@ export default function RootLayout({
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(personSchema) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationSchema) }}
         />
         {analyticsEnabled ? (
           <Suspense fallback={null}>

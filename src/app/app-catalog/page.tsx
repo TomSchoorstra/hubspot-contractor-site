@@ -9,6 +9,7 @@ export const metadata: Metadata = {
   title: "App Catalog | Tom Schoorstra",
   description:
     "Browse free tools and integrations built for HubSpot teams. Install in minutes, no setup required.",
+  alternates: { canonical: "/app-catalog" },
 };
 
 const apps = [

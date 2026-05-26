@@ -28,12 +28,12 @@ HubSpot's Breeze Customer Agent drops from $1.00 per conversation to **$0.50 per
 
 That pricing structure change is worth pausing on. Most AI tooling charges you for usage regardless of outcome — you pay whether the model helps or doesn't. Outcome-based pricing means you only pay when something actually gets resolved or a lead actually gets qualified. For teams that have been hesitant to turn these agents on because of unpredictable costs, this removes most of the risk.
 
-<!-- [PERSONAL EXPERIENCE] -->
+{/* [PERSONAL EXPERIENCE] */}
 In practice, the Customer Agent works best when your Knowledge Base is clean and up to date. If your articles are thin, the agent can't resolve much — and won't charge you for it. That's a meaningful change in how you should think about Knowledge Base maintenance: it's now directly tied to what you pay.
 
 HubSpot reports the Customer Agent resolves 65% of conversations and cuts resolution time by 39% across its current 8,000+ customers. Prospecting Agent activations are up 57% quarter over quarter. Those numbers are from HubSpot's own announcements, so treat them as directional rather than gospel — but they're not nothing.
 
-[INTERNAL-LINK: how to set up Breeze Customer Agent → future article on HubSpot automation setup]
+For help setting up Breeze or any HubSpot AI feature in your workflows, see [HubSpot automation setup](/services/automation).
 
 ---
 
@@ -45,7 +45,7 @@ The **Run Agent workflow action** (in private beta since January, wider rollout 
 
 Each execution uses 10 workflow credits. That's the main operational consideration: if you're building complex automation and you're on a plan with limited workflow credits, you'll want to model the cost before rolling it out at scale.
 
-<!-- [UNIQUE INSIGHT] -->
+{/* [UNIQUE INSIGHT] */}
 The practical implication most teams haven't considered yet: you can chain this with enrollment criteria to create genuinely conditional AI behavior. An agent only runs on high-value deals over a certain amount, or only on contacts with a specific lifecycle stage. You're not just automating a task — you're applying AI selectively where it actually justifies the cost.
 
 The audit card feature rolls out alongside this. Every time an agent acts on a CRM record, a log appears showing exactly what it did: which properties were updated, what the values were before and after, which Knowledge Base articles it referenced, and why a conversation was or wasn't resolved. This is the transparency layer that was missing from AI-in-CRM tooling for most of the past year. It makes compliance and quality-checking much more manageable.
@@ -56,7 +56,7 @@ The audit card feature rolls out alongside this. Every time an agent acts on a C
 
 If you're using Operations Hub, you're now on Data Hub. The name changed at INBOUND 2025 and it's worth understanding what actually changed with it, because it's not just cosmetic.
 
-<!-- [UNIQUE INSIGHT] -->
+{/* [UNIQUE INSIGHT] */}
 Operations Hub was primarily an ops team tool — programmable automation, data sync, and integrations. Data Hub extends that to all teams by adding external data sources you couldn't connect before: Snowflake, BigQuery, Redshift, AWS S3, standard CSVs and spreadsheets.
 
 The flagship addition is **Data Studio** — a no-code, spreadsheet-style interface that lets anyone on your team combine data from multiple HubSpot objects and external sources without writing a query. Build calculated fields like lifetime customer value or MRR directly in the interface. The File Ingestion API, now in public beta, lets you upload files up to 512 MB as reusable Data Studio sources.
@@ -64,8 +64,6 @@ The flagship addition is **Data Studio** — a no-code, spreadsheet-style interf
 What this means practically for SMBs: if you've been exporting reports from HubSpot into Excel and doing calculations there, Data Studio removes most of that friction. You're not replacing a data analyst — but for the 80% of ad hoc data questions that don't require one, it's a meaningful improvement.
 
 Pricing is unchanged. Existing Operations Hub customers migrated automatically.
-
-[INTERNAL-LINK: setting up HubSpot Data Hub for small teams → future article on data operations]
 
 ---
 
@@ -77,7 +75,7 @@ When a buyer views a quote, the Closing Agent appears directly on the quote page
 
 The AI quote creation feature auto-drafts personalized quotes using deal context, line items, and buyer information. It generates cover letters and executive summaries based on what's in the deal. Whether your team will trust that output enough to send it without editing depends on how clean your deal data is — which is true of every AI feature in HubSpot.
 
-<!-- [PERSONAL EXPERIENCE] -->
+{/* [PERSONAL EXPERIENCE] */}
 In my experience, AI-generated quotes work well when the line item library is clean and well-described. If your product library has 40 items with names like "Package A" and one-line descriptions, the generated cover letter won't say much. The output quality directly reflects the input quality.
 
 Product Builder now supports up to 100,000 products in the library. March 2026 also added one-time invoices creatable from quotes and deals via workflow actions, and bidirectional credit memo sync with QuickBooks Online — useful if you're already using Commerce Hub for invoicing.
@@ -94,7 +92,7 @@ For teams with custom HubSpot apps — or anyone looking at building internal to
 
 Both App Home and Settings Pages share a codebase via npm workspace support introduced in February, so teams building custom apps can maintain one component library and share types across all their extensions.
 
-[INTERNAL-LINK: what are HubSpot custom app cards → Cluster 5 article on app cards]
+For a deeper look at what HubSpot App Cards can do, see [custom app cards](/services/custom-app-cards).
 
 ---
 
@@ -108,7 +106,7 @@ The migration path is to v2025.2 or v2026.03. The reason many developers held of
 
 There's a second deadline worth flagging alongside this: **October 31, 2026** is when classic CRM cards (non-React, legacy sidebar customizations) are deprecated. If you have any of those, that migration window is shorter than it looks.
 
-[INTERNAL-LINK: classic CRM cards sunset migration guide → future article on app cards migration]
+If you need help with that migration, [custom app cards](/services/custom-app-cards) is a service I offer.
 
 ---
 

@@ -34,6 +34,7 @@ export async function generateMetadata({
   return {
     title: `${caseStudy.title} — Case study — Tom Schoorstra`,
     description: caseStudy.summary,
+    alternates: { canonical: `/case-studies/${slug}` },
     openGraph: {
       title: `${caseStudy.title} — Tom Schoorstra`,
       description: caseStudy.summary,

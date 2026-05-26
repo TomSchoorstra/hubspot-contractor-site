@@ -9,6 +9,9 @@ export type PostMeta = {
   title: string;
   date: string;
   excerpt: string;
+  description?: string;
+  author?: string;
+  updated?: string;
 };
 
 export type Post = PostMeta & {
@@ -29,6 +32,9 @@ export function getAllPosts(): PostMeta[] {
       title: data.title as string,
       date: data.date as string,
       excerpt: data.excerpt as string,
+      description: data.description as string | undefined,
+      author: data.author as string | undefined,
+      updated: data.updated as string | undefined,
     };
   });
 
@@ -47,6 +53,9 @@ export function getPost(slug: string): Post | null {
     title: data.title as string,
     date: data.date as string,
     excerpt: data.excerpt as string,
+    description: data.description as string | undefined,
+    author: data.author as string | undefined,
+    updated: data.updated as string | undefined,
     content,
   };
 }

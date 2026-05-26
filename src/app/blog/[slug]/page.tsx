@@ -20,13 +20,22 @@ export async function generateMetadata({
   const post = getPost(slug);
   if (!post) return { title: "Post niet gevonden — Tom Schoorstra" };
 
+  const metaDescription = post.description ?? post.excerpt;
+
   return {
     title: `${post.title} — Tom Schoorstra`,
-    description: post.excerpt,
+    description: metaDescription,
+    alternates: {
+      canonical: `/blog/${slug}`,
+    },
     openGraph: {
       title: `${post.title} — Tom Schoorstra`,
-      description: post.excerpt,
+      description: metaDescription,
       url: `/blog/${slug}`,
+      type: "article",
+      publishedTime: post.date,
+      modifiedTime: post.updated ?? post.date,
+      authors: ["https://tomschoorstra.com/about"],
     },
   };
 }
@@ -39,6 +48,8 @@ function formatDate(dateStr: string) {
   });
 }
 
+const siteUrl = "https://tomschoorstra.com";
+
 export default async function BlogPost({
   params,
 }: {
@@ -48,8 +59,49 @@ export default async function BlogPost({
   const post = getPost(slug);
   if (!post) notFound();
 
+  const postUrl = `${siteUrl}/blog/${slug}`;
+
+  const articleSchema = {
+    "@context": "https://schema.org",
+    "@type": "BlogPosting",
+    headline: post.title,
+    description: post.description ?? post.excerpt,
+    datePublished: post.date,
+    dateModified: post.updated ?? post.date,
+    url: postUrl,
+    mainEntityOfPage: { "@type": "WebPage", "@id": postUrl },
+    author: {
+      "@type": "Person",
+      name: "Tom Schoorstra",
+      url: `${siteUrl}/about`,
+    },
+    publisher: {
+      "@type": "Person",
+      name: "Tom Schoorstra",
+      url: siteUrl,
+    },
+  };
+
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+      { "@type": "ListItem", position: 2, name: "Blog", item: `${siteUrl}/blog` },
+      { "@type": "ListItem", position: 3, name: post.title, item: postUrl },
+    ],
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(articleSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {/* Header */}
       <header className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
         <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />

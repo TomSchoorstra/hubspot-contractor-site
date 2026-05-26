@@ -6,6 +6,7 @@ import TrackedAnchor from "@/components/analytics/TrackedAnchor";
 export const metadata: Metadata = {
   title: "Contact — Tom Schoorstra",
   description: "Let's talk about your HubSpot setup. I'll get back to you within one business day.",
+  alternates: { canonical: "/contact" },
   openGraph: {
     title: "Contact Tom Schoorstra — HubSpot Contractor",
     description: "Let's talk about your HubSpot setup. I'll get back to you within one business day.",
