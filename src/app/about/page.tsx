@@ -114,7 +114,7 @@ export default function About() {
                 <div className="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border-2 border-accent-2/30" aria-hidden="true" />
                 <Image
                   src="/about-photo.jpeg"
-                  alt="Tom Schoorstra"
+                  alt="Tom Schoorstra, independent HubSpot contractor based in the Netherlands"
                   width={480}
                   height={640}
                   sizes="(max-width: 768px) 100vw, 480px"
