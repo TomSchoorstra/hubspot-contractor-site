@@ -9,6 +9,7 @@ import Badge from "@/components/ui/Badge";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import { caseStudies } from "@/content/caseStudies";
 import { services } from "@/content/services";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   return caseStudies.map((caseStudy) => ({
@@ -75,8 +76,22 @@ export default async function CaseStudyDetail({
     description: item,
   }));
 
+  const breadcrumbSchema = {
+    "@context": "https://schema.org",
+    "@type": "BreadcrumbList",
+    itemListElement: [
+      { "@type": "ListItem", position: 1, name: "Home", item: SITE_URL },
+      { "@type": "ListItem", position: 2, name: "Case Studies", item: `${SITE_URL}/case-studies` },
+      { "@type": "ListItem", position: 3, name: caseStudy.title, item: `${SITE_URL}/case-studies/${slug}` },
+    ],
+  };
+
   return (
     <main>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
       {/* Hero */}
       <header className="relative overflow-hidden border-b border-border-subtle py-14 lg:py-28">
         <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
