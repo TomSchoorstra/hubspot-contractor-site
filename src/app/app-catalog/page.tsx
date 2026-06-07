@@ -10,6 +10,12 @@ export const metadata: Metadata = {
   description:
     "Browse free tools and integrations built for HubSpot teams. Install in minutes, no setup required.",
   alternates: { canonical: "/app-catalog" },
+  openGraph: {
+    title: "App Catalog — Tom Schoorstra",
+    description:
+      "Browse free tools and integrations built for HubSpot teams. Install in minutes, no setup required.",
+    url: "/app-catalog",
+  },
 };
 
 const apps = [

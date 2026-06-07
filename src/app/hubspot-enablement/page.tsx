@@ -11,6 +11,12 @@ export const metadata: Metadata = {
   description:
     "Get a practical HubSpot tip delivered to your Slack workspace every Monday. Install once, no setup required.",
   alternates: { canonical: "/hubspot-enablement" },
+  openGraph: {
+    title: "HubSpot Tips for Slack — Tom Schoorstra",
+    description:
+      "Get a practical HubSpot tip delivered to your Slack workspace every Monday. Install once, no setup required.",
+    url: "/hubspot-enablement",
+  },
 };
 
 const steps = [
