@@ -9,6 +9,7 @@ import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import Accordion from "@/components/ui/Accordion";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   return services.map((service) => ({
@@ -68,7 +69,7 @@ export default async function ServiceDetail({
         provider: {
           "@type": "Person",
           name: "Tom Schoorstra",
-          url: "https://tomschoorstra.com",
+          url: SITE_URL,
         },
         areaServed: {
           "@type": "Country",

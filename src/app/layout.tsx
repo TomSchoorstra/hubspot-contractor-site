@@ -7,6 +7,7 @@ import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import Footer from "@/components/layout/Footer";
 import GoogleTagManager from "@/components/analytics/GoogleTagManager";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
+import { SITE_URL } from "@/lib/site";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -24,7 +25,7 @@ const syne = Syne({
   weight: ["400", "500", "600", "700", "800"],
 });
 
-const siteUrl = "https://tomschoorstra.com";
+const siteUrl = SITE_URL;
 const siteEnv =
   process.env.NEXT_PUBLIC_SITE_ENV ??
   process.env.VERCEL_ENV ??
@@ -75,7 +76,7 @@ const personSchema = {
   jobTitle: "Independent HubSpot Contractor",
   description:
     "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization.",
-  url: "https://tomschoorstra.com",
+  url: SITE_URL,
   sameAs: ["https://www.linkedin.com/in/tom-schoorstra-807899113/"],
   knowsAbout: [
     "HubSpot",
@@ -98,7 +99,7 @@ const organizationSchema = {
   name: "Tom Schoorstra — HubSpot Contractor",
   description:
     "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization.",
-  url: "https://tomschoorstra.com",
+  url: SITE_URL,
   founder: { "@type": "Person", name: "Tom Schoorstra" },
   areaServed: "NL",
   knowsAbout: ["HubSpot", "CRM", "RevOps", "Marketing Automation"],

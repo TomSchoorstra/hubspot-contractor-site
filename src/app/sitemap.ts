@@ -2,8 +2,9 @@ import type { MetadataRoute } from "next";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
 import { getAllPosts } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site";
 
-const siteUrl = "https://tomschoorstra.com";
+const siteUrl = SITE_URL;
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticPages = [

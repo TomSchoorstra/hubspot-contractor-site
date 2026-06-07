@@ -6,6 +6,7 @@ import remarkGfm from "remark-gfm";
 import Container from "@/components/ui/Container";
 import CTASection from "@/components/sections/CTASection";
 import { getAllPosts, getPost } from "@/lib/blog";
+import { SITE_URL } from "@/lib/site";
 
 export async function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -48,7 +49,7 @@ function formatDate(dateStr: string) {
   });
 }
 
-const siteUrl = "https://tomschoorstra.com";
+const siteUrl = SITE_URL;
 
 export default async function BlogPost({
   params,
