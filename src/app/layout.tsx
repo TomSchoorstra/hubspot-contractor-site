@@ -51,21 +51,12 @@ export const metadata: Metadata = {
     title: "Tom Schoorstra — HubSpot contractor",
     description:
       "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
-    images: [
-      {
-        url: "/about-photo.jpeg", // Replace with a dedicated 1200×630 OG image when available
-        width: 1200,
-        height: 630,
-        alt: "Tom Schoorstra — Independent HubSpot Contractor",
-      },
-    ],
   },
   twitter: {
     card: "summary_large_image",
     title: "Tom Schoorstra — HubSpot contractor",
     description:
       "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
-    images: ["/about-photo.jpeg"],
   },
 };
 
