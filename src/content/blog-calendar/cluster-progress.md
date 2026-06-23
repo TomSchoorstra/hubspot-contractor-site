@@ -1,6 +1,6 @@
 # Topic Cluster Progress Tracker
 
-Last updated: 2026-04-12
+Last updated: 2026-06-22
 
 ## Active Clusters
 
@@ -22,13 +22,14 @@ Last updated: 2026-04-12
 | Role | Title | Status | Published | Slug |
 |------|-------|--------|-----------|------|
 | Spoke | HubSpot Spring 2026 Spotlight: what actually matters | LIVE | 2026-04-14 | hubspot-spring-2026-spotlight |
-| Spoke | HubSpot workflows vs sequences: when to use which | Q2 W3 | -- | -- |
-| Spoke | HubSpot Breeze AI: what's actually useful for small teams | Q2 W5 | -- | -- |
+| Spoke | HubSpot Breeze AI: what's actually useful for small teams | LIVE | 2026-05-12 | hubspot-breeze-ai-smb |
+| Spoke | HubSpot AEO: should SMBs care about showing up in ChatGPT? | SHIPPED (PR: blog/june-2026-batch) | 2026-06-28 | hubspot-aeo-smb |
+| Spoke | HubSpot workflows vs sequences: when to use which | Q3 | -- | -- |
 | Spoke | 5 HubSpot automation workflows every sales team needs | Q3 | -- | -- |
 | Spoke | Lead routing automation in HubSpot | Q3-Q4 | -- | -- |
 | Pillar | HubSpot workflow automation guide | After 75% spoke coverage | -- | -- |
 
-**Coverage: 0/5 spokes (0%)**
+**Coverage: 3/6 spokes (50%)**
 
 ---
 
@@ -61,13 +62,13 @@ Last updated: 2026-04-12
 ### Cluster 5: HubSpot App Cards & UI Extensions (DIFFERENTIATOR)
 | Role | Title | Status | Published | Slug |
 |------|-------|--------|-----------|------|
-| Spoke | What are HubSpot app cards? A business guide | Q2 W7 | -- | -- |
-| Spoke | Classic CRM cards sunset: migration checklist | Q2 W10 | -- | -- |
+| Spoke | What are HubSpot app cards? A business guide | SHIPPED (PR: blog/june-2026-batch) | 2026-06-25 | hubspot-app-cards-guide |
+| Spoke | Classic CRM cards sunset: migration checklist | SHIPPED (PR: blog/june-2026-batch) | 2026-06-22 | hubspot-classic-crm-cards-sunset |
 | Spoke | 5 custom app card ideas that transform your CRM | Q3 | -- | -- |
 | Spoke | Building custom app cards: a practical walkthrough | Q3 | -- | -- |
 | Pillar | (define after spokes are live) | Q4 | -- | -- |
 
-**Coverage: 0/4 spokes (0%)**
+**Coverage: 2/4 spokes (50%)**
 
 ---
 
