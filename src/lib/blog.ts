@@ -12,6 +12,8 @@ export type PostMeta = {
   description?: string;
   author?: string;
   updated?: string;
+  coverImage?: string;
+  ogImage?: string;
 };
 
 export type Post = PostMeta & {
@@ -35,6 +37,8 @@ export function getAllPosts(): PostMeta[] {
       description: data.description as string | undefined,
       author: data.author as string | undefined,
       updated: data.updated as string | undefined,
+      coverImage: data.coverImage as string | undefined,
+      ogImage: data.ogImage as string | undefined,
     };
   });
 
@@ -56,6 +60,8 @@ export function getPost(slug: string): Post | null {
     description: data.description as string | undefined,
     author: data.author as string | undefined,
     updated: data.updated as string | undefined,
+    coverImage: data.coverImage as string | undefined,
+    ogImage: data.ogImage as string | undefined,
     content,
   };
 }
