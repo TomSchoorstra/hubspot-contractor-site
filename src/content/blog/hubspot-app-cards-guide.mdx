@@ -1,0 +1,124 @@
+---
+title: "What are HubSpot app cards? A business guide"
+date: "2026-06-25"
+excerpt: "HubSpot app cards put live data and actions right on your CRM records. Here's what they are in plain language, what they can do, and when a custom one is worth building."
+description: "What are HubSpot app cards? A plain-language guide to CRM sidebar cards across 2,000+ marketplace apps: default vs custom, and when to build your own."
+author: "Tom Schoorstra"
+coverImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop"
+ogImage: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop"
+---
+
+A HubSpot app card is a panel on a CRM record that shows information or lets you take an action without leaving the page. When you open a contact, company, or deal, the cards are the boxes around the record: deal stage, recent activity, associated companies, and anything an installed app adds.
+
+That's the whole idea in one sentence. App cards are how data and actions show up on your CRM records. Some are built into HubSpot, some come from marketplace apps, and some are custom-built for one specific business.
+
+Most content about app cards is written for developers and buried in technical documentation. This guide is for the people who actually decide whether to use them: ops leads, founders, and anyone tasked with making HubSpot work for their team. No code, just what they are and when they're worth it.
+
+---
+
+> **Key Takeaways**
+> - An app card is a panel on a HubSpot CRM record (contact, company, deal, ticket) that displays data or lets you take an action.
+> - There are three kinds: default cards built into HubSpot, marketplace cards from the 2,000+ apps in the [App Marketplace](https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474), and custom cards built for your business.
+> - Modern interactive app cards (UI extensions) are React-based and can show live data and trigger actions, unlike the older static cards.
+> - A custom card is worth building when your team keeps leaving HubSpot to check another system during a sales or service conversation.
+
+---
+
+## What is a HubSpot app card, exactly?
+
+Open any record in HubSpot, a contact for example, and look at the layout. You've got the record in the middle and panels arranged around it. Those panels are cards. Some show properties, some show associated records, some show activity. An app card specifically is one that an app, rather than HubSpot itself, contributes.
+
+The job of an app card is to bring outside information onto the record so your team doesn't have to go looking for it. Instead of opening your accounting system to check whether a customer has paid, a card on the company record shows the invoice status right there. Instead of switching to your support tool, a card shows open tickets next to the deal.
+
+That's the value in one idea: less switching between systems. Your CRM record becomes the one screen your team actually works from.
+
+Modern app cards are interactive. The older generation, classic CRM cards, were static panels limited to the right sidebar, and HubSpot is retiring them on October 31, 2026. The replacement, interactive app cards built as UI extensions, can do far more: live data, buttons, actions. We cover the retirement and what it means for your portal in [what the classic CRM card sunset means for your portal](/blog/hubspot-classic-crm-cards-sunset).
+
+---
+
+## Default cards vs marketplace cards vs custom app cards
+
+There are three sources for the cards on your records, and the difference matters when you're deciding how to fill a gap.
+
+**Default cards** are built into HubSpot. Deal stage, contact properties, associated records, activity timeline. You get them out of the box and you arrange them with the record customization tools. No app required.
+
+**Marketplace cards** come from installed apps. The App Marketplace has 2,000+ apps with 2.5M+ active installs ([HubSpot Community](https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474)), and many of them add a card to your records when installed. Your accounting tool, your support platform, your e-signature app. You install the app, configure it, and its card appears. The vendor builds and maintains the card.
+
+**Custom app cards** are built for one business. When no marketplace app does what you need, a custom card pulls data from your specific systems, or shows a calculation unique to your process, directly on the record. This is the territory almost nobody writes about for a business audience, and it's where the real differentiation is.
+
+The decision tree is simple. Default card if HubSpot already offers it. Marketplace card if an app does it well. Custom card if the thing you need is specific to how your business actually runs.
+
+---
+
+## What can a custom app card actually do? (real use cases)
+
+This is the part worth your attention, because the possibilities are broader than most people realize. A custom interactive app card can show live data and trigger actions, which opens up a lot.
+
+A few concrete examples:
+
+- **Live order or invoice status from your back office.** A card on the company record showing whether the latest order shipped or the latest invoice is paid, pulled in real time from your ERP or accounting system. No more opening a second tab mid-call.
+- **A one-click action that updates another system.** A button on the deal that creates a project in your delivery tool, or triggers a quote in your billing system, without your rep leaving HubSpot.
+- **A calculation specific to your business.** Margin on the current deal, renewal date and value, a health score built from your own logic, shown directly on the record so reps see it while they work.
+- **Context from a system HubSpot doesn't integrate with natively.** If you run a niche tool with no marketplace app, a custom card can bridge it.
+
+The common thread: anything your team currently leaves HubSpot to look up is a candidate for a card. App sprawl is real for smaller companies. Okta's 2024 SMB report found the smallest businesses, those with 50 or fewer employees, run about 36 apps on average ([Okta](https://www.okta.com/blog/industry-insights/smbs-at-work-2024-what-apps-make-the-smb-stack/)). Every one of those is a tab your team might be switching to mid-conversation. A card pulls the important parts back into one place.
+
+> **Citation capsule:** A custom HubSpot app card brings data and actions from external systems directly onto a CRM record. With the smallest businesses running roughly 36 apps on average ([Okta SMBs at Work, 2024](https://www.okta.com/blog/industry-insights/smbs-at-work-2024-what-apps-make-the-smb-stack/)), custom cards reduce the constant context-switching that slows sales and service teams by surfacing the most-needed information without leaving HubSpot.
+
+---
+
+## When does it make sense to build a custom one?
+
+Custom work costs time and money, so the bar should be real. Here's when it clears. In practice, the clients I build cards for almost always have one specific daily friction in mind, not a vague wish list. That focus is what separates a card that earns its keep from one that just adds clutter.
+
+Build a custom card when your team repeatedly leaves HubSpot during a live conversation to check something in another system. That switching is friction, it slows calls, and it causes mistakes when someone forgets to check. If it happens every day, a card pays for itself.
+
+Build one when the data your team needs lives in a system with no good marketplace integration. Plenty of industry-specific tools never get a polished HubSpot app. A custom card can bridge that gap.
+
+Build one when you have a calculation or status that is specific to your business and important enough that reps should see it without thinking. Margin, renewal risk, a custom health score. If it changes how someone handles a deal, putting it on the record is worth it.
+
+Don't build one when a marketplace app already does the job, or when the thing you'd put on a card is nice-to-have rather than something that changes a decision. A card nobody acts on is just clutter. If you're unsure whether your workflow justifies custom work, that's exactly the kind of thing a short [HubSpot consultancy](/services/consultancy) conversation sorts out before you spend anything.
+
+---
+
+## How do app cards relate to the classic CRM card sunset?
+
+If you've heard that HubSpot is retiring something to do with CRM cards, this is the connection. The thing being retired is the old generation, classic CRM cards, which sunset on October 31, 2026. The thing replacing them is interactive app cards, the modern format this whole guide is about.
+
+So the sunset isn't a reason to use fewer cards. It's a reason to make sure the cards you rely on are the modern kind. If you use marketplace apps that still rely on classic cards, those vendors need to migrate. If you have custom-built cards from an older project, those need rebuilding before the deadline.
+
+The practical takeaway: the sunset and the upgrade are the same story. Classic cards out, interactive cards in. If you're already on interactive cards, you've nothing to do. If you're not, the migration is also your chance to build something better. The full deadline timeline is in [the classic CRM cards sunset guide](/blog/hubspot-classic-crm-cards-sunset).
+
+---
+
+## Frequently Asked Questions
+
+### What is a HubSpot app card in simple terms?
+
+It's a panel on a CRM record (a contact, company, or deal) that shows information or lets you take an action. Some cards are built into HubSpot, some come from installed marketplace apps, and some are custom-built for a specific business.
+
+### What's the difference between a marketplace card and a custom card?
+
+A marketplace card comes from one of the 2,000+ apps in the [App Marketplace](https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474) and is built and maintained by that vendor. A custom card is built specifically for your business to show data or actions no marketplace app provides.
+
+### Do I need a developer to add an app card?
+
+Not for default or marketplace cards. Default cards are configured in HubSpot's record customization tools, and marketplace cards appear when you install the app. Custom cards do require developer work, since they're built for your specific systems and logic.
+
+### What can a custom app card show?
+
+Live data from your other systems (order status, invoice status), buttons that trigger actions in those systems, and calculations specific to your business (margin, renewal value, custom scores). Modern interactive app cards are React-based, so they handle live data and actions rather than static text.
+
+### Are app cards changing in 2026?
+
+Yes. HubSpot is retiring the older static format, classic CRM cards, on October 31, 2026, in favor of interactive app cards. If you rely on cards built on the old format, they need migrating before the deadline. See [the migration checklist and deadline](/blog/hubspot-classic-crm-cards-sunset) for details.
+
+---
+
+## The bottom line
+
+App cards are the panels that make a HubSpot record useful: data and actions in one place so your team isn't hopping between systems all day. Default cards cover the basics, marketplace cards cover common tools, and custom cards cover the things specific to how your business runs.
+
+For most SMBs the question isn't whether to use cards, you already do. It's whether a custom one would remove a daily piece of friction. If your team keeps leaving HubSpot mid-conversation to check another system, that's the signal. A card built for that exact gap is usually worth more than its cost in saved switching and fewer missed steps.
+
+If you've got a system your team keeps tabbing out to, [get in touch](/contact) and we'll figure out whether a custom card is the right fix. It's the core of our [custom app cards service](/services/custom-app-cards).
