@@ -1,0 +1,159 @@
+---
+title: "HubSpot classic CRM cards sunset: what to do by Oct 31, 2026"
+date: "2026-06-22"
+excerpt: "HubSpot is retiring classic CRM cards on October 31, 2026. If your portal relies on apps that use them, here's exactly what breaks and what to do before the deadline."
+description: "Classic HubSpot CRM cards sunset October 31, 2026, and no new apps with them have been listed since June 2025. Here's what breaks and how SMBs migrate."
+author: "Tom Schoorstra"
+coverImage: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?fm=jpg&q=80&w=1200&h=630&fit=crop"
+ogImage: "https://images.unsplash.com/photo-1506784983877-45594efa4cbe?fm=jpg&q=80&w=1200&h=630&fit=crop"
+---
+
+HubSpot is turning off classic CRM cards on October 31, 2026. If you run apps that put information into the right sidebar of your contact, company, or deal records, some of those cards will stop working on that date. You have roughly four months to find out which ones are affected and migrate.
+
+For most SMBs this is a small job that turns into a nasty surprise if you ignore it. The cards that break are the static panels installed apps add to your CRM records: an accounting app showing invoice status, a support tool showing open tickets, a custom integration your last consultant built. When the sunset hits, those panels go blank.
+
+The short version: check which of your installed apps still use classic cards, ask each vendor whether they've migrated to the new format, and budget a little time to swap any custom-built cards yourself. None of this is hard. It just needs to happen before October 31. If you're wondering what you're migrating to, that's [what HubSpot app cards are](/blog/hubspot-app-cards-guide).
+
+This post covers what is actually sunsetting, who is affected, and the migration steps that matter.
+
+---
+
+> **Key Takeaways**
+> - Classic CRM cards stop functioning on **October 31, 2026** ([HubSpot Developer Changelog](https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards)).
+> - Since **June 16, 2025**, the App Marketplace no longer accepts new apps that use classic CRM cards ([HubSpot Developer Changelog](https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards)).
+> - The replacement is React-based interactive app cards (UI extensions), which keep getting investment from HubSpot.
+> - Your existing apps keep working right up until the deadline, so the risk is doing nothing and getting caught out on November 1.
+
+---
+
+<figure>
+  <svg viewBox="0 0 640 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Timeline of the classic CRM card sunset: June 16 2025 listing freeze, mid-2025 to 2026 migration window, October 31 2026 sunset">
+    <title>Classic CRM Card Sunset Timeline</title>
+    <rect width="640" height="220" fill="#ffffff" />
+    {/* Base line */}
+    <line x1="60" y1="110" x2="580" y2="110" stroke="#e2e8f0" strokeWidth="4" />
+    {/* Active migration segment in HubSpot orange */}
+    <line x1="120" y1="110" x2="520" y2="110" stroke="#ff5c35" strokeWidth="4" />
+    {/* Node 1: Jun 16 2025 */}
+    <circle cx="120" cy="110" r="9" fill="#94a3b8" />
+    <text x="120" y="80" textAnchor="middle" fontSize="12" fill="#334155" fontFamily="sans-serif">Jun 16, 2025</text>
+    <text x="120" y="150" textAnchor="middle" fontSize="11" fill="#94a3b8" fontFamily="sans-serif">No new apps with</text>
+    <text x="120" y="165" textAnchor="middle" fontSize="11" fill="#94a3b8" fontFamily="sans-serif">classic cards listed</text>
+    {/* Node 2: migration window */}
+    <circle cx="320" cy="110" r="9" fill="#94a3b8" />
+    <text x="320" y="80" textAnchor="middle" fontSize="12" fill="#334155" fontFamily="sans-serif">2025 - 2026</text>
+    <text x="320" y="150" textAnchor="middle" fontSize="11" fill="#94a3b8" fontFamily="sans-serif">Migration window</text>
+    <text x="320" y="165" textAnchor="middle" fontSize="11" fill="#94a3b8" fontFamily="sans-serif">+ migration tooling</text>
+    {/* Node 3: Oct 31 2026 sunset */}
+    <circle cx="520" cy="110" r="11" fill="#ff5c35" />
+    <text x="520" y="80" textAnchor="middle" fontSize="12" fill="#334155" fontFamily="sans-serif" fontWeight="bold">Oct 31, 2026</text>
+    <text x="520" y="150" textAnchor="middle" fontSize="11" fill="#334155" fontFamily="sans-serif">Classic cards</text>
+    <text x="520" y="165" textAnchor="middle" fontSize="11" fill="#334155" fontFamily="sans-serif">stop functioning</text>
+    <text x="320" y="205" textAnchor="middle" fontSize="11" fill="#94a3b8" fontFamily="sans-serif">Source: HubSpot Developer Changelog, 2025</text>
+  </svg>
+  <figcaption>The classic CRM card retirement timeline. The listing freeze already happened in 2025. The hard cutoff is October 31, 2026.</figcaption>
+</figure>
+
+---
+
+## What exactly is sunsetting?
+
+Classic CRM cards are the static panels that apps add to the right sidebar of a CRM record. They were the original way for an installed app to show data on a contact, company, deal, or ticket. They are limited: they sit only in the right sidebar, they are mostly static, and they can't do much beyond display information.
+
+HubSpot is retiring them. After October 31, 2026, classic CRM cards stop functioning ([HubSpot Developer Changelog](https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards)). The app stays installed and the rest of its features keep working, but any view it built using a classic card goes away.
+
+This is not the whole app ecosystem disappearing. The App Marketplace still has 2,000+ apps, and the vast majority of them either never used classic cards or have already moved to the new format. The sunset only affects the specific cards built on the old technology.
+
+What replaces them is interactive app cards, also called UI extensions. These are React-based, which means they can show live data, include buttons, and trigger actions directly from the record. They are a real upgrade, not just a rebuild. HubSpot is continuing to invest in them.
+
+---
+
+## Who is actually affected?
+
+You are affected if any installed app or custom integration in your portal uses a classic CRM card to display information on your records. The tricky part is that this is not always obvious from the outside.
+
+You are most likely affected if:
+
+- You use a marketplace app that shows data in the CRM sidebar, and that app hasn't been updated in a while.
+- A previous consultant or developer built a custom card for your portal using the old developer tools.
+- You rely on an internal integration that pushes data into a sidebar panel.
+
+You are probably fine if you only use HubSpot's native features and a handful of well-maintained marketplace apps. Big vendors have mostly migrated already. The risk concentrates in older apps and bespoke work that nobody has touched since it was built.
+
+In the portals I've audited, the card that breaks is almost always the one a previous consultant built and nobody documented. It works, so nobody thinks about it, until the day it stops.
+
+The honest answer is that you won't know for sure until you look. There is no published number for how many apps still use classic cards, and HubSpot doesn't surface a simple "this card is deprecated" warning in every portal. You have to check.
+
+> **Citation capsule:** HubSpot will retire classic CRM cards on October 31, 2026, after which they stop functioning. The replacement is React-based interactive app cards (UI extensions) that support live data and actions. Existing apps continue to work until the deadline, so the practical risk for SMBs is failing to identify and migrate affected cards before the cutoff. (HubSpot Developer Changelog, 2025)
+
+---
+
+## What do you actually need to do before October 31?
+
+Here is the migration checklist. For most SMBs this is a half-day job, not a project.
+
+### 1. Inventory your installed apps
+
+Go to your connected apps in HubSpot settings and list everything installed. For each app, note whether it shows anything in the CRM record sidebar. Those are your candidates.
+
+### 2. Ask each vendor one question
+
+For every app that puts a card on your records, contact the vendor or check their changelog and ask: have you migrated off classic CRM cards? Most reputable vendors have either already done it or have a public date. If a vendor can't answer, treat that app as at risk.
+
+### 3. Find your custom cards
+
+If anyone has ever built a custom integration or a bespoke card for your portal, that is the highest-risk item on the list. Custom work doesn't get automatic vendor updates. Someone has to migrate it. HubSpot provides migration tooling, including a Legacy CRM Card Converter and a View Swap Tool, to make this less painful ([HubSpot Developer Changelog](https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards)).
+
+### 4. Decide: replace, rebuild, or drop
+
+For each affected card, you have three options. Replace it with the vendor's updated version. Rebuild it as an interactive app card. Or, if nobody actually uses it, just drop it. Plenty of old cards get migrated when they should have been deleted. A blank panel nobody reads is not worth rebuilding.
+
+### 5. Test before the deadline, not after
+
+Once you've migrated, open a few records and confirm the data still shows up. Do this in September or early October, not on October 30. If something is wrong, you want time to fix it.
+
+---
+
+## What are interactive app cards, the replacement?
+
+Interactive app cards (UI extensions) are the modern way to put app functionality on a CRM record. Where a classic card just displayed static text in the right sidebar, an interactive card is built with React and can do real work.
+
+That means a card can show live data pulled in real time, include buttons that trigger actions, and let your team do things without leaving the record. An accounting integration could show current invoice status and a "send reminder" button. A support tool could show open tickets and let a rep reply inline.
+
+This is the reason the sunset is happening. HubSpot isn't removing a capability, it's pushing everyone onto a better one. For SMBs, the upgrade is mostly invisible if your vendors handle it. The work only lands on you for custom-built cards.
+
+If you've never thought about what a custom card could do for your specific workflow, the sunset is a decent prompt to look. We cover that in detail in [what are HubSpot app cards](/blog/hubspot-app-cards-guide), and it's the core of our [custom app cards service](/services/custom-app-cards).
+
+---
+
+## Frequently Asked Questions
+
+### What happens to classic CRM cards after October 31, 2026?
+
+They stop functioning. The cards no longer display on your CRM records. The app stays installed and its other features keep working, but anything it showed through a classic CRM card goes away ([HubSpot Developer Changelog](https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards)).
+
+### Will my installed apps stop working entirely?
+
+No. Only the classic card portion is affected. The rest of the app keeps running. If your app already moved to interactive app cards, you'll notice nothing at all.
+
+### How do I know if my portal uses classic CRM cards?
+
+Check every installed app that shows data in the CRM record sidebar, ask each vendor whether they've migrated, and flag any custom-built cards. There is no single dashboard that lists affected cards for you, so it requires a manual review.
+
+### Can I migrate classic CRM cards myself?
+
+For custom cards, yes, with developer effort. HubSpot provides migration tooling including a Legacy CRM Card Converter and a View Swap Tool ([HubSpot Developer Changelog](https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards)). For vendor apps, the vendor handles the migration, so your job is just to confirm they've done it.
+
+### Why is HubSpot retiring classic CRM cards?
+
+To move the ecosystem onto interactive app cards (UI extensions), which are React-based and can show live data and trigger actions. Classic cards were static and limited to the right sidebar. The replacement is more capable, which is why HubSpot is continuing to invest in it.
+
+---
+
+## The bottom line
+
+This is a deadline, not a disaster. Classic CRM cards stop working on October 31, 2026, and the only real risk is doing nothing until November and then wondering why a panel went blank.
+
+The work is small for most SMBs. Inventory your apps, ask your vendors one question each, find any custom cards, and migrate or drop them before the cutoff. The vendors do most of the heavy lifting. Your job is mainly to make sure nothing custom falls through the cracks.
+
+If you've got custom cards or an older integration and you're not sure what's affected, [get in touch](/contact) and we'll work out what needs to move before the deadline.
