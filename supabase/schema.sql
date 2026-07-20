@@ -15,6 +15,20 @@ create table if not exists installations (
   tip_index        integer not null default 0
 );
 
+-- Tabel: training_state
+-- Loopschema-app: één JSON-document per persoon (id = 'tom' / 'denise').
+-- De volledige app-state wordt in z'n geheel gelezen/geschreven (upsert).
+create table if not exists training_state (
+  id         text primary key,          -- 'tom' | 'denise'
+  data       jsonb not null,            -- {athletes:{a:{name,logs}}}
+  updated_at timestamptz not null default now()
+);
+
+-- RLS aan, geen publieke policies: alleen de service-role (de server-side
+-- proxy in /api/loopschema) mag hierbij. De anon-key kan er nooit bij, ook
+-- niet als die zou lekken. De service-role bypasst RLS.
+alter table training_state enable row level security;
+
 -- Tabel: tips
 -- Bevat alle HubSpot tips die wekelijks verstuurd worden.
 create table if not exists tips (
