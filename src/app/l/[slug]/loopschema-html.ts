@@ -69,6 +69,12 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   .zone .p{font-family:'Barlow Condensed'; font-size:18px; font-weight:600; color:var(--orange); letter-spacing:.03em;}
   .note{color:var(--mut); font-size:12.5px; margin-top:10px; line-height:1.55;}
   .note b{color:var(--amber); font-weight:600;}
+  .hist-row{display:flex; align-items:center; gap:8px; font-size:12.5px; padding:8px 10px; border-radius:9px; background:var(--panel2); margin-bottom:6px;}
+  .hist-row .hd{font-weight:600; min-width:52px;}
+  .hist-row .hk{font-family:'Barlow Condensed'; font-size:16px; font-weight:700; color:var(--orange); min-width:58px;}
+  .hist-row .ht{color:var(--mut); min-width:50px;}
+  .hist-row .hp{color:var(--ink);}
+  .hist-row .hh{color:var(--mut); margin-left:auto;}
 
   /* ---------- weeks ---------- */
   .fase-label{margin:22px 0 8px; color:var(--mut); font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; display:flex; align-items:center; gap:10px;}
@@ -201,6 +207,12 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   <div class="card">
     <h2>Weekvolume (gepland vs. gelopen)</h2>
     <div class="bars" id="bars"></div>
+  </div>
+
+  <div class="card" id="histCard" style="display:none">
+    <h2>Aanloop — runs vóór het schema</h2>
+    <div id="histList"></div>
+    <div class="note" id="histNote"></div>
   </div>
 
   <div id="weeks"></div>
@@ -373,6 +385,17 @@ const SEED_DENISE = {athletes:{ a:{name:"Denise <3", logs:{
   "w2r2": {done:true, dist:6.29, time:"41:05", feel:4, hr:156, note:"Duurloop 20 juli. Gem. 6:32/km, HR 156.", ts:1753019160000}
 }} }};
 
+// Denise' runs van vóór de schemastart (13 juli), uit haar Huawei-data. Read-only overzicht.
+const HISTORY = LOOP.rowId === "denise" ? [
+  {date:"3 mei",  km:8.01, time:"48:43",   pace:"6:05", hr:163},
+  {date:"20 mei", km:10.01, time:"1:01:38", pace:"6:09", hr:164},
+  {date:"7 jun",  km:5.21, time:"30:51",   pace:"5:55", hr:171},
+  {date:"12 jun", km:5.01, time:"34:41",   pace:"6:55", hr:148},
+  {date:"16 jun", km:6.66, time:"45:42",   pace:"6:52", hr:151},
+  {date:"28 jun", km:5.06, time:"33:20",   pace:"6:35", hr:162},
+  {date:"2 jul",  km:8.02, time:"51:39",   pace:"6:26", hr:160}
+] : [];
+
 function baseSeed(){
   const s = LOOP.rowId === "tom" ? SEED_TOM : SEED_DENISE;
   const out = JSON.parse(JSON.stringify(s));
@@ -486,7 +509,7 @@ function currentWeek(){
 
 /* ================= RENDER ================= */
 function render(){
-  const parts = [renderRoute, renderStats, renderZones, renderBars, renderWeeks, renderFoot];
+  const parts = [renderRoute, renderStats, renderZones, renderBars, renderHistory, renderWeeks, renderFoot];
   parts.forEach(fn=>{ try{ fn(); }catch(e){ console.error(fn.name, e); } });
 }
 
@@ -575,6 +598,20 @@ function renderBars(){
     bar.innerHTML = '<div class="stack" style="height:'+Math.round(100*plan/maxKm)+'%"><div class="fill" style="height:'+(plan? Math.min(100,Math.round(100*act/plan)) : 0)+'%"></div></div><div class="lbl">'+w.w+'</div>';
     el.appendChild(bar);
   });
+}
+
+function renderHistory(){
+  const card = $("histCard");
+  if(!HISTORY.length){ card.style.display = "none"; return; }
+  card.style.display = "";
+  $("histList").innerHTML = HISTORY.map(r=>
+    '<div class="hist-row"><span class="hd">'+r.date+'</span>'
+    +'<span class="hk">'+fmt(r.km)+' km</span>'
+    +'<span class="ht">'+r.time+'</span>'
+    +'<span class="hp">'+r.pace+' /km</span>'
+    +'<span class="hh">'+(r.hr? r.hr+" bpm" : "")+'</span></div>').join("");
+  const tot = HISTORY.reduce((a,r)=> a + r.km, 0);
+  $("histNote").textContent = HISTORY.length + " runs · " + fmt(tot) + " km, gelopen vóór de start van het schema (13 juli). Mooie basis om op door te bouwen.";
 }
 
 function renderWeeks(){
