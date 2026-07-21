@@ -124,6 +124,9 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   .kracht{display:flex; gap:8px;}
   .kracht .sess{flex:1; padding:9px 11px;}
   .kracht .name{font-size:12.5px;}
+  .kracht.single{justify-content:center;}
+  .kracht.single .sess{flex:0 0 auto; padding:8px 18px; gap:9px;}
+  .kracht.single .chk{width:20px; height:20px; font-size:12px;}
 
   /* ---------- weekly bars ---------- */
   .bars{display:flex; align-items:flex-end; gap:4px; height:110px; padding-top:8px;}
@@ -389,6 +392,7 @@ const KRACHT_DENISE = "Knie-kracht: glute bridges, clamshells, single-leg step-d
 
 const PLAN = LOOP.rowId === "tom" ? PLAN_TOM : PLAN_DENISE;
 const KRACHT = LOOP.rowId === "tom" ? KRACHT_TOM : KRACHT_DENISE;
+const KRACHT_COUNT = LOOP.rowId === "tom" ? 2 : 1; // Denise: 1 krachtsessie per week
 const TYPE_META = {e:{tag:null}, q:{tag:["KWALITEIT","q"]}, l:{tag:["LONG RUN","l"]}, t:{tag:["TEST","q"]}, r:{tag:["RACE","r"]}, h:{tag:["VAKANTIE","l"]}};
 
 /* ================= SEED (startdata per persoon — ingebakken) ================= */
@@ -721,13 +725,15 @@ function renderWeeks(){
         + '<div class="det">'+(r.d? r.d : paceHint)+'</div>'+loggedLine+'</div>'
         + '<div class="km">'+(r.t==="h" ? '<small style="font-size:14px">vrij</small>' : fmt(r.km)+'<small style="font-size:12px"> km</small>')+'</div></div>';
     });
-    // kracht
-    const k1 = logs["w"+w.w+"k1"], k2 = logs["w"+w.w+"k2"];
-    body += '<div class="kracht">'
-      + '<div class="sess '+(k1?.done?"done":"")+'" data-id="w'+w.w+'k1" data-kracht="1"><div class="chk">'+(k1?.done?"✓":"")+'</div><div class="info"><div class="name">Kracht 1</div></div></div>'
-      + '<div class="sess '+(k2?.done?"done":"")+'" data-id="w'+w.w+'k2" data-kracht="1"><div class="chk">'+(k2?.done?"✓":"")+'</div><div class="info"><div class="name">Kracht 2</div></div></div>'
-      + '</div>'
-      + '<div class="note" style="margin-top:2px">'+KRACHT+'</div>';
+    // kracht (aantal sessies profiel-afhankelijk)
+    let kracht = '<div class="kracht'+(KRACHT_COUNT===1?" single":"")+'">';
+    for(let ki=1; ki<=KRACHT_COUNT; ki++){
+      const kid = "w"+w.w+"k"+ki;
+      const kl = logs[kid];
+      kracht += '<div class="sess '+(kl?.done?"done":"")+'" data-id="'+kid+'" data-kracht="1"><div class="chk">'+(kl?.done?"✓":"")+'</div><div class="info"><div class="name">Kracht'+(KRACHT_COUNT>1?" "+ki:"")+'</div></div></div>';
+    }
+    kracht += '</div>';
+    body += kracht + '<div class="note" style="margin-top:2px">'+KRACHT+'</div>';
 
     d.innerHTML = '<summary>'
       + '<div class="wk-num">W'+w.w+'<small>'+(w.herstel?"herstel":w.fase)+'</small></div>'
