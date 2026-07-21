@@ -1,6 +1,6 @@
-# Loopschema Denise — halve marathon 1 november 2026 (coach-versie)
+# Loopschema Denise — halve marathon 1 november 2026 (coach-versie v2)
 
-Definitieve versie na review door de running coach. Verwerkt in de app op haar persoonlijke pagina.
+Definitieve versie na review door de running coach (v2, 16 km piek). Verwerkt in de app op haar persoonlijke pagina.
 
 ---
 
@@ -58,7 +58,7 @@ Denise had bij haar laatste twee runs (18 juli, 5 km en 20 juli, 6 km) allebei k
 
 ## 4. Kracht, cadans & knie (minstens zo belangrijk als de runs)
 
-**Kracht 2× per week, knie-gericht:** glute bridges, clamshells, single-leg step-downs, wall sits, kuitheffingen.
+**Kracht 2× per week, knie-gericht:** glute bridges, clamshells, single-leg step-downs, wall sits, kuitheffingen. *(In de app als 1 sessie ingesteld — extra sessie zelf toevoegen mag.)*
 
 **Cadans:** nu ~145–155 spm. Verhogen naar **~165–170 spm** (kortere pas, landing dichter onder het zwaartepunt) verlaagt de piekbelasting op de knie merkbaar. Metronoom-app of muziek op ~165 bpm.
 
@@ -66,35 +66,37 @@ Denise had bij haar laatste twee runs (18 juli, 5 km en 20 juli, 6 km) allebei k
 
 ---
 
-## 5. Het herziene 16-weeks schema
+## 5. Het herziene 16-weeks schema (16 km piek)
 
-**Typen:** E = rustig (praattempo), L = long run, R = race. Elke week + 2× kracht. Geen harde tempoblokken tot fysio-akkoord; strides optioneel vanaf ~week 9, alleen pijnvrij. ✓ = al gelopen.
+**Typen:** E = rustig (praattempo), L = long run, R = race. Geen harde tempoblokken tot fysio-akkoord; strides optioneel vanaf ~week 8, alleen pijnvrij. ✓ = al gelopen.
 **Alles ná week 3 staat onder voorbehoud van een rustige knie / fysio-akkoord.**
 
 | Wk | Periode | Dag 1 | Dag 2 | Dag 3 (long) | Totaal | Fase |
 |---|---|---|---|---|---|---|
 | 1 | 13–19 jul | E 4 | E 4 | L 5 ✓ | 13 km | Settelen |
-| 2 | 20–26 jul | E 4 | E 4 | L 5 ✓ | 13 km | Settelen |
-| 3 | 27 jul–2 aug | E 5 | E 5 | L 5 | 15 km | Settelen |
-| 4 | 3–9 aug | E 5 | E 5 | L 6 | 16 km | Opbouw |
-| 5 | 10–16 aug | E 5 | E 6 | L 7 | 18 km | Opbouw |
-| 6 | 17–23 aug | E 4 | E 5 | L 6 | 15 km | **Herstel** |
-| 7 | 24–30 aug | E 5 | E 6 | L 8 | 19 km | Opbouw |
-| 8 | 31 aug–6 sep | E 6 | E 6 | L 9 | 21 km | Opbouw |
-| 9 | 7–13 sep | E 6 | E 7 | L 10 | 23 km | Opbouw |
-| 10 | 14–20 sep | E 5 | E 6 | L 7 | 18 km | **Herstel** |
-| 11 | 21–27 sep | E 6 | E 7 | L 10 | 23 km | Opbouw |
-| 12 | 28 sep–4 okt | E 7 | E 7 | L 12 | 26 km | Piek |
-| 13 | 5–11 okt | E 6 | E 6 | L 9 | 21 km | **Herstel** |
-| 14 | 12–18 okt | E 7 | E 8 | L 14 | 29 km | Piek (langste!) |
-| 15 | 19–25 okt | E 6 | E 6 | L 9 | 21 km | Taper |
+| 2 | 20–26 jul | E 4 | E 4 | L 6 ✓ | 14 km | Settelen |
+| 3 | 27 jul–2 aug | E 5 | E 5 | L 6 | 16 km | Settelen |
+| 4 | 3–9 aug | E 5 | E 6 | L 8 | 19 km | Opbouw |
+| 5 | 10–16 aug | E 5 | E 6 | L 9 | 20 km | Opbouw |
+| 6 | 17–23 aug | E 4 | E 5 | L 7 | 16 km | **Herstel** |
+| 7 | 24–30 aug | E 5 | E 6 | L 10 | 21 km | Opbouw |
+| 8 | 31 aug–6 sep | E 6 | E 7 | L 11 | 24 km | Opbouw |
+| 9 | 7–13 sep | E 6 | E 7 | L 12 | 25 km | Opbouw |
+| 10 | 14–20 sep | E 5 | E 6 | L 10 | 21 km | **Herstel** |
+| 11 | 21–27 sep | E 6 | E 7 | L 13 | 26 km | Opbouw |
+| 12 | 28 sep–4 okt | E 6 | E 8 | L 14 | 28 km | Opbouw |
+| 13 | 5–11 okt | E 6 | E 7 | L 14 | 27 km | Piek-aanloop |
+| 14 | 12–18 okt | E 6 | E 8 | L 16 | 30 km | Piek (langste!) |
+| 15 | 19–25 okt | E 5 | E 6 | L 10 | 21 km | Taper |
 | 16 | 26 okt–1 nov | E 4 | E 4 | **R 21,1** | 29 km | Race |
 
 **Reeds gelogd (behouden, onder de long-run-slot):**
 - Week 1 · 18 jul: 5,01 km / 31:25 / 6:16 / HR 158 — knie: pijn
 - Week 2 · 20 jul: 6,29 km / 41:05 / 6:32 / HR 156 — knie: pijn
 
-**Long-run-opbouw:** 5 → 5 → 5 → 6 → 7 → 6 → 8 → 9 → 10 → 7 → 10 → 12 → 9 → **14** → 9 → **21,1 km**
+**Long-run-opbouw:** 5 → 6 → 6 → 8 → 9 → 7 → 10 → 11 → 12 → 10 → 13 → 14 → 14 → **16** → 10 → **21,1 km**
+
+Piek bewust op **16 km** (niet 14, niet 18): 14 liet een te groot gat naar 21,1; 18 is een te grote belastingpiek gezien de knie. Aanloop is geleidelijk (12 → 13 → 14 → 14 → 16), met 14 km twee weken op rij zodat de sprong naar de piek maar +2 km is. Blijft de knie klagen → val terug op een lagere piek.
 
 ### Tennis-regel (in de app als toggle per week)
 Denise tennist 1–2× per week; dat telt mee als belasting.
@@ -105,7 +107,7 @@ Denise tennist 1–2× per week; dat telt mee als belasting.
 ---
 
 ## 6. Onderbouwing coach (kort)
-- Long run mag niet veel meer dan ~40% van het weekvolume zijn (blessurerisico); doordeweekse runs groeien daarom mee.
+- Long run mag niet veel meer dan ~40–46% van het weekvolume zijn (blessurerisico); doordeweekse runs groeien daarom mee.
 - Van 1–2 naar 3 runs/week ís al de progressie voor de eerste weken; daarom eerst frequentie laten settelen, dan pas afstand.
 - Strak 3-op-1 patroon (drie weken op, één herstel) i.p.v. willekeurig volumeverloop.
 - Knie-aanpak zit op intensiteit + techniek (rustig tempo, cadans, kracht), niet op afstand beperken.
