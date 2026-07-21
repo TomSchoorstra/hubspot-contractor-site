@@ -318,36 +318,36 @@ const PLAN_TOM = [
 // Schema voor Denise — afgestemd op haar Huawei-data (basis tot 10 km, tempo ~6:05–6:35).
 // Grootste winst: frequentie omhoog naar 3×/week. Knie-bewust opgebouwd (herstelweken, knie-kracht).
 const PLAN_DENISE = [
- {w:1, fase:"Basis", focus:"Je hebt al een mooie basis (tot 10 km!). De grote winst zit nu in vaste frequentie: 3 keer per week i.p.v. 1 à 2. Alles rustig op praattempo, knie in de gaten houden.",
+ {w:1, fase:"Basis", focus:"Je hebt al een mooie basis (tot 10 km). De grote winst zit in vaste frequentie: 3 keer per week i.p.v. 1 à 2. Alles rustig op praattempo.",
   runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
- {w:2, fase:"Basis", focus:"Ritme vasthouden op 3 runs. Long run naar 9 km, rustig tempo.",
+ {w:2, fase:"Basis", focus:"Knie gaf klachten bij je laatste runs, dus de komende weken staat die voorop. Volume bewust laag: long run terug naar 6 km, rustig tempo. Maak een afspraak bij de fysio voordat we opbouwen. Voelt de knie iets, minder dan of stop.",
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
+ {w:3, fase:"Basis", focus:"Nog steeds voorzichtig. Alleen ophogen als de knie rustig blijft. Kracht-oefeningen voor de knie zijn deze weken minstens zo belangrijk als de runs.",
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
+ {w:4, fase:"Basis", focus:"Als de knie meewerkt heel licht omhoog: long run 7 km. Zo niet, blijf op 6 km of korter. Geen haast, we hebben de tijd tot november.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:7,n:"Duurloop"}]},
+ {w:5, fase:"Basis", herstel:true, focus:"Herstelweek. Bewust minder zodat de knie en benen bijtanken. Herstel is waar de aanpassing gebeurt.",
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
+ {w:6, fase:"Opbouw", focus:"Mits de knie rustig is (idealiter na de fysio) weer voorzichtig opbouwen. Long run 8 km, rustig tempo.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
+ {w:7, fase:"Opbouw", focus:"Rustig doorbouwen. Long run 9 km. Blijf luisteren naar de knie.",
   runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
- {w:3, fase:"Basis", focus:"Long run tikt 10 km aan, je bekende afstand. Verder rustig doorbouwen.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:10,n:"Duurloop"}]},
- {w:4, fase:"Basis", focus:"Voorbij je huidige max: long run 11 km. Neem wat water mee en houd het tempo laag.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:11,n:"Duurloop"}]},
- {w:5, fase:"Basis", herstel:true, focus:"Herstelweek. Bewust minder volume zodat knie en benen bijtanken.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
- {w:6, fase:"Opbouw", focus:"Nieuw terrein: long run 12 km. Rustig blijven, vooral op de laatste kilometers.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:12,n:"Duurloop"}]},
- {w:7, fase:"Opbouw", focus:"Beetje snelheid erin, alleen als de knie meewerkt. Long run 13 km.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:7,n:"Rustig + strides",d:"Rustige run, laatste 2 km: 5x 20 sec vlot met ruim dribbel ertussen. Stoppen bij kniepijn."},{t:"l",km:13,n:"Duurloop"}]},
- {w:8, fase:"Opbouw", focus:"Long run 14 km. Test alvast je race-ontbijt en drinken/gel onderweg.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:14,n:"Duurloop"}]},
- {w:9, fase:"Opbouw", herstel:true, focus:"Herstelweek. Gas terug na de 14 km, dan begin je fris aan het laatste blok.",
+ {w:8, fase:"Opbouw", focus:"Terug op je bekende 10 km. Eerste keer wat strides, alleen als de knie meewerkt.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",d:"Rustige run, laatste 1,5 km: 4x 20 sec vlot met ruim dribbel ertussen. Stoppen bij kniepijn."},{t:"l",km:10,n:"Duurloop"}]},
+ {w:9, fase:"Opbouw", herstel:true, focus:"Herstelweek. Gas terug na de 10 km, dan begin je fris aan het laatste blok.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
+ {w:10, fase:"Opbouw", focus:"Voorbij je huidige max: long run 11 km. Neem wat water mee en houd het tempo laag.",
   runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:11,n:"Duurloop"}]},
- {w:10, fase:"Opbouw", focus:"Long run 15 km. Let op je houding als je moe wordt.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:8,n:"Tempo 2x 8 min",d:"Inlopen, 2x 8 min iets vlotter (5:55–6:10) met 3 min dribbel, uitlopen"},{t:"l",km:15,n:"Duurloop"}]},
- {w:11, fase:"Opbouw", focus:"Long run 16 km. Mooie mijlpaal richting de halve.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:8,n:"Rustig + strides",d:"Rustige run, laatste 2 km: 6x 20 sec vlot met dribbel ertussen"},{t:"l",km:16,n:"Duurloop"}]},
- {w:12, fase:"Piek", focus:"Piekfase. Long run 17 km, rustig uitlopen. Eten en drinken onderweg blijven oefenen.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:17,n:"Duurloop"}]},
- {w:13, fase:"Piek", focus:"Long run 18 km. Hierna weet je: de afstand komt eraan.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:18,n:"Duurloop"}]},
- {w:14, fase:"Piek", focus:"De langste van het schema: 19 km. Heel rustig, gewoon uitlopen. Laatste grote prikkel.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:19,n:"Duurloop — langste!"}]},
+ {w:11, fase:"Opbouw", focus:"Long run 13 km. Nieuw terrein, rustig uitlopen.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:13,n:"Duurloop"}]},
+ {w:12, fase:"Piek", focus:"Piekfase. Long run 14 km. Test alvast je race-ontbijt en drinken/gel onderweg.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:7,n:"Tempo 2x 8 min",d:"Inlopen, 2x 8 min iets vlotter (5:55–6:10) met 3 min dribbel, uitlopen. Alleen pijnvrij."},{t:"l",km:14,n:"Duurloop"}]},
+ {w:13, fase:"Piek", focus:"Long run 16 km. Mooie mijlpaal richting de halve.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:16,n:"Duurloop"}]},
+ {w:14, fase:"Piek", focus:"De langste van het schema: 18 km. Heel rustig, gewoon uitlopen. Hierna weet je: de afstand komt eraan.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:18,n:"Duurloop — langste!"}]},
  {w:15, fase:"Taper", focus:"Taper: volume flink omlaag, benen fris maken. Je wordt hier fitter zonder hard te trainen, vertrouw erop.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:12,n:"Duurloop"}]},
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:10,n:"Duurloop"}]},
  {w:16, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op de dag zelf. Start heel rustig, de eerste kilometers moeten bijna te makkelijk voelen. Geniet ervan!",
   runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Losse benen",d:"Kort en soepel, een paar strides om scherp te blijven"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
 ];
@@ -559,7 +559,7 @@ function renderZones(){
     $("zonesTitle").textContent = "Tempo-zones — " + state.athletes.a.name;
     $("zonesList").innerHTML = ZONES_DENISE.map(z=>
       '<div class="zone"><span><b>'+z.n+'</b><br><small style="color:var(--mut)">'+z.d+'</small></span><span class="p">'+z.p+' /km</span></div>').join("");
-    $("zonesNote").innerHTML = "Zones afgeleid uit je Huawei-data (mei–juli): rustige runs rond 6:50–7:10, duurlopen rond 6:15–6:35. Streeftijd voor de halve: <b>±2:20–2:30</b>. Belangrijkste winst nu: <b>3× per week</b> lopen. Houd je knie in de gaten: voelt-ie iets rond 4–5 km, minder dan of stop. Laat 'm checken bij de fysio voordat het volume flink omhoog gaat.";
+    $("zonesNote").innerHTML = "Zones afgeleid uit je Huawei-data (mei–juli): rustige runs rond 6:50–7:10, duurlopen rond 6:15–6:35. Streeftijd voor de halve: <b>±2:20–2:30</b>. <b>Knie eerst</b>: die speelt nu op, dus de komende weken bewust rustig, kracht-oefeningen erbij en even langs de fysio voordat we het volume opvoeren. Daarna zit de winst vooral in <b>3× per week</b> lopen. Voelt de knie iets tijdens een run, minder dan of stop.";
   }
 }
 
