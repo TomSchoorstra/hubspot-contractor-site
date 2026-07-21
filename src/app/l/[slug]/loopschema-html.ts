@@ -270,9 +270,17 @@ const ZONES_TOM = [
   {n:"Tempo", p:"5:45–6:00", d:"pittig, gecontroleerd"},
   {n:"Interval / strides", p:"5:25–5:40", d:"korte snelle stukken"}
 ];
+// Zones voor Denise, afgeleid uit haar Huawei-data (mei–juli 2026).
+const ZONES_DENISE = [
+  {n:"Rustig / long run", p:"6:50–7:10", d:"praattempo"},
+  {n:"Vlot duurloop", p:"6:15–6:35", d:"stevig maar comfortabel"},
+  {n:"Racetempo (doel ± 2:25)", p:"6:40–6:55", d:"halve-marathontempo"},
+  {n:"Tempo", p:"5:55–6:10", d:"pittig, gecontroleerd"},
+  {n:"Strides", p:"5:30–5:50", d:"korte losse versnellingen"}
+];
 
 // type: e=rustig, q=kwaliteit, l=long, t=test, r=race
-const PLAN = [
+const PLAN_TOM = [
  {w:1, fase:"Basis", focus:"Startweek (al onderweg!). Alles op praattempo — echt rustig. Hamstring-check na elke run. Fysio-oefeningen zijn leidend. 2 runs deze week is ook prima.",
   runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
  {w:2, fase:"Basis", focus:"Frequentie naar vast 3× per week. Zelfde opzet, iets langer. Blijft de hamstring 'licht' of beter? Dan door.",
@@ -306,7 +314,48 @@ const PLAN = [
  {w:16, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op racedag: geen nieuwe schoenen, geen nieuw ontbijt. Start rustig — de eerste 5 km moeten te langzaam voelen.",
   runs:[{t:"e",km:4,n:"Rustige run"},{t:"q",km:5,n:"Opfrisser 3× 1 km",d:"3× 1 km @ racetempo + paar strides, verder heel rustig"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
 ];
-const KRACHT = "Hamstring-kracht (fysio-oefeningen · later Nordic curls, single-leg bridge, hip thrust)";
+
+// Schema voor Denise — afgestemd op haar Huawei-data (basis tot 10 km, tempo ~6:05–6:35).
+// Grootste winst: frequentie omhoog naar 3×/week. Knie-bewust opgebouwd (herstelweken, knie-kracht).
+const PLAN_DENISE = [
+ {w:1, fase:"Basis", focus:"Je hebt al een mooie basis (tot 10 km!). De grote winst zit nu in vaste frequentie: 3 keer per week i.p.v. 1 à 2. Alles rustig op praattempo, knie in de gaten houden.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
+ {w:2, fase:"Basis", focus:"Ritme vasthouden op 3 runs. Long run naar 9 km, rustig tempo.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
+ {w:3, fase:"Basis", focus:"Long run tikt 10 km aan, je bekende afstand. Verder rustig doorbouwen.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:10,n:"Duurloop"}]},
+ {w:4, fase:"Basis", focus:"Voorbij je huidige max: long run 11 km. Neem wat water mee en houd het tempo laag.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:11,n:"Duurloop"}]},
+ {w:5, fase:"Basis", herstel:true, focus:"Herstelweek. Bewust minder volume zodat knie en benen bijtanken.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
+ {w:6, fase:"Opbouw", focus:"Nieuw terrein: long run 12 km. Rustig blijven, vooral op de laatste kilometers.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:12,n:"Duurloop"}]},
+ {w:7, fase:"Opbouw", focus:"Beetje snelheid erin, alleen als de knie meewerkt. Long run 13 km.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:7,n:"Rustig + strides",d:"Rustige run, laatste 2 km: 5x 20 sec vlot met ruim dribbel ertussen. Stoppen bij kniepijn."},{t:"l",km:13,n:"Duurloop"}]},
+ {w:8, fase:"Opbouw", focus:"Long run 14 km. Test alvast je race-ontbijt en drinken/gel onderweg.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:14,n:"Duurloop"}]},
+ {w:9, fase:"Opbouw", herstel:true, focus:"Herstelweek. Gas terug na de 14 km, dan begin je fris aan het laatste blok.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:11,n:"Duurloop"}]},
+ {w:10, fase:"Opbouw", focus:"Long run 15 km. Let op je houding als je moe wordt.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:8,n:"Tempo 2x 8 min",d:"Inlopen, 2x 8 min iets vlotter (5:55–6:10) met 3 min dribbel, uitlopen"},{t:"l",km:15,n:"Duurloop"}]},
+ {w:11, fase:"Opbouw", focus:"Long run 16 km. Mooie mijlpaal richting de halve.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:8,n:"Rustig + strides",d:"Rustige run, laatste 2 km: 6x 20 sec vlot met dribbel ertussen"},{t:"l",km:16,n:"Duurloop"}]},
+ {w:12, fase:"Piek", focus:"Piekfase. Long run 17 km, rustig uitlopen. Eten en drinken onderweg blijven oefenen.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:17,n:"Duurloop"}]},
+ {w:13, fase:"Piek", focus:"Long run 18 km. Hierna weet je: de afstand komt eraan.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:18,n:"Duurloop"}]},
+ {w:14, fase:"Piek", focus:"De langste van het schema: 19 km. Heel rustig, gewoon uitlopen. Laatste grote prikkel.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:19,n:"Duurloop — langste!"}]},
+ {w:15, fase:"Taper", focus:"Taper: volume flink omlaag, benen fris maken. Je wordt hier fitter zonder hard te trainen, vertrouw erop.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:12,n:"Duurloop"}]},
+ {w:16, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op de dag zelf. Start heel rustig, de eerste kilometers moeten bijna te makkelijk voelen. Geniet ervan!",
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Losse benen",d:"Kort en soepel, een paar strides om scherp te blijven"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
+];
+const KRACHT_TOM = "Hamstring-kracht (fysio-oefeningen · later Nordic curls, single-leg bridge, hip thrust)";
+const KRACHT_DENISE = "Knie-kracht: glute bridges, clamshells, single-leg step-downs, wall sits en kuitheffingen. Sterke billen en quads ontlasten de knie.";
+
+const PLAN = LOOP.rowId === "tom" ? PLAN_TOM : PLAN_DENISE;
+const KRACHT = LOOP.rowId === "tom" ? KRACHT_TOM : KRACHT_DENISE;
 const TYPE_META = {e:{tag:null}, q:{tag:["KWALITEIT","q"]}, l:{tag:["LONG RUN","l"]}, t:{tag:["TEST","q"]}, r:{tag:["RACE","r"]}, h:{tag:["VAKANTIE","l"]}};
 
 /* ================= SEED (startdata per persoon — ingebakken) ================= */
@@ -319,7 +368,10 @@ const SEED_TOM = {athletes:{
       note:"COACH: loopband, 8,3 km/u @ 1,7% helling = gem. 7:16/km. Kalibratie-run: HR gem. 156 / max 170 — ~20 slagen lager dan de veldrun (176/190). Bewijst dat rustig tempo veel beter zit. Heup/hamstring: nergens last gehad — vlakke bandondergrond beviel goed. NB: Fitbit-afstand onbruikbaar op de band (gokte 4,57 km); bandwaarde 4,27 km aangehouden. Dag na de long run, dus HR licht verhoogd door restvermoeidheid.", ts:1753027260000}
   }}
 }};
-const SEED_DENISE = {athletes:{ a:{name:"Denise <3", logs:{}} }};
+const SEED_DENISE = {athletes:{ a:{name:"Denise <3", logs:{
+  "w1r1": {done:true, dist:5.01, time:"31:25", feel:4, hr:158, note:"Tempo-run 18 juli. Gem. 6:16/km, HR 158 — gecontroleerd en consistent.", ts:1752846240000},
+  "w2r2": {done:true, dist:6.29, time:"41:05", feel:4, hr:156, note:"Duurloop 20 juli. Gem. 6:32/km, HR 156.", ts:1753019160000}
+}} }};
 
 function baseSeed(){
   const s = LOOP.rowId === "tom" ? SEED_TOM : SEED_DENISE;
@@ -504,9 +556,10 @@ function renderZones(){
       '<div class="zone"><span><b>'+z.n+'</b><br><small style="color:var(--mut)">'+z.d+'</small></span><span class="p">'+z.p+' /km</span></div>').join("");
     $("zonesNote").innerHTML = "Voorlopige streeftijd: <b>2:20–2:25</b> (met de vakantie erin is dit realistischer dan 2:15). Definitief na de 5k-test in week 8. Regel #1: bij <b>verergering van de hamstring</b> vervalt de eerstvolgende kwaliteitssessie en overleg je met je fysio.";
   } else {
-    $("zonesTitle").textContent = "Tempo-zones";
-    $("zonesList").innerHTML = '<div class="zone"><span><b>Nog even geduld</b><br><small style="color:var(--mut)">we stellen je zones in na je eerste runs</small></span><span class="p">—</span></div>';
-    $("zonesNote").textContent = "Begin gewoon rustig en op gevoel. Zodra je een paar runs hebt gelogd, stemmen we je tempo-zones en afstanden helemaal op jou af.";
+    $("zonesTitle").textContent = "Tempo-zones — " + state.athletes.a.name;
+    $("zonesList").innerHTML = ZONES_DENISE.map(z=>
+      '<div class="zone"><span><b>'+z.n+'</b><br><small style="color:var(--mut)">'+z.d+'</small></span><span class="p">'+z.p+' /km</span></div>').join("");
+    $("zonesNote").innerHTML = "Zones afgeleid uit je Huawei-data (mei–juli): rustige runs rond 6:50–7:10, duurlopen rond 6:15–6:35. Streeftijd voor de halve: <b>±2:20–2:30</b>. Belangrijkste winst nu: <b>3× per week</b> lopen. Houd je knie in de gaten: voelt-ie iets rond 4–5 km, minder dan of stop. Laat 'm checken bij de fysio voordat het volume flink omhoog gaat.";
   }
 }
 
@@ -549,7 +602,7 @@ function renderWeeks(){
       const l = logs[id];
       const meta = TYPE_META[r.t];
       const tag = meta.tag ? '<span class="tag '+meta.tag[1]+'">'+meta.tag[0]+'</span>' : "";
-      const paceHint = LOOP.zones==="tom" ? paceFor(r.t) : "";
+      const paceHint = LOOP.zones==="tom" ? paceFor(r.t) : paceForPartner(r.t);
       const pc = (l&&l.done) ? paceStr(l.dist, l.time) : "";
       const loggedLine = (l&&l.done) ? '<div class="logged">✓ '
         +(l.dist? fmt(+l.dist)+" km":"")
@@ -590,6 +643,9 @@ function renderWeeks(){
 function paceFor(t){
   if(LOOP.zones!=="tom") return "";
   return {e:"Tempo: 6:45–7:15 /km — praattempo", l:"Tempo: 6:45–7:15 /km, comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Start op ± 6:40 /km — niet sneller!", h:"Uren op de benen = training. Afstand loggen mag, hoeft niet."}[t] || "";
+}
+function paceForPartner(t){
+  return {e:"Tempo: 6:50–7:10 /km — praattempo", l:"Tempo: 6:15–6:35 /km, comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Start op ± 6:50 /km — niet sneller!", h:""}[t] || "";
 }
 
 function renderFoot(){
