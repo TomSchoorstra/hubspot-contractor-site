@@ -18,7 +18,7 @@ export async function GET(
   const cfg = JSON.stringify({
     apiKey: slug,
     name: profile.name,
-    hamstring: profile.hamstring,
+    check: profile.check,
     zones: profile.zones,
     rowId: profile.rowId,
   });

@@ -43,6 +43,19 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   h1{font-family:'Barlow Condensed',sans-serif; font-weight:700; font-size:42px; line-height:1; text-transform:uppercase; letter-spacing:.02em; margin:4px 0 2px;}
   .sub{color:var(--mut); font-size:13.5px;}
 
+  /* ---------- alert (blessure-waarschuwing) ---------- */
+  .alert{background:#E5484D1A; border:1px solid #E5484D55; border-radius:var(--r); padding:13px 15px; margin:14px 0; font-size:12.5px; line-height:1.55; color:#F1C3C5;}
+  .alert b{color:#FF9195;}
+  .alert .at{font-family:'Barlow Condensed'; font-size:16px; font-weight:700; text-transform:uppercase; letter-spacing:.03em; color:#FF9195; display:block; margin-bottom:5px;}
+
+  /* ---------- tennis-toggle & overgeslagen run ---------- */
+  .tennis{display:inline-flex; align-items:center; gap:6px; justify-self:start; font-size:12px; font-weight:600; color:var(--mut); background:var(--panel2); border:1px solid var(--line); border-radius:9px; padding:8px 11px; cursor:pointer; user-select:none;}
+  .tennis.on{border-color:var(--green); color:var(--green); background:var(--green-soft);}
+  .sess.skipped{opacity:.6; cursor:default;}
+  .sess.skipped .name{text-decoration:line-through;}
+  .sess.skipped .km{text-decoration:line-through; color:var(--mut);}
+  .skip-note{color:var(--amber) !important; font-weight:600;}
+
   /* ---------- route signature ---------- */
   .route-card{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); padding:16px 16px 10px; margin:14px 0;}
   .route-head{display:flex; justify-content:space-between; align-items:baseline; margin-bottom:4px;}
@@ -171,6 +184,8 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
     <div class="sub" id="countdown"></div>
   </header>
 
+  <div class="alert" id="topAlert" style="display:none"></div>
+
   <!-- signature: route progress -->
   <div class="route-card">
     <div class="route-head">
@@ -269,7 +284,12 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
 
 <script>
 /*__LOOP_CONFIG__*/
-const LOOP = (typeof window !== "undefined" && window.__LOOP__) || {apiKey:"", name:"", hamstring:false, zones:"partner", rowId:"denise"};
+const LOOP = (typeof window !== "undefined" && window.__LOOP__) || {apiKey:"", name:"", check:null, zones:"partner", rowId:"denise"};
+const CHECK = LOOP.check || null; // "hamstring" | "knie" | null — blessure-check per run
+const CHECK_META = {
+  hamstring: {label:"Hamstring", ergerLabel:"🔴 Verergerd", warn:"<b>Let op:</b> hamstring verergerd. Advies: sla de volgende kwaliteitssessie over, houd alles rustig en bespreek dit met je fysio voordat je opbouwt."},
+  knie: {label:"Knie", ergerLabel:"🔴 Pijn", warn:"<b>Let op:</b> knie gaf pijn. Deze week niet ophogen, en bij aanhoudende klachten eerst naar de fysio voordat je verdergaat. Kniepijn wegtrainen bestaat niet."}
+};
 
 /* ================= PLAN DATA ================= */
 const RACE_DATE = new Date(2026,10,1);
@@ -327,41 +347,42 @@ const PLAN_TOM = [
   runs:[{t:"e",km:4,n:"Rustige run"},{t:"q",km:5,n:"Opfrisser 3× 1 km",d:"3× 1 km @ racetempo + paar strides, verder heel rustig"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
 ];
 
-// Schema voor Denise — afgestemd op haar Huawei-data (basis tot 10 km, tempo ~6:05–6:35).
-// Grootste winst: frequentie omhoog naar 3×/week. Knie-bewust opgebouwd (herstelweken, knie-kracht).
+// Schema voor Denise — coach-revisie (jul 2026). Alleen rustige runs + long run
+// (geen harde tempoblokken tot fysio-akkoord). Eerste 3 weken vlak/laag om de knie
+// te laten settelen; long run blijft ≤~46% van het weekvolume; strak 3-op-1 patroon.
 const PLAN_DENISE = [
- {w:1, fase:"Basis", focus:"Je hebt al een mooie basis (tot 10 km). De grote winst zit in vaste frequentie: 3 keer per week i.p.v. 1 à 2. Alles rustig op praattempo.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
- {w:2, fase:"Basis", focus:"Knie gaf klachten bij je laatste runs, dus de komende weken staat die voorop. Volume bewust laag: long run terug naar 6 km, rustig tempo. Maak een afspraak bij de fysio voordat we opbouwen. Voelt de knie iets, minder dan of stop.",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
- {w:3, fase:"Basis", focus:"Nog steeds voorzichtig. Alleen ophogen als de knie rustig blijft. Kracht-oefeningen voor de knie zijn deze weken minstens zo belangrijk als de runs.",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
- {w:4, fase:"Basis", focus:"Als de knie meewerkt heel licht omhoog: long run 7 km. Zo niet, blijf op 6 km of korter. Geen haast, we hebben de tijd tot november.",
+ {w:1, fase:"Settelen", focus:"Frequentie is nu het doel: 3 keer lopen i.p.v. 1 à 2. Afstand bewust laag en gelijk, alles op rustig praattempo. Knie na elke run checken.",
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:4,n:"Rustige run"},{t:"l",km:5,n:"Duurloop"}]},
+ {w:2, fase:"Settelen", focus:"Nog steeds settelen op 3 runs, zelfde lage volume. Knie gaf klachten, dus maak deze weken een fysio-afspraak. Voelt de knie iets, minder dan of stop.",
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:4,n:"Rustige run"},{t:"l",km:5,n:"Duurloop"}]},
+ {w:3, fase:"Settelen", focus:"Laatste settel-week op gelijk volume. Kracht-oefeningen voor de knie zijn nu minstens zo belangrijk als de runs. Ophogen pas als de knie rustig is.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:5,n:"Duurloop"}]},
+ {w:4, fase:"Opbouw", focus:"Als de knie meewerkt heel licht omhoog. Ook de doordeweekse runs groeien mee, niet alleen de long run.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
+ {w:5, fase:"Opbouw", focus:"Rustig doorbouwen, long run naar 7 km. Blijf op praattempo.",
   runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:7,n:"Duurloop"}]},
- {w:5, fase:"Basis", herstel:true, focus:"Herstelweek. Bewust minder zodat de knie en benen bijtanken. Herstel is waar de aanpassing gebeurt.",
+ {w:6, fase:"Opbouw", herstel:true, focus:"Herstelweek. Volume bewust omlaag zodat knie en benen bijtanken. Herstel is waar je sterker wordt.",
   runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
- {w:6, fase:"Opbouw", focus:"Mits de knie rustig is (idealiter na de fysio) weer voorzichtig opbouwen. Long run 8 km, rustig tempo.",
+ {w:7, fase:"Opbouw", focus:"Weer voorzichtig omhoog, long run 8 km. Mits de knie rustig is (idealiter na de fysio).",
   runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
- {w:7, fase:"Opbouw", focus:"Rustig doorbouwen. Long run 9 km. Blijf luisteren naar de knie.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
- {w:8, fase:"Opbouw", focus:"Terug op je bekende 10 km. Eerste keer wat strides, alleen als de knie meewerkt.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",d:"Rustige run, laatste 1,5 km: 4x 20 sec vlot met ruim dribbel ertussen. Stoppen bij kniepijn."},{t:"l",km:10,n:"Duurloop"}]},
- {w:9, fase:"Opbouw", herstel:true, focus:"Herstelweek. Gas terug na de 10 km, dan begin je fris aan het laatste blok.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
- {w:10, fase:"Opbouw", focus:"Voorbij je huidige max: long run 11 km. Neem wat water mee en houd het tempo laag.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:11,n:"Duurloop"}]},
- {w:11, fase:"Opbouw", focus:"Long run 13 km. Nieuw terrein, rustig uitlopen.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:13,n:"Duurloop"}]},
- {w:12, fase:"Piek", focus:"Piekfase. Long run 14 km. Test alvast je race-ontbijt en drinken/gel onderweg.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:7,n:"Tempo 2x 8 min",d:"Inlopen, 2x 8 min iets vlotter (5:55–6:10) met 3 min dribbel, uitlopen. Alleen pijnvrij."},{t:"l",km:14,n:"Duurloop"}]},
- {w:13, fase:"Piek", focus:"Long run 16 km. Mooie mijlpaal richting de halve.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:16,n:"Duurloop"}]},
- {w:14, fase:"Piek", focus:"De langste van het schema: 18 km. Heel rustig, gewoon uitlopen. Hierna weet je: de afstand komt eraan.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:18,n:"Duurloop — langste!"}]},
- {w:15, fase:"Taper", focus:"Taper: volume flink omlaag, benen fris maken. Je wordt hier fitter zonder hard te trainen, vertrouw erop.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:10,n:"Duurloop"}]},
+ {w:8, fase:"Opbouw", focus:"Long run 9 km. Doordeweeks ook iets langer.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
+ {w:9, fase:"Opbouw", focus:"Long run terug op je bekende 10 km. Voelt alles pijnvrij? Dan mag je aan het eind van een rustige run een paar losse strides doen.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:10,n:"Duurloop"}]},
+ {w:10, fase:"Opbouw", herstel:true, focus:"Herstelweek. Even gas terug voor het laatste blok.",
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:7,n:"Duurloop"}]},
+ {w:11, fase:"Opbouw", focus:"Long run 10 km, maar het weekvolume ligt hoger door langere doordeweekse runs.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:10,n:"Duurloop"}]},
+ {w:12, fase:"Piek", focus:"Piekfase. Long run 12 km. Test alvast je race-ontbijt en drinken/gel onderweg.",
+  runs:[{t:"e",km:7,n:"Rustige run"},{t:"e",km:7,n:"Rustige run"},{t:"l",km:12,n:"Duurloop"}]},
+ {w:13, fase:"Piek", herstel:true, focus:"Herstelweek midden in de piek. Kort bijtanken voor de langste run.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
+ {w:14, fase:"Piek", focus:"De langste van het schema: 14 km. Heel rustig uitlopen, gewoon de afstand maken.",
+  runs:[{t:"e",km:7,n:"Rustige run"},{t:"e",km:8,n:"Rustige run"},{t:"l",km:14,n:"Duurloop — langste!"}]},
+ {w:15, fase:"Taper", focus:"Taper: volume omlaag, benen fris maken. Je wordt hier fitter zonder hard te trainen, vertrouw erop.",
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
  {w:16, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op de dag zelf. Start heel rustig, de eerste kilometers moeten bijna te makkelijk voelen. Geniet ervan!",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Losse benen",d:"Kort en soepel, een paar strides om scherp te blijven"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
+  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:4,n:"Losse benen"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
 ];
 const KRACHT_TOM = "Hamstring-kracht (fysio-oefeningen · later Nordic curls, single-leg bridge, hip thrust)";
 const KRACHT_DENISE = "Knie-kracht: glute bridges, clamshells, single-leg step-downs, wall sits en kuitheffingen. Sterke billen en quads ontlasten de knie.";
@@ -381,8 +402,8 @@ const SEED_TOM = {athletes:{
   }}
 }};
 const SEED_DENISE = {athletes:{ a:{name:"Denise <3", logs:{
-  "w1r1": {done:true, dist:5.01, time:"31:25", feel:4, hr:158, note:"Tempo-run 18 juli. Gem. 6:16/km, HR 158 — gecontroleerd en consistent.", ts:1752846240000},
-  "w2r2": {done:true, dist:6.29, time:"41:05", feel:4, hr:156, note:"Duurloop 20 juli. Gem. 6:32/km, HR 156.", ts:1753019160000}
+  "w1r3": {done:true, dist:5.01, time:"31:25", feel:4, hr:158, ham:"erger", note:"18 juli. Gem. 6:16/km, HR 158. Knie: pijn na afloop.", ts:1752846240000},
+  "w2r3": {done:true, dist:6.29, time:"41:05", feel:4, hr:156, ham:"erger", note:"20 juli. Gem. 6:32/km, HR 156. Knie: pijn na afloop.", ts:1753019160000}
 }} }};
 
 // Denise' runs van vóór de schemastart (13 juli), uit haar Huawei-data. Read-only overzicht.
@@ -400,6 +421,7 @@ function baseSeed(){
   const s = LOOP.rowId === "tom" ? SEED_TOM : SEED_DENISE;
   const out = JSON.parse(JSON.stringify(s));
   out.athletes.a.name = LOOP.name || out.athletes.a.name;
+  out.athletes.a.tennisWeeks = out.athletes.a.tennisWeeks || {}; // {weeknr: true}
   return out;
 }
 function mergeSeed(stored){
@@ -407,6 +429,7 @@ function mergeSeed(stored){
   if(stored && stored.athletes && stored.athletes.a){
     if(stored.athletes.a.name) out.athletes.a.name = stored.athletes.a.name;
     Object.assign(out.athletes.a.logs, stored.athletes.a.logs || {});
+    Object.assign(out.athletes.a.tennisWeeks, stored.athletes.a.tennisWeeks || {});
   }
   return out;
 }
@@ -498,7 +521,22 @@ function paceStr(distKm, timeStr){
 }
 
 function logsOf(){ return state.athletes[who].logs; }
-function totalPlannedKm(){ return PLAN.reduce((s,w)=> s + w.runs.reduce((a,r)=>a+r.km,0), 0); }
+function tennisWeeksOf(){ return state.athletes[who].tennisWeeks || (state.athletes[who].tennisWeeks = {}); }
+
+// Als er in een week getennist is, vervalt de KORTSTE easy run (nooit long/kwaliteit).
+// Geeft de run-id terug die die week wordt overgeslagen, of null.
+function skippedRunId(w){
+  if(!tennisWeeksOf()[w.w]) return null;
+  let best = null, bestKm = Infinity;
+  w.runs.forEach((r,i)=>{ if(r.t==="e" && r.km < bestKm){ bestKm = r.km; best = "w"+w.w+"r"+(i+1); } });
+  return best;
+}
+function totalPlannedKm(){
+  return PLAN.reduce((s,w)=>{
+    const skip = skippedRunId(w);
+    return s + w.runs.reduce((a,r,i)=> a + ("w"+w.w+"r"+(i+1)===skip ? 0 : r.km), 0);
+  }, 0);
+}
 
 function currentWeek(){
   const now = new Date();
@@ -509,8 +547,17 @@ function currentWeek(){
 
 /* ================= RENDER ================= */
 function render(){
-  const parts = [renderRoute, renderStats, renderZones, renderBars, renderHistory, renderWeeks, renderFoot];
+  const parts = [renderAlert, renderRoute, renderStats, renderZones, renderBars, renderHistory, renderWeeks, renderFoot];
   parts.forEach(fn=>{ try{ fn(); }catch(e){ console.error(fn.name, e); } });
+}
+
+function renderAlert(){
+  const el = $("topAlert");
+  if(CHECK !== "knie"){ el.style.display = "none"; return; }
+  el.style.display = "";
+  el.innerHTML = '<span class="at">⚠️ Knie eerst</span>'
+    + 'Je knie gaf bij de laatste runs pijn. <b>Regel: pijn tijdens of ná een run = die week niet ophogen</b>, en bij aanhoudende pijn eerst naar de fysio voordat je verdergaat. Kniepijn wegtrainen bestaat niet. De eerste weken houden we bewust vlak en laag, maak in die tijd een fysio-afspraak.'
+    + '<br><br><b>Cadans-tip:</b> je pasfrequentie is nu ~145–155/min. Probeer richting <b>165–170/min</b> (kortere pas, landing dichter onder je lichaam) via een metronoom-app of muziek op ~165 bpm. Een van de effectiefste dingen om de knie te ontlasten.';
 }
 
 function renderRoute(){
@@ -537,17 +584,20 @@ function renderStats(){
   const logs = logsOf();
   let km=0, done=0, total=0;
   PLAN.forEach(w=>{
+    const skip = skippedRunId(w);
     w.runs.forEach((r,i)=>{
+      const id = "w"+w.w+"r"+(i+1);
+      if(id===skip) return; // vervangen door tennis: telt niet mee als openstaand
       total++;
-      const l = logs["w"+w.w+"r"+(i+1)];
+      const l = logs[id];
       if(l && l.done){ done++; km += (l.dist!=null && l.dist!=="" ? +l.dist : r.km); }
     });
   });
   $("stKm").textContent = fmt(km);
-  $("stSess").textContent = Math.round(100*done/total) + "%";
-  // hamstring trend: laatste 3 checks (alleen bij hamstring-profiel)
+  $("stSess").textContent = (total? Math.round(100*done/total) : 0) + "%";
+  // blessure-trend: laatste 3 checks (alleen als het profiel een check heeft)
   const hamEl = $("stHam");
-  if(LOOP.hamstring){
+  if(CHECK){
     const checks = [];
     PLAN.forEach(w=> w.runs.forEach((r,i)=>{
       const l = logs["w"+w.w+"r"+(i+1)];
@@ -559,7 +609,7 @@ function renderStats(){
       const c = v==="goed"?"g": v==="licht"?"a": v==="erger"?"r":"";
       return '<i class="'+c+'"></i>';
     }).join("");
-    $("stHamLbl").textContent = "hamstring";
+    $("stHamLbl").textContent = CHECK_META[CHECK].label.toLowerCase();
     hamEl.parentElement.style.display = "";
   } else {
     hamEl.innerHTML = "<i></i><i></i><i></i>";
@@ -591,9 +641,14 @@ function renderBars(){
   const el = $("bars"); el.innerHTML = "";
   const maxKm = Math.max(...PLAN.map(w=> w.runs.reduce((a,r)=>a+r.km,0)));
   PLAN.forEach(w=>{
-    const plan = w.runs.reduce((a,r)=>a+r.km,0);
-    let act = 0;
-    w.runs.forEach((r,i)=>{ const l = logs["w"+w.w+"r"+(i+1)]; if(l&&l.done) act += (l.dist!=null && l.dist!=="" ? +l.dist : r.km); });
+    const skip = skippedRunId(w);
+    let plan = 0, act = 0;
+    w.runs.forEach((r,i)=>{
+      const id = "w"+w.w+"r"+(i+1);
+      if(id===skip) return;
+      plan += r.km;
+      const l = logs[id]; if(l&&l.done) act += (l.dist!=null && l.dist!=="" ? +l.dist : r.km);
+    });
     const bar = document.createElement("div"); bar.className="bar";
     bar.innerHTML = '<div class="stack" style="height:'+Math.round(100*plan/maxKm)+'%"><div class="fill" style="height:'+(plan? Math.min(100,Math.round(100*act/plan)) : 0)+'%"></div></div><div class="lbl">'+w.w+'</div>';
     el.appendChild(bar);
@@ -618,6 +673,7 @@ function renderWeeks(){
   const logs = logsOf();
   const el = $("weeks"); el.innerHTML = "";
   const cur = currentWeek();
+  const checkLbl = CHECK ? CHECK_META[CHECK].label.toLowerCase() : "";
   let lastFase = "";
   PLAN.forEach(w=>{
     if(w.fase !== lastFase){
@@ -625,20 +681,32 @@ function renderWeeks(){
       f.textContent = "Fase · " + w.fase;
       el.appendChild(f); lastFase = w.fase;
     }
+    const skip = skippedRunId(w);
     const d = document.createElement("details"); d.className = "week";
     if(w.w === cur){ d.classList.add("current"); d.open = true; }
     const ws = START_DATE.getTime() + (w.w-1)*7*864e5;
     const we = ws + 6*864e5;
     const dateStr = new Date(ws).toLocaleDateString("nl-NL",{day:"numeric",month:"short"}) + " – " + new Date(we).toLocaleDateString("nl-NL",{day:"numeric",month:"short"});
-    const planKm = w.runs.reduce((a,r)=>a+r.km,0);
-    const doneCnt = w.runs.filter((r,i)=> logs["w"+w.w+"r"+(i+1)]?.done).length;
+    // tellingen exclusief de overgeslagen (tennis) run
+    let planKm = 0, total = 0, doneCnt = 0;
+    w.runs.forEach((r,i)=>{ const id="w"+w.w+"r"+(i+1); if(id===skip) return; planKm += r.km; total++; if(logs[id]?.done) doneCnt++; });
 
-    let body = '<div class="wk-focus">'+w.focus+'</div>';
+    const tOn = !!tennisWeeksOf()[w.w];
+    let body = '<div class="tennis'+(tOn?" on":"")+'" data-tw="'+w.w+'">🎾 Getennist deze week'+(tOn?" ✓":"")+'</div>';
+    body += '<div class="wk-focus">'+w.focus+'</div>';
     w.runs.forEach((r,i)=>{
       const id = "w"+w.w+"r"+(i+1);
-      const l = logs[id];
       const meta = TYPE_META[r.t];
       const tag = meta.tag ? '<span class="tag '+meta.tag[1]+'">'+meta.tag[0]+'</span>' : "";
+      if(id===skip){
+        body += '<div class="sess skipped" data-skip="1">'
+          + '<div class="chk">🎾</div>'
+          + '<div class="info"><div class="name">Dag '+(i+1)+' · '+r.n+tag+'</div>'
+          + '<div class="det skip-note">Vervangen door tennis deze week</div></div>'
+          + '<div class="km">'+fmt(r.km)+'<small style="font-size:12px"> km</small></div></div>';
+        return;
+      }
+      const l = logs[id];
       const paceHint = LOOP.zones==="tom" ? paceFor(r.t) : paceForPartner(r.t);
       const pc = (l&&l.done) ? paceStr(l.dist, l.time) : "";
       const loggedLine = (l&&l.done) ? '<div class="logged">✓ '
@@ -646,7 +714,7 @@ function renderWeeks(){
         +(l.time? " · "+l.time:"")
         +(pc? " · "+pc:"")
         +(l.hr? " · "+l.hr+" bpm":"")
-        +(l.ham? " · hamstring: "+l.ham:"")+'</div>' : "";
+        +(l.ham? " · "+checkLbl+": "+l.ham:"")+'</div>' : "";
       body += '<div class="sess '+(r.t==="r"?"race ":"")+((l&&l.done)?"done":"")+'" data-id="'+id+'">'
         + '<div class="chk">'+((l&&l.done)?"✓":"")+'</div>'
         + '<div class="info"><div class="name">Dag '+(i+1)+' · '+r.n+tag+'</div>'
@@ -663,14 +731,18 @@ function renderWeeks(){
 
     d.innerHTML = '<summary>'
       + '<div class="wk-num">W'+w.w+'<small>'+(w.herstel?"herstel":w.fase)+'</small></div>'
-      + '<div class="wk-meta"><div class="t">'+dateStr+'</div><div class="d">'+w.runs.length+' runs · '+fmt(planKm)+' km gepland</div></div>'
-      + '<div class="wk-prog '+(doneCnt===w.runs.length?"done":"")+'">'+doneCnt+'/'+w.runs.length+'</div>'
+      + '<div class="wk-meta"><div class="t">'+dateStr+'</div><div class="d">'+total+' runs · '+fmt(planKm)+' km gepland'+(skip?" · 🎾":"")+'</div></div>'
+      + '<div class="wk-prog '+(total>0 && doneCnt===total?"done":"")+'">'+doneCnt+'/'+total+'</div>'
       + '</summary><div class="wk-body">'+body+'</div>';
     el.appendChild(d);
   });
 
+  el.querySelectorAll(".tennis").forEach(t=>{
+    t.onclick = (e)=>{ e.stopPropagation(); toggleTennis(+t.dataset.tw); };
+  });
   el.querySelectorAll(".sess").forEach(s=>{
     s.onclick = ()=>{
+      if(s.dataset.skip) return;
       const id = s.dataset.id;
       if(s.dataset.kracht){ toggleKracht(id); }
       else openLog(id);
@@ -708,7 +780,15 @@ function openLog(id){
   $("inTime").value = formVals.time;
   $("inHr").value = l.hr ?? "";
   $("inNote").value = formVals.note;
-  $("rowHam").style.display = LOOP.hamstring ? "" : "none";
+  if(CHECK){
+    $("rowHam").style.display = "";
+    $("rowHam").querySelector("label").textContent = CHECK_META[CHECK].label + "-check";
+    const ergerBtn = $("inHam").querySelector('button[data-v="erger"]');
+    if(ergerBtn) ergerBtn.textContent = CHECK_META[CHECK].ergerLabel;
+    $("hamWarn").innerHTML = CHECK_META[CHECK].warn;
+  } else {
+    $("rowHam").style.display = "none";
+  }
   $("hamWarn").classList.remove("on");
   updatePaceLive();
   syncPills();
@@ -733,7 +813,7 @@ $("btnSave").onclick = ()=>{
     dist: $("inDist").value.trim()==="" ? null : parseFloat($("inDist").value.replace(",",".")),
     time: $("inTime").value.trim(),
     hr: $("inHr").value.trim()==="" ? null : parseInt($("inHr").value,10),
-    feel: formVals.feel, ham: (LOOP.hamstring ? formVals.ham : null),
+    feel: formVals.feel, ham: (CHECK ? formVals.ham : null),
     note: $("inNote").value.trim(), ts: Date.now()
   };
   saveState(); closeSheet(); render(); toast("Run opgeslagen ✓");
@@ -746,6 +826,11 @@ $("btnClear").onclick = ()=>{
 function toggleKracht(id){
   const logs = logsOf();
   if(logs[id]?.done) delete logs[id]; else logs[id] = {done:true, ts:Date.now()};
+  saveState(); render();
+}
+function toggleTennis(wNum){
+  const tw = tennisWeeksOf();
+  if(tw[wNum]) delete tw[wNum]; else tw[wNum] = true;
   saveState(); render();
 }
 

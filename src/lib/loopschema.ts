@@ -8,13 +8,13 @@ const DENISE_SLUG = process.env.LOOP_SLUG_DENISE ?? "4vhn8key2md6rqxs";
 export type LoopProfile = {
   rowId: string; // primaire sleutel in training_state
   name: string;
-  hamstring: boolean; // toont hamstring-tracking (alleen Tom)
+  check: "hamstring" | "knie" | null; // blessure-check per run (null = geen)
   zones: "tom" | "partner";
 };
 
 export const PROFILES: Record<string, LoopProfile> = {
-  [TOM_SLUG]: { rowId: "tom", name: "Tom", hamstring: true, zones: "tom" },
-  [DENISE_SLUG]: { rowId: "denise", name: "Denise <3", hamstring: false, zones: "partner" },
+  [TOM_SLUG]: { rowId: "tom", name: "Tom", check: "hamstring", zones: "tom" },
+  [DENISE_SLUG]: { rowId: "denise", name: "Denise <3", check: "knie", zones: "partner" },
 };
 
 export function profileForKey(key?: string | null): LoopProfile | null {
