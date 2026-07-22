@@ -256,7 +256,7 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   <div class="intent" id="shIntent"></div>
   <div class="warn-box" id="hamWarn"><b>Let op:</b> hamstring verergerd. Advies: sla de volgende kwaliteitssessie over, houd alles rustig en bespreek dit met je fysio voordat je opbouwt.</div>
   <div class="frow" id="rowDist"><label>Afstand (km)</label><input type="number" step="0.01" inputmode="decimal" id="inDist" placeholder="bijv. 6.4"></div>
-  <div class="frow" id="rowTime"><label>Tijd (mm:ss of u:mm:ss)</label><input type="text" inputmode="numeric" id="inTime" placeholder="bijv. 38:04"></div>
+  <div class="frow" id="rowTime"><label>Tijd (min.sec)</label><input type="text" inputmode="decimal" id="inTime" placeholder="bijv. 38.04"></div>
   <div class="pace-live" id="paceLive"></div>
   <div class="frow" id="rowHr"><label>Gem. hartslag (optioneel)</label><input type="number" step="1" inputmode="numeric" id="inHr" placeholder="bijv. 156"></div>
   <div class="frow"><label>Hoe zwaar voelde het?</label>
