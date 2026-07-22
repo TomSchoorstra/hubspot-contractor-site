@@ -435,13 +435,18 @@ function baseSeed(){
   return out;
 }
 function mergeSeed(stored){
-  const out = baseSeed();
+  // Bestaat er al opgeslagen state? Dan is die volledig leidend — de SEED wordt
+  // NIET opnieuw ingespoten. Anders zou een verwijderde (voor-ingevulde) run
+  // bij elke herlaad terugkomen. SEED geldt dus alleen bij een lege start.
   if(stored && stored.athletes && stored.athletes.a){
-    if(stored.athletes.a.name) out.athletes.a.name = stored.athletes.a.name;
-    Object.assign(out.athletes.a.logs, stored.athletes.a.logs || {});
-    Object.assign(out.athletes.a.tennisWeeks, stored.athletes.a.tennisWeeks || {});
+    const src = stored.athletes.a;
+    return {athletes:{ a:{
+      name: src.name || LOOP.name,
+      logs: src.logs || {},
+      tennisWeeks: src.tennisWeeks || {}
+    }}};
   }
-  return out;
+  return baseSeed();
 }
 
 /* ================= STORAGE LAYER (Supabase via serverless proxy) ================= */
