@@ -92,6 +92,11 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   /* ---------- weeks ---------- */
   .fase-label{margin:22px 0 8px; color:var(--mut); font-size:12px; letter-spacing:.16em; text-transform:uppercase; font-weight:600; display:flex; align-items:center; gap:10px;}
   .fase-label::after{content:""; flex:1; height:1px; background:var(--line);}
+  .phase-tabs{display:flex; gap:6px; overflow-x:auto; margin:6px 0 14px; padding-bottom:4px;}
+  .phase-tabs::-webkit-scrollbar{display:none;}
+  .phase-tab{flex:0 0 auto; padding:8px 13px; border-radius:20px; border:1px solid var(--line); background:var(--panel); color:var(--mut); font-family:'Barlow Condensed'; font-size:15px; font-weight:600; text-transform:uppercase; letter-spacing:.05em; cursor:pointer; white-space:nowrap;}
+  .phase-tab.on{background:var(--orange); border-color:var(--orange); color:#10100E;}
+  .phase-tab.cur:not(.on){border-color:var(--orange); color:var(--orange);}
   details.week{background:var(--panel); border:1px solid var(--line); border-radius:var(--r); margin-bottom:10px; overflow:hidden;}
   details.week[open]{border-color:#33455470;}
   details.week.current{border-color:var(--orange);}
@@ -510,6 +515,8 @@ function saveState(){
 let state = null;
 const who = "a";         // één persoon per pagina — altijd slot 'a'
 let openSess = null;     // {id, run, w}
+let activePhase = null;  // actieve fase-tab (UI-state, niet persistent)
+let openWeeks = null;    // Set van uitgeklapte weeknummers (UI-state)
 let formVals = {};
 
 const $ = id => document.getElementById(id);
@@ -696,16 +703,33 @@ function renderWeeks(){
   const el = $("weeks"); el.innerHTML = "";
   const cur = currentWeek();
   const checkLbl = CHECK ? CHECK_META[CHECK].label.toLowerCase() : "";
-  let lastFase = "";
-  PLAN.forEach(w=>{
-    if(w.fase !== lastFase){
-      const f = document.createElement("div"); f.className = "fase-label";
-      f.textContent = "Fase · " + w.fase;
-      el.appendChild(f); lastFase = w.fase;
-    }
+
+  // fases in volgorde van eerste voorkomen
+  const phases = [];
+  PLAN.forEach(w=>{ if(!phases.includes(w.fase)) phases.push(w.fase); });
+  if(openWeeks === null) openWeeks = new Set([cur]);
+  if(activePhase === null || !phases.includes(activePhase)){
+    activePhase = (PLAN.find(w=> w.w === cur) || PLAN[0]).fase;
+  }
+
+  // tab-balk met de fases
+  const tabs = document.createElement("div"); tabs.className = "phase-tabs";
+  phases.forEach(f=>{
+    const b = document.createElement("button");
+    const isCur = PLAN.some(w=> w.w === cur && w.fase === f);
+    b.className = "phase-tab" + (f===activePhase?" on":"") + (isCur?" cur":"");
+    b.textContent = f;
+    b.onclick = ()=>{ activePhase = f; renderWeeks(); };
+    tabs.appendChild(b);
+  });
+  el.appendChild(tabs);
+
+  PLAN.filter(w=> w.fase === activePhase).forEach(w=>{
     const skip = skippedRunId(w);
     const d = document.createElement("details"); d.className = "week";
-    if(w.w === cur){ d.classList.add("current"); d.open = true; }
+    if(w.w === cur) d.classList.add("current");
+    d.open = openWeeks.has(w.w);
+    d.ontoggle = ()=>{ if(d.open) openWeeks.add(w.w); else openWeeks.delete(w.w); };
     const ws = START_DATE.getTime() + (w.w-1)*7*864e5;
     const we = ws + 6*864e5;
     const dateStr = new Date(ws).toLocaleDateString("nl-NL",{day:"numeric",month:"short"}) + " – " + new Date(we).toLocaleDateString("nl-NL",{day:"numeric",month:"short"});
