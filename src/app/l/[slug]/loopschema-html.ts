@@ -156,7 +156,11 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   .pill-row.ham button.sel[data-v="goed"]{border-color:var(--green); background:var(--green-soft);}
   .pill-row.ham button.sel[data-v="licht"]{border-color:var(--amber); background:#EAB25122;}
   .pill-row.ham button.sel[data-v="erger"]{border-color:var(--red); background:#E5484D22;}
-  .feel-row button{font-size:20px;}
+  .feel-row button{display:flex; flex-direction:column; align-items:center; justify-content:center; gap:2px; padding:9px 3px;}
+  .feel-row button b{font-family:'Barlow Condensed'; font-size:18px; font-weight:700; line-height:1;}
+  .feel-row button span{font-size:9.5px; line-height:1.1; color:inherit;}
+  .feel-hint{font-size:11px; color:var(--mut); margin:-2px 0 8px;}
+  .intent{color:var(--mut); font-size:12px; line-height:1.5; margin:-10px 0 16px;}
   .btns{display:flex; gap:9px; margin-top:18px;}
   .btn{flex:1; padding:14px; border-radius:12px; border:none; font-family:'Barlow Condensed'; font-size:19px; font-weight:700; text-transform:uppercase; letter-spacing:.05em; cursor:pointer;}
   .btn.pri{background:var(--orange); color:#10100E;}
@@ -249,14 +253,16 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
 <div class="sheet" id="sheet">
   <h3 id="shTitle"></h3>
   <div class="sd" id="shDesc"></div>
+  <div class="intent" id="shIntent"></div>
   <div class="warn-box" id="hamWarn"><b>Let op:</b> hamstring verergerd. Advies: sla de volgende kwaliteitssessie over, houd alles rustig en bespreek dit met je fysio voordat je opbouwt.</div>
   <div class="frow" id="rowDist"><label>Afstand (km)</label><input type="number" step="0.01" inputmode="decimal" id="inDist" placeholder="bijv. 6.4"></div>
   <div class="frow" id="rowTime"><label>Tijd (mm:ss of u:mm:ss)</label><input type="text" inputmode="numeric" id="inTime" placeholder="bijv. 38:04"></div>
   <div class="pace-live" id="paceLive"></div>
   <div class="frow" id="rowHr"><label>Gem. hartslag (optioneel)</label><input type="number" step="1" inputmode="numeric" id="inHr" placeholder="bijv. 156"></div>
-  <div class="frow"><label>Hoe voelde het?</label>
+  <div class="frow"><label>Hoe zwaar voelde het?</label>
+    <div class="feel-hint">praattest: kon je nog kletsen?</div>
     <div class="pill-row feel-row" id="inFeel">
-      <button data-v="1">😖</button><button data-v="2">😕</button><button data-v="3">🙂</button><button data-v="4">😄</button><button data-v="5">🚀</button>
+      <button data-v="1"><b>1</b><span>heel licht</span></button><button data-v="2"><b>2</b><span>licht</span></button><button data-v="3"><b>3</b><span>gemiddeld</span></button><button data-v="4"><b>4</b><span>zwaar</span></button><button data-v="5"><b>5</b><span>maximaal</span></button>
     </div>
   </div>
   <div class="frow" id="rowHam"><label>Hamstring-check</label>
@@ -505,9 +511,16 @@ const $ = id => document.getElementById(id);
 
 function fmt(n){ return (Math.round(n*10)/10).toString().replace(".",","); }
 
+// Tolerant: 38:04 / 38.04 / 38,04 → allemaal 38:04. Punt/komma worden als
+// scheidingsteken behandeld en dubbele/rand-dubbelepunten opgeschoond.
+function normalizeTime(t){
+  if(t==null) return "";
+  return String(t).trim().replace(/[.,]/g, ":").replace(/:+/g, ":").replace(/^:|:$/g, "");
+}
 function parseTime(t){
-  if(!t) return 0;
-  const parts = String(t).trim().split(":").map(function(x){ return Number(x); });
+  const n = normalizeTime(t);
+  if(!n) return 0;
+  const parts = n.split(":").map(function(x){ return Number(x); });
   if(parts.some(function(x){ return isNaN(x); })) return 0;
   if(parts.length===3) return parts[0]*3600 + parts[1]*60 + parts[2];
   if(parts.length===2) return parts[0]*60 + parts[1];
@@ -747,11 +760,13 @@ function renderWeeks(){
     t.onclick = (e)=>{ e.stopPropagation(); toggleTennis(+t.dataset.tw); };
   });
   el.querySelectorAll(".sess").forEach(s=>{
-    s.onclick = ()=>{
+    s.onclick = (e)=>{
       if(s.dataset.skip) return;
       const id = s.dataset.id;
-      if(s.dataset.kracht){ toggleKracht(id); }
-      else openLog(id);
+      if(s.dataset.kracht){ toggleKracht(id); return; }
+      // Tik op het rondje = direct afvinken (1-tik loggen). Rest van de rij = details.
+      if(e.target.closest(".chk")){ toggleDone(id); return; }
+      openLog(id);
     };
   });
 }
@@ -761,6 +776,18 @@ function paceFor(t){
 }
 function paceForPartner(t){
   return {e:"Tempo: 6:50–7:10 /km — praattempo", l:"Tempo: 6:15–6:35 /km, comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Start op ± 6:50 /km — niet sneller!", h:""}[t] || "";
+}
+// Eén rustige regel met de bedoeling van de sessie (tempo uit de zones + bedoeld gevoel).
+function intentLine(r){
+  const z = LOOP.zones==="tom" ? ZONES_TOM : ZONES_DENISE;
+  switch(r.t){
+    case "e": return "Bedoeld: rustig praattempo (" + z[0].p + " /km) · gevoel 2–3";
+    case "l": return "Bedoeld: rustig/lang, praattempo (" + z[0].p + " /km) · gevoel 2–3";
+    case "q": return "Bedoeld: kwaliteit, zie omschrijving · gevoel 3–4";
+    case "t": return "Bedoeld: test, zie omschrijving";
+    case "r": return "Bedoeld: racetempo (" + z[2].p + " /km) · gevoel 4, gecontroleerd";
+    default: return "";
+  }
 }
 
 function renderFoot(){
@@ -782,7 +809,11 @@ function openLog(id){
   formVals = {dist:l.dist ?? "", time:l.time ?? "", feel:l.feel ?? null, ham:l.ham ?? null, note:l.note ?? ""};
   $("shTitle").textContent = "Week "+w.w+" · Dag "+m[2]+" — "+r.n;
   $("shDesc").textContent = (r.d || "") + (r.d? " · ":"") + "Gepland: "+fmt(r.km)+" km";
-  $("inDist").value = formVals.dist;
+  const intent = intentLine(r);
+  $("shIntent").textContent = intent;
+  $("shIntent").style.display = intent ? "" : "none";
+  // Afstand voorvullen met de geplande km (bewerkbaar) als er nog niks gelogd is.
+  $("inDist").value = (l.dist!=null && l.dist!=="") ? l.dist : (r.km>0 && r.t!=="h" ? r.km : "");
   $("inTime").value = formVals.time;
   $("inHr").value = l.hr ?? "";
   $("inNote").value = formVals.note;
@@ -806,8 +837,8 @@ function syncPills(){
 }
 $("inDist").oninput = updatePaceLive;
 $("inTime").oninput = updatePaceLive;
-$("inFeel").onclick = e=>{ if(e.target.dataset.v){ formVals.feel = +e.target.dataset.v; syncPills(); } };
-$("inHam").onclick = e=>{ if(e.target.dataset.v){ formVals.ham = e.target.dataset.v; syncPills(); $("hamWarn").classList.toggle("on", formVals.ham==="erger"); } };
+$("inFeel").onclick = e=>{ const b=e.target.closest("button"); if(b && b.dataset.v){ formVals.feel = +b.dataset.v; syncPills(); } };
+$("inHam").onclick = e=>{ const b=e.target.closest("button"); if(b && b.dataset.v){ formVals.ham = b.dataset.v; syncPills(); $("hamWarn").classList.toggle("on", formVals.ham==="erger"); } };
 $("btnCancel").onclick = closeSheet;
 $("overlay").onclick = ()=>{ closeSheet(); closeIO(); };
 function closeSheet(){ $("overlay").classList.remove("on"); $("sheet").classList.remove("on"); openSess=null; }
@@ -817,7 +848,7 @@ $("btnSave").onclick = ()=>{
   logsOf()[openSess.id] = {
     done:true,
     dist: $("inDist").value.trim()==="" ? null : parseFloat($("inDist").value.replace(",",".")),
-    time: $("inTime").value.trim(),
+    time: normalizeTime($("inTime").value),
     hr: $("inHr").value.trim()==="" ? null : parseInt($("inHr").value,10),
     feel: formVals.feel, ham: (CHECK ? formVals.ham : null),
     note: $("inNote").value.trim(), ts: Date.now()
@@ -832,6 +863,17 @@ $("btnClear").onclick = ()=>{
 function toggleKracht(id){
   const logs = logsOf();
   if(logs[id]?.done) delete logs[id]; else logs[id] = {done:true, ts:Date.now()};
+  saveState(); render();
+}
+function toggleDone(id){
+  const logs = logsOf();
+  if(logs[id] && logs[id].done){
+    logs[id].done = false;              // ongedaan, maar bewaar eventuele details
+    toast("Afvinken ongedaan");
+  } else {
+    logs[id] = Object.assign(logs[id] || {}, {done:true, ts:(logs[id] && logs[id].ts) || Date.now()});
+    toast("Afgevinkt ✓");
+  }
   saveState(); render();
 }
 function toggleTennis(wNum){
