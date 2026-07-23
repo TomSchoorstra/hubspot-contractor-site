@@ -119,6 +119,9 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   .sess .info{flex:1; min-width:0;}
   .sess .name{font-weight:600; font-size:14px;}
   .sess .det{font-size:12px; color:var(--mut); line-height:1.45;}
+  .sess .det ol.q-steps{margin:2px 0 0; padding-left:18px; display:grid; gap:2px;}
+  .sess .det ol.q-steps li{font-size:12px; color:var(--ink); line-height:1.45;}
+  .sess .det .q-why{margin-top:6px; font-style:italic; color:var(--mut); line-height:1.5;}
   .sess .km{font-family:'Barlow Condensed'; font-size:24px; font-weight:700; color:var(--orange); white-space:nowrap;}
   .sess.race .km{color:var(--amber);}
   .sess .logged{font-size:11px; color:var(--green); font-weight:600;}
@@ -367,35 +370,35 @@ const PLAN_TOM = [
 // te laten settelen; long run blijft ≤~46% van het weekvolume; strak 3-op-1 patroon.
 const PLAN_DENISE = [
  {w:1, fase:"Basis", focus:"Ambitieuze start! Vaste 3× per week: een rustige run, een kwaliteitssessie en een long run. Rustige km's blijven op praattempo. Knie in de gaten houden.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",d:"Rustige run, laatste km's: 6× 20 sec vlot (niet sprinten) met ruime dribbel ertussen. Zachte kennismaking met sneller lopen. Stoppen bij kniepijn."},{t:"l",km:9,n:"Duurloop"}]},
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",steps:["Rustige duurloop: ~4,5 km op 6:30–6:55 (praattempo)","Strides: 6× 20 sec vloeiend versnellen, 60–90 sec dribbel/wandel ertussen (~1,5 km)"],why:"Zachtste vorm van snelheidswerk: maakt je benen wakker en verbetert je techniek zonder de klap van echte intervallen. Een stride is géén sprint, soepel en gecontroleerd, na elke stride volledig herstellen. Voel je de knie? Strides overslaan, rustig uitlopen."},{t:"l",km:9,n:"Duurloop"}]},
  {w:2, fase:"Basis", focus:"Long run tikt 10 km aan. Eerste echte intervalletjes, gedoseerd. Voelt de knie iets, minder dan of stop.",
-  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:6,n:"Intervallen",d:"Inlopen, 5× 400m @ 5:15–5:30 met evenveel dribbel/wandel herstel, uitlopen. Stoppen bij kniepijn."},{t:"l",km:10,n:"Duurloop"}]},
+  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:6,n:"Intervallen",steps:["Inlopen: 10 min rustig (~1,5 km)","Hoofddeel: 5× 400 m op 5:15–5:30, 90 sec dribbelherstel","Uitlopen: 10 min rustig (~1,5 km)"],why:"Je eerste echte intervaltraining. Korte snelle stukken maken je efficiënter en sneller; 400m is bewust kort voor deze kennismaking. Alle vijf in ongeveer hetzelfde tempo, ga je de eerste te hard dan klap je op de laatste. Herstel volledig, en stop bij kniepijn."},{t:"l",km:10,n:"Duurloop"}]},
  {w:3, fase:"Basis", herstel:true, focus:"Herstelweek. Volume omlaag zodat de benen en de knie bijtanken. Kwaliteit blijft licht.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:5,n:"Rustig + strides",d:"Herstelweek: rustige run met 6× 20 sec licht versnellen. Niets forceren."},{t:"l",km:8,n:"Duurloop"}]},
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:5,n:"Rustig + strides",steps:["Rustige duurloop: ~3,5 km heel ontspannen","Strides: 4× 20 sec vlot met ruim herstel (~1,5 km)"],why:"Herstelweek: je lichaam verwerkt nu de opbouw, dat gebeurt tijdens rust niet tijdens de training. Alles moet makkelijk voelen; kom je hijgend thuis, dan ging het te hard. Speelde de knie? Dé week om 'm te laten kalmeren, sla desnoods de strides over."},{t:"l",km:8,n:"Duurloop"}]},
  {w:4, fase:"Opbouw", focus:"Weer omhoog. Long run 11 km, intervallen iets langer.",
-  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:7,n:"Intervallen",d:"Inlopen, 6× 400m @ 5:15–5:30 met gelijk herstel, uitlopen. Stoppen bij kniepijn."},{t:"l",km:11,n:"Duurloop"}]},
+  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:7,n:"Intervallen",steps:["Inlopen: 12 min rustig (~1,7 km)","Hoofddeel: 6× 400 m op 5:15–5:30, 90 sec dribbelherstel","Uitlopen: 12 min rustig (~1,7 km)"],why:"Voortbouwen op week 2 met één herhaling extra. Kun je nummer 6 nog in hetzelfde tempo als nummer 1? Dan goed gedoseerd. Zakt je tempo per herhaling weg, dan startte je te snel, volgende keer rustiger beginnen. Knie voelbaar: stoppen."},{t:"l",km:11,n:"Duurloop"}]},
  {w:5, fase:"Opbouw", focus:"Eerste tempoblokken: aaneengesloten iets sneller lopen. Long run 12 km.",
-  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:7,n:"Tempo",d:"Inlopen, 3× 5 min @ 5:55–6:10 met 2–3 min dribbel, uitlopen."},{t:"l",km:12,n:"Duurloop"}]},
+  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:7,n:"Tempo",steps:["Inlopen: 13 min rustig (~1,9 km)","Hoofddeel: 3× 5 min op tempo (5:40–5:55), 2,5 min dribbel ertussen","Uitlopen: 13 min rustig (~1,9 km)"],why:"We schakelen van korte intervallen naar langere tempoblokken, dit traint je drempel: de motor achter een snellere halve. Comfortabel-zwaar: je kunt nog een paar woorden zeggen, geen gesprek. Na het derde blok moet je je nog goed voelen; loop het niet als een race."},{t:"l",km:12,n:"Duurloop"}]},
  {w:6, fase:"Opbouw", focus:"Langere intervallen (600m). Long run 13 km. Neem water/gel mee op de long run.",
-  runs:[{t:"e",km:8,n:"Rustige run"},{t:"q",km:8,n:"Intervallen",d:"Inlopen, 5× 600m @ 5:15–5:30 met ~90 sec dribbel/wandel, uitlopen. Stoppen bij kniepijn."},{t:"l",km:13,n:"Duurloop"}]},
+  runs:[{t:"e",km:8,n:"Rustige run"},{t:"q",km:8,n:"Intervallen",steps:["Inlopen: 14 min rustig (~2,0 km)","Hoofddeel: 5× 600 m op 5:15–5:30, 90 sec dribbelherstel","Uitlopen: 14 min rustig (~2,0 km)"],why:"Langere intervallen dan de 400m'jes: je houdt het snelle tempo iets langer vast, wat snelheid én uithoudingsvermogen bouwt. Elke 600m voelt als een klein bergje, verdeel je energie zodat je het tempo tot het eind vasthoudt. Meer belasting per herhaling, dus luister goed naar de knie."},{t:"l",km:13,n:"Duurloop"}]},
  {w:7, fase:"Opbouw", herstel:true, focus:"Herstelweek. Gas terug na drie weken opbouwen.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",d:"Herstelweek: rustige run met een paar losse strides. Bijtanken."},{t:"l",km:10,n:"Duurloop"}]},
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",steps:["Rustige duurloop: ~4,5 km ontspannen","Strides: 4–6× 20 sec vlot met ruim herstel (~1,5 km)"],why:"Na drie stevige weken tanken benen en knie nu bij. De strides houden je snelheid levend zonder te belasten. Voel je je aan het eind ongeduldig om te knallen, dan is de herstelweek geslaagd. Perfecte week om te checken hoe de knie ervoor staat."},{t:"l",km:10,n:"Duurloop"}]},
  {w:8, fase:"Opbouw", focus:"Langere tempoblokken. Long run 14 km. Test alvast je race-ontbijt en drinken onderweg.",
-  runs:[{t:"e",km:8,n:"Rustige run"},{t:"q",km:8,n:"Tempo",d:"Inlopen, 2× 10 min @ 5:55–6:10 met 3 min dribbel, uitlopen."},{t:"l",km:14,n:"Duurloop"}]},
+  runs:[{t:"e",km:8,n:"Rustige run"},{t:"q",km:8,n:"Tempo",steps:["Inlopen: 15 min rustig (~2,1 km)","Hoofddeel: 2× 10 min op tempo (5:40–5:55), 3 min dribbel ertussen","Uitlopen: 15 min rustig (~2,1 km)"],why:"Langere aaneengesloten tempoblokken dan week 5, je traint je vermogen om een stevig tempo écht lang vast te houden: de sleutel voor de tweede helft van je race. De eerste minuten voelen prima, richting het eind moet je focussen. Begin elk blok iets rustiger dan je denkt aan te kunnen."},{t:"l",km:14,n:"Duurloop"}]},
  {w:9, fase:"Opbouw", focus:"Long run 15 km, nieuw terrein. Intervallen op 600m.",
-  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:8,n:"Intervallen",d:"Inlopen, 6× 600m @ 5:15–5:30 met ~90 sec herstel, uitlopen. Stoppen bij kniepijn."},{t:"l",km:15,n:"Duurloop"}]},
+  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:8,n:"Intervallen",steps:["Inlopen: 11 min rustig (~1,6 km)","Hoofddeel: 6× 600 m op 5:15–5:30, 90 sec dribbelherstel","Uitlopen: 11 min rustig (~1,6 km)"],why:"Je zwaarste intervaltraining: zes langere herhalingen op snelheid, in de fase waarin je conditie het hardst groeit. Doel: alle zes in ongeveer hetzelfde tempo, gelijkmatigheid verslaat een heldhaftige start. Qua kniebelasting een van de zwaarste sessies; voel je iets, stop dan zonder twijfel."},{t:"l",km:15,n:"Duurloop"}]},
  {w:10, fase:"Opbouw", focus:"Long run 16 km. Stevige tempoblokken. Mooie mijlpaal richting de halve.",
-  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:9,n:"Tempo",d:"Inlopen, 3× 8 min @ 5:55–6:10 met 3 min dribbel, uitlopen."},{t:"l",km:16,n:"Duurloop"}]},
+  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:9,n:"Tempo",steps:["Inlopen: 14 min rustig (~2,0 km)","Hoofddeel: 3× 8 min op tempo (5:40–5:55), 3 min dribbel ertussen","Uitlopen: 14 min rustig (~2,0 km)"],why:"Veel tempo-volume (24 min) in de laatste grote opbouwweek, dit maakt je racetempo straks makkelijker doordat je drempel omhoog gaat. Het derde blok is een mentale test. Lukt het niet meer op tempo? Geen falen, noteer het, het vertelt ons iets over je herstel."},{t:"l",km:16,n:"Duurloop"}]},
  {w:11, fase:"Opbouw", herstel:true, focus:"Herstelweek vóór de piek. Fris worden.",
-  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:7,n:"Rustig + strides",d:"Herstelweek: rustig met een paar strides. Fris blijven voor de piek."},{t:"l",km:13,n:"Duurloop"}]},
+  runs:[{t:"e",km:7,n:"Rustige run"},{t:"q",km:7,n:"Rustig + strides",steps:["Rustige duurloop: ~5,5 km ontspannen","Strides: 4–6× 20 sec vlot met ruim herstel (~1,5 km)"],why:"Laatste herstelweek vóór de piek: laad je batterij op zodat je de zwaarste twee weken fris kunt aanvliegen. Ga niet stiekem harder omdat je je goed voelt, bewaar het. Check de knie: de piek vraagt straks het meeste van je."},{t:"l",km:13,n:"Duurloop"}]},
  {w:12, fase:"Piek", focus:"Piekfase. Racetempo-blokken: oefenen op je doeltempo (~6:00). Long run 17 km.",
-  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:9,n:"Racetempo",d:"Inlopen, 3× 3 km @ racetempo (~6:00) met 3 min dribbel, uitlopen. Moet 'te makkelijk' voelen."},{t:"l",km:17,n:"Duurloop"}]},
+  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:12,n:"Racetempo",steps:["Inlopen: 8 min rustig (~1,1 km)","Hoofddeel: 3× 3 km op racetempo (~6:00), 3 min dribbel ertussen","Uitlopen: 8 min rustig (~1,1 km)"],why:"Nu oefenen we specifiek op je wedstrijdtempo, zodat het op 1 november vertrouwd voelt in plaats van eng. Dit moet juist níet keihard voelen, racetempo hoort gecontroleerd en bijna comfortabel te zijn. Voelt het loodzwaar, dan is de streeftijd te ambitieus en stellen we bij: geef door hoe het ging, dan bepalen we samen 2:00 of 2:10."},{t:"l",km:17,n:"Duurloop"}]},
  {w:13, fase:"Piek", focus:"De langste van het schema: 18 km. Langere racetempo-blokken. Hierna weet je: de afstand komt eraan.",
-  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:9,n:"Racetempo",d:"Inlopen, 2× 4 km @ racetempo (~6:00) met 3 min dribbel, uitlopen."},{t:"l",km:18,n:"Duurloop — langste!"}]},
+  runs:[{t:"e",km:9,n:"Rustige run"},{t:"q",km:11,n:"Racetempo",steps:["Inlopen: 9 min rustig (~1,3 km)","Hoofddeel: 2× 4 km op racetempo (~6:00), 3 min dribbel ertussen","Uitlopen: 9 min rustig (~1,3 km)"],why:"Langere aaneengesloten stukken op racetempo, als laatste grote scherpteslag, je bevestigt dat je het doeltempo lang kunt vasthouden. Gecontroleerd stevig; vertrouw op wat je hebt opgebouwd. Dit valt in je drukste week (ook de 18 km long run), dus verdeel je energie en luister extra naar knie en lichaam."},{t:"l",km:18,n:"Duurloop — langste!"}]},
  {w:14, fase:"Taper", focus:"Taper: volume flink omlaag, beetje scherpte erin houden. Je wordt hier fitter zonder hard te trainen.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:6,n:"Tempo",d:"Inlopen, 2× 2 km @ ~6:00, uitlopen. Kort en scherp."},{t:"l",km:10,n:"Duurloop"}]},
+  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:6,n:"Tempo",steps:["Inlopen: 17 min rustig (~2,5 km)","Hoofddeel: 2× 2 km op tempo (5:40–5:55), 3 min dribbel ertussen","Uitlopen: kort uitdribbelen (~0,5 km)"],why:"Taper: volume flink omlaag, een beetje scherpte erin. Je verliest geen conditie door minder te doen, je wint frisheid. Deze blokken mogen lekker aanvoelen omdat je uitgerust bent. Weersta de verleiding om nog een goede training te doen; fris aan de start is meer waard."},{t:"l",km:10,n:"Duurloop"}]},
  {w:15, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op de dag zelf. Start rustig, de eerste kilometers moeten bijna te makkelijk voelen. Geniet ervan!",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:4,n:"Opfrisser",d:"3× 1 km @ racetempo (~6:00) met ruim dribbel, verder heel rustig."},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
+  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:4,n:"Opfrisser",steps:["Inlopen: kort en rustig (~0,5 km)","Hoofddeel: 3× 1 km op racetempo (~6:00) met ruim herstel + een paar losse strides","Uitlopen: kort uitdribbelen"],why:"Laatste korte opfrisser om je benen aan racetempo te herinneren zonder ze moe te maken, puur scherpte, geen training meer. Makkelijk en vertrouwd; dit tempo ken je nu. Niets nieuws deze week (schoenen, ontbijt), en op de dag zelf: start rustig, de eerste km's moeten bijna te langzaam voelen. Succes! 🏁"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
 ];
 const KRACHT_TOM = "Hamstring-kracht (fysio-oefeningen · later Nordic curls, single-leg bridge, hip thrust)";
 const KRACHT_DENISE = "Knie-kracht: glute bridges, clamshells, single-leg step-downs, wall sits en kuitheffingen. Sterke billen en quads ontlasten de knie.";
@@ -755,6 +758,9 @@ function renderWeeks(){
       }
       const l = logs[id];
       const paceHint = LOOP.zones==="tom" ? paceFor(r.t) : paceForPartner(r.t);
+      const detHtml = r.steps
+        ? '<ol class="q-steps">'+r.steps.map(st=>'<li>'+st+'</li>').join("")+'</ol>'+(r.why? '<div class="q-why">'+r.why+'</div>' : "")
+        : (r.d ? r.d : paceHint);
       const pc = (l&&l.done) ? paceStr(l.dist, l.time) : "";
       const loggedLine = (l&&l.done) ? '<div class="logged">✓ '
         +(l.dist? fmt(+l.dist)+" km":"")
@@ -765,7 +771,7 @@ function renderWeeks(){
       body += '<div class="sess '+(r.t==="r"?"race ":"")+((l&&l.done)?"done":"")+'" data-id="'+id+'">'
         + '<div class="chk">'+((l&&l.done)?"✓":"")+'</div>'
         + '<div class="info"><div class="name">Dag '+(i+1)+' · '+r.n+tag+'</div>'
-        + '<div class="det">'+(r.d? r.d : paceHint)+'</div>'+loggedLine+'</div>'
+        + '<div class="det">'+detHtml+'</div>'+loggedLine+'</div>'
         + '<div class="km">'+(r.t==="h" ? '<small style="font-size:14px">vrij</small>' : fmt(r.km)+'<small style="font-size:12px"> km</small>')+'</div></div>';
     });
     // kracht (aantal sessies profiel-afhankelijk)
