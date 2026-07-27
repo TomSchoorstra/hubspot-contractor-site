@@ -332,8 +332,8 @@ const ZONES_DENISE = [
 
 // type: e=rustig/short, q=kwaliteit, l=long, t=test (5K), r=race, h=vakantie/hike
 // Bron: Tom's aangeleverde 14-weeks schema (27 jul 2026 → race 1 nov). Alle titels
-// en teksten zijn verbatim overgenomen. Elke sessie heeft een stabiel `id`. Q-sessies
-// dragen `q`-metadata (alleen voor validatie, voedt nooit de weergegeven tekst).
+// en teksten zijn verbatim overgenomen. Elke sessie heeft een stabiel id-veld. Q-sessies
+// dragen q-metadata (alleen voor validatie, voedt nooit de weergegeven tekst).
 // hmPaceRef:true = toon het (voorlopige/bevestigde) halve-marathontempo — alleen wk 11-14.
 // Weektotalen worden NIET opgeslagen; ze worden runtime gesommeerd uit runs[].km.
 const PLAN_TOM = [
