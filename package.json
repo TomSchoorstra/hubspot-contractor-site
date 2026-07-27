@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "next dev",
     "validate:tom-plan": "node scripts/validate-tom-plan.mjs",
-    "build": "npm run validate:tom-plan && next build",
+    "validate:denise-plan": "node scripts/validate-denise-plan.mjs",
+    "build": "npm run validate:tom-plan && npm run validate:denise-plan && next build",
     "start": "next start",
     "lint": "eslint"
   },
