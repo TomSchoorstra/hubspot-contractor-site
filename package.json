@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "validate:tom-plan": "node scripts/validate-tom-plan.mjs",
+    "build": "npm run validate:tom-plan && next build",
     "start": "next start",
     "lint": "eslint"
   },

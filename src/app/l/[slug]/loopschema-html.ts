@@ -122,6 +122,7 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   .sess .det ol.q-steps{margin:2px 0 0; padding-left:18px; display:grid; gap:2px;}
   .sess .det ol.q-steps li{font-size:12px; color:var(--ink); line-height:1.45;}
   .sess .det .q-why{margin-top:6px; font-style:italic; color:var(--mut); line-height:1.5;}
+  .sess .det .q-pace{margin-top:6px; font-size:12px; color:var(--orange); line-height:1.5;}
   .sess .km{font-family:'Barlow Condensed'; font-size:24px; font-weight:700; color:var(--orange); white-space:nowrap;}
   .sess.race .km{color:var(--amber);}
   .sess .logged{font-size:11px; color:var(--green); font-weight:600;}
@@ -267,6 +268,7 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
   <div class="frow" id="rowTime"><label>Tijd (min.sec)</label><input type="text" inputmode="decimal" id="inTime" placeholder="bijv. 38.04"></div>
   <div class="pace-live" id="paceLive"></div>
   <div class="frow" id="rowHr"><label>Gem. hartslag (optioneel)</label><input type="number" step="1" inputmode="numeric" id="inHr" placeholder="bijv. 156"></div>
+  <div class="frow" id="rowFiveK" style="display:none"><label>5K-testtijd (mm:ss)</label><input type="text" inputmode="decimal" id="inFiveK" placeholder="bijv. 24:00"></div>
   <div class="frow"><label>Hoe zwaar voelde het?</label>
     <div class="feel-hint">praattest: kon je nog kletsen?</div>
     <div class="pill-row feel-row" id="inFeel">
@@ -310,15 +312,14 @@ const CHECK_META = {
 
 /* ================= PLAN DATA ================= */
 const RACE_DATE = new Date(2026,10,1);
-// Startdatum per atleet: Tom 16 wk vanaf 13 juli, Denise 15 wk vanaf 20 juli. Beide eindigen op de race.
-const START_DATE = LOOP.rowId === "tom" ? new Date(2026,6,13) : new Date(2026,6,20);
+// Startdatum per atleet: Tom 14 wk vanaf 27 juli, Denise 15 wk vanaf 20 juli. Beide eindigen op de race.
+const START_DATE = LOOP.rowId === "tom" ? new Date(2026,6,27) : new Date(2026,6,20);
 
+// Rustig-tempo + jog-herstel: de racetempo-rij is dynamisch (berekend uit de 5K-test
+// of handmatig bevestigd) en wordt in renderZones() aangevuld — niet hier statisch.
 const ZONES_TOM = [
-  {n:"Rustig (long run, in-/uitlopen)", p:"7:15", d:"startpunt — praattest leidend, langzamer altijd oké"},
-  {n:"Dribbel / actief herstel", p:"7:30", d:"tussen herhalingen"},
-  {n:"Racetempo", p:"6:24", d:"voorlopig — bevestigd na de 5k-test (week 7)"},
-  {n:"Tempo", p:"5:55–6:10", d:"~7/10 inspanning — richting, geen hard doel"},
-  {n:"Interval", p:"5:30–5:45", d:"gelijkmatig en gecontroleerd — geen hard doel"}
+  {n:"Rustig (easy/long run, in-/uitlopen)", p:"7:15", d:"startpunt — praattest leidend, langzamer altijd oké"},
+  {n:"Zeer rustig jog-herstel", p:"7:30–8:00", d:"tussen herhalingen, of wandelen"}
 ];
 // Zones voor Denise, afgeleid uit haar Huawei-data (mei–juli 2026).
 const ZONES_DENISE = [
@@ -329,72 +330,171 @@ const ZONES_DENISE = [
   {n:"Interval", p:"5:15–5:30", d:"korte snelle herhalingen"}
 ];
 
-// type: e=rustig, q=kwaliteit, l=long, t=test, r=race
-// Bron: TOM_TRAININGSPLAN_FINAL.md (juli 2026) — dubbele 18km-piek (wk 9 + wk 14),
-// bevestigd door Tom, geen open discussiepunt. Racetempo 6:24/km is voorlopig tot
-// de 5k-test in week 7. 7:15/km is een startpunt voor rustige runs, geen ondergrens.
+// type: e=rustig/short, q=kwaliteit, l=long, t=test (5K), r=race, h=vakantie/hike
+// Bron: Tom's aangeleverde 14-weeks schema (27 jul 2026 → race 1 nov). Alle titels
+// en teksten zijn verbatim overgenomen. Elke sessie heeft een stabiel `id`. Q-sessies
+// dragen `q`-metadata (alleen voor validatie, voedt nooit de weergegeven tekst).
+// hmPaceRef:true = toon het (voorlopige/bevestigde) halve-marathontempo — alleen wk 11-14.
+// Weektotalen worden NIET opgeslagen; ze worden runtime gesommeerd uit runs[].km.
 const PLAN_TOM = [
- {w:1, fase:"Basis", focus:"Startweek (al onderweg!). Alles op praattempo, startpunt 7:15/km — langzamer mag altijd. Hamstring-check na elke run.",
-  runs:[{t:"e",km:4,n:"Rustige run"},
-   {t:"q",km:5,n:"Rustig + strides",steps:["Rustig lopen: ~3,5 km op 7:15/km (startpunt), ~25 min","6× 20 sec strides op 85–90% inspanning (geen sprint), 60–90 sec dribbelherstel ertussen (~1,5 km)"]},
-   {t:"l",km:6,n:"Duurloop"}]},
- {w:2, fase:"Basis", focus:"Zelfde opzet als week 1. De duurloop van 11 km is de eerste echte stap omhoog — rustig aanhouden, hamstring blijft leidend.",
-  runs:[{t:"e",km:5,n:"Rustige run"},
-   {t:"q",km:5,n:"Rustig + strides",steps:["Rustig lopen: ~3,5 km op 7:15/km (startpunt), ~25 min","6× 20 sec strides op 85–90% inspanning, 60–90 sec dribbelherstel ertussen (~1,5 km)"]},
-   {t:"l",km:11,n:"Duurloop"}]},
- {w:3, fase:"Basis", focus:"Eerste echte intervalsessie: 4× 400m, gecontroleerd. Long run naar 13 km.",
-  runs:[{t:"e",km:6,n:"Rustige run"},
-   {t:"q",km:6,n:"Interval 4× 400m",steps:["Inlopen: 1,8 km rustig (7:15/km, ~13 min)","Hoofddeel: 4× 400 m op 5:30–5:45/km, 120 sec dribbelherstel","Uitlopen: 1,8 km rustig"]},
-   {t:"l",km:13,n:"Duurloop"}]},
- {w:4, fase:"Basis", herstel:true, focus:"Herstelweek — volume bewust omlaag. Herstel is waar de aanpassing gebeurt.",
-  runs:[{t:"e",km:5,n:"Rustige run"},
-   {t:"q",km:5,n:"Rustig",steps:["5 km rustig, startpunt 7:15/km, praattest leidend (~36 min)"]},
-   {t:"l",km:11,n:"Duurloop"}]},
- {w:5, fase:"Opbouw", focus:"Long run naar 15 km. Intervallen iets langer: 5× 400m.",
-  runs:[{t:"e",km:6,n:"Rustige run"},
-   {t:"q",km:7,n:"Interval 5× 400m",steps:["Inlopen: 2,1 km rustig (~15 min)","Hoofddeel: 5× 400 m op 5:30–5:45/km, 90 sec dribbelherstel","Uitlopen: 2,1 km rustig"]},
-   {t:"l",km:15,n:"Duurloop"}]},
- {w:6, fase:"Opbouw", focus:"Eerste tempoblokken: 3× 5 min, ~7/10 inspanning. Long run naar 17 km.",
-  runs:[{t:"e",km:7,n:"Rustige run"},
-   {t:"q",km:7,n:"Tempo 3× 5 min",steps:["Inlopen: 1,9 km rustig (~14 min)","Hoofddeel: 3× 5 min op 5:55–6:10/km, ~7/10 inspanning, 2,5 min dribbel","Uitlopen: 1,9 km rustig"]},
-   {t:"l",km:17,n:"Duurloop"}]},
- {w:7, fase:"Opbouw", focus:"Testweek (lichte dip in volume): de 5k-test bepaalt je definitieve racetempo en zones.",
-  runs:[{t:"e",km:6,n:"Rustige run"},
-   {t:"t",km:7.5,n:"5K-TEST",steps:["Inlopen: 1,5 km rustig (~11 min)","5 km test: maximaal maar gelijkmatig","Uitlopen: 1,0 km rustig"],why:"Noteer je 5k-tijd in de log — samen met hoe long runs/herstel verlopen bepaalt dit je definitieve racetempo (nu voorlopig 6:24/km)."},
-   {t:"l",km:13,n:"Duurloop"}]},
- {w:8, fase:"Opbouw", herstel:true, focus:"Herstelweek vóór de piek. Fris worden voor de grote week.",
-  runs:[{t:"e",km:6,n:"Rustige run"},
-   {t:"q",km:6,n:"Rustig",steps:["6 km rustig, startpunt 7:15/km (~44 min)"]},
-   {t:"l",km:14,n:"Duurloop"}]},
- {w:9, fase:"Piek", focus:"Piek #1 — eerste 18 km, vóór de vakantie. Neem water/gelletje mee op de long run.",
-  runs:[{t:"e",km:7,n:"Rustige run"},
-   {t:"q",km:8,n:"Tempo 2× 10 min",steps:["Inlopen: 2,1 km rustig (~15 min)","Hoofddeel: 2× 10 min op 5:55–6:10/km, ~7/10 inspanning, 3 min dribbel","Uitlopen: 2,1 km rustig"],why:"Niet alles geven hier — de 18 km long run staat deze week ook op het programma."},
-   {t:"l",km:18,n:"Duurloop — eerste 18 km!"}]},
- {w:10, fase:"Vakantie", focus:"Kirgizië! Hiken telt volop mee als training — veel uren op de benen is precies wat een halve-marathonloper nodig heeft. Vink je hikes af, afstand invullen mag.",
-  runs:[{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Lange hike"}]},
- {w:11, fase:"Vakantie", focus:"Genieten en bewegen. Lukt er tóch ergens een rustig rondje hardlopen, mooi meegenomen — maar niets moet.",
-  runs:[{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Lange hike"}]},
- {w:12, fase:"Herstart", focus:"Terug van vakantie. Hamstring-check extra serieus deze week — bekijk of alles nog goed aanvoelt na de hikes.",
-  runs:[{t:"e",km:6,n:"Rustige run"},
-   {t:"q",km:6,n:"Rustig",steps:["6 km rustig, startpunt 7:15/km, na de vakantie extra vrij invulbaar (~44 min)"]},
-   {t:"l",km:12,n:"Duurloop"}]},
- {w:13, fase:"Opbouw", focus:"Eerste racetempo-blokken: 3× 2 km op het voorlopige tempo (6:24/km). Long run naar 15 km.",
-  runs:[{t:"e",km:7,n:"Rustige run"},
-   {t:"q",km:9,n:"Racetempo 3× 2 km",steps:["Inlopen: 1,1 km rustig (~8 min)","Hoofddeel: 3× 2 km op racetempo (± 6:24/km, voorlopig), ~13 min elk, 3 min dribbel","Uitlopen: 1,1 km rustig"]},
-   {t:"l",km:15,n:"Duurloop"}]},
- {w:14, fase:"Piek", focus:"Piek #2 — tweede 18 km, herhaling van bekend terrein (geen nieuw record). Zwaarste week van het schema. Test je race-ontbijt en gelletjes op deze long run.",
-  runs:[{t:"e",km:8,n:"Rustige run"},
-   {t:"q",km:10,n:"Racetempo 2× 3 km",steps:["Inlopen: 1,8 km rustig (~13 min)","Hoofddeel: 2× 3 km op racetempo (± 6:24/km, voorlopig), ~19 min elk, 3 min dribbel","Uitlopen: 1,8 km rustig"],why:"Zwaarste week van het hele schema: ook de 18 km long run."},
-   {t:"l",km:18,n:"Duurloop — tweede 18 km"}]},
- {w:15, fase:"Taper", focus:"Taper: volume flink omlaag, beetje intensiteit erin houden. Je wordt hier fitter zonder te trainen — vertrouw het.",
-  runs:[{t:"e",km:6,n:"Rustige run"},
-   {t:"q",km:7,n:"Tempo 2× 2 km",steps:["Inlopen: 1,3 km rustig (~9 min)","Hoofddeel: 2× 2 km op 5:55–6:10/km, 3 min dribbel","Uitlopen: 1,3 km rustig"]},
-   {t:"l",km:11,n:"Duurloop"}]},
- {w:16, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op racedag: geen nieuwe schoenen, geen nieuw ontbijt. Start rustig — de eerste 5 km moeten te langzaam voelen.",
-  runs:[{t:"e",km:4,n:"Rustige run"},
-   {t:"q",km:6,n:"Opfrisser 3× 1 km",steps:["Inlopen: 1,2 km rustig (~8 min)","3× 1 km op racetempo (± 6:24/km, of je bevestigde racetempo), ~6 min elk, 2,5 min dribbel","Uitlopen: 1,2 km rustig"]},
-   {t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
+ {w:1, fase:"Basis", focus:"Startweek, meteen na de long run van 10,4 km op zondag. Rustig tempo op praattest, startpunt 7:15/km — langzamer mag altijd. Hamstring-check na elke run.",
+  runs:[
+   {id:"tom-2026-w01-short",t:"e",km:4,n:"Rustige herstelrun",d:"Loop 4 km op ontspannen gesprekstempo. Houd deze training bewust licht na de long run van 10,4 km op zondag. Niet versnellen in het laatste deel."},
+   {id:"tom-2026-w01-quality",t:"q",km:5,n:"4 × 1 minuut pittig",
+    steps:["Loop 1,5 km rustig in.","Loop 4 × 1 minuut pittig.","Richttempo snelle minuten: ongeveer 5:00–5:20/km.","Wandel na iedere snelle minuut 1 minuut ontspannen.","Loop na het laatste blok rustig verder totdat je 5 km totaal hebt bereikt."],
+    why:["Doel: Stevig en snel, ongeveer 8/10 inspanning, maar geen sprint. Alle vier snelle minuten moeten ongeveer even sterk voelen.","Aanpassen: Voelt 5:00/km direct bijna maximaal, ga dan richting 5:15–5:30/km. Voeg geen extra herhalingen toe."],
+    q:{plannedDistanceKm:5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:4,durationSeconds:60,paceRangeMinPerKm:["5:00","5:20"]},{type:"recovery",durationSeconds:60,mode:"walk"},{type:"cooldown",untilTotalDistanceKm:5}]}},
+   {id:"tom-2026-w01-long",t:"l",km:11.5,n:"Rustige lange duurloop",d:"Loop 11,5 km op volledig gesprekstempo. Begin bewust rustig. Geen snelle finish en geen extra kilometers."}]},
+ {w:2, fase:"Basis", herstel:true, focus:"Bewust iets lichter. De long run is een herstelstap na 10,4 en 11,5 km.",
+  runs:[
+   {id:"tom-2026-w02-short",t:"e",km:4.5,n:"Rustige duurloop",d:"Loop 4,5 km ontspannen op gesprekstempo. Deze week is bewust iets lichter."},
+   {id:"tom-2026-w02-quality",t:"q",km:5,n:"5 × 1 minuut pittig",
+    steps:["Loop 1,5 km rustig in.","Loop 5 × 1 minuut pittig.","Richttempo: ongeveer 5:00–5:20/km.","Wandel na iedere snelle minuut 1 minuut ontspannen.","Loop rustig uit totdat je 5 km totaal hebt bereikt."],
+    why:"Doel: De vijf herhalingen gelijkmatig uitvoeren. De laatste mag zwaar voelen, maar niet maximaal.",
+    q:{plannedDistanceKm:5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:5,durationSeconds:60,paceRangeMinPerKm:["5:00","5:20"]},{type:"recovery",durationSeconds:60,mode:"walk"},{type:"cooldown",untilTotalDistanceKm:5}]}},
+   {id:"tom-2026-w02-long",t:"l",km:9,n:"Herstel-long run",d:"Loop 9 km rustig op gesprekstempo. Deze kortere duurloop is een bewuste herstelstap na 10,4 en 11,5 km."}]},
+ {w:3, fase:"Basis", focus:"Weer opbouwen. Iets meer herhalingen en een langere long run.",
+  runs:[
+   {id:"tom-2026-w03-short",t:"e",km:5,n:"Rustige duurloop",d:"Loop 5 km ontspannen. Je moet eindigen met het gevoel dat je eenvoudig verder had kunnen lopen."},
+   {id:"tom-2026-w03-quality",t:"q",km:6,n:"6 × 1 minuut pittig",
+    steps:["Loop 1,5 km rustig in.","Loop 6 × 1 minuut pittig.","Richttempo: ongeveer 5:00–5:20/km.","Wandel na iedere snelle minuut 1 minuut ontspannen.","Loop rustig uit totdat je 6 km totaal hebt bereikt."],
+    why:"Doel: Vlot en gecontroleerd. Alle zes herhalingen moeten technisch netjes blijven.",
+    q:{plannedDistanceKm:6,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:6,durationSeconds:60,paceRangeMinPerKm:["5:00","5:20"]},{type:"recovery",durationSeconds:60,mode:"walk"},{type:"cooldown",untilTotalDistanceKm:6}]}},
+   {id:"tom-2026-w03-long",t:"l",km:12.5,n:"Rustige lange duurloop",d:"Loop 12,5 km op gesprekstempo. Geen snelle finish."}]},
+ {w:4, fase:"Basis", focus:"Langere pittige blokken (2 minuten). Long run naar 14 km.",
+  runs:[
+   {id:"tom-2026-w04-short",t:"e",km:5,n:"Rustige duurloop",d:"Loop 5 km ontspannen. Bewaar voldoende energie voor de kwaliteitssessie en long run."},
+   {id:"tom-2026-w04-quality",t:"q",km:6.5,n:"5 × 2 minuten pittig",
+    steps:["Loop 1,5 km rustig in.","Loop 5 × 2 minuten pittig.","Richttempo: ongeveer 5:10–5:30/km.","Wandel of jog na iedere herhaling 90 seconden zeer rustig.","Loop rustig uit totdat je 6,5 km totaal hebt bereikt."],
+    why:"Doel: Stevig maar beheerst. Ongeveer 8/10 inspanning. De laatste herhaling mag zwaar zijn, maar het tempo mag niet instorten.",
+    q:{plannedDistanceKm:6.5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:5,durationSeconds:120,paceRangeMinPerKm:["5:10","5:30"]},{type:"recovery",durationSeconds:90,mode:"walk_or_jog"},{type:"cooldown",untilTotalDistanceKm:6.5}]}},
+   {id:"tom-2026-w04-long",t:"l",km:14,n:"Rustige lange duurloop",d:"Loop 14 km op volledig gesprekstempo. Begin langzamer dan je denkt nodig te hebben. Het doel is de afstand gecontroleerd voltooien."}]},
+ {w:5, fase:"Opbouw", focus:"Testweek: de 5K-test bepaalt je voorlopige halve-marathontempo. Long run bewust wat korter.",
+  runs:[
+   {id:"tom-2026-w05-short",t:"e",km:5,n:"Rustige duurloop",d:"Loop 5 km gemakkelijk. Geen versnellingen; bewaar energie voor de 5K-test."},
+   {id:"tom-2026-w05-five-k-test",t:"t",km:7.5,n:"5K-test",isFiveKTest:true,
+    steps:["Loop 1,5 km rustig in.","Loop 5 km zo snel mogelijk, maar gelijkmatig verdeeld.","Begin de eerste kilometer gecontroleerd.","Loop na de test 1 km zeer rustig uit."],
+    why:["Log verplicht: eindtijd, gemiddelde hartslag, zwaarte, praattest, hamstringstatus, opmerkingen.","Doel: Een betrouwbare meting, niet de eerste kilometer te hard starten."],
+    q:{plannedDistanceKm:7.5,blocks:[{type:"warmup",distanceKm:1.5},{type:"main",distanceKm:5},{type:"cooldown",distanceKm:1}]}},
+   {id:"tom-2026-w05-long",t:"l",km:11,n:"Lichtere lange duurloop",d:"Loop 11 km rustig. Door de 5K-test is deze duurloop bewust korter."}]},
+ {w:6, fase:"Opbouw", focus:"Eerste stevige blokken (3 minuten), gestuurd op inspanning. Long run naar 14,5 km.",
+  runs:[
+   {id:"tom-2026-w06-short",t:"e",km:5.5,n:"Rustige duurloop",d:"Loop 5,5 km ontspannen op gesprekstempo."},
+   {id:"tom-2026-w06-quality",t:"q",km:7,n:"4 × 3 minuten stevig",
+    steps:["Loop 1,5 km rustig in.","Loop 4 × 3 minuten stevig.","Gebruik na de 5K-test het vastgestelde temporichtpunt.","Jog tussen de blokken 2 minuten zeer rustig, of wandel wanneer nodig.","Loop rustig uit totdat je 7 km totaal hebt bereikt."],
+    why:"Doel: Stevig en gecontroleerd, ongeveer 7,5–8/10 inspanning. Alle blokken gelijkmatig uitvoeren.",
+    q:{plannedDistanceKm:7,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:4,durationSeconds:180},{type:"recovery",durationSeconds:120,mode:"jog"},{type:"cooldown",untilTotalDistanceKm:7}]}},
+   {id:"tom-2026-w06-long",t:"l",km:14.5,n:"Rustige lange duurloop",d:"Loop 14,5 km op volledig gesprekstempo. De laatste kilometer blijft rustig."}]},
+ {w:7, fase:"Opbouw", focus:"Langere stevige blokken (5 minuten). Long run is de belangrijkste training: 16 km vóór de vakantie.",
+  runs:[
+   {id:"tom-2026-w07-short",t:"e",km:6,n:"Rustige duurloop",d:"Loop 6 km ontspannen. Niet versnellen; de long run is deze week de belangrijkste training."},
+   {id:"tom-2026-w07-quality",t:"q",km:7.5,n:"3 × 5 minuten stevig",
+    steps:["Loop 1,5 km rustig in.","Loop 3 × 5 minuten stevig en gecontroleerd.","Gebruik het na de 5K-test vastgestelde temporichtpunt.","Jog of wandel tussen de blokken 2,5 minuten zeer rustig.","Loop rustig uit totdat je 7,5 km totaal hebt bereikt."],
+    why:"Doel: Ongeveer 7/10 inspanning. Houd bewust iets over voor de long run.",
+    q:{plannedDistanceKm:7.5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:3,durationSeconds:300},{type:"recovery",durationSeconds:150,mode:"jog_or_walk"},{type:"cooldown",untilTotalDistanceKm:7.5}]}},
+   {id:"tom-2026-w07-long",t:"l",km:16,n:"Langste duurloop vóór de vakantie",d:"Loop 16 km volledig op gesprekstempo. Begin zeer beheerst. Geen snelle finish en geen extra kilometers."}]},
+ {w:8, fase:"Vakantie", focus:"Vakantie in Kirgizië. Hiken telt volop mee — vink je hikes af, afstand/duur invullen mag.",
+  runs:[
+   {id:"tom-2026-w08-hike-light",t:"h",km:0,n:"Lichte hike",d:"Rustige hike van ongeveer 60–90 minuten. Lage intensiteit. Dit is actieve hersteltijd."},
+   {id:"tom-2026-w08-hike-normal",t:"h",km:0,n:"Normale hike",d:"Hike van ongeveer 2–3 uur op comfortabel tempo. Pauzes zijn onderdeel van de activiteit."},
+   {id:"tom-2026-w08-hike-long",t:"h",km:0,n:"Lange hike",d:"Langere hike afhankelijk van route, hoogteverschil en herstel. Geen hardlooptraining verplicht. Log duur, afstand en zwaarte."}]},
+ {w:9, fase:"Vakantie", focus:"Vakantie in Kirgizië. Genieten en bewegen; hardlopen hoeft niet.",
+  runs:[
+   {id:"tom-2026-w09-hike-light",t:"h",km:0,n:"Lichte hike",d:"Rustige wandel- of hikeactiviteit. Houd de belasting lager wanneer de benen vermoeid zijn."},
+   {id:"tom-2026-w09-hike-normal",t:"h",km:0,n:"Normale hike",d:"Comfortabele duuractiviteit zonder prestatiedoel."},
+   {id:"tom-2026-w09-hike-long",t:"h",km:0,n:"Lange hike",d:"Alleen uitvoeren wanneer herstel en benen goed voelen. Hardlopen is niet nodig."}]},
+ {w:10, fase:"Herstart", focus:"Terug van vakantie. Rustig herstarten en de benen laten wennen aan hardloopbelasting.",
+  runs:[
+   {id:"tom-2026-w10-short",t:"e",km:4,n:"Rustige herstart",d:"Loop 4 km volledig op gevoel. Start rustig. Loop langzamer wanneer de benen nog moeten wennen aan hardloopbelasting."},
+   {id:"tom-2026-w10-quality",t:"q",km:5,n:"4 × 1 minuut gecontroleerd pittig",
+    steps:["Loop 1,5 km rustig in.","Loop 4 × 1 minuut pittig maar gecontroleerd.","Gebruik een tempo dat duidelijk sneller is dan easy, maar niet maximaal.","Wandel na iedere herhaling 1 minuut.","Loop rustig uit totdat je 5 km totaal hebt bereikt."],
+    why:"Aanpassen: Voelen de benen zwaar of stijf na de vakantie, vervang deze sessie door 5 km rustig.",
+    q:{plannedDistanceKm:5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:4,durationSeconds:60},{type:"recovery",durationSeconds:60,mode:"walk"},{type:"cooldown",untilTotalDistanceKm:5}]}},
+   {id:"tom-2026-w10-long",t:"l",km:11,n:"Rustige herstart-long run",d:"Loop 11 km op gesprekstempo. De afstand is bewust lager na de vakantie."}]},
+ {w:11, fase:"Opbouw", focus:"Eerste kilometers op halve-marathontempo. Long run 14,5 km — let op knie en hamstring na de vakantie.",
+  runs:[
+   {id:"tom-2026-w11-short",t:"e",km:5,n:"Rustige duurloop",d:"Loop 5 km gemakkelijk en ontspannen."},
+   {id:"tom-2026-w11-quality",t:"q",km:7,n:"3 × 1 km op halve-marathoninspanning",hmPaceRef:true,
+    steps:["Loop 1,5 km rustig in.","Loop 3 × 1 km op het na de 5K-test bepaalde halve-marathontempo.","Jog tussen de kilometers 2,5 minuten zeer rustig, of wandel kort.","Loop rustig uit totdat je 7 km totaal hebt bereikt."],
+    why:"Doel: Gecontroleerd en ritmisch. Dit mag niet aanvoelen als een 5K-race.",
+    q:{plannedDistanceKm:7,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:3,distanceKm:1},{type:"recovery",durationSeconds:150,mode:"jog_or_walk"},{type:"cooldown",untilTotalDistanceKm:7}]}},
+   {id:"tom-2026-w11-long",t:"l",km:14.5,n:"Rustige lange duurloop",d:"Loop 14,5 km op gesprekstempo. Beoordeel vooral hoe de benen en hamstring reageren na de vakantie."}]},
+ {w:12, fase:"Piek", focus:"Piekweek: de langste trainingsrun (18 km) en 2 × 2 km op halve-marathontempo.",
+  runs:[
+   {id:"tom-2026-w12-short",t:"e",km:5,n:"Rustige duurloop",d:"Loop 5 km volledig rustig. Geen versnellingen."},
+   {id:"tom-2026-w12-quality",t:"q",km:7.5,n:"2 × 2 km op halve-marathoninspanning",hmPaceRef:true,
+    steps:["Loop 1,5 km rustig in.","Loop 2 × 2 km op het vastgestelde halve-marathontempo.","Jog of wandel 3 minuten zeer rustig tussen de blokken.","Loop rustig uit totdat je 7,5 km totaal hebt bereikt."],
+    why:"Doel: Stevig maar gecontroleerd. Geen extra blokken. Houd voldoende herstel over voor de 18 km.",
+    q:{plannedDistanceKm:7.5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:2,distanceKm:2},{type:"recovery",durationSeconds:180,mode:"jog_or_walk"},{type:"cooldown",untilTotalDistanceKm:7.5}]}},
+   {id:"tom-2026-w12-long",t:"l",km:18,n:"Langste trainingsrun",d:"Loop 18 km volledig op gesprekstempo. Begin zeer beheerst. Geen snelle finish, geen tempoblokken en geen extra afstand.",why:"Voorwaarde: De 18 km blijft alleen staan wanneer de 14,5 km van week 11 klachtenvrij verliep en Tom normaal herstelde. Bij moeizaam herstel of hamstringklachten wordt deze sessie automatisch 16–17 km."}]},
+ {w:13, fase:"Taper", focus:"Taperweek: volume omlaag, fris worden. Korte blokken op halve-marathontempo.",
+  runs:[
+   {id:"tom-2026-w13-short",t:"e",km:4.5,n:"Rustige taperduurloop",d:"Loop 4,5 km gemakkelijk. Het doel is fris worden, niet conditie opbouwen."},
+   {id:"tom-2026-w13-quality",t:"q",km:6.5,n:"2 × 1,5 km op halve-marathontempo",hmPaceRef:true,
+    steps:["Loop 1,5 km rustig in.","Loop 2 × 1,5 km op halve-marathontempo.","Jog 3 minuten zeer rustig tussen de blokken.","Loop rustig uit totdat je 6,5 km totaal hebt bereikt."],
+    why:"Doel: Stop met het gevoel dat je nog één blok had kunnen lopen.",
+    q:{plannedDistanceKm:6.5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:2,distanceKm:1.5},{type:"recovery",durationSeconds:180,mode:"jog"},{type:"cooldown",untilTotalDistanceKm:6.5}]}},
+   {id:"tom-2026-w13-long",t:"l",km:10,n:"Korte long run in taper",d:"Loop 10 km rustig. Geen snelle finish en geen extra afstand."}]},
+ {w:14, fase:"Race", focus:"Raceweek! Alles kort en fris. Op de dag zelf: beheerst starten, daarna richting racetempo.",
+  runs:[
+   {id:"tom-2026-w14-short",t:"e",km:4,n:"Zeer rustige raceweekrun",d:"Loop 4 km ontspannen. Houd de benen los. Snelheid is niet belangrijk."},
+   {id:"tom-2026-w14-quality",t:"q",km:5,n:"Race-opfrisser: 3 × 500 meter",hmPaceRef:true,
+    steps:["Loop 1,5 km rustig in.","Loop 3 × 500 meter op halve-marathontempo.","Jog na iedere herhaling 90 seconden zeer rustig.","Loop rustig uit totdat je 5 km totaal hebt bereikt."],
+    why:"Doel: Deze sessie moet gemakkelijk en soepel voelen. Geen extra herhalingen.",
+    q:{plannedDistanceKm:5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:3,distanceKm:0.5},{type:"recovery",durationSeconds:90,mode:"jog"},{type:"cooldown",untilTotalDistanceKm:5}]}},
+   {id:"tom-2026-w14-race",t:"r",km:21.1,n:"Halve marathon",hmPaceRef:true,d:"Start de eerste 3–5 km beheerst. Loop daarna richting het afgesproken racetempo. Versnel pas na ongeveer 15–16 km wanneer ademhaling, benen en hamstring goed blijven voelen."}]}
 ];
+
+// Afgesproken weektotalen (som van runs[].km per week). De validator faalt bij afwijking.
+// Vakantieweken (8-9) zijn 0 (hikes met km:0).
+const EXPECTED_WEEK_TOTALS_TOM = [20.5,18.5,23.5,25.5,23.5,27,29.5,0,0,20,26.5,30.5,21,30.1];
+
+// Zuivere, DOM-vrije validator: werkt alleen op de statische PLAN_TOM-data en retourneert
+// een foutenlijst. Wordt zowel client-side (non-blocking console.warn) als door het
+// blokkerende Node-script scripts/validate-tom-plan.mjs gebruikt (zelfde bron, geen drift).
+function collectTomPlanErrors(plan){
+  const errors = [];
+  const seenIds = new Map();
+  let fiveKCount = 0;
+  plan.forEach(function(w, wi){
+    let weekTotal = 0;
+    w.runs.forEach(function(r, i){
+      weekTotal += r.km;
+      const id = r.id;
+      if(!id) errors.push("Week " + w.w + " sessie " + (i + 1) + ": ontbrekend id");
+      else if(seenIds.has(id)) errors.push("Dubbel id: " + id + " (week " + w.w + " & week " + seenIds.get(id) + ")");
+      else seenIds.set(id, w.w);
+      if(r.isFiveKTest) fiveKCount++;
+      if(!r.q) return;
+      if(r.q.plannedDistanceKm !== r.km) errors.push(id + ": q.plannedDistanceKm (" + r.q.plannedDistanceKm + ") != r.km (" + r.km + ")");
+      let fixedKm = 0, lastReps = 1, hasTimeBased = false, hasCooldownFill = false;
+      r.q.blocks.forEach(function(b){
+        if(b.type === "cooldown" && b.untilTotalDistanceKm != null) hasCooldownFill = true;
+        if(b.distanceKm == null){ hasTimeBased = true; if(b.type === "repeat") lastReps = b.repetitions || 1; return; }
+        if(b.type === "repeat"){ fixedKm += b.distanceKm * (b.repetitions || 1); lastReps = b.repetitions || 1; }
+        else if(b.type === "recovery") fixedKm += b.distanceKm * (b.repetitions != null ? b.repetitions : Math.max(0, lastReps - 1));
+        else fixedKm += b.distanceKm;
+      });
+      if(fixedKm > r.q.plannedDistanceKm + 0.05) errors.push(id + ": vaste afstandsblokken (" + fixedKm.toFixed(2) + "km) groter dan geplande sessieafstand (" + r.q.plannedDistanceKm + "km)");
+      if(hasTimeBased && !hasCooldownFill) errors.push(id + ": tijdgebaseerde Q-sessie zonder cooling-down tot totaalafstand");
+    });
+    const expected = EXPECTED_WEEK_TOTALS_TOM[wi];
+    if(expected == null) errors.push("Week " + w.w + ": geen afgesproken weektotaal gedefinieerd");
+    else if(Math.abs(weekTotal - expected) > 0.05) errors.push("Week " + w.w + ": weektotaal " + weekTotal.toFixed(1) + "km wijkt af van afgesproken " + expected + "km");
+  });
+  if(fiveKCount !== 1) errors.push("Verwacht precies 1 sessie met isFiveKTest:true, gevonden: " + fiveKCount);
+  if(seenIds.size !== 42) errors.push("Verwacht precies 42 unieke Tom-sessie-id's (14 weken x 3 items, incl. hikes), gevonden: " + seenIds.size);
+  return errors;
+}
+// Client-side: puur informatief, mag de pagina nooit breken. De echte poort is het Node-script.
+(function(){
+  try{
+    if(LOOP.rowId === "tom"){
+      const errs = collectTomPlanErrors(PLAN_TOM);
+      if(errs.length) console.warn("[loopschema] PLAN_TOM validatie:", errs);
+    }
+  }catch(e){ console.warn("[loopschema] validatie crashte:", e); }
+})();
 
 // Schema voor Denise — coach-revisie (jul 2026). Alleen rustige runs + long run
 // (geen harde tempoblokken tot fysio-akkoord). Eerste 3 weken vlak/laag om de knie
@@ -440,23 +540,25 @@ const KRACHT_COUNT = LOOP.rowId === "tom" ? 2 : 1; // Denise: 1 krachtsessie per
 const TYPE_META = {e:{tag:null}, q:{tag:["KWALITEIT","q"]}, l:{tag:["LONG RUN","l"]}, t:{tag:["TEST","q"]}, r:{tag:["RACE","r"]}, h:{tag:["VAKANTIE","l"]}};
 
 /* ================= SEED (startdata per persoon — ingebakken) ================= */
-const SEED_TOM = {athletes:{
-  a:{name:"Tom", logs:{
-    "w1r1": {done:true, note:"Gelopen op ma 13 juli (geen data gedeeld).", ts:1752400800000},
-    "w1r3": {done:true, dist:6.26, time:"41:25", feel:3, ham:"licht",
-      note:"COACH: te snel voor een rustige run — gem. 6:36 (doel 6:45–7:15), HR gem. 176 / max 190, laatste km 6:11. Sterk uitgelopen, nul pauzes. Volgende run: starten op 7:00–7:15 en HR onder ~160 houden. Hamstring rustig; wel linkerheup wat stijf/gevoelig (zelfde kant) — monitoren en melden bij fysio. Conditioneel zwaar na 6 wk weinig lopen: logisch op dit tempo.", ts:1752924300000},
-    "w2r1": {done:true, dist:4.27, time:"31:01", feel:3, ham:"goed",
-      note:"COACH: loopband, 8,3 km/u @ 1,7% helling = gem. 7:16/km. Kalibratie-run: HR gem. 156 / max 170 — ~20 slagen lager dan de veldrun (176/190). Bewijst dat rustig tempo veel beter zit. Heup/hamstring: nergens last gehad — vlakke bandondergrond beviel goed. NB: Fitbit-afstand onbruikbaar op de band (gokte 4,57 km); bandwaarde 4,27 km aangehouden. Dag na de long run, dus HR licht verhoogd door restvermoeidheid.", ts:1753027260000},
-    "w2r3": {done:true, dist:10.42, time:"66:04", feel:3, ham:"goed",
-      note:"COACH: nieuw long-run-ijkpunt. Tempo 6:20/km, HR gem. 167 — geen hamstringklachten, ook niet achteraf. Fitbit-appwaarde aangehouden (10,42 km); TCX-export gaf 10,76 km door een gangbaar GPS/sensorverschil. Bewijst dat de opbouw naar langere duurlopen goed verloopt — basis voor de 18 km-pieken in week 9 en 14.", ts:1785087000000}
-  }}
-}};
+// Week 1 start nu 27 juli; Tom's runs van 13/18/20/26 juli liggen dus vóór het schema
+// en verhuizen naar HISTORY_TOM (read-only). SEED_TOM start daarom met lege logs.
+// LET OP: dit heeft geen invloed op reeds in Supabase opgeslagen data — mergeSeed()
+// gebruikt SEED alleen bij een compleet lege/nooit-opgeslagen state.
+const SEED_TOM = {athletes:{ a:{name:"Tom", logs:{}} }};
 const SEED_DENISE = {athletes:{ a:{name:"Denise <3", logs:{
   "w1r3": {done:true, dist:6.29, time:"41:05", feel:4, hr:156, ham:"erger", note:"20 juli. Gem. 6:32/km, HR 156. Knie: pijn na afloop.", ts:1753019160000}
 }} }};
 
-// Denise' runs van vóór de schemastart (13 juli), uit haar Huawei-data. Read-only overzicht.
-const HISTORY = LOOP.rowId === "denise" ? [
+// Runs van vóór de schemastart, read-only overzicht.
+// Tom: 18/20/26 juli (26 juli = 10,4 km, afgesproken Fitbit-appwaarde). De 13-juli-run
+// had geen gedeelde afstand/tijd en staat daarom niet als meetbare rij hierin.
+const HISTORY_TOM = [
+  {date:"18 jul", km:6.26, time:"41:25", pace:"6:36", hr:176},
+  {date:"20 jul", km:4.27, time:"31:01", pace:"7:16", hr:156},
+  {date:"26 jul", km:10.4, time:"66:04", pace:"6:20", hr:167}
+];
+// Denise' runs van vóór de schemastart (13 juli), uit haar Huawei-data.
+const HISTORY_DENISE = [
   {date:"3 mei",  km:8.01, time:"48:43",   pace:"6:05", hr:163},
   {date:"20 mei", km:10.01, time:"1:01:38", pace:"6:09", hr:164},
   {date:"7 jun",  km:5.21, time:"30:51",   pace:"5:55", hr:171},
@@ -465,7 +567,8 @@ const HISTORY = LOOP.rowId === "denise" ? [
   {date:"28 jun", km:5.06, time:"33:20",   pace:"6:35", hr:162},
   {date:"2 jul",  km:8.02, time:"51:39",   pace:"6:26", hr:160},
   {date:"18 jul", km:5.01, time:"31:25",   pace:"6:16", hr:158}
-] : [];
+];
+const HISTORY = LOOP.rowId === "tom" ? HISTORY_TOM : HISTORY_DENISE;
 
 function baseSeed(){
   const s = LOOP.rowId === "tom" ? SEED_TOM : SEED_DENISE;
@@ -481,6 +584,7 @@ function mergeSeed(stored){
   if(stored && stored.athletes && stored.athletes.a){
     const src = stored.athletes.a;
     return {athletes:{ a:{
+      ...src,                          // behoud ALLE bestaande velden (o.a. confirmedHmPace)
       name: src.name || LOOP.name,
       logs: src.logs || {},
       tennisWeeks: src.tennisWeeks || {}
@@ -587,18 +691,31 @@ function paceStr(distKm, timeStr){
 function logsOf(){ return state.athletes[who].logs; }
 function tennisWeeksOf(){ return state.athletes[who].tennisWeeks || (state.athletes[who].tennisWeeks = {}); }
 
+// Sessie-id: Tom heeft stabiele expliciete id's (r.id, bv. "tom-2026-w05-five-k-test");
+// Denise (en oude data) valt terug op het positionele patroon "w{week}r{index}".
+function sessionId(w, i, r){ return (r && r.id) || ("w"+w.w+"r"+(i+1)); }
+// Zoek een sessie op id op in het actieve PLAN. Werkt voor beide id-vormen.
+function findSession(id){
+  for(const w of PLAN){
+    for(let i=0;i<w.runs.length;i++){
+      if(sessionId(w,i,w.runs[i]) === id) return {w, i, r:w.runs[i]};
+    }
+  }
+  return null;
+}
+
 // Als er in een week getennist is, vervalt de KORTSTE easy run (nooit long/kwaliteit).
 // Geeft de run-id terug die die week wordt overgeslagen, of null.
 function skippedRunId(w){
   if(!tennisWeeksOf()[w.w]) return null;
   let best = null, bestKm = Infinity;
-  w.runs.forEach((r,i)=>{ if(r.t==="e" && r.km < bestKm){ bestKm = r.km; best = "w"+w.w+"r"+(i+1); } });
+  w.runs.forEach((r,i)=>{ if(r.t==="e" && r.km < bestKm){ bestKm = r.km; best = sessionId(w,i,r); } });
   return best;
 }
 function totalPlannedKm(){
   return PLAN.reduce((s,w)=>{
     const skip = skippedRunId(w);
-    return s + w.runs.reduce((a,r,i)=> a + ("w"+w.w+"r"+(i+1)===skip ? 0 : r.km), 0);
+    return s + w.runs.reduce((a,r,i)=> a + (sessionId(w,i,r)===skip ? 0 : r.km), 0);
   }, 0);
 }
 
@@ -638,8 +755,7 @@ function renderRoute(){
   $("routeStart").textContent = "start · " + START_DATE.toLocaleDateString("nl-NL",{day:"numeric",month:"short"});
 }
 function sessKm(id){
-  const m = id.match(/^w(\d+)r(\d+)$/); if(!m) return 0;
-  return PLAN[+m[1]-1].runs[+m[2]-1].km;
+  const s = findSession(id); return s ? s.r.km : 0;
 }
 
 function renderStats(){
@@ -651,7 +767,7 @@ function renderStats(){
   PLAN.forEach(w=>{
     const skip = skippedRunId(w);
     w.runs.forEach((r,i)=>{
-      const id = "w"+w.w+"r"+(i+1);
+      const id = sessionId(w,i,r);
       if(id===skip) return; // vervangen door tennis: telt niet mee als openstaand
       total++;
       const l = logs[id];
@@ -665,7 +781,7 @@ function renderStats(){
   if(CHECK){
     const checks = [];
     PLAN.forEach(w=> w.runs.forEach((r,i)=>{
-      const l = logs["w"+w.w+"r"+(i+1)];
+      const l = logs[sessionId(w,i,r)];
       if(l && l.done && l.ham) checks.push(l.ham);
     }));
     const last = checks.slice(-3);
@@ -691,9 +807,19 @@ function renderStats(){
 function renderZones(){
   if(LOOP.zones==="tom"){
     $("zonesTitle").textContent = "Tempo-zones — " + state.athletes.a.name;
-    $("zonesList").innerHTML = ZONES_TOM.map(z=>
+    // Statische rijen + één dynamische racetempo-rij (berekend uit de 5K-test, of bevestigd).
+    const conf = getConfirmedHmPaceSecPerKm();
+    const calc = getCalculatedHmPaceSecPerKm();
+    let raceP, raceD;
+    if(conf!=null){ raceP = fmtPace(conf); raceD = "bevestigd racetempo · tik om te wijzigen"; }
+    else if(calc!=null){ raceP = "≈"+fmtPace(calc); raceD = "voorlopige schatting uit je 5K-test — tik om een bevestigd tempo vast te leggen"; }
+    else { raceP = "—"; raceD = "voorlopig — wordt berekend na de 5K-test in week 5 · tik om alvast handmatig vast te leggen"; }
+    const staticRows = ZONES_TOM.map(z=>
       '<div class="zone"><span><b>'+z.n+'</b><br><small style="color:var(--mut)">'+z.d+'</small></span><span class="p">'+z.p+' /km</span></div>').join("");
-    $("zonesNote").innerHTML = "Voorlopige streeftijd: <b>2:10–2:20</b> — definitief na de 5k-test in week 7. 7:15/km is een <b>startpunt, geen ondergrens</b>: praattest leidend, langzamer mag altijd. Bij trekken/steken in de hamstring: stop het snelle deel direct — is rustig joggen daarna pijnvrij, dan mag je rustig uitlopen; blijft het gevoel, dan stop je de hele run. Bij <b>2× op rij klachten</b> vervalt de eerstvolgende kwaliteitssessie automatisch.";
+    const raceRow = '<div class="zone" id="raceZone" style="cursor:pointer"><span><b>Racetempo (halve marathon)</b><br><small style="color:var(--mut)">'+raceD+'</small></span><span class="p">'+raceP+' /km</span></div>';
+    $("zonesList").innerHTML = staticRows + raceRow;
+    const rz = $("raceZone"); if(rz) rz.onclick = promptConfirmHmPace;
+    $("zonesNote").innerHTML = "Rustig tempo: loop op ontspannen gesprekstempo — start eventueel rond <b>7:15/km</b>, maar de praattest is leidend; je moet volledige zinnen kunnen spreken. 7:15/km is een <b>startpunt, geen verplicht tempo en geen ondergrens</b> — langzamer mag altijd. Het racetempo hierboven is een <b>voorlopige schatting</b> (Riegel-omrekening van je 5K-test), nooit een definitief doel: bevestiging hangt ook af van hoe je long runs, herstel, trainingscontinuïteit en hamstring verlopen. <b>Extra afstand:</b> geplande afstand is de beoogde training, geen minimum — geen extra km's bij kwaliteitssessies, long runs of herstelweken; bij een gewone short run hooguit 0,5–1 km extra als je klachtenvrij en goed hersteld bent; nooit extra herhalingen. <b>Hamstring:</b> stop het snelle deel direct bij trekken, steken of een ongewoon gevoel. Is rustig joggen volledig pijnvrij, loop dan maximaal 5–10 min rustig uit; blijft het gevoel of wordt het erger, stop de hele run en wandel terug. Bij <b>2× op rij klachten</b>: sla de eerstvolgende kwaliteitssessie over.";
   } else {
     $("zonesTitle").textContent = "Tempo-zones — " + state.athletes.a.name;
     $("zonesList").innerHTML = ZONES_DENISE.map(z=>
@@ -710,7 +836,7 @@ function renderBars(){
     const skip = skippedRunId(w);
     let plan = 0, act = 0;
     w.runs.forEach((r,i)=>{
-      const id = "w"+w.w+"r"+(i+1);
+      const id = sessionId(w,i,r);
       if(id===skip) return;
       plan += r.km;
       const l = logs[id]; if(l&&l.done) act += (l.dist!=null && l.dist!=="" ? +l.dist : r.km);
@@ -732,7 +858,8 @@ function renderHistory(){
     +'<span class="hp">'+r.pace+' /km</span>'
     +'<span class="hh">'+(r.hr? r.hr+" bpm" : "")+'</span></div>').join("");
   const tot = HISTORY.reduce((a,r)=> a + r.km, 0);
-  $("histNote").textContent = HISTORY.length + " runs · " + fmt(tot) + " km, gelopen vóór de start van het schema (13 juli). Mooie basis om op door te bouwen.";
+  const startStr = START_DATE.toLocaleDateString("nl-NL",{day:"numeric",month:"long"});
+  $("histNote").textContent = HISTORY.length + " runs · " + fmt(tot) + " km, gelopen vóór de start van het schema (" + startStr + "). Mooie basis om op door te bouwen.";
 }
 
 function renderWeeks(){
@@ -772,13 +899,13 @@ function renderWeeks(){
     const dateStr = new Date(ws).toLocaleDateString("nl-NL",{day:"numeric",month:"short"}) + " – " + new Date(we).toLocaleDateString("nl-NL",{day:"numeric",month:"short"});
     // tellingen exclusief de overgeslagen (tennis) run
     let planKm = 0, total = 0, doneCnt = 0;
-    w.runs.forEach((r,i)=>{ const id="w"+w.w+"r"+(i+1); if(id===skip) return; planKm += r.km; total++; if(logs[id]?.done) doneCnt++; });
+    w.runs.forEach((r,i)=>{ const id=sessionId(w,i,r); if(id===skip) return; planKm += r.km; total++; if(logs[id]?.done) doneCnt++; });
 
     const tOn = !!tennisWeeksOf()[w.w];
     let body = '<div class="tennis'+(tOn?" on":"")+'" data-tw="'+w.w+'">🎾 Getennist deze week'+(tOn?" ✓":"")+'</div>';
     body += '<div class="wk-focus">'+w.focus+'</div>';
     w.runs.forEach((r,i)=>{
-      const id = "w"+w.w+"r"+(i+1);
+      const id = sessionId(w,i,r);
       const meta = TYPE_META[r.t];
       const tag = meta.tag ? '<span class="tag '+meta.tag[1]+'">'+meta.tag[0]+'</span>' : "";
       if(id===skip){
@@ -791,9 +918,13 @@ function renderWeeks(){
       }
       const l = logs[id];
       const paceHint = LOOP.zones==="tom" ? paceFor(r.t) : paceForPartner(r.t);
-      const detHtml = r.steps
-        ? '<ol class="q-steps">'+r.steps.map(st=>'<li>'+st+'</li>').join("")+'</ol>'+(r.why? '<div class="q-why">'+r.why+'</div>' : "")
+      const mainHtml = r.steps
+        ? '<ol class="q-steps">'+r.steps.map(st=>'<li>'+st+'</li>').join("")+'</ol>'
         : (r.d ? r.d : paceHint);
+      const whyTxt = r.why ? (Array.isArray(r.why) ? r.why.join("<br>") : r.why) : "";
+      const whyHtml = whyTxt ? '<div class="q-why">'+whyTxt+'</div>' : "";
+      const paceBadge = r.hmPaceRef ? '<div class="q-pace">'+hmPaceBadgeText()+'</div>' : "";
+      const detHtml = mainHtml + whyHtml + paceBadge;
       const pc = (l&&l.done) ? paceStr(l.dist, l.time) : "";
       const loggedLine = (l&&l.done) ? '<div class="logged">✓ '
         +(l.dist? fmt(+l.dist)+" km":"")
@@ -839,9 +970,66 @@ function renderWeeks(){
     };
   });
 }
+/* ---- Halve-marathontempo: berekend (Riegel uit 5K-test) vs. bevestigd (handmatig) ---- */
+// De 5K-testtijd wordt uitsluitend gelezen uit de sessie met isFiveKTest:true (week 5),
+// via het stabiele sessie-id — geen scan over alle logs.
+function getFiveKTestId(){
+  if(LOOP.rowId !== "tom") return null;
+  for(const w of PLAN_TOM){
+    for(let i=0;i<w.runs.length;i++){
+      const r = w.runs[i];
+      if(r.isFiveKTest) return sessionId(w, i, r);
+    }
+  }
+  return null;
+}
+function getFiveKSeconds(){
+  const id = getFiveKTestId(); if(!id) return null;
+  const l = logsOf()[id]; return (l && l.fiveK) ? parseTime(l.fiveK) : null;
+}
+// Riegel-formule, exponent 1.06: T_HM = T_5K * (21.1/5)^1.06 → sec/km.
+function getCalculatedHmPaceSecPerKm(){
+  const t5 = getFiveKSeconds(); if(!t5) return null;
+  return (t5 * Math.pow(21.1/5, 1.06)) / 21.1;
+}
+function getConfirmedHmPaceSecPerKm(){
+  const v = state && state.athletes && state.athletes.a ? state.athletes.a.confirmedHmPace : null;
+  return v ? parseTime(v) : null;
+}
+// Bevestigd tempo heeft altijd voorrang op de berekende schatting.
+function getEffectiveHmPaceSecPerKm(){
+  const c = getConfirmedHmPaceSecPerKm();
+  return c != null ? c : getCalculatedHmPaceSecPerKm();
+}
+function fmtPace(sec){ const m = Math.floor(sec/60), s = Math.round(sec%60); return m + ":" + (s<10?"0"+s:""+s); }
+function hmPaceBadgeText(){
+  const conf = getConfirmedHmPaceSecPerKm();
+  if(conf != null) return "Temporichtpunt: " + fmtPace(conf) + " /km (bevestigd)";
+  const calc = getCalculatedHmPaceSecPerKm();
+  if(calc != null) return "Temporichtpunt: ≈" + fmtPace(calc) + " /km (voorlopige schatting uit je 5K-test — nog niet definitief; hangt ook af van long runs, herstel, continuïteit en hamstring)";
+  return "Temporichtpunt: voorlopig — wordt berekend na de 5K-test in week 5";
+}
+// Handmatig een bevestigd racetempo vastleggen (geen automatische coachlogica).
+function promptConfirmHmPace(){
+  const cur = (state && state.athletes && state.athletes.a && state.athletes.a.confirmedHmPace) || "";
+  const v = prompt("Bevestigd racetempo (mm:ss per km) — leeg laten om terug te vallen op de berekende schatting:", cur);
+  if(v === null) return;
+  state.athletes.a.confirmedHmPace = v.trim() ? normalizeTime(v.trim()) : null;
+  saveState(); render();
+}
+
 function paceFor(t){
   if(LOOP.zones!=="tom") return "";
-  return {e:"Tempo: 7:15 /km (startpunt) — praattest leidend, langzamer mag altijd", l:"Tempo: 7:15 /km (startpunt), comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Start op ± 6:24 /km (voorlopig) — niet sneller!", h:"Uren op de benen = training. Afstand loggen mag, hoeft niet."}[t] || "";
+  let raceHint;
+  const p = getEffectiveHmPaceSecPerKm();
+  if(p == null) raceHint = "Racetempo: voorlopig — wordt berekend na de 5K-test (week 5)";
+  else {
+    const conf = getConfirmedHmPaceSecPerKm();
+    raceHint = conf != null
+      ? "Racetempo: " + fmtPace(p) + " /km (bevestigd) — gecontroleerd starten"
+      : "Racetempo: ≈" + fmtPace(p) + " /km (voorlopige schatting) — gecontroleerd starten";
+  }
+  return {e:"Tempo: 7:15 /km (startpunt) — praattest leidend, langzamer mag altijd", l:"Tempo: 7:15 /km (startpunt), comfortabel volhouden", q:"Zie omschrijving", t:"", r:raceHint, h:"Uren op de benen = training. Afstand loggen mag, hoeft niet."}[t] || "";
 }
 function paceForPartner(t){
   return {e:"Tempo: 6:30–6:55 /km — praattempo", l:"Tempo: 6:30–6:55 /km, comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Racetempo ~6:00 /km — gecontroleerd starten", h:""}[t] || "";
@@ -854,7 +1042,14 @@ function intentLine(r){
     case "l": return "Bedoeld: rustig/lang, praattempo (" + z[0].p + " /km) · gevoel 2–3";
     case "q": return "Bedoeld: kwaliteit, zie omschrijving · gevoel 3–4";
     case "t": return "Bedoeld: test, zie omschrijving";
-    case "r": return "Bedoeld: racetempo (" + z[2].p + " /km) · gevoel 4, gecontroleerd";
+    case "r":
+      if(LOOP.zones==="tom"){
+        const p = getEffectiveHmPaceSecPerKm();
+        return p != null
+          ? ("Bedoeld: racetempo (~" + fmtPace(p) + " /km) · gecontroleerd")
+          : "Bedoeld: racetempo (voorlopig, na de 5K-test) · gecontroleerd";
+      }
+      return "Bedoeld: racetempo (" + z[2].p + " /km) · gevoel 4, gecontroleerd";
     default: return "";
   }
 }
@@ -871,12 +1066,13 @@ function updatePaceLive(){
   $("paceLive").textContent = p ? "Tempo: " + p : "";
 }
 function openLog(id){
-  const m = id.match(/^w(\d+)r(\d+)$/);
-  const w = PLAN[+m[1]-1], r = w.runs[+m[2]-1];
+  const found = findSession(id);
+  if(!found) return;
+  const w = found.w, r = found.r, dag = found.i + 1;
   openSess = {id, run:r, w:w.w};
   const l = logsOf()[id] || {};
   formVals = {dist:l.dist ?? "", time:l.time ?? "", feel:l.feel ?? null, ham:l.ham ?? null, note:l.note ?? ""};
-  $("shTitle").textContent = "Week "+w.w+" · Dag "+m[2]+" — "+r.n;
+  $("shTitle").textContent = "Week "+w.w+" · Dag "+dag+" — "+r.n;
   $("shDesc").textContent = (r.d || "") + (r.d? " · ":"") + "Gepland: "+fmt(r.km)+" km";
   const intent = intentLine(r);
   $("shIntent").textContent = intent;
@@ -886,6 +1082,9 @@ function openLog(id){
   $("inTime").value = formVals.time;
   $("inHr").value = l.hr ?? "";
   $("inNote").value = formVals.note;
+  // 5K-testtijd: alleen tonen bij de 5K-testsessie.
+  $("rowFiveK").style.display = r.isFiveKTest ? "" : "none";
+  $("inFiveK").value = l.fiveK ?? "";
   if(CHECK){
     $("rowHam").style.display = "";
     $("rowHam").querySelector("label").textContent = CHECK_META[CHECK].label + "-check";
@@ -919,6 +1118,7 @@ $("btnSave").onclick = ()=>{
     dist: $("inDist").value.trim()==="" ? null : parseFloat($("inDist").value.replace(",",".")),
     time: normalizeTime($("inTime").value),
     hr: $("inHr").value.trim()==="" ? null : parseInt($("inHr").value,10),
+    fiveK: (openSess.run && openSess.run.isFiveKTest && $("inFiveK").value.trim()!=="") ? normalizeTime($("inFiveK").value) : null,
     feel: formVals.feel, ham: (CHECK ? formVals.ham : null),
     note: $("inNote").value.trim(), ts: Date.now()
   };
