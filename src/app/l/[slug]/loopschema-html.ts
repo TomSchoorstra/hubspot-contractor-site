@@ -314,11 +314,11 @@ const RACE_DATE = new Date(2026,10,1);
 const START_DATE = LOOP.rowId === "tom" ? new Date(2026,6,13) : new Date(2026,6,20);
 
 const ZONES_TOM = [
-  {n:"Rustig / long run", p:"6:45–7:15", d:"praattempo"},
-  {n:"Vlot duurloop", p:"6:15–6:40", d:"stevig maar comfortabel"},
-  {n:"Racetempo (doel ± 2:20)", p:"6:35–6:45", d:"halve-marathontempo"},
-  {n:"Tempo", p:"5:45–6:00", d:"pittig, gecontroleerd"},
-  {n:"Interval / strides", p:"5:25–5:40", d:"korte snelle stukken"}
+  {n:"Rustig (long run, in-/uitlopen)", p:"7:15", d:"startpunt — praattest leidend, langzamer altijd oké"},
+  {n:"Dribbel / actief herstel", p:"7:30", d:"tussen herhalingen"},
+  {n:"Racetempo", p:"6:24", d:"voorlopig — bevestigd na de 5k-test (week 7)"},
+  {n:"Tempo", p:"5:55–6:10", d:"~7/10 inspanning — richting, geen hard doel"},
+  {n:"Interval", p:"5:30–5:45", d:"gelijkmatig en gecontroleerd — geen hard doel"}
 ];
 // Zones voor Denise, afgeleid uit haar Huawei-data (mei–juli 2026).
 const ZONES_DENISE = [
@@ -330,39 +330,70 @@ const ZONES_DENISE = [
 ];
 
 // type: e=rustig, q=kwaliteit, l=long, t=test, r=race
+// Bron: TOM_TRAININGSPLAN_FINAL.md (juli 2026) — dubbele 18km-piek (wk 9 + wk 14),
+// bevestigd door Tom, geen open discussiepunt. Racetempo 6:24/km is voorlopig tot
+// de 5k-test in week 7. 7:15/km is een startpunt voor rustige runs, geen ondergrens.
 const PLAN_TOM = [
- {w:1, fase:"Basis", focus:"Startweek (al onderweg!). Alles op praattempo — echt rustig. Hamstring-check na elke run. Fysio-oefeningen zijn leidend. 2 runs deze week is ook prima.",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
- {w:2, fase:"Basis", focus:"Frequentie naar vast 3× per week. Zelfde opzet, iets langer. Blijft de hamstring 'licht' of beter? Dan door.",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:5,n:"Rustige run"},{t:"l",km:7,n:"Duurloop"}]},
- {w:3, fase:"Basis", focus:"Rustig doorbouwen. Nog steeds alles op praattempo.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:8,n:"Duurloop"}]},
- {w:4, fase:"Basis", focus:"Laatste opbouwweek van de basisfase. Extra basisweek = extra fundament voor de hamstring.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"e",km:6,n:"Rustige run"},{t:"l",km:9,n:"Duurloop"}]},
- {w:5, fase:"Basis", herstel:true, focus:"Herstelweek — volume bewust omlaag. Herstel is waar de aanpassing gebeurt.",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"e",km:4,n:"Rustige run"},{t:"l",km:6,n:"Duurloop"}]},
- {w:6, fase:"Opbouw", focus:"Eerste snelheidsprikkel — alléén als de hamstring-trend groen is. Zo niet: strides overslaan, run gewoon rustig uitlopen.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",d:"Rustige run, laatste 2 km: 6× 20 sec vlot (strides) met 1 min dribbel ertussen"},{t:"l",km:10,n:"Duurloop"}]},
- {w:7, fase:"Opbouw", focus:"Eerste echte tempoblokken. Gecontroleerd — je moet het gevoel hebben dat je er nog één zou kunnen.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:6,n:"Tempo 3× 5 min",d:"Inlopen, 3× 5 min @ 5:45–6:00 met 2–3 min dribbel, uitlopen"},{t:"l",km:11,n:"Duurloop"}]},
- {w:8, fase:"Opbouw", focus:"Testweek: de 5k-test bepaalt je definitieve streeftijd en zones.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"t",km:8,n:"5K-TEST",d:"2 km inlopen · 5 km vlak-uit maar gelijkmatig · 1 km uitlopen. Noteer de 5k-tijd in de log!"},{t:"l",km:12,n:"Duurloop"}]},
- {w:9, fase:"Opbouw", focus:"Laatste week vóór de vakantie — hier piek je bewust. De long run van 14 km is je fundament voor na de trip. Neem water/gelletje mee.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:7,n:"Tempo 2× 10 min",d:"Inlopen, 2× 10 min @ 5:45–6:00 met 3 min dribbel, uitlopen"},{t:"l",km:14,n:"Duurloop"}]},
+ {w:1, fase:"Basis", focus:"Startweek (al onderweg!). Alles op praattempo, startpunt 7:15/km — langzamer mag altijd. Hamstring-check na elke run.",
+  runs:[{t:"e",km:4,n:"Rustige run"},
+   {t:"q",km:5,n:"Rustig + strides",steps:["Rustig lopen: ~3,5 km op 7:15/km (startpunt), ~25 min","6× 20 sec strides op 85–90% inspanning (geen sprint), 60–90 sec dribbelherstel ertussen (~1,5 km)"]},
+   {t:"l",km:6,n:"Duurloop"}]},
+ {w:2, fase:"Basis", focus:"Zelfde opzet als week 1. De duurloop van 11 km is de eerste echte stap omhoog — rustig aanhouden, hamstring blijft leidend.",
+  runs:[{t:"e",km:5,n:"Rustige run"},
+   {t:"q",km:5,n:"Rustig + strides",steps:["Rustig lopen: ~3,5 km op 7:15/km (startpunt), ~25 min","6× 20 sec strides op 85–90% inspanning, 60–90 sec dribbelherstel ertussen (~1,5 km)"]},
+   {t:"l",km:11,n:"Duurloop"}]},
+ {w:3, fase:"Basis", focus:"Eerste echte intervalsessie: 4× 400m, gecontroleerd. Long run naar 13 km.",
+  runs:[{t:"e",km:6,n:"Rustige run"},
+   {t:"q",km:6,n:"Interval 4× 400m",steps:["Inlopen: 1,8 km rustig (7:15/km, ~13 min)","Hoofddeel: 4× 400 m op 5:30–5:45/km, 120 sec dribbelherstel","Uitlopen: 1,8 km rustig"]},
+   {t:"l",km:13,n:"Duurloop"}]},
+ {w:4, fase:"Basis", herstel:true, focus:"Herstelweek — volume bewust omlaag. Herstel is waar de aanpassing gebeurt.",
+  runs:[{t:"e",km:5,n:"Rustige run"},
+   {t:"q",km:5,n:"Rustig",steps:["5 km rustig, startpunt 7:15/km, praattest leidend (~36 min)"]},
+   {t:"l",km:11,n:"Duurloop"}]},
+ {w:5, fase:"Opbouw", focus:"Long run naar 15 km. Intervallen iets langer: 5× 400m.",
+  runs:[{t:"e",km:6,n:"Rustige run"},
+   {t:"q",km:7,n:"Interval 5× 400m",steps:["Inlopen: 2,1 km rustig (~15 min)","Hoofddeel: 5× 400 m op 5:30–5:45/km, 90 sec dribbelherstel","Uitlopen: 2,1 km rustig"]},
+   {t:"l",km:15,n:"Duurloop"}]},
+ {w:6, fase:"Opbouw", focus:"Eerste tempoblokken: 3× 5 min, ~7/10 inspanning. Long run naar 17 km.",
+  runs:[{t:"e",km:7,n:"Rustige run"},
+   {t:"q",km:7,n:"Tempo 3× 5 min",steps:["Inlopen: 1,9 km rustig (~14 min)","Hoofddeel: 3× 5 min op 5:55–6:10/km, ~7/10 inspanning, 2,5 min dribbel","Uitlopen: 1,9 km rustig"]},
+   {t:"l",km:17,n:"Duurloop"}]},
+ {w:7, fase:"Opbouw", focus:"Testweek (lichte dip in volume): de 5k-test bepaalt je definitieve racetempo en zones.",
+  runs:[{t:"e",km:6,n:"Rustige run"},
+   {t:"t",km:7.5,n:"5K-TEST",steps:["Inlopen: 1,5 km rustig (~11 min)","5 km test: maximaal maar gelijkmatig","Uitlopen: 1,0 km rustig"],why:"Noteer je 5k-tijd in de log — samen met hoe long runs/herstel verlopen bepaalt dit je definitieve racetempo (nu voorlopig 6:24/km)."},
+   {t:"l",km:13,n:"Duurloop"}]},
+ {w:8, fase:"Opbouw", herstel:true, focus:"Herstelweek vóór de piek. Fris worden voor de grote week.",
+  runs:[{t:"e",km:6,n:"Rustige run"},
+   {t:"q",km:6,n:"Rustig",steps:["6 km rustig, startpunt 7:15/km (~44 min)"]},
+   {t:"l",km:14,n:"Duurloop"}]},
+ {w:9, fase:"Piek", focus:"Piek #1 — eerste 18 km, vóór de vakantie. Neem water/gelletje mee op de long run.",
+  runs:[{t:"e",km:7,n:"Rustige run"},
+   {t:"q",km:8,n:"Tempo 2× 10 min",steps:["Inlopen: 2,1 km rustig (~15 min)","Hoofddeel: 2× 10 min op 5:55–6:10/km, ~7/10 inspanning, 3 min dribbel","Uitlopen: 2,1 km rustig"],why:"Niet alles geven hier — de 18 km long run staat deze week ook op het programma."},
+   {t:"l",km:18,n:"Duurloop — eerste 18 km!"}]},
  {w:10, fase:"Vakantie", focus:"Kirgizië! Hiken telt volop mee als training — veel uren op de benen is precies wat een halve-marathonloper nodig heeft. Vink je hikes af, afstand invullen mag.",
   runs:[{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Lange hike"}]},
- {w:11, fase:"Vakantie", focus:"Genieten en bewegen. Lukt er tóch ergens een rustig rondje hardlopen (20-30 min), mooi meegenomen — maar niets moet.",
+ {w:11, fase:"Vakantie", focus:"Genieten en bewegen. Lukt er tóch ergens een rustig rondje hardlopen, mooi meegenomen — maar niets moet.",
   runs:[{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Hike / actieve dag"},{t:"h",km:0,n:"Lange hike"}]},
- {w:12, fase:"Herstart", focus:"Terug op 1 oktober. Na 2,5 week niet gelopen: start écht rustig, korter en langzamer dan je denkt te kunnen. Hamstring-check extra serieus nemen deze week.",
-  runs:[{t:"h",km:0,n:"Laatste vakantiedagen"},{t:"e",km:4,n:"Herstart-run",d:"Kort en heel rustig — voelen hoe de benen erbij staan"},{t:"e",km:5,n:"Rustige run"}]},
- {w:13, fase:"Herstart", focus:"Loopritme terug opbouwen. De hike-basis merk je nu: conditie is er, de benen moeten weer wennen aan de klappen.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:6,n:"Rustig + strides",d:"Rustige run, laatste 2 km: 6× 20 sec vlot met 1 min dribbel"},{t:"l",km:12,n:"Duurloop"}]},
- {w:14, fase:"Piek", focus:"Piekweek: de langste run van het schema. Laatste 3 km op racetempo als het goed voelt. Test je race-ontbijt en gelletjes op deze long run.",
-  runs:[{t:"e",km:6,n:"Rustige run"},{t:"q",km:7,n:"Racetempo 2× 3 km",d:"Inlopen, 2× 3 km @ racetempo (± 6:40) met 3 min dribbel, uitlopen"},{t:"l",km:16,n:"Duurloop — langste!"}]},
+ {w:12, fase:"Herstart", focus:"Terug van vakantie. Hamstring-check extra serieus deze week — bekijk of alles nog goed aanvoelt na de hikes.",
+  runs:[{t:"e",km:6,n:"Rustige run"},
+   {t:"q",km:6,n:"Rustig",steps:["6 km rustig, startpunt 7:15/km, na de vakantie extra vrij invulbaar (~44 min)"]},
+   {t:"l",km:12,n:"Duurloop"}]},
+ {w:13, fase:"Opbouw", focus:"Eerste racetempo-blokken: 3× 2 km op het voorlopige tempo (6:24/km). Long run naar 15 km.",
+  runs:[{t:"e",km:7,n:"Rustige run"},
+   {t:"q",km:9,n:"Racetempo 3× 2 km",steps:["Inlopen: 1,1 km rustig (~8 min)","Hoofddeel: 3× 2 km op racetempo (± 6:24/km, voorlopig), ~13 min elk, 3 min dribbel","Uitlopen: 1,1 km rustig"]},
+   {t:"l",km:15,n:"Duurloop"}]},
+ {w:14, fase:"Piek", focus:"Piek #2 — tweede 18 km, herhaling van bekend terrein (geen nieuw record). Zwaarste week van het schema. Test je race-ontbijt en gelletjes op deze long run.",
+  runs:[{t:"e",km:8,n:"Rustige run"},
+   {t:"q",km:10,n:"Racetempo 2× 3 km",steps:["Inlopen: 1,8 km rustig (~13 min)","Hoofddeel: 2× 3 km op racetempo (± 6:24/km, voorlopig), ~19 min elk, 3 min dribbel","Uitlopen: 1,8 km rustig"],why:"Zwaarste week van het hele schema: ook de 18 km long run."},
+   {t:"l",km:18,n:"Duurloop — tweede 18 km"}]},
  {w:15, fase:"Taper", focus:"Taper: volume flink omlaag, beetje intensiteit erin houden. Je wordt hier fitter zonder te trainen — vertrouw het.",
-  runs:[{t:"e",km:5,n:"Rustige run"},{t:"q",km:6,n:"Racetempo 2× 2 km",d:"Inlopen, 2× 2 km @ racetempo, uitlopen"},{t:"l",km:10,n:"Duurloop"}]},
+  runs:[{t:"e",km:6,n:"Rustige run"},
+   {t:"q",km:7,n:"Tempo 2× 2 km",steps:["Inlopen: 1,3 km rustig (~9 min)","Hoofddeel: 2× 2 km op 5:55–6:10/km, 3 min dribbel","Uitlopen: 1,3 km rustig"]},
+   {t:"l",km:11,n:"Duurloop"}]},
  {w:16, fase:"Race", focus:"Raceweek! Alles kort en fris. Niets nieuws op racedag: geen nieuwe schoenen, geen nieuw ontbijt. Start rustig — de eerste 5 km moeten te langzaam voelen.",
-  runs:[{t:"e",km:4,n:"Rustige run"},{t:"q",km:5,n:"Opfrisser 3× 1 km",d:"3× 1 km @ racetempo + paar strides, verder heel rustig"},{t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
+  runs:[{t:"e",km:4,n:"Rustige run"},
+   {t:"q",km:6,n:"Opfrisser 3× 1 km",steps:["Inlopen: 1,2 km rustig (~8 min)","3× 1 km op racetempo (± 6:24/km, of je bevestigde racetempo), ~6 min elk, 2,5 min dribbel","Uitlopen: 1,2 km rustig"]},
+   {t:"r",km:21.1,n:"🏁 HALVE MARATHON"}]}
 ];
 
 // Schema voor Denise — coach-revisie (jul 2026). Alleen rustige runs + long run
@@ -415,7 +446,9 @@ const SEED_TOM = {athletes:{
     "w1r3": {done:true, dist:6.26, time:"41:25", feel:3, ham:"licht",
       note:"COACH: te snel voor een rustige run — gem. 6:36 (doel 6:45–7:15), HR gem. 176 / max 190, laatste km 6:11. Sterk uitgelopen, nul pauzes. Volgende run: starten op 7:00–7:15 en HR onder ~160 houden. Hamstring rustig; wel linkerheup wat stijf/gevoelig (zelfde kant) — monitoren en melden bij fysio. Conditioneel zwaar na 6 wk weinig lopen: logisch op dit tempo.", ts:1752924300000},
     "w2r1": {done:true, dist:4.27, time:"31:01", feel:3, ham:"goed",
-      note:"COACH: loopband, 8,3 km/u @ 1,7% helling = gem. 7:16/km. Kalibratie-run: HR gem. 156 / max 170 — ~20 slagen lager dan de veldrun (176/190). Bewijst dat rustig tempo veel beter zit. Heup/hamstring: nergens last gehad — vlakke bandondergrond beviel goed. NB: Fitbit-afstand onbruikbaar op de band (gokte 4,57 km); bandwaarde 4,27 km aangehouden. Dag na de long run, dus HR licht verhoogd door restvermoeidheid.", ts:1753027260000}
+      note:"COACH: loopband, 8,3 km/u @ 1,7% helling = gem. 7:16/km. Kalibratie-run: HR gem. 156 / max 170 — ~20 slagen lager dan de veldrun (176/190). Bewijst dat rustig tempo veel beter zit. Heup/hamstring: nergens last gehad — vlakke bandondergrond beviel goed. NB: Fitbit-afstand onbruikbaar op de band (gokte 4,57 km); bandwaarde 4,27 km aangehouden. Dag na de long run, dus HR licht verhoogd door restvermoeidheid.", ts:1753027260000},
+    "w2r3": {done:true, dist:10.42, time:"66:04", feel:3, ham:"goed",
+      note:"COACH: nieuw long-run-ijkpunt. Tempo 6:20/km, HR gem. 167 — geen hamstringklachten, ook niet achteraf. Fitbit-appwaarde aangehouden (10,42 km); TCX-export gaf 10,76 km door een gangbaar GPS/sensorverschil. Bewijst dat de opbouw naar langere duurlopen goed verloopt — basis voor de 18 km-pieken in week 9 en 14.", ts:1785087000000}
   }}
 }};
 const SEED_DENISE = {athletes:{ a:{name:"Denise <3", logs:{
@@ -660,7 +693,7 @@ function renderZones(){
     $("zonesTitle").textContent = "Tempo-zones — " + state.athletes.a.name;
     $("zonesList").innerHTML = ZONES_TOM.map(z=>
       '<div class="zone"><span><b>'+z.n+'</b><br><small style="color:var(--mut)">'+z.d+'</small></span><span class="p">'+z.p+' /km</span></div>').join("");
-    $("zonesNote").innerHTML = "Voorlopige streeftijd: <b>2:20–2:25</b> (met de vakantie erin is dit realistischer dan 2:15). Definitief na de 5k-test in week 8. Regel #1: bij <b>verergering van de hamstring</b> vervalt de eerstvolgende kwaliteitssessie en overleg je met je fysio.";
+    $("zonesNote").innerHTML = "Voorlopige streeftijd: <b>2:10–2:20</b> — definitief na de 5k-test in week 7. 7:15/km is een <b>startpunt, geen ondergrens</b>: praattest leidend, langzamer mag altijd. Bij trekken/steken in de hamstring: stop het snelle deel direct — is rustig joggen daarna pijnvrij, dan mag je rustig uitlopen; blijft het gevoel, dan stop je de hele run. Bij <b>2× op rij klachten</b> vervalt de eerstvolgende kwaliteitssessie automatisch.";
   } else {
     $("zonesTitle").textContent = "Tempo-zones — " + state.athletes.a.name;
     $("zonesList").innerHTML = ZONES_DENISE.map(z=>
@@ -808,7 +841,7 @@ function renderWeeks(){
 }
 function paceFor(t){
   if(LOOP.zones!=="tom") return "";
-  return {e:"Tempo: 6:45–7:15 /km — praattempo", l:"Tempo: 6:45–7:15 /km, comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Start op ± 6:40 /km — niet sneller!", h:"Uren op de benen = training. Afstand loggen mag, hoeft niet."}[t] || "";
+  return {e:"Tempo: 7:15 /km (startpunt) — praattest leidend, langzamer mag altijd", l:"Tempo: 7:15 /km (startpunt), comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Start op ± 6:24 /km (voorlopig) — niet sneller!", h:"Uren op de benen = training. Afstand loggen mag, hoeft niet."}[t] || "";
 }
 function paceForPartner(t){
   return {e:"Tempo: 6:30–6:55 /km — praattempo", l:"Tempo: 6:30–6:55 /km, comfortabel volhouden", q:"Zie omschrijving", t:"", r:"Racetempo ~6:00 /km — gecontroleerd starten", h:""}[t] || "";
