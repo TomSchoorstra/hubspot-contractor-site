@@ -411,7 +411,7 @@ const PLAN_TOM = [
     why:"Aanpassen: Voelen de benen zwaar of stijf na de vakantie, vervang deze sessie door 5 km rustig.",
     q:{plannedDistanceKm:5,blocks:[{type:"warmup",distanceKm:1.5},{type:"repeat",repetitions:4,durationSeconds:60},{type:"recovery",durationSeconds:60,mode:"walk"},{type:"cooldown",untilTotalDistanceKm:5}]}},
    {id:"tom-2026-w10-long",t:"l",km:11,n:"Rustige herstart-long run",d:"Loop 11 km op gesprekstempo. De afstand is bewust lager na de vakantie."}]},
- {w:11, fase:"Opbouw", focus:"Eerste kilometers op halve-marathontempo. Long run 14,5 km — let op knie en hamstring na de vakantie.",
+ {w:11, fase:"Herstart", focus:"Eerste kilometers op halve-marathontempo. Long run 14,5 km — let op knie en hamstring na de vakantie.",
   runs:[
    {id:"tom-2026-w11-short",t:"e",km:5,n:"Rustige duurloop",d:"Loop 5 km gemakkelijk en ontspannen."},
    {id:"tom-2026-w11-quality",t:"q",km:7,n:"3 × 1 km op halve-marathoninspanning",hmPaceRef:true,
