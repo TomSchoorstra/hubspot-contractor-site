@@ -301,6 +301,11 @@ export const LOOPSCHEMA_HTML = String.raw`<!DOCTYPE html>
 
 <div class="toast" id="toast"></div>
 
+<!-- canvas-confetti v1.9.3, same-origin gevendord (public/vendor). Eenmalige load,
+     defer zodat de app nooit op dit script wacht. Ontbreekt het script: geen confetti,
+     alle overige functionaliteit werkt normaal door. -->
+<script src="/vendor/confetti-1.9.3.browser.js" defer></script>
+
 <script>
 /*__LOOP_CONFIG__*/
 const LOOP = (typeof window !== "undefined" && window.__LOOP__) || {apiKey:"", name:"", check:null, zones:"partner", rowId:"denise"};
@@ -1107,6 +1112,42 @@ function renderFoot(){
     : "Verbinden…";
 }
 
+/* ================= CONFETTI (Wispr-style side cannons) =================
+   Puur visueel. Faalt dit om welke reden dan ook, dan mag het het opslaan of
+   sluiten van het formulier nooit blokkeren. canvas-confetti's global instance
+   beheert z'n eigen fixed, pointer-events:none canvas (useWorker + resize) en
+   ruimt dat na de animatie zelf weer op. */
+function celebrateRunCompletion(){
+  try{
+    if(typeof confetti !== "function") return;
+    if(window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+    const colors = ["#FFC61A", "#FF8A00", "#B45CFF", "#E95BC7", "#3B9CFF", "#35B66A"];
+    const common = {
+      colors: colors,
+      shapes: ["square"],
+      spread: 48,
+      startVelocity: 43,
+      gravity: 0.9,
+      decay: 0.92,
+      ticks: 170,
+      scalar: 1.15,
+      zIndex: 9999,
+      disableForReducedMotion: true
+    };
+    const fire = o => { try{ confetti(Object.assign({}, common, o)); }catch(e){} };
+
+    // Twee bijna gelijktijdige zijkanonnen...
+    fire({particleCount:34, angle:58,  origin:{x:0, y:0.66}, drift:0.6});
+    setTimeout(()=> fire({particleCount:34, angle:122, origin:{x:1, y:0.66}, drift:-0.6}), 100);
+    // ...gevolgd door twee kleinere losse bursts iets lager.
+    setTimeout(()=> fire({particleCount:14, angle:68,  spread:36, startVelocity:32, origin:{x:0, y:0.76}, drift:0.4}), 180);
+    setTimeout(()=> fire({particleCount:14, angle:112, spread:36, startVelocity:32, origin:{x:1, y:0.76}, drift:-0.4}), 250);
+  }catch(error){
+    console.warn("[loopschema] Confetti animation failed:", error);
+  }
+}
+
 /* ================= LOG SHEET ================= */
 function updatePaceLive(){
   const p = paceStr($("inDist").value, $("inTime").value);
@@ -1160,7 +1201,12 @@ function closeSheet(){ $("overlay").classList.remove("on"); $("sheet").classList
 
 $("btnSave").onclick = ()=>{
   if(!openSess) return;
-  logsOf()[openSess.id] = {
+  // Vóór de mutatie vastleggen: alleen een echte false -> true overgang binnen
+  // deze gebruikersactie mag straks de confetti starten.
+  const existingLog = logsOf()[openSess.id];
+  const wasCompleted = Boolean(existingLog && existingLog.done);
+  const isHike = Boolean(openSess.run && openSess.run.t === "h");
+  const updatedLog = {
     done:true,
     dist: $("inDist").value.trim()==="" ? null : parseFloat($("inDist").value.replace(",",".")),
     time: normalizeTime($("inTime").value),
@@ -1169,7 +1215,12 @@ $("btnSave").onclick = ()=>{
     feel: formVals.feel, ham: (CHECK ? formVals.ham : null),
     note: $("inNote").value.trim(), ts: Date.now()
   };
+  const isNowCompleted = Boolean(updatedLog.done);
+  logsOf()[openSess.id] = updatedLog;
+  // Eerst opslaan, dan UI bijwerken en het formulier sluiten. Gooit saveState()
+  // onverhoopt, dan wordt de confetti hieronder nooit bereikt.
   saveState(); closeSheet(); render(); toast("Run opgeslagen ✓");
+  if(!wasCompleted && isNowCompleted && !isHike) setTimeout(celebrateRunCompletion, 120);
 };
 $("btnClear").onclick = ()=>{
   if(!openSess) return;

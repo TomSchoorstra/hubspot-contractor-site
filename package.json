@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.100.0",
+    "canvas-confetti": "1.9.3",
     "framer-motion": "^12.35.0",
     "gray-matter": "^4.0.3",
     "next": "16.1.6",
