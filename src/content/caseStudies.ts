@@ -36,14 +36,13 @@ export const caseStudies: CaseStudy[] = [
     industry: "HR Technology",
     companySize: "50–200 employees",
     summary: "I connected AIHR's customer records through a custom Account object in HubSpot, with workflows and weekly checks to keep the data linked.",
-    statusNote: "September 2026: the core setup is live. Enrichment is still in progress.",
+    statusNote: "September 2026: the core setup is live.",
     narrative: {
       eyebrow: "Account-Based CRM · AIHR",
       intro: [
         "At AIHR, one customer could have several company records, licenses, deals, and service projects in HubSpot. Those records weren't consistently connected, which made it difficult to see the full relationship and report on retention.",
         "I led the project to connect them through a custom Account object, including the data model, historical cleanup, and workflows. I also added weekly checks to flag duplicates and missing links after launch."
       ],
-      resultsNote: "Snapshot: 7 September 2026.",
       headings: {
         challenge: "Why the existing records weren't enough",
         approach: "How I approached it",
@@ -78,18 +77,10 @@ export const caseStudies: CaseStudy[] = [
       }
     ],
     solution: [
-      "The Account object groups companies, licenses, deals, and professional services under one customer relationship. All active and historical Team Licenses are connected, and three automated paths link new records to Accounts.",
-      "That gives the data team a consistent customer identifier for account-level retention reporting. The core setup is live; enrichment remains in progress."
+      "The Account object groups companies, licenses, deals, and professional services under one customer relationship. Three automated paths link new records to Accounts.",
+      "That gives the data team a consistent customer identifier for account-level retention reporting."
     ],
     results: [
-      {
-        value: "2,860",
-        label: "Account records live"
-      },
-      {
-        value: "All",
-        label: "Active and historical team licenses connected"
-      },
       {
         value: "3",
         label: "Automated roll-up paths"
