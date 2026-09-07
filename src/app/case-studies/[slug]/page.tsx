@@ -77,6 +77,11 @@ export default async function CaseStudyDetail({
     typeof item === "string" ? { title: `Step ${i + 1}`, description: item } : item
   );
   const narrative = caseStudy.narrative;
+  const resultsColumns = caseStudy.results.length === 3
+    ? "grid-cols-1 sm:grid-cols-3"
+    : caseStudy.results.length === 2
+      ? "grid-cols-2"
+      : "grid-cols-2 lg:grid-cols-4";
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -139,7 +144,7 @@ export default async function CaseStudyDetail({
       {/* Results metrics bar */}
       <div className="bg-accent-2 py-10">
         <Container>
-          <div className="grid grid-cols-2 gap-4 sm:gap-6 lg:grid-cols-4">
+          <div className={`grid gap-4 sm:gap-6 ${resultsColumns}`}>
             {caseStudy.results.map((result, i) => {
               const parsed = parseMetricValue(result.value);
               return (
@@ -160,7 +165,7 @@ export default async function CaseStudyDetail({
               );
             })}
           </div>
-          {narrative && (
+          {narrative?.resultsNote && (
             <p className="mt-6 text-center text-sm text-white/90">{narrative.resultsNote}</p>
           )}
         </Container>

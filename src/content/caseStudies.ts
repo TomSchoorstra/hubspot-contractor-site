@@ -8,12 +8,12 @@ export type CaseStudy = {
   narrative?: {
     eyebrow: string;
     intro: string[];
-    resultsNote: string;
+    resultsNote?: string;
     headings: {
       challenge: string;
       approach: string;
       solution: string;
-      operatingModel: string;
+      operatingModel?: string;
     };
     cta: { title: string; description: string };
   };
@@ -123,99 +123,201 @@ export const caseStudies: CaseStudy[] = [
     slug: "finance-automation",
     title: "From manual order entry to one-click invoicing",
     industry: "HR Software",
-    companySize: "50-200 employees",
-    summary:
-      "Finance was spending 10-15 hours each week copying order data between systems. A Zapier-powered automation reduced the process to a single button click.",
+    companySize: "50–200 employees",
+    summary: "I connected HubSpot, WooCommerce, and Exact through Zapier, reducing time spent on manual processing by 90%. Finance keeps a review step before the flow starts.",
+    narrative: {
+      eyebrow: "Finance automation",
+      intro: [
+        "Finance was spending 10–15 hours a week copying order details between HubSpot, WooCommerce, and Exact.",
+        "I connected the process through Zapier, with a review step in HubSpot before Finance starts the flow. That reduced the time spent on manual processing by 90%."
+      ],
+      headings: {
+        challenge: "The same order details, entered again",
+        approach: "How I approached it",
+        solution: "Finance reviews the details, then starts the flow"
+      },
+      cta: {
+        title: "Still copying order details between systems?",
+        description: "Tell me where your order data starts and what Finance needs to do with it. I can help you work out which steps can be automated and where a review still makes sense."
+      }
+    },
     challenge: [
-      "For every new order, finance had to manually copy customer and billing data from HubSpot",
-      "Data then had to be entered into WooCommerce, and again into Exact for invoicing",
-      "The process took 10-15 hours every week and was prone to errors",
+      "The customer and billing details were already in HubSpot. For each new order, Finance copied them into WooCommerce and then into Exact for invoicing. That repeated entry took 10–15 hours each week and left room for mistakes.",
+      "The process still needed a billing review. I needed to keep that decision with Finance while removing the repeated work around it."
     ],
     approach: [
-      "Mapped out the full order-to-invoice flow across all three systems",
-      "Identified which data needed to sync and at what trigger points",
-      "Built a Zapier automation that connects HubSpot, WooCommerce, and Exact",
-      "Added a single approval step so finance stays in control",
+      {
+        title: "Follow the order through each system",
+        description: "I mapped the order-to-invoice process across HubSpot, WooCommerce, and Exact. That established which details each system needed and when they should be passed on."
+      },
+      {
+        title: "Keep the billing review in HubSpot",
+        description: "I added a review step so Finance could check the billing details before starting the automation. The approval became the trigger for the rest of the process."
+      },
+      {
+        title: "Connect the order and invoicing steps",
+        description: "I built the Zapier automation connecting HubSpot with WooCommerce and Exact. Once Finance starts the flow, the order details are passed through without being typed into each system again."
+      }
     ],
     solution: [
-      "Finance reviews billing details in HubSpot and clicks one button",
-      "Zapier automatically creates the order in WooCommerce",
-      "WooCommerce generates the invoice in Exact once payment is confirmed",
-      "The entire flow runs without manual data entry",
+      "Finance checks the billing details in HubSpot and starts the flow with one click. The automation creates the WooCommerce order and passes the information through the invoicing process in Exact.",
+      "Time spent on manual processing fell by 90% from the original 10–15 hours per week. Finance still reviews the order; the repeated entry between systems has been removed."
     ],
     results: [
-      { label: "Time saved", value: "10-15 hrs/week" },
-      { label: "Process speed", value: "~90% faster" },
-      { label: "Manual entry", value: "Eliminated" },
-      { label: "Error rate", value: "Significantly reduced" },
+      {
+        value: "90%",
+        label: "Less time spent on manual processing"
+      },
+      {
+        value: "10–15 hrs/week",
+        label: "Time spent before automation"
+      },
+      {
+        value: "1",
+        label: "Review step before the flow starts"
+      }
     ],
-    stack: ["HubSpot", "Zapier", "WooCommerce", "Exact"],
-    relatedServices: ["automation", "integrations"],
+    stack: [
+      "HubSpot",
+      "Zapier",
+      "WooCommerce",
+      "Exact"
+    ],
+    relatedServices: [
+      "automation",
+      "integrations"
+    ]
   },
   {
     slug: "renewal-status-card",
-    title: "Live renewal status in the deal sidebar — no more tab-switching",
+    title: "Seeing the renewal status directly on the deal",
     industry: "HR Software",
-    companySize: "50-200 employees",
-    summary:
-      "Sales reps were manually checking License objects before every deal review to determine renewal type. A custom HubSpot app card surfaced the answer directly in the deal sidebar.",
+    companySize: "50–200 employees",
+    summary: "I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, so reps can check it where they're already working.",
+    narrative: {
+      eyebrow: "Renewal status card",
+      intro: [
+        "To check whether a renewal needed manual follow-up, reps had to open the associated License record. The information was already in HubSpot, but it wasn't visible on the deal they were reviewing.",
+        "I built a sidebar card that reads the linked License and shows whether the subscription is active, cancelled, or missing."
+      ],
+      headings: {
+        challenge: "The status was on a different record",
+        approach: "How I approached it",
+        solution: "The renewal status is visible on the deal"
+      },
+      cta: {
+        title: "Is your team opening other records to find one answer?",
+        description: "Tell me what your reps need to check and where that information lives. I can help you work out whether a sidebar card would make that task easier."
+      }
+    },
     challenge: [
-      "Growth Account Executives had to navigate to the associated License object on every deal to check whether a subscription was active, cancelled, or absent",
-      "This manual lookup cost time on every deal review and was easy to skip under pressure",
-      "Missed or incorrect renewal assessments led to deals being handled with the wrong approach",
+      "Reps needed to know whether a renewal would happen automatically or needed manual follow-up. To find out, they had to leave the deal and check subscription details on the associated License.",
+      "That added a lookup to each deal review. If it was skipped, the rep could miss the information needed to choose the right follow-up."
     ],
     approach: [
-      "Mapped the data flow from Deal to associated License object and identified the relevant subscription properties",
-      "Designed a three-state card with clear color-coding: green for auto-renewal active, yellow for manual renewal required, red for subscription cancelled",
-      "Built a React UI Extension with a serverless function that resolves the Deal-to-License association and fetches the subscription data",
-      "Scoped the card to appear only in the relevant pipeline to avoid noise for reps working other deal types",
+      {
+        title: "Define the statuses reps need to see",
+        description: "I mapped the subscription information to three states: auto-renewal active, manual renewal required, and subscription cancelled. Each state has a written label and a colour, so reps can read the status directly."
+      },
+      {
+        title: "Make the License lookup reliable",
+        description: "The initial approach wasn't reliably finding the linked License. I moved that lookup into a serverless function, which retrieves the association and reads the subscription data."
+      },
+      {
+        title: "Show the card where it is useful",
+        description: "I built the card as a React UI Extension and scoped its visibility to the relevant deal pipeline. It reads the License data when it loads, without copying those properties onto the deal."
+      }
     ],
     solution: [
-      "Reps now see the renewal status as soon as they open a deal — no navigation, no extra clicks",
-      "Three color-coded states make the required action immediately clear without any training",
-      "The card is read-only and runs entirely inside HubSpot's infrastructure — zero risk to existing data, nothing to maintain externally",
-      "Two API calls per load keep the card fast; tested at under two seconds from open to rendered",
+      "When a rep opens a relevant deal, the card shows whether auto-renewal is active, manual renewal is required, or the subscription has been cancelled. The rep can check that status without opening the License record.",
+      "The card and its serverless function run inside HubSpot. The card only reads data; it doesn't update records."
     ],
     results: [
-      { label: "Context switching", value: "Eliminated" },
-      { label: "Data lookup time", value: "Seconds vs. minutes" },
-      { label: "Adoption", value: "Immediate" },
-      { label: "External hosting", value: "None required" },
+      {
+        value: "3",
+        label: "Renewal states shown on the deal"
+      },
+      {
+        value: "Read-only",
+        label: "No CRM records updated by the card"
+      },
+      {
+        value: "HubSpot",
+        label: "Card and function hosted in HubSpot"
+      }
     ],
-    stack: ["HubSpot", "UI Extensions", "Serverless functions", "Custom objects"],
-    relatedServices: ["custom-app-cards", "custom-objects"],
+    stack: [
+      "HubSpot",
+      "React UI Extensions",
+      "Serverless functions",
+      "Custom objects"
+    ],
+    relatedServices: [
+      "custom-app-cards",
+      "custom-objects"
+    ]
   },
   {
     slug: "pipeline-consolidation",
-    title: "Two messy pipelines became one source of truth",
+    title: "Following the sales process from MQL to Closed Won",
     industry: "HR Software",
-    companySize: "50-200 employees",
-    summary:
-      "Separate pipelines for different product lines led to duplicated deals and unreliable reporting. Consolidation brought standardization and cleaner data.",
+    companySize: "50–200 employees",
+    summary: "I consolidated several HubSpot pipelines into one, making it easier to measure conversion from MQL to Closed Won and manage internal handovers.",
+    narrative: {
+      eyebrow: "Pipeline consolidation",
+      intro: [
+        "The sales process was spread across several pipelines. That made it difficult to follow a lead through the full process, measure conversion between stages, and manage internal handovers.",
+        "I consolidated those pipelines into one. The team can now track conversion from MQL to Closed Won, see how leads move between stages, and hand over work within the same process."
+      ],
+      headings: {
+        challenge: "The full sales process was split across pipelines",
+        approach: "How I approached it",
+        solution: "One pipeline for the full process"
+      },
+      cta: {
+        title: "Hard to follow conversion across your pipelines?",
+        description: "Tell me how your sales process is split up and where handovers get difficult. I can help you work out a pipeline structure that makes progress easier to follow."
+      }
+    },
     challenge: [
-      "Sales used two separate pipelines for different product lines",
-      "Deals were copied between pipelines, creating duplicates",
-      "Reporting required pulling from multiple sources and couldn't be trusted",
+      "Each pipeline showed part of the sales process. Looking at the full journey from MQL to Closed Won meant working across those separate views.",
+      "That made it harder to measure conversion between stages and see how work passed between teams. The team needed one process it could follow and report on from start to finish."
     ],
     approach: [
-      "Audited both pipelines to understand stages, fields, and workflows",
-      "Identified overlaps and inconsistencies in the sales process",
-      "Designed a unified structure that works for all product lines",
-      "Created a migration plan to preserve historical data",
+      {
+        title: "Map the full sales process",
+        description: "I reviewed the existing stages, fields, and workflows across the pipelines. I looked at where they overlapped and how the separate parts fitted into the journey from MQL to Closed Won."
+      },
+      {
+        title: "Bring the stages into one pipeline",
+        description: "I designed a single pipeline for the full process, with consistent stages and required fields. I planned the migration so existing deal history could be preserved."
+      },
+      {
+        title: "Make progress and handovers easier to follow",
+        description: "I set up reporting around the consolidated process so the team could measure conversion between stages and across the full funnel. Keeping that work in one pipeline also made internal handovers easier to manage."
+      }
     ],
     solution: [
-      "Consolidated into two clean pipelines: New Business and Existing Business",
-      "Standardized stages and required fields across both",
-      "Connected all deals to the License object for customer context",
-      "Set up dashboards for reliable forecasting",
+      "The team now works from one pipeline and can measure conversion from MQL to Closed Won, as well as between the stages along the way.",
+      "Internal handovers sit within that same process. The team can follow progress through the pipeline instead of piecing the journey together from separate views."
     ],
     results: [
-      { label: "Pipelines", value: "2 → unified" },
-      { label: "Duplicate deals", value: "Eliminated" },
-      { label: "Reporting time", value: "~50% faster" },
-      { label: "Forecast reliability", value: "Improved" },
+      {
+        value: "1",
+        label: "Pipeline for the sales process"
+      },
+      {
+        value: "MQL → Closed Won",
+        label: "Conversion tracked across the full journey"
+      }
     ],
-    stack: ["HubSpot", "Pipeline management", "Custom objects"],
-    relatedServices: ["pipeline-optimization"],
+    stack: [
+      "HubSpot",
+      "Pipeline management",
+      "Reporting"
+    ],
+    relatedServices: [
+      "pipeline-optimization"
+    ]
   },
 ];
