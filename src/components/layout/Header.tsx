@@ -108,6 +108,12 @@ export default function Header() {
   const [open, setOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const [menuPathname, setMenuPathname] = useState(pathname);
+
+  if (menuPathname !== pathname) {
+    setMenuPathname(pathname);
+    setOpen(false);
+  }
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -131,10 +137,6 @@ export default function Header() {
       document.removeEventListener("keydown", handleEscape);
     };
   }, [open]);
-
-  useEffect(() => {
-    setOpen(false);
-  }, [pathname]);
 
   const navItems = site.nav.filter((item) => item.href !== "/contact");
 

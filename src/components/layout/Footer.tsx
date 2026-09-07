@@ -80,9 +80,6 @@ export default function Footer() {
           <p className="text-xs text-text-muted">
             © {currentYear} {site.name}. All rights reserved.
           </p>
-          <p className="text-xs text-text-muted">
-            Built for HubSpot operators.
-          </p>
         </div>
       </div>
     </footer>

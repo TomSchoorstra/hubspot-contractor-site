@@ -45,6 +45,8 @@ export async function generateMetadata({
 }
 
 function parseMetricValue(val: string): { number: number; suffix: string; prefix: string } | null {
+  // Preserve formatted counts as readable text, including before hydration.
+  if (/\d,\d{3}/.test(val)) return null;
   // Try to extract a leading number
   const match = val.match(/^(~?)(\d+)/);
   if (!match) return null;
@@ -118,6 +120,11 @@ export default async function CaseStudyDetail({
             <p className="mt-6 max-w-2xl text-xl leading-relaxed text-text-secondary">
               {caseStudy.summary}
             </p>
+            {caseStudy.statusNote && (
+              <p className="mt-5 text-sm font-medium text-text-secondary">
+                {caseStudy.statusNote}
+              </p>
+            )}
           </div>
         </Container>
       </header>
@@ -211,6 +218,27 @@ export default async function CaseStudyDetail({
                 </div>
               </div>
             </ScrollReveal>
+
+            {caseStudy.operatingModel && (
+              <ScrollReveal>
+                <div className="rounded-3xl border border-border bg-surface-2 p-8 lg:p-12">
+                  <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">
+                    How it stays reliable
+                  </h2>
+                  <p className="mt-6 max-w-3xl text-lg leading-relaxed text-text-secondary">
+                    {caseStudy.operatingModel.summary}
+                  </p>
+                  <ul className="mt-8 space-y-4">
+                    {caseStudy.operatingModel.controls.map((control) => (
+                      <li key={control} className="flex gap-4 text-lg leading-relaxed text-text-secondary">
+                        <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-2" />
+                        {control}
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              </ScrollReveal>
+            )}
 
             {/* Stack */}
             <ScrollReveal>

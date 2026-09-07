@@ -1,19 +1,27 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useSyncExternalStore } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
-export default function AnnouncementBanner() {
-  const [visible, setVisible] = useState(false);
+function subscribe(callback: () => void) {
+  window.addEventListener("storage", callback);
+  window.addEventListener("banner-dismissed", callback);
+  return () => {
+    window.removeEventListener("storage", callback);
+    window.removeEventListener("banner-dismissed", callback);
+  };
+}
 
-  useEffect(() => {
-    const dismissed = localStorage.getItem("banner-dismissed");
-    if (!dismissed) setVisible(true);
-  }, []);
+export default function AnnouncementBanner() {
+  const visible = useSyncExternalStore(
+    subscribe,
+    () => !localStorage.getItem("banner-dismissed"),
+    () => false,
+  );
 
   const dismiss = () => {
     localStorage.setItem("banner-dismissed", "1");
-    setVisible(false);
+    window.dispatchEvent(new Event("banner-dismissed"));
   };
 
   return (

@@ -123,6 +123,7 @@ export const services: Service[] = [
         a: "Yes. Many clients start with a one-off audit and then move to a recurring arrangement — typically a set number of hours per month for sparring, troubleshooting, and incremental improvements.",
       },
     ],
+    relatedCaseStudy: "customer-lifecycle",
   },
   {
     slug: "integrations",

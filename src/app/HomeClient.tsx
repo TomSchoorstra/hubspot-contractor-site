@@ -333,6 +333,38 @@ export default function HomeClient() {
         </Container>
       </section>
 
+      <section className="border-y border-border-subtle bg-surface-2 py-16 lg:py-20">
+        <Container>
+          <ScrollReveal>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">How I work</p>
+            <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">Built to keep working</h2>
+            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-text-secondary">
+              I turn repeatable RevOps checks into AI-assisted controls. They inspect live data, explain what looks wrong, and keep write decisions with the operator.
+            </p>
+            <div className="mt-10 grid gap-6 lg:grid-cols-3">
+              {[
+                { title: "Account integrity", description: "New accounts are checked for duplicates, parent-child relationships, and missing CRM associations." },
+                { title: "Routing quality", description: "New MQLs are checked against the intended rep pool, region, and meeting type." },
+                { title: "Revenue data", description: "Renewal, subscription, and deal records are checked for gaps before they affect reporting or follow-up." },
+              ].map((control) => (
+                <div key={control.title} className="rounded-2xl border border-border bg-surface p-7">
+                  <h3 className="font-display text-xl font-bold text-accent-2">{control.title}</h3>
+                  <p className="mt-3 leading-relaxed text-text-secondary">{control.description}</p>
+                </div>
+              ))}
+            </div>
+            <p className="mt-8 text-sm leading-relaxed text-text-secondary">
+              Read-only by default. Exceptions are flagged with context; changes stay human-approved.
+            </p>
+            <div className="mt-6">
+              <Button href="/case-studies/customer-lifecycle" variant="secondary" size="md" showArrow>
+                See the Account-Based CRM case
+              </Button>
+            </div>
+          </ScrollReveal>
+        </Container>
+      </section>
+
       {/* ═══ CTA SECTION ════════════════════════════════════════════ */}
       <section className="py-16 lg:py-20">
         <Container>
