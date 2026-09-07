@@ -73,10 +73,10 @@ export default async function CaseStudyDetail({
   const nextStudy = index < caseStudies.length - 1 ? caseStudies[index + 1] : null;
 
   // Convert approach to timeline format
-  const approachSteps = caseStudy.approach.map((item, i) => ({
-    title: `Step ${i + 1}`,
-    description: item,
-  }));
+  const approachSteps = caseStudy.approach.map((item, i) =>
+    typeof item === "string" ? { title: `Step ${i + 1}`, description: item } : item
+  );
+  const narrative = caseStudy.narrative;
 
   const breadcrumbSchema = {
     "@context": "https://schema.org",
@@ -114,12 +114,19 @@ export default async function CaseStudyDetail({
               <Badge variant="neutral" size="sm">{caseStudy.industry}</Badge>
               <Badge variant="neutral" size="sm">{caseStudy.companySize}</Badge>
             </div>
+            {narrative && (
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">
+                {narrative.eyebrow}
+              </p>
+            )}
             <h1 className="font-display text-4xl font-extrabold tracking-tight text-text lg:text-5xl xl:text-6xl max-w-4xl">
               {caseStudy.title}
             </h1>
-            <p className="mt-6 max-w-2xl text-xl leading-relaxed text-text-secondary">
-              {caseStudy.summary}
-            </p>
+            <div className="mt-6 max-w-2xl space-y-4 text-xl leading-relaxed text-text-secondary">
+              {(narrative?.intro ?? [caseStudy.summary]).map((paragraph) => (
+                <p key={paragraph}>{paragraph}</p>
+              ))}
+            </div>
             {caseStudy.statusNote && (
               <p className="mt-5 text-sm font-medium text-text-secondary">
                 {caseStudy.statusNote}
@@ -153,6 +160,9 @@ export default async function CaseStudyDetail({
               );
             })}
           </div>
+          {narrative && (
+            <p className="mt-6 text-center text-sm text-white/90">{narrative.resultsNote}</p>
+          )}
         </Container>
       </div>
 
@@ -163,13 +173,17 @@ export default async function CaseStudyDetail({
             {/* Challenge */}
             <ScrollReveal>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
                   The problem
-                </p>
+                </p>}
                 <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
-                  Challenge
+                  {narrative?.headings.challenge ?? "Challenge"}
                 </h2>
-                <div className="rounded-3xl border-l-4 border-accent bg-accent-light px-8 py-8 lg:px-10">
+                {narrative ? (
+                  <div className="max-w-3xl space-y-5 text-lg leading-relaxed text-text-secondary">
+                    {caseStudy.challenge.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  </div>
+                ) : <div className="rounded-3xl border-l-4 border-accent bg-accent-light px-8 py-8 lg:px-10">
                   <div className="space-y-4">
                     {caseStudy.challenge.map((item, index) => (
                       <div key={index} className="flex gap-4">
@@ -178,33 +192,39 @@ export default async function CaseStudyDetail({
                       </div>
                     ))}
                   </div>
-                </div>
+                </div>}
               </div>
             </ScrollReveal>
 
             {/* Approach */}
             <ScrollReveal>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
                   How we solved it
-                </p>
+                </p>}
                 <h2 className="font-display text-3xl font-bold text-text mb-10 lg:text-4xl">
-                  Approach
+                  {narrative?.headings.approach ?? "Approach"}
                 </h2>
-                <ProcessTimeline steps={approachSteps} />
+                <div className={narrative ? "max-w-3xl" : undefined}>
+                  <ProcessTimeline steps={approachSteps} />
+                </div>
               </div>
             </ScrollReveal>
 
             {/* Solution */}
             <ScrollReveal>
               <div className="rounded-3xl bg-surface-2 border border-border p-8 lg:p-12">
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent-2 mb-3">
+                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent-2 mb-3">
                   The build
-                </p>
+                </p>}
                 <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
-                  Solution
+                  {narrative?.headings.solution ?? "Solution"}
                 </h2>
-                <div className="space-y-4">
+                {narrative ? (
+                  <div className="max-w-3xl space-y-5 text-lg leading-relaxed text-text-secondary">
+                    {caseStudy.solution.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                  </div>
+                ) : <div className="space-y-4">
                   {caseStudy.solution.map((item, index) => (
                     <div key={index} className="flex gap-4">
                       <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-accent-2/15">
@@ -215,27 +235,31 @@ export default async function CaseStudyDetail({
                       <span className="text-lg leading-relaxed text-text-secondary">{item}</span>
                     </div>
                   ))}
-                </div>
+                </div>}
               </div>
             </ScrollReveal>
 
             {caseStudy.operatingModel && (
               <ScrollReveal>
-                <div className="rounded-3xl border border-border bg-surface-2 p-8 lg:p-12">
+                <div className={narrative ? "max-w-3xl" : "rounded-3xl border border-border bg-surface-2 p-8 lg:p-12"}>
                   <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">
-                    How it stays reliable
+                    {narrative?.headings.operatingModel ?? "How it stays reliable"}
                   </h2>
                   <p className="mt-6 max-w-3xl text-lg leading-relaxed text-text-secondary">
                     {caseStudy.operatingModel.summary}
                   </p>
-                  <ul className="mt-8 space-y-4">
+                  {narrative ? (
+                    <div className="mt-5 space-y-5 text-lg leading-relaxed text-text-secondary">
+                      {caseStudy.operatingModel.controls.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
+                    </div>
+                  ) : <ul className="mt-8 space-y-4">
                     {caseStudy.operatingModel.controls.map((control) => (
                       <li key={control} className="flex gap-4 text-lg leading-relaxed text-text-secondary">
                         <span aria-hidden="true" className="mt-2.5 h-1.5 w-1.5 shrink-0 rounded-full bg-accent-2" />
                         {control}
                       </li>
                     ))}
-                  </ul>
+                  </ul>}
                 </div>
               </ScrollReveal>
             )}
@@ -337,8 +361,8 @@ export default async function CaseStudyDetail({
       </section>
 
       <CTASection
-        title="Want similar results in HubSpot?"
-        description="Whether it's automating manual processes, cleaning up your CRM, or building custom integrations — let's talk about what HubSpot can do for your team."
+        title={narrative?.cta.title ?? "Want similar results in HubSpot?"}
+        description={narrative?.cta.description ?? "Whether it's automating manual processes, cleaning up your CRM, or building custom integrations — let's talk about what HubSpot can do for your team."}
         cta={{ label: "Let's talk", href: "/contact" }}
         secondaryCta={{ label: "View services", href: "/services" }}
       />

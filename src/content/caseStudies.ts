@@ -5,9 +5,21 @@ export type CaseStudy = {
   companySize: string;
   summary: string;
   statusNote?: string;
+  narrative?: {
+    eyebrow: string;
+    intro: string[];
+    resultsNote: string;
+    headings: {
+      challenge: string;
+      approach: string;
+      solution: string;
+      operatingModel: string;
+    };
+    cta: { title: string; description: string };
+  };
   operatingModel?: { summary: string; controls: string[] };
   challenge: string[];
-  approach: string[];
+  approach: Array<string | { title: string; description: string }>;
   solution: string[];
   results: Array<{ label: string; value: string }>;
   stack: string[];
@@ -20,27 +32,54 @@ export const caseStudiesHeroIntro =
 export const caseStudies: CaseStudy[] = [
   {
     slug: "customer-lifecycle",
-    title: "From fragmented HubSpot records to one account-level source of truth",
+    title: "Connecting the full customer relationship in HubSpot",
     industry: "HR Technology",
     companySize: "50–200 employees",
-    statusNote: "Core account architecture live; enrichment work continues.",
-    summary: "A growing HR technology company needed one customer view across companies, licenses, deals, and professional services. I led the Account architecture, backfill, automation, and recurring controls that now keep 2,860 account records aligned.",
+    summary: "I connected AIHR's customer records through a custom Account object in HubSpot, with workflows and weekly checks to keep the data linked.",
+    statusNote: "September 2026: the core setup is live. Enrichment is still in progress.",
+    narrative: {
+      eyebrow: "Account-Based CRM · AIHR",
+      intro: [
+        "At AIHR, one customer could have several company records, licenses, deals, and service projects in HubSpot. Those records weren't consistently connected, which made it difficult to see the full relationship and report on retention.",
+        "I led the project to connect them through a custom Account object, including the data model, historical cleanup, and workflows. I also added weekly checks to flag duplicates and missing links after launch."
+      ],
+      resultsNote: "Snapshot: 7 September 2026.",
+      headings: {
+        challenge: "Why the existing records weren't enough",
+        approach: "How I approached it",
+        solution: "What's in place now",
+        operatingModel: "Keeping the data connected"
+      },
+      cta: {
+        title: "Hard to see the full customer picture in HubSpot?",
+        description: "Tell me how your customer records are set up and what you're trying to report on. I can help you work out where the gaps are and what needs to change."
+      }
+    },
     challenge: [
-      "Customer data was split across Company, License, Deal, and Professional Service records, with no shared account-level grouping key.",
-      "A single customer could appear under multiple entities, making retention reporting and a complete customer view unreliable.",
-      "Historical cleanup alone would not solve the problem, because new records and associations could drift again after launch."
+      "The data was already in HubSpot, but there was no consistent way to group everything that belonged to the same customer. A deal showed part of the relationship. A license showed another part. Parent companies and subsidiaries added another question: which records belonged together?",
+      "That made retention reporting difficult. Before the data team could calculate it at account level, they needed a reliable way to identify the customer across current and historical records."
     ],
     approach: [
-      "Defined what an Account represents and designed the object and association model before changing live data.",
-      "Reviewed duplicates and parent-child relationships, then backfilled the Account layer across active and historical B2B customers.",
-      "Built creation and association paths so new Licenses, Deals, and Professional Services resolve to the correct Account automatically.",
-      "Added recurring, AI-assisted controls that compare new records with the full account base and flag exceptions for human review."
+      {
+        title: "Define what belongs to an Account",
+        description: "I started by defining what an Account represents and how the records should connect. One Company record didn't necessarily represent the full customer relationship, so duplicates and parent-child relationships needed review before the historical records could be linked."
+      },
+      {
+        title: "Connect the historical data",
+        description: "I backfilled the Account layer across active and historical B2B customers. Keeping the older licenses connected mattered because retention reporting needs the history as well as the current contract."
+      },
+      {
+        title: "Build the paths for new records",
+        description: "I built workflows to create or find the right Account when new licenses and professional services are added, and to link deals to it. The associated Company provides the matching point between records."
+      },
+      {
+        title: "Add checks for missing links",
+        description: "New records keep coming in after launch. I added a weekly review to catch possible duplicates and missing associations, so exceptions can be investigated as they appear."
+      }
     ],
     solution: [
-      "A custom Account object now groups the complete commercial relationship across Companies, Licenses, Deals, and Professional Services.",
-      "License, Deal, and Professional Service workflows connect new records to the correct Account through their associated Company.",
-      "All active and historical Team Licenses were connected to the Account layer, creating a stable grouping key for account-level retention reporting.",
-      "A weekly control checks Account quality and association coverage without making automatic CRM changes."
+      "The Account object groups companies, licenses, deals, and professional services under one customer relationship. All active and historical Team Licenses are connected, and three automated paths link new records to Accounts.",
+      "That gives the data team a consistent customer identifier for account-level retention reporting. The core setup is live; enrichment remains in progress."
     ],
     results: [
       {
@@ -65,7 +104,7 @@ export const caseStudies: CaseStudy[] = [
       "Custom objects",
       "Workflows",
       "JavaScript",
-      "AI-assisted controls"
+      "Claude"
     ],
     relatedServices: [
       "consultancy",
@@ -73,12 +112,10 @@ export const caseStudies: CaseStudy[] = [
       "automation"
     ],
     operatingModel: {
-      summary: "The build is backed by a weekly, AI-assisted control loop. It checks the complete account base, explains exceptions, and keeps CRM changes behind a human decision.",
+      summary: "Each week, I run a check that compares new Accounts with the full account base. It looks for possible duplicates and parent-company relationships using names, domains, and previously reviewed relationships.",
       controls: [
-        "Compare every new Account with the full account base using names, domains, and known parent relationships.",
-        "Check Team Licenses, signed Deals, and Professional Services for missing or incomplete Account coverage.",
-        "Stop the run when source data is incomplete or the number of candidates exceeds the expected range.",
-        "Return a short decision list while merges and association changes remain manual."
+        "The review also flags licenses and professional services without an Account, and signed deals where expected service records are missing. Claude helps me assess the exceptions and put the findings in context.",
+        "If the source data is incomplete or the candidate list exceeds the expected range, the run stops for investigation. I review the findings before making changes in HubSpot. The check itself doesn't merge records or change associations."
       ]
     }
   },
