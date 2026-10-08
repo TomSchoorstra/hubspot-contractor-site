@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: checkpoints 2–8 hebben zelfcontrole afgerond; checkpoint 9 is gestart op Toms verzoek. Online previewreview staat open; productie volgt pas na expliciete previewgoedkeuring.
+Status: checkpoints 2–8 hebben zelfcontrole afgerond; checkpoint 9 wacht op Toms online previewreview. Featurebranch is gepusht en Vercel-preview is gereed; productie volgt pas na expliciete previewgoedkeuring.
 
 ## Doel en uitgangspunten
 
@@ -127,9 +127,9 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | cf78b20 | — |
 | 7 | Drie artikelbriefings | Zelfcontrole afgerond | 4b96b67 | — |
 | 8 | Eindcontrole en releasevoorbereiding | Zelfcontrole afgerond | 8df8255 | — |
-| 9 | Gezamenlijke publicatie | Bezig | — | — |
+| 9 | Gezamenlijke publicatie | Wacht op review | ac3ba17 (previewbron) | — |
 
-**Eerstvolgende stap:** featurebranch pushen en een gekoppelde online preview aanbieden voor Toms review. Op 8 oktober 2026 autoriseerde Tom het doorlopen van de livegangstappen. Geen browsercontrole; merge en productie-deploy pas na expliciete previewgoedkeuring.
+**Eerstvolgende stap:** Tom beoordeelt [de online preview](https://hubspot-contractor-site-r70k6kduo-tomschoorstras-projects.vercel.app). Op 8 oktober 2026 autoriseerde Tom het doorlopen van de livegangstappen. Geen browsercontrole; merge en productie-deploy pas na expliciete previewgoedkeuring.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -376,3 +376,13 @@ Vul bij ieder checkpoint kort aan:
 - **Lokale Git-reparatie:** de ongeldige iCloud-dataless reference `.git/refs/heads/main 2` blokkeerde fetch. Het bestand wordt zonder inhoudswijziging behouden buiten refs, onder `.git/local-ref-backups/main-2-before-checkpoint-9`; geldige branches en releasecode blijven behouden.
 - **Werkwijze:** geen Browser-skill of browserchecks. Deploymentstatus en waar toegankelijk read-only HTTP/HTML-controles; Tom beoordeelt de preview zelf. Geen echte testleads, productie-events of wijzigingen in ea-claude.
 - **Volgende stap:** branchpush, Vercel-preview afwachten en de concrete preview ter goedkeuring aanbieden. Pas na expliciete previewgoedkeuring mergen/deployen.
+
+### Checkpoint 9 — Previewoverdracht — 8 oktober 2026
+
+- **Branchpush:** `feature/website-expertise-refresh` succesvol gepusht en gekoppeld aan origin. Previewbron: `ac3ba1720490cb67d6d5060edc0b2787b6031691`; de publieke websitecode is sinds de geslaagde checkpoint-8-controles ongewijzigd.
+- **Vercel:** GitHub-status `success`; deployment `6936816512`, environment `Preview`, bronsha gelijk aan de gepushte commit. [Vercel-deployment](https://vercel.com/tomschoorstras-projects/hubspot-contractor-site/4auBvXCSRvDEmGSYwBrez739KSCi).
+- **Preview-URL:** [Websitepreview](https://hubspot-contractor-site-r70k6kduo-tomschoorstras-projects.vercel.app).
+- **Online controlegrens:** read-only HTTP-verzoeken naar homepage, About, Account-case, datakwaliteitscase, diensten, sitemap en OG-image kwamen via redirect op “Login – Vercel” uit (HTTP 200 van de loginpagina). Dit is geen bevestiging van de websitepagina’s, metadata, previewanalytics of afbeeldingrendering. Geen beveiliging omzeild of instellingen gewijzigd; geen browser gebruikt. Tom kan de preview beoordelen na Vercel-login.
+- **Git-reparatie:** de ongeldige reference is behouden onder `.git/local-ref-backups/main-2-before-checkpoint-9`. Een vervolgfetchtak bleef hangen bij objectenumeratie; uitsluitend de geverifieerde eigen fetchprocessen zijn gestopt. GitHub API bevestigde main op `d8e6736`; branchpush en gekoppelde preview slaagden. Geen andere bestanden of branches teruggedraaid.
+- **Registratie:** deze overdrachtsupdate wordt afzonderlijk lokaal gecommit en verandert alleen dit plan en het releaseoverzicht. Zij staat nog niet in de gepubliceerde previewbron en verandert geen websitecode. Na expliciete previewgoedkeuring kan deze documentatie samen met de release worden gepusht.
+- **Status:** wacht op Toms previewreview. Geen merge en geen productie-deploy uitgevoerd. Voor productie is de expliciete previewgoedkeuring uit de afgesproken checkpoint-9-scope nog nodig.

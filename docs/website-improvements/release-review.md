@@ -1,7 +1,7 @@
 # Lokale release voor review
 
 Datum: 8 oktober 2026. Branch: `feature/website-expertise-refresh`.
-Status: checkpoints 2–8 **zelfcontrole afgerond**. Toms acceptatie staat open.
+Status: checkpoints 2–8 **zelfcontrole afgerond**; checkpoint 9 **wacht op previewreview**. De featurebranch is gepusht; productie is niet aangepast.
 Leidend voortgangsdocument: [plan.md](plan.md).
 
 ## Wat je beoordeelt
@@ -51,7 +51,7 @@ De bestaande cases `/case-studies/renewal-status-card` en `/case-studies/pipelin
 | Previewanalytics | Preview-HTML zonder GTM; geïsoleerde modulecheck geeft 0 events voor preview/development, verwachte events in production zonder netwerk |
 | Statisch contrast | Oranje tekst op lichte achtergrond 5,36:1; teal tekst 5,67:1; witte primaire knoptekst 5,10:1; hover 6,47:1 |
 | Focus/reduced motion | Focusstijl voor links; reveal-fallback onder reduced-motion vóór hydration; codecontrole, geen interactietest |
-| Scope | Dependency- en deployconfiguratie ongewijzigd; geen push/deploy; niet-gerelateerde documenten behouden |
+| Scope bij checkpoint 8 | Dependency- en deployconfiguratie ongewijzigd; destijds geen push/deploy; niet-gerelateerde documenten behouden |
 
 De oorspronkelijke oranje knopkleur leverde 3,07:1 met wit op. Donkere leesvarianten behouden de oranje/teal-stijl; decoratieve kleuren blijven beschikbaar. Dit is een berekening van gekozen kleurparen, geen volledige audit van elke samengestelde achtergrond of interactieve toestand.
 
@@ -82,7 +82,9 @@ NEXT_PUBLIC_SITE_ENV=preview npm run start -- --hostname 127.0.0.1 --port 3100
 
 Daarna is de lokale versie bereikbaar op `http://127.0.0.1:3100`. De agent heeft hiervoor geen browser geopend. De productiebuild in deze tijdelijke kopie is expliciet als preview gebouwd, zodat lokale beoordeling geen productieanalytics verstuurt.
 
-Tom kan de complete release accepteren of correcties aanwijzen. Na acceptatie is checkpoint 9 een afzonderlijke opdracht: branch pushen, online preview beoordelen en pas na expliciete previewgoedkeuring mergen/deployen. Checkpoint 9 is nu niet gestart.
+Tom heeft checkpoint 9 gestart. De branch is gepusht en [de online preview](https://hubspot-contractor-site-r70k6kduo-tomschoorstras-projects.vercel.app) is gereed op broncommit `ac3ba17`. GitHub/Vercel melden een geslaagde Preview-deployment. De preview vereist een Vercel-login; HTTP-verzoeken gaven de loginpagina terug, waardoor online website-inhoud en analytics hier niet onafhankelijk bevestigd zijn. Er is geen browser gebruikt.
+
+Tom beoordeelt de preview en geeft expliciet goedkeuring of wijst correcties aan. Merge en productie-deploy volgen pas na die goedkeuring. De laatste overdrachtsregistratie is alleen lokaal gecommit en verandert geen websitecode ten opzichte van de preview. Productiebasis blijft `d8e6736`; er is nog geen merge of productie-release uitgevoerd.
 
 ## Terugvalpunt
 
