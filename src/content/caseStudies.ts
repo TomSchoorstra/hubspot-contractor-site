@@ -131,16 +131,70 @@ export const caseStudies: CaseStudy[] = [
     }
   },
   {
+    slug: "crm-data-quality",
+    title: "Finding data mismatches before fixing the wrong record",
+    industry: "HR Technology",
+    companySize: "50–200 employees",
+    summary: "At AIHR, I built a detection layer that compares HubSpot with learning-platform data through Snowflake, bringing missing links and conflicting statuses into one data quality dashboard.",
+    statusNote: "August 2026 project snapshot: datasets and dashboard are in place; member-count validation and source freshness still need follow-up.",
+    narrative: {
+      eyebrow: "Data quality monitoring · AIHR",
+      intro: [
+        "A support case might show a contact with the wrong status or a license with missing members. The visible symptom did not explain whether the problem came from an association, an identity mismatch or an earlier step in another system.",
+        "I built three comparison datasets and a HubSpot data quality dashboard to make these differences visible across the population, rather than investigating only the records that reached Support.",
+      ],
+      headings: {
+        challenge: "A mismatch is a finding, not yet a diagnosis",
+        approach: "How I designed the detection layer",
+        solution: "A shared view of the exceptions",
+        operatingModel: "Check the source before making a correction",
+      },
+      cta: {
+        title: "Do your systems disagree about the same customer?",
+        description: "Tell me which records and statuses should match. I can help map the sources and design checks that make exceptions easier to investigate.",
+      },
+    },
+    challenge: [
+      "HubSpot and the learning platform each held part of the customer relationship. Contacts, roles, access statuses and license memberships could disagree even when one system looked correct on its own.",
+      "One comparison direction was not enough to find missing records on both sides. Data also arrived through periodic Snowflake refreshes, so a recent HubSpot update could appear as a mismatch before the source caught up.",
+    ],
+    approach: [
+      { title: "Compare contacts in both directions", description: "I designed a learning-platform-to-HubSpot dataset and a HubSpot-to-learning-platform dataset. Each preserves its starting population so records missing on the other side remain visible." },
+      { title: "Keep license checks at license level", description: "A separate dataset compares licenses and member counts. I accounted for multiple source rows per license so the dashboard does not confuse row counts with distinct licenses." },
+      { title: "Put the logic in the datasets", description: "I defined alignment checks in the datasets and used report filters to select the findings. The dashboard brings missing contacts, missing associations and inconsistent statuses together for investigation." },
+      { title: "Account for source freshness", description: "I documented why a new mismatch may reflect refresh timing. Snapshot-sensitive findings need to survive another source refresh before they are treated as correction candidates." },
+    ],
+    solution: [
+      "The dashboard provides a detection layer across contacts, roles, statuses and licenses. Teams can investigate the exception and its source instead of immediately changing the record named in a support request.",
+      "The next work includes validating license member-count findings and making source freshness clearer. Automated correction remains a later step; this dashboard does not automatically repair records.",
+    ],
+    results: [
+      { value: "3", label: "Comparison datasets" },
+      { value: "One view", label: "Data quality dashboard" },
+      { value: "Detect first", label: "Investigate before correction" },
+    ],
+    stack: ["HubSpot", "Data Studio", "Snowflake", "Learning platform"],
+    relatedServices: ["consultancy", "automation", "integrations"],
+    operatingModel: {
+      summary: "A finding starts an investigation. It does not prove that a customer record is wrong or that access should change.",
+      controls: [
+        "Check identity, associations and the authoritative source before proposing a repair. An unmatched email can mean a changed identity or a delayed refresh, as well as a missing record.",
+        "For snapshot-sensitive findings, wait for the next Snowflake refresh and check whether the difference persists. Source freshness is an open operational improvement, not a realtime guarantee.",
+        "Validate member-count results before treating them as reliable correction candidates. Semi-automated and fully automated repair remain follow-up work.",
+      ],
+    },
+  },
+  {
     slug: "finance-automation",
     title: "From manual order entry to one-click invoicing",
     industry: "HR Software",
     companySize: "50–200 employees",
-    summary: "I connected HubSpot, WooCommerce, and Exact through Zapier, reducing time spent on manual processing by 90%. Finance keeps a review step before the flow starts.",
+    summary: "I connected HubSpot, WooCommerce, and Exact through Zapier so order details can pass through the process without repeated manual entry. Finance keeps a review step before the flow starts.",
     narrative: {
       eyebrow: "Finance automation",
       intro: [
-        "Finance was spending 10–15 hours a week copying order details between HubSpot, WooCommerce, and Exact.",
-        "I connected the process through Zapier, with a review step in HubSpot before Finance starts the flow. That reduced the time spent on manual processing by 90%."
+        "Finance was copying order details between HubSpot, WooCommerce, and Exact. The same information had to be entered again at each step.",
+        "I connected the process through Zapier, with a review step in HubSpot before Finance starts the flow. The order details now pass between systems without repeated entry."
       ],
       headings: {
         challenge: "The same order details, entered again",
@@ -153,7 +207,7 @@ export const caseStudies: CaseStudy[] = [
       }
     },
     challenge: [
-      "The customer and billing details were already in HubSpot. For each new order, Finance copied them into WooCommerce and then into Exact for invoicing. That repeated entry took 10–15 hours each week and left room for mistakes.",
+      "The customer and billing details were already in HubSpot. For each new order, Finance copied them into WooCommerce and then into Exact for invoicing. Repeated entry added work and left room for mistakes.",
       "The process still needed a billing review. I needed to keep that decision with Finance while removing the repeated work around it."
     ],
     approach: [
@@ -172,16 +226,16 @@ export const caseStudies: CaseStudy[] = [
     ],
     solution: [
       "Finance checks the billing details in HubSpot and starts the flow with one click. The automation creates the WooCommerce order and passes the information through the invoicing process in Exact.",
-      "Time spent on manual processing fell by 90% from the original 10–15 hours per week. Finance still reviews the order; the repeated entry between systems has been removed."
+      "Finance still reviews the order; the repeated entry between systems has been removed. The review remains the decision point that starts the flow."
     ],
     results: [
       {
-        value: "90%",
-        label: "Less time spent on manual processing"
+        value: "Connected",
+        label: "Order details passed between systems"
       },
       {
-        value: "10–15 hrs/week",
-        label: "Time spent before automation"
+        value: "Finance-led",
+        label: "Billing review retained"
       },
       {
         value: "1",

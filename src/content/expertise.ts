@@ -14,8 +14,8 @@ export const expertiseAreas = [
   {
     title: "Data quality & monitoring",
     description: "Checks that surface missing links and inconsistent data, with a review process for investigating exceptions.",
-    proofLabel: "Recurring account quality review",
-    proofHref: "/case-studies/customer-lifecycle",
+    proofLabel: "Data quality monitoring at AIHR",
+    proofHref: "/case-studies/crm-data-quality",
   },
   {
     title: "Custom HubSpot interfaces",

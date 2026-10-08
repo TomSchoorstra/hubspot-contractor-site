@@ -5,12 +5,12 @@ import PageHeader from "@/components/sections/PageHeader";
 export const metadata: Metadata = {
   title: "Case Studies — Tom Schoorstra",
   description:
-    "Real HubSpot projects, real results — from finance automation to full CRM architecture.",
+    "Explore my HubSpot and RevOps work in CRM architecture, data quality monitoring, finance automation and custom record interfaces.",
   alternates: { canonical: "/case-studies" },
   openGraph: {
     title: "Case Studies — Tom Schoorstra",
     description:
-      "Real HubSpot projects, real results — from finance automation to full CRM architecture.",
+      "Explore CRM architecture, data quality monitoring, finance automation and custom record interfaces through practical projects.",
     url: "/case-studies",
   },
 };
@@ -25,8 +25,8 @@ export default function CaseStudies() {
     <main>
       <PageHeader
         eyebrow="Case studies"
-        title="Real projects, real results"
-        subtitle="Here's how I've helped teams get more out of HubSpot — from finance automation to full CRM architecture."
+        title="The work behind the expertise"
+        subtitle="How I approach CRM architecture, data quality, integrations and record interfaces, with the decisions and limits that matter in practice."
         primaryCta={{ label: "Plan a call", href: "/contact" }}
         secondaryCta={{ label: "View services", href: "/services" }}
       />
@@ -53,21 +53,21 @@ export default function CaseStudies() {
                         <Badge variant="orange">{study.results[0].value}</Badge>
                       </div>
 
-                      <h3 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent">
+                      <h2 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent">
                         {study.title}
-                      </h3>
+                      </h2>
                       <p className="mt-4 text-base leading-relaxed text-text-secondary flex-1">
                         {study.summary}
                       </p>
 
                       {/* All results */}
-                      <div className="mt-6 grid grid-cols-2 gap-3">
+                      <div className="mt-6 grid grid-cols-1 gap-3 sm:grid-cols-2">
                         {study.results.slice(0, 2).map((result, ri) => (
                           <div
                             key={ri}
                             className="rounded-xl bg-surface-2 border border-border-subtle px-4 py-3"
                           >
-                            <div className="font-display text-xl font-bold text-accent">
+                            <div className="font-display text-xl font-bold text-text break-words">
                               {result.value}
                             </div>
                             <div className="mt-0.5 text-xs font-medium text-text-muted">

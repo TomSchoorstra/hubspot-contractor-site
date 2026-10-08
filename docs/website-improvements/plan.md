@@ -121,15 +121,15 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 |---|---|---|---|---|
 | 1 | Positionering en uitvoeringsbasis | Geaccepteerd | 78749c1 | 2026-10-08 |
 | 2 | About | Zelfcontrole afgerond | 2e2e34f | — |
-| 3 | Account-based CRM-case | Zelfcontrole afgerond | Zie checkpoint-3-commit | — |
-| 4 | Datakwaliteitscase | Gepland | — | — |
+| 3 | Account-based CRM-case | Zelfcontrole afgerond | 0a38251 | — |
+| 4 | Datakwaliteitscase | Zelfcontrole afgerond | Zie checkpoint-4-commit | — |
 | 5 | Bestaande diensten | Gepland | — | — |
 | 6 | Homepage en gedeelde positionering | Gepland | — | — |
 | 7 | Drie artikelbriefings | Gepland | — | — |
 | 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** checkpoint 4 uitvoeren; checkpoints 2–3 hebben zelfcontrole afgerond. Gezamenlijke review door Tom volgt na checkpoint 8.
+**Eerstvolgende stap:** checkpoint 5 uitvoeren; checkpoints 2–4 hebben zelfcontrole afgerond.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -321,3 +321,12 @@ Vul bij ieder checkpoint kort aan:
 - **Controles:** gerichte ESLint en TypeScript geslaagd; alle vier oorspronkelijke cases en slugs behouden; optioneel diagram alleen voor de accountcase. Diagram heeft figcaption en gelabelde recordlijst, decoratieve verbindingslijn verborgen voor hulptechnologie. Documentdiff gecontroleerd. Geen browsercontrole op verzoek.
 - **Beperkingen:** geen actuele HubSpot-statusclaim en geen visuele review. Geen acceptatie namens Tom.
 - **Status:** zelfcontrole afgerond; volgende stap checkpoint 4. Niets gepusht of gedeployed.
+
+### Checkpoint 4 — Datakwaliteitscase — 8 oktober 2026
+
+- **Wijzigingen:** nieuwe case /case-studies/crm-data-quality met probleem, eigen dataset-/dashboardaanpak, directionele matching, refreshvertraging en open member-countvalidatie. Expertisegebied monitoring verwijst nu naar deze case. Overzichtcopy, headingniveau en resultaatkaarten aangepast.
+- **Bronnen:** B4, met snapshot augustus 2026. B8 en de overige projectdocumentatie leveren geen onafhankelijke meetbasis voor de finance-percentages/uren.
+- **Besluiten:** finance-case blijft behouden maar 90% en 10–15 uur/week vervangen door kwalitatieve resultaten; billing-review en concrete integratie blijven staan. Renewal- en pipelinecases behouden zonder nieuwe effectclaims. Nieuwe case direct na de accountcase in de lijst; sitemap en dynamische metadata gebruiken dezelfde lijst.
+- **Controles:** route-typegeneratie, gerichte ESLint en TypeScript geslaagd. Slugs, relatedServices en optionele diagramafhandeling gecontroleerd. Sitemap neemt de nieuwe case automatisch mee; definitieve gegenereerde output volgt in checkpoint 8. Geen browsercontrole op verzoek.
+- **Beperkingen:** automatisch herstel, realtime bronactualiteit en volledige member-countvalidatie worden niet geclaimd. Finance-impact kan later terugkomen bij primaire onderbouwing. Geen acceptatie namens Tom.
+- **Status:** zelfcontrole afgerond; checkpoint 5 volgt. Niets gepusht of gedeployed.
