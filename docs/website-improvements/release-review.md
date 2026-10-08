@@ -1,7 +1,7 @@
 # Lokale release voor review
 
 Datum: 8 oktober 2026. Branch: `feature/website-expertise-refresh`.
-Status: checkpoints 2–8 **zelfcontrole afgerond**; checkpoint 9 **wacht op previewreview**. De featurebranch is gepusht; productie is niet aangepast.
+Status: checkpoints 2–8 **zelfcontrole afgerond**; checkpoint 9 **bezig**. Tom heeft productiepublicatie expliciet geautoriseerd zonder previewreview.
 Leidend voortgangsdocument: [plan.md](plan.md).
 
 ## Wat je beoordeelt
@@ -84,7 +84,7 @@ Daarna is de lokale versie bereikbaar op `http://127.0.0.1:3100`. De agent heeft
 
 Tom heeft checkpoint 9 gestart. De branch is gepusht en [de online preview](https://hubspot-contractor-site-r70k6kduo-tomschoorstras-projects.vercel.app) is gereed op broncommit `ac3ba17`. GitHub/Vercel melden een geslaagde Preview-deployment. De preview vereist een Vercel-login; HTTP-verzoeken gaven de loginpagina terug, waardoor online website-inhoud en analytics hier niet onafhankelijk bevestigd zijn. Er is geen browser gebruikt.
 
-Tom beoordeelt de preview en geeft expliciet goedkeuring of wijst correcties aan. Merge en productie-deploy volgen pas na die goedkeuring. De laatste overdrachtsregistratie is alleen lokaal gecommit en verandert geen websitecode ten opzichte van de preview. Productiebasis blijft `d8e6736`; er is nog geen merge of productie-release uitgevoerd.
+Tom heeft op 8 oktober 2026 opdracht gegeven om live te zetten omdat hij de preview niet kon bekijken. De previewreviewvoorwaarde is daarmee op zijn verzoek overgeslagen. Publicatie via main en de bestaande Vercel-koppeling is geautoriseerd; technische productiecontroles volgen zonder browser. De websitecode is ongewijzigd ten opzichte van de geslaagde previewbuild. De vorige productiebron `d8e6736` blijft het terugvalpunt; actuele releasegegevens volgen in het plan.
 
 ## Terugvalpunt
 

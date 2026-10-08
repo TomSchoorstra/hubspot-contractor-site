@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: checkpoints 2–8 hebben zelfcontrole afgerond; checkpoint 9 wacht op Toms online previewreview. Featurebranch is gepusht en Vercel-preview is gereed; productie volgt pas na expliciete previewgoedkeuring.
+Status: Tom heeft livegang op 8 oktober 2026 expliciet geautoriseerd zonder previewreview; checkpoint 9 is bezig. Checkpoints 2–8 behouden hun zelfcontrolestatus.
 
 ## Doel en uitgangspunten
 
@@ -127,9 +127,9 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | cf78b20 | — |
 | 7 | Drie artikelbriefings | Zelfcontrole afgerond | 4b96b67 | — |
 | 8 | Eindcontrole en releasevoorbereiding | Zelfcontrole afgerond | 8df8255 | — |
-| 9 | Gezamenlijke publicatie | Wacht op review | ac3ba17 (previewbron) | — |
+| 9 | Gezamenlijke publicatie | Bezig | ac3ba17 (previewbron) | — |
 
-**Eerstvolgende stap:** Tom beoordeelt [de online preview](https://hubspot-contractor-site-r70k6kduo-tomschoorstras-projects.vercel.app). Op 8 oktober 2026 autoriseerde Tom het doorlopen van de livegangstappen. Geen browsercontrole; merge en productie-deploy pas na expliciete previewgoedkeuring.
+**Eerstvolgende stap:** de geautoriseerde release via main publiceren en de productie-deploy technisch controleren zonder browser. Tom kon de preview niet bekijken en heeft de previewreview expliciet overgeslagen met zijn opdracht “zet maar lvie ik kan het niet zien”.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -386,3 +386,10 @@ Vul bij ieder checkpoint kort aan:
 - **Git-reparatie:** de ongeldige reference is behouden onder `.git/local-ref-backups/main-2-before-checkpoint-9`. Een vervolgfetchtak bleef hangen bij objectenumeratie; uitsluitend de geverifieerde eigen fetchprocessen zijn gestopt. GitHub API bevestigde main op `d8e6736`; branchpush en gekoppelde preview slaagden. Geen andere bestanden of branches teruggedraaid.
 - **Registratie:** deze overdrachtsupdate wordt afzonderlijk lokaal gecommit en verandert alleen dit plan en het releaseoverzicht. Zij staat nog niet in de gepubliceerde previewbron en verandert geen websitecode. Na expliciete previewgoedkeuring kan deze documentatie samen met de release worden gepusht.
 - **Status:** wacht op Toms previewreview. Geen merge en geen productie-deploy uitgevoerd. Voor productie is de expliciete previewgoedkeuring uit de afgesproken checkpoint-9-scope nog nodig.
+
+### Checkpoint 9 — Expliciete livegangautorisatie — 8 oktober 2026
+
+- **Gebruikersinstructie:** “zet maar lvie ik kan het niet zien”. Tom autoriseert hiermee productiepublicatie en slaat de eerdere previewreviewvoorwaarde expliciet over. Dit is geen claim dat de preview visueel beoordeeld of alle inhoudelijke checkpoints afzonderlijk geaccepteerd zijn.
+- **Laatste voorbereiding:** GitHub main staat nog op `d8e67364a7296f3cd93f28e9d00ca491a9a65083` en is niet beschermd; Vercel-previewstatus voor `ac3ba17` is success. De releasebranch bouwt voort op main; websitecode is sinds de geverifieerde checkpoint-8-release ongewijzigd.
+- **Publicatie:** featurebranch en vervolgens main worden normaal gepusht, zonder force-push. De bestaande Vercel-integratie verzorgt de productie-deploy. Productionstatus, bereikbaarheid, pagina-HTML, metadata, sitemap en OG-image worden daarna waar mogelijk via read-only HTTP gecontroleerd. Geen browser, formulierinzending of echte analytics-events.
+- **Terugvalpunt:** vorige productiebron `d8e6736`; vorige Vercel-productiedeployment volgens GitHub `6314617542`. Productiereleasecommit en nieuwe deployment worden na voltooiing geregistreerd.
