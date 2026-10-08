@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: Tom heeft livegang op 8 oktober 2026 expliciet geautoriseerd zonder previewreview; checkpoint 9 is bezig. Checkpoints 2–8 behouden hun zelfcontrolestatus.
+Status: de website is op 8 oktober 2026 gepubliceerd op Toms expliciete opdracht zonder previewreview. Checkpoints 2–9 hebben zelfcontrole afgerond; individuele inhoudelijke acceptatie is niet namens Tom ingevuld.
 
 ## Doel en uitgangspunten
 
@@ -127,9 +127,9 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | cf78b20 | — |
 | 7 | Drie artikelbriefings | Zelfcontrole afgerond | 4b96b67 | — |
 | 8 | Eindcontrole en releasevoorbereiding | Zelfcontrole afgerond | 8df8255 | — |
-| 9 | Gezamenlijke publicatie | Bezig | ac3ba17 (previewbron) | — |
+| 9 | Gezamenlijke publicatie | Zelfcontrole afgerond | 6b8d352 (productierelease) | — |
 
-**Eerstvolgende stap:** de geautoriseerde release via main publiceren en de productie-deploy technisch controleren zonder browser. Tom kon de preview niet bekijken en heeft de previewreview expliciet overgeslagen met zijn opdracht “zet maar lvie ik kan het niet zien”.
+**Eerstvolgende stap:** geen releasewerk meer open. De wijzigingen staan live op [tomschoorstra.com](https://www.tomschoorstra.com). Eventuele latere inhoudelijke correcties of volledige artikelen zijn nieuwe opdrachten; browserchecks blijven uitgesloten tenzij Tom dit wijzigt.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -393,3 +393,16 @@ Vul bij ieder checkpoint kort aan:
 - **Laatste voorbereiding:** GitHub main staat nog op `d8e67364a7296f3cd93f28e9d00ca491a9a65083` en is niet beschermd; Vercel-previewstatus voor `ac3ba17` is success. De releasebranch bouwt voort op main; websitecode is sinds de geverifieerde checkpoint-8-release ongewijzigd.
 - **Publicatie:** featurebranch en vervolgens main worden normaal gepusht, zonder force-push. De bestaande Vercel-integratie verzorgt de productie-deploy. Productionstatus, bereikbaarheid, pagina-HTML, metadata, sitemap en OG-image worden daarna waar mogelijk via read-only HTTP gecontroleerd. Geen browser, formulierinzending of echte analytics-events.
 - **Terugvalpunt:** vorige productiebron `d8e6736`; vorige Vercel-productiedeployment volgens GitHub `6314617542`. Productiereleasecommit en nieuwe deployment worden na voltooiing geregistreerd.
+
+### Checkpoint 9 — Productierelease en nacontrole — 8 oktober 2026
+
+- **Resultaat:** de release is gepubliceerd via normale fast-forward pushes van de featurebranch en main. Productiebron: `6b8d3527428907c73edbc83ef57727b427b21c8f`. Lokale main en origin/main wijzen naar deze commit. Geen force-push, browser of veranderingen in ea-claude.
+- **Autorisatie:** Tom gaf expliciet opdracht live te zetten zonder previewreview; de laatste gebruikersinstructie vervangt die eerdere reviewvoorwaarde. Dit registreert toestemming voor publicatie, geen verzonnen visuele previewbeoordeling of individuele contentacceptatie.
+- **Deploybewijs:** GitHub/Vercel-status success; deployment `6936980116`, environment Production, sha gelijk aan de release. [Vercel-deployment](https://vercel.com/tomschoorstras-projects/hubspot-contractor-site/4Fje9BpQWSrmc6xZrkL6B4kQWv1G). [Deployment-URL](https://hubspot-contractor-site-c3ycjthnu-tomschoorstras-projects.vercel.app).
+- **Publieke website:** [https://www.tomschoorstra.com](https://www.tomschoorstra.com); het domein zonder www verwijst hiernaar. Nieuwe homepagecopy en datakwaliteitscase zijn op het publieke domein bevestigd.
+- **Live HTTP/HTML-checks:** 15 gewijzigde pagina’s/templatevarianten geven HTTP 200, één H1, production-omgeving, juiste canonicals, beschrijvingen, overeenkomstige Open Graph/Twitter-copy en imageverwijzing, parsebare JSON-LD en image-alt. Alle 18 unieke interne routes uit deze pagina’s bereikbaar. Sitemap bevat de gecontroleerde routes, zes diensten, vijf cases en acht bestaande blogs. OG-image geeft een geldige PNG van 78.241 bytes. Oude onbewezen financepercentages staan niet in de gecontroleerde case. Geen lokale bronpaden in de pagina-HTML.
+- **Analytics:** alle 15 gecontroleerde pagina’s bevatten `data-site-env=production` en GTM-markup. Dit bevestigt de insluiting, niet daadwerkelijke ontvangst in GA/GTM. Er is geen JavaScript uitgevoerd, formulier verzonden, testlead gemaakt of echt analytics-event verstuurd.
+- **Beperkingen:** geen visuele/interactionele browsercontrole. Dat was op Toms verzoek uitgesloten en de beveiligde preview is op zijn expliciete verzoek overgeslagen. Responsive uiterlijk, tabbediening en interacties blijven niet onafhankelijk bevestigd.
+- **Terugvalpunt:** vorige productiebron `d8e67364a7296f3cd93f28e9d00ca491a9a65083`, vorige productiondeployment `6314617542`. Bij een regressie kan die deployment worden hersteld en de release gericht worden teruggedraaid; er is nu niets teruggedraaid.
+- **Voortgangsopslag:** deze nacontrole wordt afzonderlijk lokaal gecommit na de geslaagde deploy. Zij wijzigt alleen het plan en releaseoverzicht; geen tweede productie-deploy nodig voor de log. Websitecode blijft byte-inhoudelijk gelijk aan productiebron `6b8d352`.
+- **Status:** checkpoint 9 zelfcontrole afgerond; livegang voltooid. Niet-gerelateerde untracked documenten en excalidraw.log behouden.

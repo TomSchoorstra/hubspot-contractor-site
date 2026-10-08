@@ -1,7 +1,7 @@
 # Lokale release voor review
 
 Datum: 8 oktober 2026. Branch: `feature/website-expertise-refresh`.
-Status: checkpoints 2–8 **zelfcontrole afgerond**; checkpoint 9 **bezig**. Tom heeft productiepublicatie expliciet geautoriseerd zonder previewreview.
+Status: checkpoints 2–9 **zelfcontrole afgerond**. De website staat live sinds 8 oktober 2026, gepubliceerd op Toms expliciete opdracht zonder previewreview.
 Leidend voortgangsdocument: [plan.md](plan.md).
 
 ## Wat je beoordeelt
@@ -91,5 +91,15 @@ Tom heeft op 8 oktober 2026 opdracht gegeven om live te zetten omdat hij de prev
 - `78749c1`: geaccepteerde inhoudelijke basis vóór de publieke pagina-aanpassingen.
 - `d8e6736`: websitebasis vóór de checkpointdocumentatie.
 - De zeven uitvoeringscommits van checkpoints 2–8 staan afzonderlijk op de featurebranch. De laatste hash is op te vragen met `git log -1 --format=%h`.
-- Er is nog geen productie-release of release-tag. Leg bij checkpoint 9 de daadwerkelijke merge/releasecommit vast.
+- Productierelease: `6b8d352`; er is geen release-tag aangemaakt. De deploymentgegevens staan in de publicatielog hieronder.
 - Indien na publicatie terugdraaien nodig is: herstel de vorige deployment via de gebruikte hostingflow en revert de releasewijzigingen gericht op de gedeelde branch. Geen geschiedenis herschrijven of niet-gerelateerde bestanden meenemen. Dit is uitsluitend een terugvalbeschrijving; er is niets teruggedraaid.
+
+## Afgeronde productiepublicatie — 8 oktober 2026
+
+De release staat live op [tomschoorstra.com](https://www.tomschoorstra.com). GitHub main en Vercel Production gebruiken broncommit `6b8d3527428907c73edbc83ef57727b427b21c8f`. De Vercel-productiedeployment `6936980116` is succesvol afgerond.
+
+Na publicatie zijn 15 gewijzigde pagina’s via HTTP gecontroleerd, inclusief nieuwe homepagecopy en datakwaliteitscase. Alle 18 unieke interne routes uit die pagina’s zijn bereikbaar. Canonicals, socialcopy, metadata, JSON-LD en sitemap zijn gecontroleerd; de OG-route levert een geldige PNG van 78.241 bytes. De sitemap bevat zes diensten, vijf cases en acht bestaande blogs.
+
+Productieomgeving en GTM-markup zijn bevestigd; eventontvangst is niet getest. Er is geen JavaScript uitgevoerd of testlead/event verstuurd. Geen Browser-skill of browserchecks gebruikt. Visuele en interactieve controle blijven daardoor onbevestigd.
+
+Tom heeft de previewreview expliciet overgeslagen omdat hij de beveiligde preview niet kon bekijken. Dat besluit en de volledige nacontrole staan in [plan.md](plan.md). De vorige productiebron `d8e6736` en deployment `6314617542` zijn het terugvalpunt. Deze nacontrole wordt lokaal als documentatie opgeslagen zonder een extra productie-deploy; websitecode blijft gelijk aan de live broncommit.
