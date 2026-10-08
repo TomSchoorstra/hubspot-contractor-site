@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: checkpoint 1 geaccepteerd; checkpoints 2–8 hebben zelfcontrole afgerond; de complete lokale website wacht op Toms gezamenlijke review.
+Status: checkpoints 2–8 hebben zelfcontrole afgerond; checkpoint 9 is gestart op Toms verzoek. Online previewreview staat open; productie volgt pas na expliciete previewgoedkeuring.
 
 ## Doel en uitgangspunten
 
@@ -126,10 +126,10 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 5 | Bestaande diensten | Zelfcontrole afgerond | 7dabdec | — |
 | 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | cf78b20 | — |
 | 7 | Drie artikelbriefings | Zelfcontrole afgerond | 4b96b67 | — |
-| 8 | Eindcontrole en releasevoorbereiding | Zelfcontrole afgerond | Zie checkpoint-8-commit | — |
-| 9 | Gezamenlijke publicatie | Gepland | — | — |
+| 8 | Eindcontrole en releasevoorbereiding | Zelfcontrole afgerond | 8df8255 | — |
+| 9 | Gezamenlijke publicatie | Bezig | — | — |
 
-**Eerstvolgende stap:** Tom beoordeelt de complete lokale website aan de hand van [release-review.md](release-review.md). Checkpoint 9 blijft gepland en vereist een nieuwe expliciete opdracht; niets is gepusht of gedeployed.
+**Eerstvolgende stap:** featurebranch pushen en een gekoppelde online preview aanbieden voor Toms review. Op 8 oktober 2026 autoriseerde Tom het doorlopen van de livegangstappen. Geen browsercontrole; merge en productie-deploy pas na expliciete previewgoedkeuring.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -368,3 +368,11 @@ Vul bij ieder checkpoint kort aan:
 - **Bron- en scopecontrole:** niet-gerelateerde documenten en dependency/deployconfiguratie behouden. Geen writes in ea-claude. Van 20 gecontroleerde baselinebestanden zijn 19 gelijk gebleven; het Account-project-README kreeg tijdens deze sessie buiten dit websitewerk een nieuwe MRR-cardsectie. Die wijziging is uitsluitend gelezen, niet teruggedraaid en niet in de websitescope opgenomen. Geen interne klantrecords, identifiers of systeemlinks aan publieke copy toegevoegd.
 - **Beperkingen:** geen Browser-skill of browsercontrole op Toms verzoek. Responsive weergave, daadwerkelijke tabvolgorde, menus/accordions, motion en social-afbeeldingsrendering zijn niet visueel of interactief bevestigd. Statische code/HTML- en contrastchecks zijn geen volledige toegankelijkheidsaudit. Gedateerde projectclaims blijven snapshots; geen externe productiestatus opnieuw geverifieerd.
 - **Status:** zelfcontrole afgerond; lokaal gereed voor gezamenlijke review. De checkpoint-8-commit bevat deze log; de hash staat in de oplevering en is te vinden met `git log -1 --format=%h`. Checkpoint 9 niet gestart; niets gepusht of gedeployed.
+
+### Checkpoint 9 — Voorbereiding online preview — 8 oktober 2026
+
+- **Autorisatie:** Tom vraagt de stappen voor livegang te doorlopen. Branchpush en previewvoorbereiding zijn gestart; deze opdracht is nog geen expliciete goedkeuring van de online preview. Checkpoints 2–8 behouden hun zelfcontrolestatus.
+- **Releasebasis:** checkpoint-8-commit `8df8255`; productie en GitHub main stonden bij de read-only API-controle op `d8e67364a7296f3cd93f28e9d00ca491a9a65083`. GitHub-repository `TomSchoorstra/hubspot-contractor-site` is publiek en heeft een werkende Vercel-integratie.
+- **Lokale Git-reparatie:** de ongeldige iCloud-dataless reference `.git/refs/heads/main 2` blokkeerde fetch. Het bestand wordt zonder inhoudswijziging behouden buiten refs, onder `.git/local-ref-backups/main-2-before-checkpoint-9`; geldige branches en releasecode blijven behouden.
+- **Werkwijze:** geen Browser-skill of browserchecks. Deploymentstatus en waar toegankelijk read-only HTTP/HTML-controles; Tom beoordeelt de preview zelf. Geen echte testleads, productie-events of wijzigingen in ea-claude.
+- **Volgende stap:** branchpush, Vercel-preview afwachten en de concrete preview ter goedkeuring aanbieden. Pas na expliciete previewgoedkeuring mergen/deployen.
