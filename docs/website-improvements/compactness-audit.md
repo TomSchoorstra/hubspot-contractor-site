@@ -1,6 +1,6 @@
 # Compactness audit — minder herhaling, dezelfde kern
 
-Datum: 8 oktober 2026. Status: auditcheckpoints 1–2 afgerond; 3–4 volgen.
+Datum: 8 oktober 2026. Status: auditcheckpoints 1–3 afgerond; 4 volgt.
 Scope: audit en voorstel, uitsluitend documentatie. Geen websitewijzigingen, verwijderingen, push of deploy.
 
 ## Leeswijzer en voortgang
@@ -10,8 +10,8 @@ Dit document houdt vier auditcheckpoints bij. De verkorte teksten en toekomstige
 | Auditcheckpoint | Status | Lokale documentatiecommit |
 |---|---|---|
 | 1. Inventaris en beschermde kern | Zelfcontrole afgerond | `75cb8b4` |
-| 2. Overlap en sectieadviezen | Zelfcontrole afgerond | Deze checkpointcommit; zie git-log |
-| 3. Varianten, structuur en Engelse copy | Gepland | — |
+| 2. Overlap en sectieadviezen | Zelfcontrole afgerond | `33f8b07` |
+| 3. Varianten, structuur en Engelse copy | Zelfcontrole afgerond | Deze checkpointcommit; zie git-log |
 | 4. Kerncontrole en uitvoeringsplan | Gepland | — |
 
 ## Checkpoint 1 — Inventarisatie
@@ -109,7 +109,7 @@ Iedere pagina bevat 72 globale header/footerwoorden naast de tabel. 27 × 72 = 1
 | Home en case-index herhalen casesummaries/status; diensten tonen case plus metrics | Teaser is nuttig; hetzelfde volledige resultaatverhaal niet | Korter projectteaser met relevante statuscue; volledige bewijsvoering uitsluitend in case. Geen verwijderen van een projectgrens uit een claim. |
 | About AIHR-rol in heroomgeving én profiel; dubbele portretpresentatie | Herkenning eenmaal genoeg | Eén rolintro en één foto. Feiten over locatie/engagement opnemen in lopende tekst. |
 | About twee afsluitende knopparen; zes prominente acties totaal | Twee opeenvolgende vervolgstappen beantwoorden dezelfde vraag | Eén gewone contactlink aan eind; werk/diensten via relevante tekstlinks. Geen groot eindpaneel. |
-| Elke dienst dezelfde vier processtappen + uitkomstlijst + deliverablelijst + twee tel-statistieken | Scope overlapt; vier stappen zeggen weinig over deze dienst | Outcomes/deliverables één concreet scopeblok; algemene aanpak naar About; tel-statistieken weg. Specifieke voorwaarden blijven. |
+| Elke dienst dezelfde vier processtappen + uitkomstlijst + deliverablelijst + drie tel-statistieken | Scope overlapt; vier stappen zeggen weinig over deze dienst | Outcomes/deliverables één concreet scopeblok; algemene aanpak naar About; tel-statistieken weg. Specifieke voorwaarden blijven. |
 | Zes diensten dezelfde contactuitleg; acht blogs dezelfde contactuitleg van 24 woorden | Templateherhaling naast globale footer | Grote eind-CTA verwijderen; zeven blogs hebben al een contextuele contactlink. Alleen blogwrapper: 8 × 24 = 192 HTML-woorden minder. |
 | Footer 59 woorden, twee contactroutes, bovenliggende eind-CTA op veel pagina’s | Gedeelde navigatie nuttig; derde uitnodiging niet | Compacte footer van circa 28 woorden, gewone Contact-link; geen apart contactpaneel of footerknop. Verwachte 31 woorden per route minder, apart van hoofdtekst. |
 | App Catalog: één kaart/47 woorden naast volledige apppagina/146 woorden | Extra bestemming zonder extra keuze | Voorstel index samenvoegen met apppagina en oude URL redirecten. Eén bestemming minder; appinformatie en installatie blijven. |
@@ -169,7 +169,7 @@ De volgende rijset geldt **afzonderlijk** voor automation, consultancy, integrat
 | Huidig onderdeel | Actie | Reden en bestemming |
 |---|---|---|
 | Hero/scope-intro | Inkorten | Dienstvraag, scope en één contactactie; geen losse claim zonder grens. |
-| Quickstats: deliverable-/procesaantallen | Schrappen | Aantallen voegen geen beslisinformatie toe; echte scope blijft onder What I build. |
+| Quickstats: deliverable-/proces-/outcomeaantallen | Schrappen | Aantallen voegen geen beslisinformatie toe; echte scope blijft onder What I build. |
 | Outcomes | Samenvoegen | Met deliverables in één What I build-blok; uitkomst aan concrete werkzaamheden koppelen. |
 | Deliverables | Samenvoegen | Zelfde What I build-blok; unieke deliverables blijven, geen twee lijsten van dezelfde scope. |
 | Algemene vier processtappen | Verplaatsen | Volledig naar How I work op About; diensten houden één zin + link en specifieke checks in scope. |
@@ -324,3 +324,213 @@ Homepage heeft 15 inhoudskaarten: 2 cases, 4 expertise, 3 aanpak, 6 diensten. Ab
 ### Controle checkpoint 2
 
 27/27 routes hebben sectieadvies: vaste pagina’s expliciet, zes diensten en vijf cases via benoemde template-rijsets plus unieke voorwaarden, acht artikelen met iedere H2. Elke rij heeft precies één primaire actie. Bestemmingen voor noodzakelijke informatie zijn genoemd. Overlap onderbouwd met bron/HTML; geen gebruikersgedrag, SEO-effect of hoogte gemeten. Websitecode en overige documenten blijven ongewijzigd. Volgende stap: twee structuren vergelijken en complete voorbeeldcopy op woorden tellen.
+
+## Checkpoint 3 — Twee varianten en voorkeursstructuur
+
+### Vergelijking
+
+| Aspect | A: alle 27 contentpagina’s behouden | B: inkorten + catalogus met Slack-tool samenvoegen |
+|---|---|---|
+| Inhoud | Dezelfde selectie/sectieadviezen uit checkpoint 2 | Dezelfde selectie, plus enige cataloguskaart naar toolpagina |
+| Bestemmingen | 27, inclusief extra index voor één tool | 26 canonieke contentpagina’s; alle 27 oude paden bereikbaar, één via redirect |
+| Vindbaarheid | Bestaande URL’s en navigatie volledig behouden | Diensten/cases/blogs behouden hun eigen URLs; tool direct bereikbaar, catalogus permanent doorgestuurd |
+| Duidelijkheid | Compactere pagina’s, maar toolindex voegt nog steeds een tussenstap toe | Eén plek voor tooluitleg en installatie; geen andere bezoekervragen geforceerd combineren |
+| Onderhoud | Dubbele catalogus-/appintro blijven onderhouden | Eén appintro; redirect, interne links en sitemap eenmalig aanpassen |
+| Unieke inhoud | Geen noodzakelijk verlies | Geen noodzakelijk verlies: toolnaam, gratis context en uitleg op bestemming behouden |
+| Risico | Kleinste routewijziging, minder structurele winst | Beperkt migratierisico; redirect/canonical/sitemap als één pakket controleren |
+
+**Voorkeur: B.** Het aantal pagina’s is niet de hoofdreden dat de site groot aanvoelt; de stapeling binnen pagina’s is dat waarschijnlijk wel, afgeleid uit bronstructuur. Daarom alleen samenvoegen waar geen eigen vraag overblijft. De zes diensten verschillen in scope, de vijf cases in bewijs en de acht artikelen in leervraag. Die pagina’s samenpersen zou detail in één grotere pagina stoppen en gerichte bestemmingen verliezen. Er is geen analytics-/Search Console-basis om te beweren dat samenvoegen ranking of conversie verbetert.
+
+Ook onderzocht: zes dienstpagina’s geheel opnemen in `/services` zou van 27 naar 21 bestemmingen gaan (20 met catalogusmerge), maar levert een veel langer keuzeoverzicht en minder precieze scope-/bewijslinks op. About naar home verplaatsen zou juist opnieuw alle persoonlijke achtergrond op home stapelen. Daarom beide niet aanbevolen. Geen case of artikel samenvoegen: vooral gericht linken tussen app-cards/sunset/Spotlight en onboarding/lifecycle.
+
+### Aanbevolen sitestructuur
+
+Hoofdnavigatie blijft Services → Case studies → Blog → About, met contactactie. Homepage is oriëntatie en bewijs; About is persoon/werkwijze. Services heeft zes gerichte subpagina’s, Case studies vijf, Blog acht. Contact blijft zelfstandig. De footer linkt rechtstreeks naar de gratis Slack-tool op `/hubspot-enablement` (label bijvoorbeeld “Free Slack tool”), naast bestaande routes en LinkedIn. API/OAuth-/privéroutes vallen buiten deze structuurwijziging.
+
+### Sectievolgorde en tekstbudgetten
+
+Budget = voorgestelde **totale pagina-eigen zichtbare tekst**, inclusief koppen/linklabels, exclusief globale navigatie/footer. Bij diensten inclusief alle antwoorden en randvoorwaarden; niet vergelijken met alleen ingeklapte SSR. Voor home/About zijn hieronder complete drafts echt geteld. Alle andere “na”-getallen zijn planningsbudgetten, nog geen herschreven of gegenereerde pagina’s. Bij coreverlies mag de bovengrens worden overschreden met gedocumenteerde reden.
+
+| Route / groep | Concrete volgorde | Budget |
+|---|---|---:|
+| `/` | Hero → twee Selected work-kaarten → vier expertise-regels met bewijslinks → één werkwijze/links/contactslot | **346 woorden**: 49 + 123 + 106 + 68 |
+| `/about` | Intro/rol/één foto → eigen werk → How I work/AI → historische achtergrond/tools/contact | **382 woorden**: 58 + 99 + 120 + 105 |
+| `/services` | Korte keuze-intro → zes scopekeuzes → één contactzin | 200–230; circa 25 + 170–195 + 5–10 |
+| Alle dienst-details | Hero/contact + gewone All services-link → What I build → Before we start + documentatielinks → bewijszin/case-link | Circa 45–55 + 100–130 + 65–100 + 20–35; routebudget hieronder |
+| `/case-studies` | Korte intro → vijf teasers/eigen bijdrage/status → contactzin | 250–290; circa 20 + 220–260 + 10 |
+| Account-case | Context/status → probleem → What I changed/resultaten → review/grenzen → diagram → stack/dienstlinks/casenavigatie/contact | 540–600; circa 75 + 45 + 145 + 120 + 110 + 45 |
+| Data-quality-case | Context/status → probleem → What I changed/resultaten → controles/open grenzen → stack/dienstlinks/casenavigatie/contact | 460–510; circa 80 + 45 + 175 + 130 + 55 |
+| Andere drie cases | Context/rol → probleem → What I changed/resultaten en beperkingen → stack/dienstlinks/casenavigatie/contact | Routebudget hieronder; circa 60 + 45 + 155–205 + 40–50 |
+| `/blog` | Titel → acht bestaande artikelteasers/datum/leesduur | 332, geen verplichte inkorting |
+| Alle blog-details | Kop/datum/auteur → beantwoording volgens eigen sectieadvies → bronnen/contextuele eindlink | Routebudget hieronder; geen generiek CTA-paneel |
+| `/contact` | Korte vraag/verwachting → LinkedIn en formulier met compacte bestaande budgetcontext | 95–110; bestaande veldlabels/functies blijven |
+| `/hubspot-enablement` | Appdoel/gratis context/installatie → bestaande statusfeedback → compacte drie stappen | 140–160; extra cataloguscontext kan inkorting compenseren |
+| `/app-catalog` | Geen eigen nieuwe body: redirectvoorstel, toolcontext naar bestemming | 0 eigen woorden na goedgekeurde merge |
+| Globale footer | Naam/korte specialismevermelding → routes/LinkedIn/contact → copyright | Circa 28 woorden, geen knop/contactkolom |
+
+#### Routebudgetten voor diensten en cases
+
+| Route | Huidig W inclusief FAQ | Voorstel totaal |
+|---|---:|---:|
+| `/services/automation` | 446 | 260–300 |
+| `/services/consultancy` | 377 | 230–270 |
+| `/services/integrations` | 426 | 260–310 |
+| `/services/custom-objects` | 460 | 290–340 |
+| `/services/pipeline-optimization` | 354 | 230–270 |
+| `/services/custom-app-cards` | 573 | 330–380 |
+| `/case-studies/customer-lifecycle` | 695 | 540–600 |
+| `/case-studies/crm-data-quality` | 610 | 460–510 |
+| `/case-studies/finance-automation` | 418 | 300–340 |
+| `/case-studies/renewal-status-card` | 453 | 320–360 |
+| `/case-studies/pipeline-consolidation` | 405 | 300–340 |
+
+De app-carddienst krijgt bewust meer ruimte voor rechten, hosting en onderhoud. Account- en data-qualitycases krijgen meer ruimte voor beheer/status; finance-review en read-only renewal zijn niet inwisselbaar met een algemene “resultaten”-zin.
+
+#### Artikel-outlines na selectie
+
+| Artikel | Nieuwe volgorde van inhoudelijke H2-blokken | Budget incl. kop/context/linklabels |
+|---|---|---:|
+| AEO | Product/voorwaarden → trafficcontext → SMB-keuze/eindadvies → eerst fundamentals | 1.400–1.600 |
+| App cards guide | Definitie → drie kaarttypes → toepassingen → buildcriteria/eindadvies → korte sunsetverwijzing | 1.450–1.650 |
+| Breeze | Productintro → Copilot → Customer Agent → Content/Prospecting → Intelligence → datakwaliteit/eindadvies | 2.300–2.550 |
+| Classic cards sunset | Scope → getroffen gebruikers → migratiechecklist/eindactie → korte vervangingskeuze | 1.300–1.450 |
+| Contractor vs agency | Samenwerking vergelijken → kosten/timing → wanneer bureau → selectievragen/eindadvies | 1.850–2.100 |
+| Lifecycle stages | Definitie → stageverschillen → MQL/SQL → native/eigen automatisering → fouten/controle/eindadvies | 1.650–1.850 |
+| Onboarding mistakes | Negen fouten → checklist met korte afsluiting | 1.400–1.500 |
+| Spring 2026 Spotlight | Zes gedateerde product-/deadlinewijzigingen → SMB-prioritering/eindactie | 1.650–1.850 |
+
+Unieke FAQ-antwoorden integreren in genoemde blokken; bronnen en technische stappen behouden. Geen standaard maxwoordenaantal afdwingen op een nuttige guide. Productprijzen, licenties, deadlines en bestaande statistiekclaims zijn **niet door deze compactheidsaudit geverifieerd**. Wanneer toekomstige herschrijving die claims wijzigt of als actueel presenteert, eerst primaire bronnen controleren; bij Spotlight historische context van publicatiedatum behouden. Dat is geen browsercheck van de website.
+
+### Verkorte Engelse homepage — complete voorstelcopy
+
+Geen nieuwe offerings of beloofde impact. Goedgekeurde H1 blijft exact; de twee projecten hebben status en de overige twee expertisegebieden direct bewijs. Linklabels zijn meegeteld. “How I approach it” is één klein slotblok, geen nieuwe kaartsectie.
+
+HubSpot & RevOps specialist
+
+# I work on the complicated bits of HubSpot.
+
+CRM structure, workflows, integrations and data quality. At AIHR, I work on these from designing the setup to building it and checking what happens afterwards.
+
+[See the work](/case-studies)
+
+Based in the Netherlands. Working in Revenue Operations at AIHR.
+
+## Selected work
+
+### Connecting the full customer relationship
+
+At AIHR, I led the account-based CRM project, connecting customer records through a custom Account object, associations and workflows. The aim was to make the relationship visible across licenses, deals and professional services, rather than treating each record as a separate customer.
+
+September 2026 snapshot: the core setup is live; enrichment remains in progress.
+
+[Read the Account case](/case-studies/customer-lifecycle)
+
+### Finding data mismatches
+
+I built a detection layer comparing HubSpot and learning-platform data through Snowflake. The dashboard helps investigate missing links and conflicting statuses before deciding which record needs attention.
+
+August 2026 snapshot: datasets and dashboard are in place; member-count validation and source freshness still need follow-up. This is detection, not automatic repair.
+
+[Read the data quality case](/case-studies/crm-data-quality)
+
+## Four parts of the work
+
+**CRM architecture** — Customer records, objects and associations that reflect the customer relationship. [See the Account model](/case-studies/customer-lifecycle).
+
+**Automation & integrations** — Connecting handovers between HubSpot, commerce and finance, with review points. In the order flow, Finance checks the billing details before starting the automation; that decision stays with Finance. [See the order-to-invoice flow](/case-studies/finance-automation).
+
+**Data quality & monitoring** — Surfacing missing links and inconsistent data for investigation. [See the monitoring setup](/case-studies/crm-data-quality).
+
+**Custom HubSpot interfaces** — Bringing associated information onto the record where someone needs it. The read-only renewal card shows whether auto-renewal is active, manual renewal is required, or the subscription is cancelled. [See the renewal status card](/case-studies/renewal-status-card).
+
+## How I approach it
+
+I start with the process: where data comes from, which records belong together and who owns the next decision. Then I build, test the expected paths and exceptions, and document how the setup works. Recurring checks help identify what changes after launch.
+
+[More about me](/about) · [Explore the six services](/services)
+
+If your HubSpot setup has become difficult to follow, [tell me where you’re getting stuck](/contact).
+
+### Verkorte Engelse About — complete voorstelcopy
+
+Eén foto zonder extra tekstblok. Historische entries blijven met jaar/uitgever, tools blijven benoemd; geen opnieuw uitgewerkt expertisegrid. Het huidige label “2020 HubSpot Champion User” wordt in de lijst “HubSpot Champion User — HubSpot Academy, 2020”: dezelfde historische erkenning, geen actuele certificering.
+
+HubSpot & RevOps specialist
+
+# Tom Schoorstra.
+
+I’m based in the Netherlands. At AIHR, I work as System Operations Manager Senior within Revenue Operations, connecting CRM processes with the systems around them.
+
+My work runs from defining the customer model to building workflows, integrations and record interfaces. I also build checks that help investigate missing links and inconsistent operational data.
+
+## What I work on
+
+I led AIHR’s account-based CRM project: defining the model, connecting historical records and building workflows that link licenses, deals and professional services to the right Account. I developed recurring reviews to investigate missing associations and potential duplicates. The core setup is live; enrichment is still in progress in the September 2026 snapshot.
+
+Other work includes the HubSpot–WooCommerce–Exact order flow, data quality dashboards and a read-only renewal status card on deals. These are different problems, with different checks and limits. The cases explain what I built and what remained open.
+
+[Explore the case studies](/case-studies)
+
+## How I work
+
+I follow the process first: where the data comes from, who owns each decision and what should happen in the next system. That helps distinguish a record problem from a gap in the workflow.
+
+From there, I design the model or automation, test the expected paths and exceptions, and document how the team can maintain it. After launch, checks help surface issues as records and processes change.
+
+I use AI for investigation, documentation and quality reviews. In the account review, Codex and Claude Code help assess candidate matches and prepare recommendations. I start the review and decide what to do with the findings; the review itself does not write to HubSpot.
+
+[See the account review in practice](/case-studies/customer-lifecycle)
+
+## Background
+
+Past certifications and recognition, not current credentials:
+
+- HubSpot Sales Hub Software — HubSpot Academy, 2024
+- Form Concierge Admin Certificate — Chili Piper, 2022
+- Inbound Marketing — HubSpot Academy, 2022
+- HubSpot Sales Software — HubSpot Academy, 2022
+- HubSpot Champion User — HubSpot Academy, 2020
+- Inbound Marketing Certified — HubSpot Academy, 2020
+- Inbound Certified — HubSpot, 2017
+
+Tools I work with include HubSpot CRM, custom objects, workflows, Data Studio and the HubSpot API; Zapier, JavaScript, WooCommerce and Exact; Codex and Claude Code; Gong, Chili Piper, Aircall and Typeform; Google Workspace, Jira, Confluence, 1Password and Trelica.
+
+For project-based work or an ongoing retainer, [view the services](/services). To talk through your setup, [get in touch](/contact).
+
+### Oude-naar-nieuwe URL-mapping — uitsluitend voorstel
+
+Bij variant B één permanente redirect in `next.config.ts` (`permanent: true`, verwachte 308). Interne links gaan rechtstreeks naar bestemming; `/app-catalog` verdwijnt pas dan uit de sitemap. Bestemming blijft self-canonical `/hubspot-enablement`; queryparameters/installatiecallback/statusfeedback niet veranderen. Geen redirectketen, geen OAuth-/API-redirects. Variant A heeft overal identiteitmapping.
+
+| Bestaande URL | Voorgestelde canonieke bestemming | Actie |
+|---|---|---|
+| `/` | `/` | Behouden, geen redirect |
+| `/about` | `/about` | Behouden, geen redirect |
+| `/services` | `/services` | Behouden, geen redirect |
+| `/case-studies` | `/case-studies` | Behouden, geen redirect |
+| `/blog` | `/blog` | Behouden, geen redirect |
+| `/contact` | `/contact` | Behouden, geen redirect |
+| `/app-catalog` | `/hubspot-enablement` | 308 na goedkeuring; unieke toolcontext op bestemming |
+| `/hubspot-enablement` | `/hubspot-enablement` | Behouden, geen redirect |
+| `/case-studies/customer-lifecycle` | `/case-studies/customer-lifecycle` | Behouden, geen redirect |
+| `/case-studies/crm-data-quality` | `/case-studies/crm-data-quality` | Behouden, geen redirect |
+| `/case-studies/finance-automation` | `/case-studies/finance-automation` | Behouden, geen redirect |
+| `/case-studies/renewal-status-card` | `/case-studies/renewal-status-card` | Behouden, geen redirect |
+| `/case-studies/pipeline-consolidation` | `/case-studies/pipeline-consolidation` | Behouden, geen redirect |
+| `/services/automation` | `/services/automation` | Behouden, geen redirect |
+| `/services/consultancy` | `/services/consultancy` | Behouden, geen redirect |
+| `/services/integrations` | `/services/integrations` | Behouden, geen redirect |
+| `/services/custom-objects` | `/services/custom-objects` | Behouden, geen redirect |
+| `/services/pipeline-optimization` | `/services/pipeline-optimization` | Behouden, geen redirect |
+| `/services/custom-app-cards` | `/services/custom-app-cards` | Behouden, geen redirect |
+| `/blog/hubspot-aeo-smb` | `/blog/hubspot-aeo-smb` | Behouden, geen redirect |
+| `/blog/hubspot-app-cards-guide` | `/blog/hubspot-app-cards-guide` | Behouden, geen redirect |
+| `/blog/hubspot-breeze-ai-smb` | `/blog/hubspot-breeze-ai-smb` | Behouden, geen redirect |
+| `/blog/hubspot-classic-crm-cards-sunset` | `/blog/hubspot-classic-crm-cards-sunset` | Behouden, geen redirect |
+| `/blog/hubspot-contractor-vs-agency` | `/blog/hubspot-contractor-vs-agency` | Behouden, geen redirect |
+| `/blog/hubspot-lifecycle-stages-setup-guide` | `/blog/hubspot-lifecycle-stages-setup-guide` | Behouden, geen redirect |
+| `/blog/hubspot-onboarding-mistakes` | `/blog/hubspot-onboarding-mistakes` | Behouden, geen redirect |
+| `/blog/hubspot-spring-2026-spotlight` | `/blog/hubspot-spring-2026-spotlight` | Behouden, geen redirect |
+
+### Controle checkpoint 3
+
+Varianten A/B vergeleken op eigen functie, bereikbaarheid, onderhoud en uniek informatieverlies; agressievere service-/Aboutmerge gemotiveerd afgewezen. Voorkeur B heeft 26 canonieke contentbestemmingen en een mapping voor alle 27 oude routes. Outlines/budgetten gelden voor iedere route. Complete Engelse homecopy telt 346 woorden (32,7% minder dan 514), About 382 (33,3% minder dan 573). Telmethode gelijk aan inventaris voor zichtbare labels, Markdownopmaak en URL-doelen uitgesloten. De vier expertisegebieden en hun bewijslinks staan in de homecopy. De copy is nog niet in websitecomponenten toegepast of visueel gecontroleerd. Volgende stap: uitvoeringscheckpoints en behoudcontrole.
