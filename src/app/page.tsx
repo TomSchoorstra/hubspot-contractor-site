@@ -2,14 +2,14 @@ import type { Metadata } from "next";
 import HomeClient from "./HomeClient";
 
 export const metadata: Metadata = {
-  title: "Tom Schoorstra — HubSpot Contractor",
+  title: "Tom Schoorstra — HubSpot & RevOps Specialist",
   description:
-    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
+    "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues. Explore my work at AIHR.",
   alternates: { canonical: "/" },
   openGraph: {
-    title: "Tom Schoorstra — HubSpot Contractor",
+    title: "Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
-      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
+      "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues. Explore my work at AIHR.",
     url: "/",
   },
 };

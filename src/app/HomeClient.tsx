@@ -1,333 +1,67 @@
 "use client";
 
-import React from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { motion, type Variants } from "framer-motion";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Badge from "@/components/ui/Badge";
-import ExperienceTimer from "@/components/ui/ExperienceTimer";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
+import { expertiseAreas } from "@/content/expertise";
 
-/* ─── Animation variants ─────────────────────────────────────────── */
-const staggerContainer: Variants = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-};
-const staggerItem: Variants = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } },
-};
-
-/* ─── Tool stack logos ───────────────────────────────────────────── */
-const tools = ["HubSpot", "Zapier", "WooCommerce", "Google Workspace", "Slack", "Jira", "Chili Piper", "n8n", "Exact"];
+const featuredCases = ["customer-lifecycle", "crm-data-quality"].flatMap((slug) => {
+  const study = caseStudies.find((item) => item.slug === slug);
+  return study ? [study] : [];
+});
 
 export default function HomeClient() {
   return (
     <main>
-      {/* ═══ HERO ════════════════════════════════════════════════════ */}
-      <section className="relative overflow-hidden">
-        <div className="absolute inset-0 dot-grid opacity-50 pointer-events-none" />
+      <section className="relative overflow-hidden border-b border-border-subtle">
+        <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
         <div className="absolute -top-32 -right-32 h-[600px] w-[600px] rounded-full bg-accent/8 blur-[100px] pointer-events-none" />
-        <div className="absolute -bottom-20 -left-20 h-[400px] w-[400px] rounded-full bg-accent-2/6 blur-[80px] pointer-events-none" />
-
-        <Container className="relative z-10 py-16 lg:py-28">
-          <div className="grid grid-cols-1 gap-16 xl:grid-cols-[3fr_2fr] xl:items-center">
-
-            {/* Left: Text */}
-            <motion.div
-              variants={staggerContainer}
-              initial="hidden"
-              animate="show"
-              className="space-y-7"
-            >
-              <motion.h1
-                variants={staggerItem}
-                className="font-display text-4xl font-extrabold leading-[1.05] tracking-tight text-text sm:text-5xl lg:text-6xl xl:text-7xl"
-              >
-                HubSpot operations,{" "}
-                <span className="text-gradient-orange">done right.</span>
-              </motion.h1>
-
-              <motion.p
-                variants={staggerItem}
-                className="max-w-xl text-xl leading-relaxed text-text-secondary lg:text-2xl"
-              >
-                I help growing teams turn HubSpot into a system that actually drives results — through automation, clean data, and integrations that stick.
-              </motion.p>
-
-              <motion.div
-                variants={staggerItem}
-                className="flex flex-col gap-4 sm:flex-row sm:gap-4"
-              >
-                <Button href="/contact" variant="primary" size="lg" showArrow>
-                  Plan a call
-                </Button>
-                <Button href="/case-studies" variant="secondary" size="lg">
-                  See the work
-                </Button>
-              </motion.div>
-            </motion.div>
-
-            {/* Right: Photo + floating cards — only shown at xl */}
-            <motion.div
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
-              className="hidden xl:flex xl:flex-col xl:items-center xl:gap-5"
-            >
-              <div className="relative w-full max-w-[300px]">
-                <div className="absolute -top-3 -left-3 h-full w-full rounded-2xl border-2 border-accent/30" aria-hidden="true" />
-                <div className="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border-2 border-accent-2/30" aria-hidden="true" />
-                <Image
-                  src="/about-photo.jpeg"
-                  alt="Tom Schoorstra — Independent HubSpot Contractor"
-                  width={480}
-                  height={640}
-                  sizes="(max-width: 768px) 100vw, 480px"
-                  className="relative z-10 h-auto w-full rounded-2xl object-cover object-top shadow-xl"
-                  priority
-                />
-                <div className="absolute bottom-0 left-0 right-0 z-20 h-1 rounded-b-2xl bg-accent" aria-hidden="true" />
+        <Container className="relative z-10 py-16 lg:py-24">
+          <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
+            <div className="space-y-6">
+              <Badge variant="teal">HubSpot &amp; RevOps specialist</Badge>
+              <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-text sm:text-5xl lg:text-6xl">
+                A clearer customer picture.<br />
+                <span className="text-gradient-orange">Processes that connect.</span>
+              </h1>
+              <p className="max-w-xl text-xl leading-relaxed text-text-secondary">I help B2B teams make complex HubSpot setups easier to work with, connecting customer records, automating handovers, and building checks that keep operational data reliable.</p>
+              <div className="flex flex-col gap-4 sm:flex-row">
+                <Button href="/case-studies" variant="primary" size="lg" showArrow analyticsEvent="cta_click" analyticsParams={{ cta_label: "See the work", cta_location: "home_hero", destination: "/case-studies" }}>See the work</Button>
+                <Button href="/contact" variant="secondary" size="lg" analyticsLocation="home_hero">Get in touch</Button>
               </div>
-
-              {/* Floating tool logo cards */}
-              <div className="relative h-24 w-full">
-                {([
-                  { name: "HubSpot", delay: 0, amp: -8, x: "0%", icon: (
-                    <Image src="/logos/HubSpot_Logo.svg" alt="HubSpot" width={52} height={20} className="object-contain" />
-                  )},
-                  { name: "Zapier", delay: 0.6, amp: 7, x: "15%", icon: (
-                    <Image src="/logos/Zapier_idMPnFrbc7_0.svg" alt="Zapier" width={52} height={20} className="object-contain" />
-                  )},
-                  { name: "WooCommerce", delay: 1.1, amp: -6, x: "30%", icon: (
-                    <Image src="/logos/WooCommerce_logo_(2015).svg" alt="WooCommerce" width={52} height={20} className="object-contain" />
-                  )},
-                  { name: "Slack", delay: 0.3, amp: 9, x: "45%", icon: (
-                    <Image src="/logos/Slack_Symbol_0.svg" alt="Slack" width={52} height={20} className="object-contain" />
-                  )},
-                  { name: "n8n", delay: 0.9, amp: -7, x: "60%", icon: (
-                    <Image src="/logos/N8n.io_idanTsRSNX_0.svg" alt="n8n" width={52} height={20} className="object-contain" />
-                  )},
-                  { name: "Chili Piper", delay: 0.5, amp: 8, x: "74%", icon: (
-                    <Image src="/logos/Chili Piper_idovklU7ME_0.svg" alt="Chili Piper" width={28} height={11} className="object-contain" />
-                  )},
-                  { name: "Exact", delay: 0.7, amp: -9, x: "88%", icon: (
-                    <Image src="/logos/Exact_id4ip-rhAF_1.svg" alt="Exact" width={52} height={20} className="object-contain" />
-                  )},
-                ] as { name: string; delay: number; amp: number; x: string; icon: React.ReactNode }[]).map((tool) => (
-                  <motion.div
-                    key={tool.name}
-                    animate={{ y: [0, tool.amp, 0] }}
-                    transition={{ duration: 3.5 + tool.delay, repeat: Infinity, ease: "easeInOut", delay: tool.delay }}
-                    className="absolute flex h-16 w-16 items-center justify-center rounded-2xl border border-border bg-white shadow-lg p-2"
-                    style={{ left: tool.x, top: "50%", transform: "translateY(-50%)" }}
-                    title={tool.name}
-                  >
-                    {tool.icon}
-                  </motion.div>
-                ))}
-              </div>
-            </motion.div>
-
+              <p className="text-sm leading-relaxed text-text-secondary">Based in the Netherlands. Working in Revenue Operations at AIHR. <Link href="/about" className="font-semibold text-text underline underline-offset-4">More about me</Link></p>
+            </div>
+            <div className="relative mx-auto w-full max-w-sm lg:max-w-none">
+              <div className="absolute -top-3 -left-3 h-full w-full rounded-2xl border-2 border-accent/30" aria-hidden="true" />
+              <Image src="/about-photo.jpeg" alt="Tom Schoorstra, HubSpot and RevOps specialist" width={480} height={640} sizes="(max-width: 1024px) 384px, 480px" priority className="relative h-auto w-full rounded-2xl object-cover shadow-lg" />
+            </div>
           </div>
         </Container>
       </section>
 
-      {/* ═══ WHO I AM STRIP ══════════════════════════════════════════ */}
-      <ScrollReveal>
-        <section className="border-b border-border bg-surface-2 py-10 lg:py-12">
-          <Container>
-            <div className="flex flex-col gap-8 lg:flex-row lg:items-center lg:gap-16">
-              <div>
-                <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">About me</p>
-                <p className="max-w-2xl text-lg leading-relaxed text-text-secondary">
-                  Independent HubSpot contractor based in the Netherlands. I help growing teams turn their CRM into a system that actually works — no agency overhead, no unnecessary complexity.
-                </p>
-                <Link
-                  href="/about"
-                  className="group mt-4 inline-flex items-center gap-2 text-sm font-semibold text-text transition-colors hover:text-accent"
-                >
-                  More about me
-                  <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
-                    <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-              </div>
-
-              <div className="flex flex-shrink-0 flex-col gap-3 rounded-2xl border border-border bg-surface-2 px-6 py-4">
-                <div className="text-center text-xs font-medium uppercase tracking-wide text-text-muted">HubSpot experience</div>
-                <div className="flex items-center gap-4 sm:gap-10">
-                  <ExperienceTimer />
-                  <div className="h-10 w-px bg-border" />
-                  <div>
-                    <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">20+</div>
-                    <div className="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Projects</div>
-                  </div>
-                  <div className="h-10 w-px bg-border" />
-                  <div>
-                    <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">5</div>
-                    <div className="mt-1 text-xs font-medium uppercase tracking-wide text-text-muted">Hubs covered</div>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </Container>
-        </section>
-      </ScrollReveal>
-
-      {/* ═══ TOOL STACK BAR ══════════════════════════════════════════ */}
-      <div className="border-b border-border bg-surface-2 py-6">
-        <Container>
-          <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:gap-8">
-            <span className="flex-shrink-0 text-xs font-semibold uppercase tracking-widest text-text-muted">Works with your stack</span>
-            <div className="flex flex-wrap gap-x-8 gap-y-2">
-              {tools.map((tool) => (
-                <span key={tool} className="text-sm font-semibold text-text-muted/70 transition-colors hover:text-text-secondary">
-                  {tool}
-                </span>
-              ))}
-            </div>
-          </div>
-        </Container>
-      </div>
-
-      {/* ═══ SERVICES ════════════════════════════════════════════════ */}
       <section className="py-16 lg:py-20">
         <Container>
-          <ScrollReveal>
-            <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">What I do</p>
-                <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">Six ways I can help</h2>
-              </div>
-              <Link
-                href="/services"
-                className="group inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-accent"
-              >
-                View all services
-                <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
-                  <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-              </Link>
+          <div className="mb-10 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
+            <div>
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-secondary">Selected work</p>
+              <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">The decisions behind the systems</h2>
             </div>
-          </ScrollReveal>
-
-          <div className="grid gap-3 sm:grid-cols-2">
-            {services.map((service, i) => (
-              <ScrollReveal key={service.slug} delay={i * 0.06}>
-                <Link href={`/services/${service.slug}`} className="group flex items-center gap-5 rounded-2xl border border-border bg-surface p-5 transition-all duration-200 hover:border-accent/40 hover:bg-accent-light">
-                  <span className="font-display text-2xl font-extrabold text-border group-hover:text-accent/30 transition-colors">
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div className="flex-1 min-w-0">
-                    <div className="font-semibold text-text group-hover:text-accent transition-colors">{service.title}</div>
-                    <div className="mt-0.5 text-sm text-text-muted line-clamp-1">{service.shortDescription}</div>
-                  </div>
-                  <svg aria-hidden="true" className="h-4 w-4 flex-shrink-0 text-text-muted transition-transform group-hover:translate-x-1 group-hover:text-accent" fill="none" viewBox="0 0 16 16">
-                    <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                  </svg>
-                </Link>
-              </ScrollReveal>
-            ))}
+            <Link href="/case-studies" className="font-semibold text-text underline underline-offset-4">All case studies</Link>
           </div>
-        </Container>
-      </section>
-
-      {/* ═══ TESTIMONIALS ════════════════════════════════════════════ */}
-      <section className="py-16 lg:py-20 bg-surface-2">
-        <Container>
-          <ScrollReveal>
-            <div className="mb-10">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Clients</p>
-              <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">What clients say</h2>
-            </div>
-          </ScrollReveal>
-
           <div className="grid gap-6 md:grid-cols-2">
-            {[
-              {
-                quote: "What used to take our finance team an entire day now runs automatically. We don't even think about it anymore. The automation Tom built is rock solid.",
-                name: "Tom",
-                title: "System Operations Manager",
-                company: "Academy to Innovate HR",
-              },
-              {
-                quote: "We finally have a HubSpot setup that reflects how we actually work. Tom asked the right questions, moved fast, and didn't overcomplicate a single thing.",
-                name: "Sarah",
-                title: "RevOps Lead",
-                company: "SaaS scale-up",
-              },
-            ].map((t, i) => (
-              <ScrollReveal key={i} delay={i * 0.1}>
-                <div className="flex h-full flex-col rounded-2xl border border-border bg-white p-7">
-                  <svg aria-hidden="true" className="mb-4 h-7 w-7 text-accent/30" fill="currentColor" viewBox="0 0 32 32">
-                    <path d="M9.352 4C4.456 7.456 1 13.12 1 19.36c0 5.088 3.072 8.064 6.624 8.064 3.36 0 5.856-2.688 5.856-5.856 0-3.168-2.208-5.472-5.088-5.472-.576 0-1.344.096-1.536.192.48-3.264 3.552-7.104 6.624-9.024L9.352 4zm16.512 0c-4.8 3.456-8.256 9.12-8.256 15.36 0 5.088 3.072 8.064 6.624 8.064 3.264 0 5.856-2.688 5.856-5.856 0-3.168-2.304-5.472-5.184-5.472-.576 0-1.248.096-1.44.192.48-3.264 3.456-7.104 6.528-9.024L25.864 4z" />
-                  </svg>
-                  <p className="flex-1 text-base italic leading-relaxed text-text-secondary">&ldquo;{t.quote}&rdquo;</p>
-                  <div className="mt-5 border-t border-border pt-4">
-                    <div className="font-semibold text-text">{t.name}</div>
-                    <div className="mt-0.5 text-sm text-text-muted">{t.title}, {t.company}</div>
-                  </div>
-                </div>
-              </ScrollReveal>
-            ))}
-          </div>
-        </Container>
-      </section>
-
-      {/* ═══ CASE STUDIES PREVIEW ════════════════════════════════════ */}
-      <section className="py-16 lg:py-20">
-        <Container>
-          <ScrollReveal>
-            <div className="mb-10 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
-              <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Case studies</p>
-                <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">
-                  Work that speaks<br className="hidden sm:block" /> for itself
-                </h2>
-              </div>
-              <Link
-                href="/case-studies"
-                className="group inline-flex items-center gap-2 text-sm font-semibold text-text-secondary transition-colors hover:text-accent"
-              >
-                All case studies
-                <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
-                  <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
+            {featuredCases.map((study) => (
+              <Link key={study.slug} href={`/case-studies/${study.slug}`} className="group block rounded-2xl border border-border bg-surface p-7 transition-colors hover:border-accent/40">
+                <p className="text-xs font-semibold uppercase tracking-widest text-text-secondary">{study.narrative?.eyebrow ?? study.industry}</p>
+                <h3 className="mt-4 font-display text-2xl font-bold text-text">{study.title}</h3>
+                <p className="mt-4 leading-relaxed text-text-secondary">{study.summary}</p>
+                {study.statusNote && <p className="mt-4 text-sm leading-relaxed text-text-secondary">{study.statusNote}</p>}
+                <p className="mt-6 font-semibold text-text underline underline-offset-4">Read case study</p>
               </Link>
-            </div>
-          </ScrollReveal>
-
-          <div className="grid gap-6 md:grid-cols-2 lg:gap-8">
-            {caseStudies.slice(0, 2).map((study, i) => (
-              <ScrollReveal key={study.slug} delay={i * 0.1}>
-                <Link href={`/case-studies/${study.slug}`} className="group block h-full">
-                  <div className="h-full rounded-2xl border border-border bg-surface p-7 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)]">
-                    <div className="mb-5">
-                      <Badge variant="orange">{study.results[0].value}</Badge>
-                    </div>
-                    <h3 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent">
-                      {study.title}
-                    </h3>
-                    <p className="mt-3 text-base leading-relaxed text-text-secondary">{study.summary}</p>
-                    <div className="mt-5 flex flex-wrap gap-2">
-                      {study.stack.map((tech) => (
-                        <Badge key={tech} variant="teal" size="sm">{tech}</Badge>
-                      ))}
-                    </div>
-                    <div className="mt-5 inline-flex items-center gap-2 text-sm font-semibold text-accent">
-                      Read case study
-                      <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
-                        <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                      </svg>
-                    </div>
-                  </div>
-                </Link>
-              </ScrollReveal>
             ))}
           </div>
         </Container>
@@ -336,61 +70,72 @@ export default function HomeClient() {
       <section className="border-y border-border-subtle bg-surface-2 py-16 lg:py-20">
         <Container>
           <ScrollReveal>
-            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">How I work</p>
-            <h2 className="font-display text-4xl font-bold text-text lg:text-5xl">Built to keep working</h2>
-            <p className="mt-5 max-w-3xl text-lg leading-relaxed text-text-secondary">
-              I turn repeatable RevOps checks into AI-assisted controls. They inspect live data, explain what looks wrong, and keep write decisions with the operator.
-            </p>
-            <div className="mt-10 grid gap-6 lg:grid-cols-3">
-              {[
-                { title: "Account integrity", description: "New accounts are checked for duplicates, parent-child relationships, and missing CRM associations." },
-                { title: "Routing quality", description: "New MQLs are checked against the intended rep pool, region, and meeting type." },
-                { title: "Revenue data", description: "Renewal, subscription, and deal records are checked for gaps before they affect reporting or follow-up." },
-              ].map((control) => (
-                <div key={control.title} className="rounded-2xl border border-border bg-surface p-7">
-                  <h3 className="font-display text-xl font-bold text-accent-2">{control.title}</h3>
-                  <p className="mt-3 leading-relaxed text-text-secondary">{control.description}</p>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-secondary">Areas of expertise</p>
+            <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">From the customer model to daily operations</h2>
+            <div className="mt-10 grid gap-6 sm:grid-cols-2">
+              {expertiseAreas.map((area) => (
+                <div key={area.title} className="rounded-2xl border border-border bg-surface p-7">
+                  <h3 className="font-display text-xl font-bold text-text">{area.title}</h3>
+                  <p className="mt-3 leading-relaxed text-text-secondary">{area.description}</p>
+                  <Link href={area.proofHref} className="mt-5 inline-block text-sm font-semibold text-text underline underline-offset-4">{area.proofLabel}</Link>
                 </div>
               ))}
-            </div>
-            <p className="mt-8 text-sm leading-relaxed text-text-secondary">
-              Read-only by default. Exceptions are flagged with context; changes stay human-approved.
-            </p>
-            <div className="mt-6">
-              <Button href="/case-studies/customer-lifecycle" variant="secondary" size="md" showArrow>
-                See the Account-Based CRM case
-              </Button>
             </div>
           </ScrollReveal>
         </Container>
       </section>
 
-      {/* ═══ CTA SECTION ════════════════════════════════════════════ */}
       <section className="py-16 lg:py-20">
         <Container>
           <ScrollReveal>
-            <div className="relative overflow-hidden rounded-3xl bg-accent-light border-2 border-accent/15 px-6 py-10 sm:px-8 sm:py-14 lg:px-14">
-              <div className="absolute -right-20 -top-20 h-[300px] w-[300px] rounded-full bg-accent/6 blur-[60px] pointer-events-none" />
-              <div className="relative flex flex-col gap-8 lg:flex-row lg:items-center lg:justify-between">
-                <div className="max-w-2xl">
-                  <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">
-                    Ready to get more out of HubSpot?
-                  </h2>
-                  <p className="mt-4 text-lg leading-relaxed text-text-secondary">
-                    Let&apos;s talk about your setup. No fluff, no hard sell — just an honest conversation about what&apos;s possible.
-                  </p>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-secondary">How I work</p>
+            <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">Understand, build, then keep checking</h2>
+            <div className="mt-10 grid gap-6 lg:grid-cols-3">
+              {[
+                { title: "Follow the process", description: "Map the records, sources and handovers. Agree on what each relationship represents and who owns the decisions." },
+                { title: "Build the connections", description: "Implement the model, workflows or record interface. Test the expected paths and exceptions, then document how they work." },
+                { title: "Review what changes", description: "Use recurring checks to surface missing links and inconsistent data. Investigate the source before deciding on a correction." },
+              ].map((step) => (
+                <div key={step.title} className="rounded-2xl border border-border bg-surface-2 p-7">
+                  <h3 className="font-display text-xl font-bold text-text">{step.title}</h3>
+                  <p className="mt-3 leading-relaxed text-text-secondary">{step.description}</p>
                 </div>
-                <div className="flex flex-wrap gap-4 lg:flex-shrink-0">
-                  <Button href="/contact" variant="primary" size="lg" showArrow>
-                    Start the conversation
-                  </Button>
-                  <Button href="/services" variant="secondary" size="lg">
-                    View services
-                  </Button>
-                </div>
-              </div>
+              ))}
+            </div>
+            <p className="mt-8 max-w-3xl leading-relaxed text-text-secondary">AI supports investigation, documentation and recurring reviews. In my weekly account review, it helps assess possible matches and prepare recommendations. I start the review and assess the findings; it does not change HubSpot records automatically.</p>
+            <Link href="/case-studies/customer-lifecycle" className="mt-5 inline-block font-semibold text-text underline underline-offset-4">Explore the account review in practice</Link>
+          </ScrollReveal>
+        </Container>
+      </section>
+
+      <section className="border-y border-border-subtle bg-surface-2 py-16 lg:py-20">
+        <Container>
+          <ScrollReveal>
+            <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-text-secondary">Services</p>
+            <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">Ways I can help</h2>
+            <p className="mt-4 max-w-2xl leading-relaxed text-text-secondary">{services.length} services covering the practical work behind a connected HubSpot setup.</p>
+            <div className="mt-10 grid gap-4 sm:grid-cols-2">
+              {services.map((service) => (
+                <Link key={service.slug} href={`/services/${service.slug}`} className="group block rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/40">
+                  <h3 className="font-semibold text-text">{service.title}</h3>
+                  <p className="mt-2 text-sm leading-relaxed text-text-secondary">{service.shortDescription}</p>
+                </Link>
+              ))}
             </div>
           </ScrollReveal>
+        </Container>
+      </section>
+
+      <section className="py-16 lg:py-20">
+        <Container>
+          <div className="rounded-3xl border border-accent/20 bg-accent-light p-7 sm:p-10 lg:p-12">
+            <h2 className="font-display text-3xl font-bold text-text lg:text-4xl">Want to talk through your HubSpot setup?</h2>
+            <p className="mt-4 max-w-2xl text-lg leading-relaxed text-text-secondary">Tell me how your customer records and processes are connected, and where things get difficult to follow.</p>
+            <div className="mt-7 flex flex-wrap gap-4">
+              <Button href="/contact" size="lg" showArrow analyticsLocation="home_bottom">Start the conversation</Button>
+              <Button href="/about" variant="secondary" size="lg">More about me</Button>
+            </div>
+          </div>
         </Container>
       </section>
     </main>

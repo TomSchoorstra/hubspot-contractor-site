@@ -17,7 +17,7 @@ export default function Footer() {
               {site.name}<span className="text-accent">.</span>
             </Link>
             <p className="mt-4 text-sm leading-relaxed text-text-secondary max-w-xs">
-              Independent HubSpot contractor helping growing teams build automation, integrations, and scalable CRM systems.
+              HubSpot &amp; RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.
             </p>
             <div className="mt-6 flex gap-3">
               <TrackedAnchor

@@ -11,7 +11,7 @@ export interface SiteConfig {
 
 export const site: SiteConfig = {
   name: "Tom Schoorstra",
-  tagline: "HubSpot contractor for automation, ops, and scalable growth systems.",
+  tagline: "HubSpot & RevOps specialist for CRM architecture, integrations and operational data quality.",
   nav: [
     {
       label: "Services",

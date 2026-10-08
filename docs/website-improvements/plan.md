@@ -123,13 +123,13 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 2 | About | Zelfcontrole afgerond | 2e2e34f | — |
 | 3 | Account-based CRM-case | Zelfcontrole afgerond | 0a38251 | — |
 | 4 | Datakwaliteitscase | Zelfcontrole afgerond | 07ed704 | — |
-| 5 | Bestaande diensten | Zelfcontrole afgerond | Zie checkpoint-5-commit | — |
-| 6 | Homepage en gedeelde positionering | Gepland | — | — |
+| 5 | Bestaande diensten | Zelfcontrole afgerond | 7dabdec | — |
+| 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | Zie checkpoint-6-commit | — |
 | 7 | Drie artikelbriefings | Gepland | — | — |
 | 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** checkpoint 6 uitvoeren; checkpoints 2–5 hebben zelfcontrole afgerond.
+**Eerstvolgende stap:** checkpoint 7 uitvoeren; checkpoints 2–6 hebben zelfcontrole afgerond.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -339,3 +339,11 @@ Vul bij ieder checkpoint kort aan:
 - **Controles:** gerichte ESLint en TypeScript geslaagd. Zes oorspronkelijke diensten en hun casekoppelingen gecontroleerd; optionele references breidt het bestaande model uit zonder bestaande diensten te breken. Geen browsercontrole op verzoek.
 - **Beperkingen:** daadwerkelijk passende implementatie blijft afhankelijk van het klantportaal. Geen nieuwe diensten, prijzen of garanties toegevoegd. Geen acceptatie namens Tom.
 - **Status:** zelfcontrole afgerond; checkpoint 6 volgt. Niets gepusht of gedeployed.
+
+### Checkpoint 6 — Homepage — 8 oktober 2026
+
+- **Wijzigingen:** homepage volgt belofte → twee expliciet geselecteerde cases → vier gedeelde expertisegebieden → werkwijze → zes diensten → contact. Primaire actie “See the work”, secundair contact. AI alleen in de concrete accountreviewcontext. Footer, site-tagline, paginametadata, Person/ProfessionalService-schema en OG-afbeeldingstekst volgen dezelfde profielomschrijving.
+- **Besluiten:** oude generieke project/hub-aantallen, losstaande toolpromotie en testimonialsectie vervangen door eigen werk als bewijs. De oude quotes hadden binnen deze ronde geen onafhankelijke herkomst; niets als nieuwe klantquote toegevoegd. Stilstaande hero met bestaande foto, oranje/teal kleuren en bestaande componenten; overbodige floating-logoanimaties verwijderd.
+- **Controles:** gerichte ESLint en TypeScript geslaagd; alle vier expertisekaarten linken naar bestaande cases; zes diensten uit centrale content; hero-caseklik gebruikt bestaande cta_click-interface, contacttracking blijft intact. Geen browsercontrole op verzoek.
+- **Beperkingen:** visuele en interactieve werking niet beoordeeld. De bestaande beschikbaarheidsbanner blijft behouden; acquisitie en beschikbaarheidsbeleid zijn geen nieuw besluit in deze ronde. Geen acceptatie namens Tom.
+- **Status:** zelfcontrole afgerond; checkpoint 7 volgt. Niets gepusht of gedeployed.

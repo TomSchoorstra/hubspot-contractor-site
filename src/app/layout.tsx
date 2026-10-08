@@ -35,28 +35,28 @@ const analyticsEnabled = Boolean(gtmId) && siteEnv === "production";
 
 
 export const metadata: Metadata = {
-  title: "Tom Schoorstra — HubSpot contractor",
+  title: "Tom Schoorstra — HubSpot & RevOps Specialist",
   icons: {
     icon: "/favicon.svg",
     shortcut: "/favicon.svg",
     apple: "/favicon.svg",
   },
   description:
-    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
+    "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.",
   metadataBase: new URL(siteUrl),
   openGraph: {
     type: "website",
     url: siteUrl,
     siteName: "Tom Schoorstra",
-    title: "Tom Schoorstra — HubSpot contractor",
+    title: "Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
-      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
+      "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.",
   },
   twitter: {
     card: "summary_large_image",
-    title: "Tom Schoorstra — HubSpot contractor",
+    title: "Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
-      "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom object development, and pipeline optimization.",
+      "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.",
   },
 };
 
@@ -64,9 +64,9 @@ const personSchema = {
   "@context": "https://schema.org",
   "@type": "Person",
   name: "Tom Schoorstra",
-  jobTitle: "Independent HubSpot Contractor",
+  jobTitle: "HubSpot & RevOps specialist",
   description:
-    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization.",
+    "HubSpot & RevOps specialist working on CRM architecture, integrations, operational data quality and custom record interfaces.",
   url: SITE_URL,
   sameAs: ["https://www.linkedin.com/in/tom-schoorstra-807899113/"],
   knowsAbout: [
@@ -77,6 +77,9 @@ const personSchema = {
     "HubSpot integrations",
     "Custom objects",
     "Pipeline optimization",
+    "CRM architecture",
+    "Data quality monitoring",
+    "HubSpot UI extensions",
   ],
   address: {
     "@type": "PostalAddress",
@@ -87,9 +90,9 @@ const personSchema = {
 const organizationSchema = {
   "@context": "https://schema.org",
   "@type": "ProfessionalService",
-  name: "Tom Schoorstra — HubSpot Contractor",
+  name: "Tom Schoorstra — HubSpot & RevOps Specialist",
   description:
-    "Independent HubSpot contractor helping SMBs and scale-ups with automation, integrations, custom objects, and pipeline optimization.",
+    "HubSpot & RevOps specialist working on CRM architecture, integrations, operational data quality and custom record interfaces.",
   url: SITE_URL,
   founder: { "@type": "Person", name: "Tom Schoorstra" },
   areaServed: "NL",

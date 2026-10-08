@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Tom Schoorstra — Independent HubSpot Contractor";
+export const alt = "Tom Schoorstra — HubSpot & RevOps Specialist";
 export const size = { width: 1200, height: 630 };
 export const contentType = "image/png";
 
@@ -46,7 +46,7 @@ export default function Image() {
             display: "flex",
           }}
         >
-          Independent HubSpot Contractor
+          HubSpot & RevOps Specialist
         </div>
 
         <div
@@ -73,7 +73,7 @@ export default function Image() {
             display: "flex",
           }}
         >
-          HubSpot automation, integrations and RevOps for growing teams.
+          CRM architecture, integrations and operational data quality.
         </div>
 
         <div
