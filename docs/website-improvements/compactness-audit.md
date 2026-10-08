@@ -1,6 +1,6 @@
 # Compactness audit — minder herhaling, dezelfde kern
 
-Datum: 8 oktober 2026. Status: auditcheckpoints 1–3 afgerond; 4 volgt.
+Datum: 8 oktober 2026. Status: alle vier auditcheckpoints afgerond; voorstel gereed voor inhoudelijke beoordeling.
 Scope: audit en voorstel, uitsluitend documentatie. Geen websitewijzigingen, verwijderingen, push of deploy.
 
 ## Leeswijzer en voortgang
@@ -11,8 +11,8 @@ Dit document houdt vier auditcheckpoints bij. De verkorte teksten en toekomstige
 |---|---|---|
 | 1. Inventaris en beschermde kern | Zelfcontrole afgerond | `75cb8b4` |
 | 2. Overlap en sectieadviezen | Zelfcontrole afgerond | `33f8b07` |
-| 3. Varianten, structuur en Engelse copy | Zelfcontrole afgerond | Deze checkpointcommit; zie git-log |
-| 4. Kerncontrole en uitvoeringsplan | Gepland | — |
+| 3. Varianten, structuur en Engelse copy | Zelfcontrole afgerond | `c8d1de8` |
+| 4. Kerncontrole en uitvoeringsplan | Zelfcontrole afgerond | Commit die deze sectie toevoegt; zie git-log |
 
 ## Checkpoint 1 — Inventarisatie
 
@@ -534,3 +534,145 @@ Bij variant B één permanente redirect in `next.config.ts` (`permanent: true`, 
 ### Controle checkpoint 3
 
 Varianten A/B vergeleken op eigen functie, bereikbaarheid, onderhoud en uniek informatieverlies; agressievere service-/Aboutmerge gemotiveerd afgewezen. Voorkeur B heeft 26 canonieke contentbestemmingen en een mapping voor alle 27 oude routes. Outlines/budgetten gelden voor iedere route. Complete Engelse homecopy telt 346 woorden (32,7% minder dan 514), About 382 (33,3% minder dan 573). Telmethode gelijk aan inventaris voor zichtbare labels, Markdownopmaak en URL-doelen uitgesloten. De vier expertisegebieden en hun bewijslinks staan in de homecopy. De copy is nog niet in websitecomponenten toegepast of visueel gecontroleerd. Volgende stap: uitvoeringscheckpoints en behoudcontrole.
+
+## Checkpoint 4 — Kerncontrole en uitvoeringsplan
+
+### Behoudcontrole van het voorstel
+
+| Controle | Resultaat / controlecriterium bij uitvoering |
+|---|---|
+| Vier expertisegebieden herkenbaar | Home heeft vier expliciet benoemde regels; CRM → Account, automation/integrations → Finance, data quality → monitoring, interfaces → Renewal. Alle vier detailcases en dienstscopes blijven bereikbaar. |
+| Eigen bijdrage / rol | About houdt “System Operations Manager Senior, within Revenue Operations” en eigen projectlead/ontwerp/bouw/checks. Cases blijven in ik-vorm en nemen geen teamresultaat over als eigen claim. |
+| Correcte grenzen | Account: September 2026 snapshot, core live/enrichment open; data quality: August 2026 snapshot, member-count/source freshness open en geen automatisch herstel; Finance: review vóór start; Renewal: read-only en drie gevalideerde uitkomsten; pipeline: geen nieuwe conversieclaim. |
+| AI-werkwijze | About houdt menselijke start/beslisser en geen write vanuit review; Account-case blijft hoofdplek van concrete uitvoering. Geen autonome CRM-correctie suggereren. |
+| Unieke achtergrond | Alle zeven historische credentials/erkenningen met jaar/uitgever en historisch label, tools en engagementformats blijven in About. Eén portret. |
+| Iedere route eigen taak | Inventoryhoofddoel blijft leidend. Alleen catalogus heeft geen zelfstandige keuzevraag en krijgt daarom redirectvoorstel. Alle zes diensten, vijf cases en acht artikelen blijven. |
+| Eén hoofdplek voor uitleg | Home oriënteert; About persoonlijke aanpak; dienst scope/voorwaarden; case bewijs/grens; blog verdieping; Contact formulier/verwachtingen. Teasers mogen verkort terugkomen. |
+| Werk/contact eenvoudig bereikbaar | Header bevat werk/contact, home primaire See the work-knop; About/cases/diensten hebben relevante links en één contactroute. Footer gewone Contact/LinkedIn en directe toolroute. |
+| Toon en stijl | Goedgekeurde H1 exact, persoonlijk Engels zonder nieuwe claims/offering; Geist en serifaccent behouden. Geen nieuwe designstijl; geen kleinere tekst om reductie te halen. |
+| Geen verborgen inkorting | Service-antwoorden inclusief in budget; relevante antwoorden zichtbaar samengevat. Geen accordion als opslag voor ongewijzigde lange tekst. |
+
+Dit is een redactionele/broncontrole van een voorstel. Zij bewijst geen scrollhoogte, mobiele weergave of bezoekerssucces. Visueel oordeel blijft onbevestigd zonder menselijke beoordeling; een succesvolle build/HTML-check mag niet als visuele goedkeuring worden beschreven.
+
+### Voor / na: woorden, secties, kaarten en acties
+
+Huidig = bron/gegenereerde HTML; voorstel = geplande structuur en budget, behalve de twee compleet getelde drafts. **S** = logische tekstclusters, niet het aantal letterlijke `<section>`-tags: bijvoorbeeld hero, outcomes, deliverables en proces tellen ieder apart. Home telt zes; About elf (intro, rolstrip, feiten/foto, profiel, aanpak, doelgroep, expertise, credentials, tools, narratief knopslot, CTA). Blog telt hero + ieder inhoudelijk H2 + generieke CTA; FAQ-subvragen/H3 niet apart. Kleine slotlinks kunnen in één cluster worden gecombineerd.
+
+**Ka** = framed inhoudskaarten uit de bron: project-/dienst-/artikelkaarten, expertise/aanpak, facts/credentials, quickstats/outcomes/deliverablepaneel en voorbeeldmetrics. Nested mini-metrics tellen apart; gewone badges, timeline-nummerbollen, inputvelden, FAQ-disclosures, codevoorbeelden en diagramnodes niet. Diagram blijft als figuur. Grote CTA-panelen tellen apart als eind-CTA, niet als inhoudskaart. Contact heeft drie budgetkaarten plus één formulierpaneel; LinkedIn-knop is een actie, geen inhoudskaart. K/C blijven de SSR-definities uit checkpoint 1: K meet gedeelde Button-stijl, geen volledig overzicht van alle klikbare acties.
+
+| Route | Woorden nu incl. FAQ | Woorden voorstel | S nu → voorstel | Ka nu → voorstel | K/C nu → voorstel |
+|---|---:|---:|---:|---:|---|
+| `/` | 514 | 346 | 6 → 4 | 15 → 2 | 4/2 → 1/1 |
+| `/about` | 573 | 382 | 11 → 4 | 12 → 0 | 6/2 → 0/1 |
+| `/services` | 301 | 200–230 | 3 → 3 | 6 → 6 | 4/2 → 0/1 |
+| `/case-studies` | 358 | 250–290 | 3 → 3 | 5 → 5 | 4/2 → 0/1 |
+| `/blog` | 332 | 332 | 2 → 2 | 8 → 8 | 0/0 → 0/0 |
+| `/contact` | 113 | 95–110 | 2 → 2 | 4 → 1 | 1/0 → 1/0 |
+| `/app-catalog` | 47 | 0 | 2 → 0 | 1 → 0 | 0/0 → 0/0 |
+| `/hubspot-enablement` | 146 | 140–160 | 2 → 2 | 0 → 0 | 1/0 → 1/0 |
+| `/case-studies/customer-lifecycle` | 695 | 540–600 | 11 → 6 | 5 → 0 | 2/1 → 0/1 |
+| `/case-studies/crm-data-quality` | 610 | 460–510 | 10 → 5 | 6 → 0 | 2/1 → 0/1 |
+| `/case-studies/finance-automation` | 418 | 300–340 | 9 → 4 | 5 → 0 | 2/1 → 0/1 |
+| `/case-studies/renewal-status-card` | 453 | 320–360 | 9 → 4 | 5 → 0 | 2/1 → 0/1 |
+| `/case-studies/pipeline-consolidation` | 405 | 300–340 | 9 → 4 | 3 → 0 | 2/1 → 0/1 |
+| `/services/automation` | 446 | 260–300 | 7 → 4 | 12 → 0 | 4/2 → 1/1 |
+| `/services/consultancy` | 377 | 230–270 | 7 → 4 | 11 → 0 | 4/2 → 1/1 |
+| `/services/integrations` | 426 | 260–310 | 7 → 4 | 12 → 0 | 4/2 → 1/1 |
+| `/services/custom-objects` | 460 | 290–340 | 7 → 4 | 11 → 0 | 4/2 → 1/1 |
+| `/services/pipeline-optimization` | 354 | 230–270 | 7 → 4 | 10 → 0 | 4/2 → 1/1 |
+| `/services/custom-app-cards` | 573 | 330–380 | 7 → 4 | 12 → 0 | 4/2 → 1/1 |
+| `/blog/hubspot-aeo-smb` | 1849 | 1400–1600 | 9 → 5 | 0 → 0 | 2/2 → 0/1 |
+| `/blog/hubspot-app-cards-guide` | 1872 | 1450–1650 | 9 → 6 | 0 → 0 | 2/2 → 0/1 |
+| `/blog/hubspot-breeze-ai-smb` | 2745 | 2300–2550 | 10 → 7 | 0 → 0 | 2/2 → 0/1 |
+| `/blog/hubspot-classic-crm-cards-sunset` | 1643 | 1300–1450 | 8 → 5 | 0 → 0 | 2/2 → 0/1 |
+| `/blog/hubspot-contractor-vs-agency` | 2315 | 1850–2100 | 10 → 5 | 0 → 0 | 2/2 → 0/1 |
+| `/blog/hubspot-lifecycle-stages-setup-guide` | 2087 | 1650–1850 | 10 → 6 | 0 → 0 | 2/2 → 0/1 |
+| `/blog/hubspot-onboarding-mistakes` | 1548 | 1400–1500 | 13 → 11 | 0 → 0 | 2/1 → 0/0 |
+| `/blog/hubspot-spring-2026-spotlight` | 2106 | 1650–1850 | 11 → 8 | 0 → 0 | 2/2 → 0/1 |
+
+Som pagina-eigen content: **23.766 woorden nu**, inclusief 532 FAQ-antwoordwoorden, versus **18.265–20.420 voorgestelde budgetwoorden** (circa 14,1–23,1% minder). Deze som is een begroting, geen gerealiseerde reductie; acht verdiepende artikelen vormen het grootste deel van het volume. Zonder die artikelen: 7.601 huidige woorden. Home 514 → 346 = **32,7%** minder; About 573 → 382 = **33,3%** minder, beide binnen 25–35% en inclusief zichtbare labels.
+
+| Gedeeld / grote CTA-panelen | Nu | Voorstel |
+|---|---|---|
+| Header | 13 woorden; één contactknop | Zelfde routes/contact; geen reductie nodig |
+| Footer | 59 woorden; drie kolommen + copyright, contacttekstlink én knop | Circa 28 woorden; compact brand/navigatie + copyright, één Contact-link en LinkedIn, geen contactknop |
+| Home / About eind-CTA | Elk één groot paneel, About daarnaast narratief knoppenpaar | Geen groot eindpaneel, één contactlink in slottekst |
+| Zes dienst-details | Zes grote eindpanelen | Nul; één hero-contactactie per dienst |
+| Vijf case-details | Vijf grote eindpanelen | Nul; één contactslot per case |
+| Services / Cases index | Twee grote eindpanelen | Nul; één korte contactregel per index |
+| Acht blog-details | Acht grote eindpanelen | Nul; bestaande contextuele link waar aanwezig |
+
+Huidig totaal van deze pagina-eigen eindpanelen: **23 → 0 voorgesteld**. Footer is een aanvullend gedeeld blok; zijn woorden worden niet gebruikt om home/About-doel te halen. De homepage houdt twee projectkaarten; diensten-/case-/blogindices houden hun nuttige keuzekaarten. Minder kaarten is gericht, geen algemene verplichting om alle grids te verwijderen.
+
+### Uitvoerbare wijzigingslijst — toekomstige Goals
+
+Onderstaande checkpoints zijn **volgend implementatiewerk**, niet tijdens deze audit uitgevoerd. Eerst de voorkeursstructuur en voorbeeldcopy inhoudelijk beoordelen. Daarna elk checkpoint lokaal opslaan, eigen voortgang registreren en afzonderlijk committen. Geen tussentijdse livepublicaties; één gezamenlijke release na alle checks. Alleen auditdocumentatie is nu gecommit.
+
+| Goal / volgorde | Concrete wijzigingen en betrokken bestanden/templates | Afgerond wanneer |
+|---|---|---|
+| I1 — Homepage en globale contactherhaling | `src/app/page.tsx`, `src/app/HomeClient.tsx` indien nodig, `src/components/layout/Footer.tsx`, `src/components/layout/Header.tsx` alleen indien linklabel nodig. Goedgekeurde H1/typografie behouden; vier homeclusters met draft, twee projectkaarten, vier bewijsregels, één slot. Compacte footer; availabilitybanner behouden. | Home circa 346 woorden / binnen 334–385; vier expertise-links kloppen; K/C 1/1; footer geen tweede contactknop. Header werk/contact intact; geen algemene fontverkleining. |
+| I2 — About | `src/app/about/page.tsx`; geen wijziging aan case-data om About korter te maken. Draft toepassen, één portret, rolstrook/feiten/duplicate expertise samenbrengen; historische lijst en tools. | Circa 382 woorden / binnen 373–430; exacte rol, eigen bijdrage, menselijke AI-review en zeven historische entries aanwezig; één contactlink, geen groot CTA-paneel. |
+| I3 — Zes diensten | `src/app/services/page.tsx`, `src/app/services/[slug]/page.tsx`, `src/content/services.ts`. Eén scopeblok uit outcomes/deliverables; drie quickstatkaarten weg; algemene process naar About; voorwaarden zichtbaar/compact; bewijslink zonder dubbele metrics. Hero teruglink als gewone link. | Alle zes oude routes blijven; alle unieke deliverables/voorwaarden uit register teruggevonden. Woorden inclusief volledige antwoorden geteld. Structured data past bij gewijzigde inhoud: FAQPage alleen met overeenkomende zichtbare Q&A, anders verwijderen; Service/Breadcrumb behouden. |
+| I4 — Vijf cases | `src/app/case-studies/page.tsx`, `src/app/case-studies/[slug]/page.tsx`, `src/content/caseStudies.ts`; `ArchitectureDiagram.tsx` alleen als toegankelijkheid/plaatsing nodig is. Probleem korter, approach/solution samen, resultaten geïntegreerd; dienst-/vorige-volgende links compact, één contactslot. | Alle vijf eigen bijdragen/grenzen, snapshots, finance-review, read-only renewal en Accountdiagram blijven; geen nieuwe impactcijfers. Account/data-monitoring krijgen benodigde ruimte. |
+| I5 — Blogwrapper en gerichte artikelredactie | `src/app/blog/[slug]/page.tsx`, eventueel `src/app/blog/page.tsx`, acht benoemde bestanden in `src/content/blog/`. Eerst generieke CTA verwijderen; daarna artikel voor artikel register volgen en unieke FAQ-antwoorden integreren. Datums/auteur/bronnen/metadata behouden, benodigde claimactualiteit met primaire bronnen controleren. | Acht routes en acht verschillende vragen behouden; geen volledige technische uitleg weggeknipt voor quota. Interne verdiepinglinks werken; metadata en BlogPosting/schema komen overeen met gewijzigde inhoud. Geen SEO-resultaatclaim zonder data. |
+| I6 — Contact, tool en goedgekeurde routemerge | `src/app/contact/page.tsx`, `src/app/hubspot-enablement/page.tsx`, `src/app/app-catalog/page.tsx`, `next.config.ts`, `src/app/sitemap.ts`, Footer en eventuele andere interne cataloguslinks. Alleen bij akkoord op variant B: cataloguscontext naar app, één permanente redirect, oude index uit sitemap en de bestaande `/blog`-index toevoegen (die staat nu nog niet in `staticPages`); contactbudgetpresentatie compact, formulierpaneel behouden. | `/app-catalog` één 308 naar `/hubspot-enablement`; 26 canonieke contentroutes. App gratis context/naam/stappen en bestaande installatielink/status blijven. Geen wijzigingen aan `src/app/api/**`, OAuth, cron, Supabase, privétools of formulierbackend; geen live-installatie of echte formulierlead als test. |
+| I7 — Gezamenlijke controle en één release | Alle gewijzigde templates/content controleren; `docs/website-improvements/compactness-audit.md` aanvullen met gerealiseerde tellingen/checkresultaten/commitrefs, bestaande voortgangsdocumentatie waar van toepassing. Publicatie pas op afzonderlijke opdracht. | Alle kerncriteria en lokale checks hieronder afgerond, geen onbedoelde bron-/backendwijziging, complete reviewbare diff en releasecommit bekend. Eén deployment met alle geaccepteerde veranderingen en eventueel redirect; daarna HTTP-controle zonder browser. |
+
+Elke Goal begint met het auditdocument en werkt uitsluitend aan zijn rij. I1/I2 kunnen na beoordeling afzonderlijk worden uitgevoerd; I3/I4 gebruiken de nieuwe taakverdeling, I5 de definitieve bewijs-/dienstlinks, I6 de goedgekeurde URL-keuze. I7 wacht op alle voorgaande checkpoints. `CTASection` niet blind globaal versimpelen: callsites bewust verwijderen, component pas opruimen wanneer geen gebruikers overblijven. `ProcessTimeline` blijft nodig voor Slack/overige niet-verplaatste informatie; niet globaal verwijderen omdat diensten hun proces verliezen. Bestaande tone/stijl komt uit huidige bron + goedgekeurde drafts, geen nieuwe skill die extra marketingblokken toevoegt.
+
+#### Blogwerk als kleine, afzonderlijke Goals
+
+I5 is bewust verder opgesplitst: ieder onderdeel krijgt een eigen lokale controle, voortgangsregel en commit. De wrapper kan eerst worden aangepast; artikelredactie volgt daarna zonder tussentijdse deploy. Voorkom dat één Goal alle acht lange artikelen moet herschrijven.
+
+| Subcheckpoint | Scope | Voortgang |
+|---|---|---|
+| I5a | Blogwrapper: generiek CTA-paneel verwijderen, contextlinks behouden | Niet gestart |
+| I5b | App cards guide: types/buildkeuze en korte sunsetlink | Niet gestart |
+| I5c | Classic cards sunset: checklist en verwijzing naar kaartguide | Niet gestart |
+| I5d | Lifecycle stages: native/eigen automation en unieke FAQ-antwoorden | Niet gestart |
+| I5e | Onboarding mistakes: negen fouten/checklist, lifecycleverdieping linken | Niet gestart |
+| I5f | Breeze AI: productafwegingen en unieke antwoorden behouden | Niet gestart |
+| I5g | Spring 2026 Spotlight: gedateerde releasecontext en guideverwijzingen | Niet gestart |
+| I5h | AEO: SMB-keuze/fundamentals met compacte productintro | Niet gestart |
+| I5i | Contractor versus agency: samenwerking/kosten/selectievragen | Niet gestart |
+
+I1–I4 en I6–I7 zijn eveneens nog niet gestart: alleen de vier auditcheckpoints zijn voltooid. Gebruik bijvoorbeeld I5b als scope in de onderstaande starttekst en werk na ieder onderdeel de betreffende voortgangsregel bij.
+
+#### Herbruikbare Goal-starttekst
+
+```text
+Voer alleen implementatiecheckpoint I[nummer] uit volgens
+docs/website-improvements/compactness-audit.md.
+Gebruik de goedgekeurde variant [A/B] en voorgestelde copy als basis.
+Behoud alle kerncriteria, huidige Engelse toon, homepage-H1 en typografie.
+Werk alleen aan de bestanden/scope van dit checkpoint.
+Geen Browser-skill of browserchecks; controleer bron en gegenereerde HTML.
+Sla lokaal op, voer passende checks uit, tel hoofdtekst/kaarten/CTA's opnieuw,
+update de voortgang in het auditdocument en maak één lokale checkpointcommit.
+Geen push of deploy. Rapporteer wat is veranderd en welke checks zijn geslaagd.
+```
+
+Bij I6 de keuze A/B invullen vóór routewijzigingen; bij I7 expliciete publicatieopdracht nodig om werkelijk live te gaan. Deze template start zelf geen Goal en kent geen impliciete toestemming voor auditvoorstellen.
+
+### Lokale controlecriteria voor de implementatie
+
+1. **Inhoud eerst:** beschermde-kernmatrix en sectieregister afvinken; aan ieder geschrapt/verplaatst uniek gegeven een behoudplek koppelen. Grote claims controleren tegen de oorspronkelijke case. Geen nieuwe cijfers/offering toevoegen.
+2. **Metingen:** dezelfde W/K/C-methode opnieuw op gegenereerde HTML, FAQ-antwoorden volledig meetellen, header/footer apart, S/Ka volgens deze definities. Voorstellen in de tabel pas vervangen door “gerealiseerd” na telling. Bij afwijking reden noteren, kern gaat boven budget.
+3. **Techniek:** relevante ESLint-check op gewijzigde TS/TSX, TypeScript `npx tsc --noEmit`, daarna `npm run build` met bestaande `validate:tom-plan` en `validate:denise-plan`. Eén volledige build aan einde; per checkpoint passende gerichte checks, niet blind alle checks herhalen zonder nieuwe wijziging. De bestaande hydrated `/private/tmp/hs-website-validation` kan worden gebruikt als iCloud placeholders rootdependencies blokkeren: eerst gewijzigde bronnen/config/lockfile synchroniseren, niet met een oude build succes claimen.
+4. **HTML/linkcontrole:** nieuwe productie-HTML inspecteren op H1/koppen, leesbare inhoud/labels, alt/focusmarkup en linkbestemmingen, vier bewijsroutes, huidige casegrenzen en werk/contact. Alle service-/case-/blogslugs blijven statisch genereerbaar; ontbrekende slug geeft 404. HTML bewijst geen echte layout/focusinteractie.
+5. **URL/schema:** titel/description/canonical/OG en JSON-LD moeten bij nieuwe inhoud passen. Bij B met lokale productieserver en bijvoorbeeld `curl -I` controleren: oude catalogusroute één 308, Location naar tool, bestemming 200/self-canonical, geen keten; sitemap alle 26 canonieke contentroutes, inclusief de nu ontbrekende `/blog`-index. Installatie-APIroute en status-querycontract blijven byte-voor-byte buiten diff, niet werkelijk autoriseren.
+6. **Functionele grenzen:** ContactForm velden/labels/feedback/backend, trackinglabels/events op behouden links, beschikbaarheidsbanner en Slack-statuscomponent behouden. Broncontrole; geen echte lead versturen of Slack-installatie uitvoeren. Als een functie toch verandert, apart testen en de scopewijziging melden.
+7. **Release:** schone scope/diff, alle lokale checkpoints/controle-uitkomsten vastgelegd; één gezamenlijke publicatie. Releasecommit en vorige livecommit vastleggen voor rollback. Na deploy HTTP-status/canonical/redirect/content controleren zonder Browser-skill. Geen eerdere 27-route snapshot gebruiken als bewijs voor nieuwe livecode.
+
+Een menselijke beoordeling van localhost kan desgewenst nog layoutfeedback geven, maar wordt hier niet opgelegd als Browser-check of als reeds uitgevoerd genoteerd. Bij probleem met inhoud of techniek: fix en gericht opnieuw controleren vóór gezamenlijke publicatie.
+
+### Uitgevoerde auditchecks en afronding
+
+- Inventory: 27 gegenereerde contentroutes, 6 servicebronnen/FAQ-volumes, 5 cases, 8 artikelen. Volledige URL-mapping dekt exact dezelfde 27 oude routes; voorkeursvariant heeft 26 unieke bestemmingen.
+- Sectieadviezen: alle vaste pagina’s, alle dienst-/caseonderdelen via hun expliciete templates en alle artikel-H2’s; acties/bestemmingen gecontroleerd. Na detailcontrole zijn de quickstats in het register gecorrigeerd naar **drie** (deliverables, proces, outcomes).
+- Complete copy: zichtbare home/Abouttekst opnieuw geteld met inventarisregex, Markdownlinkdoelen en opmaak uitgesloten; 346/382, binnen doelband. Alle interne links in beide drafts verwijzen naar een bestaande contentroute; vier expertisegebieden/casegrenzen/rol/AI-voorwaarden gecontroleerd.
+- Vergelijking: baselinewoorden exact, andere na-volumes expliciet budgetten; secties/kaarten/acties brongeteld versus voorgestelde structuur. Geen grafiek met fictieve bezoekersdata of hoogtemeting.
+- Scopebewaking: 81 vastgelegde hashes van bron/config/scripts/migraties en vijf niet-gerelateerde documenten vergeleken; geen verandering. Geen sitebuild nodig voor een uitsluitend documentatie-audit: bestaande gegenereerde HTML was bron-gelijk en is gelezen. Geen browsers, push, deploy of externe applicatiewrites uitgevoerd.
+- Vier afzonderlijke lokale documentatiecommits: checkpoint 1 `75cb8b4`, checkpoint 2 `33f8b07`, checkpoint 3 `c8d1de8`, checkpoint 4 de commit die deze sectie toevoegt. Opvragen met `git log -4 --oneline -- docs/website-improvements/compactness-audit.md`.
+
+**Audit afgerond.** Open besluit voor de implementatie: Tom beoordeelt voorkeursvariant B en de Engelse drafts. Daarna kunnen I1–I6 als afzonderlijke Goals worden opgepakt en I7 de gezamenlijke controle/publicatie verzorgen. Tijdens deze audit zijn geen voorgestelde wijzigingen aan de website doorgevoerd.
