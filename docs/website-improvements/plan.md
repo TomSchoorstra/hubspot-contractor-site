@@ -124,12 +124,12 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 3 | Account-based CRM-case | Zelfcontrole afgerond | 0a38251 | — |
 | 4 | Datakwaliteitscase | Zelfcontrole afgerond | 07ed704 | — |
 | 5 | Bestaande diensten | Zelfcontrole afgerond | 7dabdec | — |
-| 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | Zie checkpoint-6-commit | — |
-| 7 | Drie artikelbriefings | Gepland | — | — |
+| 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | cf78b20 | — |
+| 7 | Drie artikelbriefings | Zelfcontrole afgerond | Zie checkpoint-7-commit | — |
 | 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** checkpoint 7 uitvoeren; checkpoints 2–6 hebben zelfcontrole afgerond.
+**Eerstvolgende stap:** checkpoint 8 uitvoeren; checkpoints 2–7 hebben zelfcontrole afgerond.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -347,3 +347,12 @@ Vul bij ieder checkpoint kort aan:
 - **Controles:** gerichte ESLint en TypeScript geslaagd; alle vier expertisekaarten linken naar bestaande cases; zes diensten uit centrale content; hero-caseklik gebruikt bestaande cta_click-interface, contacttracking blijft intact. Geen browsercontrole op verzoek.
 - **Beperkingen:** visuele en interactieve werking niet beoordeeld. De bestaande beschikbaarheidsbanner blijft behouden; acquisitie en beschikbaarheidsbeleid zijn geen nieuw besluit in deze ronde. Geen acceptatie namens Tom.
 - **Status:** zelfcontrole afgerond; checkpoint 7 volgt. Niets gepusht of gedeployed.
+
+### Checkpoint 7 — Drie artikelbriefings — 8 oktober 2026
+
+- **Wijzigingen:** drie Engelstalige briefings opgeslagen: [Account-model](account-based-crm-brief.md), [Datamismatches](data-mismatches-brief.md), [AI-review](ai-quality-reviews-brief.md). Iedere briefing bevat doelgroep, centrale vraag, zoekintentie, outline, fictief voorbeeld, bewijsgrenzen, bronbehoefte, metadatawerkversie en links naar bestaande cases en diensten. Geen artikelen gepubliceerd of nieuwe routes aangemaakt.
+- **Skill en bronnen:** blog-brief gebruikt; gedeelde how-to-template en linkingreferenties onder de blog-skill gebruikt omdat de relatieve referentiebestanden niet in blog-brief staan. B2–B4 en officiële HubSpot-documentatie voor objecten/datasetjoins vormen de inhoudelijke basis.
+- **Besluiten:** de skill aangepast aan de afgesproken briefing-scope: geen verplichte 8–12 statistieken, beeldgeneratie of distributie-uitvoering. Zoekwoorden zijn hypotheses; geen zoekvolume of SERP-positie verzonnen. Bronvergelijking is beperkt tot geselecteerde primaire documentatie, geen volledige concurrentieaudit.
+- **Controles:** vereiste onderdelen, fictieve voorbeelden, claimgrenzen, bestaande interne routes en onderlinge onderscheidingen gecontroleerd; Markdown-diff zonder whitespacefouten. Geen build nodig voor uitsluitend documentatie; volledige build volgt bij checkpoint 8.
+- **Beperkingen:** actuele technische bronchecks en aanvullende publiceerbare projectinformatie zijn onderdeel van later artikelwerk. Deze briefings zijn geen geaccepteerde of gepubliceerde artikelen. Geen browsercontrole.
+- **Status:** zelfcontrole afgerond; checkpoint 8 volgt. Geen acceptatie namens Tom; niets gepusht of gedeployed.
