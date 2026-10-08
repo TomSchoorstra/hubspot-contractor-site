@@ -99,6 +99,11 @@ body {
   font-family: var(--font-geist-sans), system-ui, sans-serif;
 }
 
+/* A small editorial contrast for the personal homepage heading. */
+.font-editorial {
+  font-family: Georgia, "Times New Roman", serif;
+}
+
 /* Gradient text utility */
 .text-gradient-orange {
   background: linear-gradient(135deg, var(--accent-text) 0%, #a64224 100%);

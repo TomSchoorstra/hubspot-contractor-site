@@ -25,11 +25,11 @@ export default function HomeClient() {
           <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
             <div className="space-y-6">
               <Badge variant="teal">HubSpot &amp; RevOps specialist</Badge>
-              <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">
-                A clearer customer picture.<br />
-                <span className="text-gradient-orange">Processes that connect.</span>
+              <h1 className="font-display text-4xl font-medium leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">
+                I work on the<br className="hidden sm:block" /> complicated bits<br className="hidden sm:block" />
+                <span className="block font-editorial font-normal italic tracking-normal text-accent-text">of HubSpot.</span>
               </h1>
-              <p className="max-w-xl text-xl leading-relaxed text-text-secondary">I help B2B teams make complex HubSpot setups easier to work with, connecting customer records, automating handovers, and building checks that keep operational data reliable.</p>
+              <p className="max-w-xl text-xl leading-relaxed text-text-secondary">CRM structure, workflows, integrations and data quality. I work on these at AIHR, from designing the setup to building it and checking what happens afterwards.</p>
               <div className="flex flex-col gap-4 sm:flex-row">
                 <Button href="/case-studies" variant="primary" size="lg" showArrow analyticsEvent="cta_click" analyticsParams={{ cta_label: "See the work", cta_location: "home_hero", destination: "/case-studies" }}>See the work</Button>
                 <Button href="/contact" variant="secondary" size="lg" analyticsLocation="home_hero">Get in touch</Button>

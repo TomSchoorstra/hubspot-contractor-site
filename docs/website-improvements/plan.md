@@ -413,3 +413,9 @@ Vul bij ieder checkpoint kort aan:
 - [Lokaal typografievoorstel](typography-refresh.md): Geist voor koppen, H1-gewicht 600, regelhoogte 1,12, gebalanceerde regelafbreking en gelijke maximale titelschaal voor About/homepage. Bestaande kleuraccenten blijven.
 - Lint, TypeScript, volledige previewbuild en bestaande HTML/linkchecks geslaagd. Geen browserchecks; visuele weergave niet bevestigd. Geen contentwijzigingen, nieuwe fonts of dependencies.
 - Afzonderlijke lokale stijlcommit; niet gepusht of gedeployed. Deze correctie volgt op de afgeronde negen checkpoints en verandert hun publicatiehistorie niet. Live bron blijft `6b8d352`.
+
+### Vervolgcorrectie — Persoonlijkere hero — 8 oktober 2026
+
+- Tom vraagt om iets creatievere typografie en vindt de hero te marketingachtig.
+- Lokale hero: “I work on the complicated bits of HubSpot.” met concretere toelichting op het AIHR-werk. Geist 500 met één cursief serifaccent; overige koppen houden de eerdere rustige richting.
+- [Typografielog](typography-refresh.md) bijgewerkt. Localhost-preview wordt bijgewerkt; geen browserchecks of productiepublicatie.
