@@ -120,8 +120,8 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | # | Checkpoint | Status | Lokale commit | Reviewdatum |
 |---|---|---|---|---|
 | 1 | Positionering en uitvoeringsbasis | Geaccepteerd | 78749c1 | 2026-10-08 |
-| 2 | About | Zelfcontrole afgerond | Zie commit bij checkpoint-2-oplevering | — |
-| 3 | Account-based CRM-case | Gepland | — | — |
+| 2 | About | Zelfcontrole afgerond | 2e2e34f | — |
+| 3 | Account-based CRM-case | Zelfcontrole afgerond | Zie checkpoint-3-commit | — |
 | 4 | Datakwaliteitscase | Gepland | — | — |
 | 5 | Bestaande diensten | Gepland | — | — |
 | 6 | Homepage en gedeelde positionering | Gepland | — | — |
@@ -129,7 +129,7 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** checkpoint 3 uitvoeren; About heeft zelfcontrole afgerond. Gezamenlijke review door Tom volgt na checkpoint 8.
+**Eerstvolgende stap:** checkpoint 4 uitvoeren; checkpoints 2–3 hebben zelfcontrole afgerond. Gezamenlijke review door Tom volgt na checkpoint 8.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -313,3 +313,11 @@ Vul bij ieder checkpoint kort aan:
 - **Besluiten:** de AI-agentdiscovery niet toegevoegd; de bestaande AI-review is sterker bewijs. Geen nieuwe claims over aantallen projecten of hubs. Bestaande taal, componenten en diensten behouden.
 - **Beperkingen:** formele rol komt uit ongedateerde persoonlijke context; eindreview kan de formulering bevestigen. Visuele weergave niet getest. Geen acceptatie namens Tom.
 - **Status:** zelfcontrole afgerond; checkpoint 3 is de volgende stap. Niets gepusht of gedeployed.
+
+### Checkpoint 3 — Account-based CRM — 8 oktober 2026
+
+- **Wijzigingen:** eigen projectlead-bijdrage verduidelijkt; septemberstatus als gedateerde snapshot met open enrichment omschreven; Codex/Claude Code en handmatige wekelijkse start expliciet gemaakt. Optioneel architecture-veld en herbruikbaar semantisch figure-diagram toegevoegd, met fictieve Example Group-records en tekstuele uitleg van associaties.
+- **Bronnen:** B2–B3; geen accountaantallen of volledige dekkingsclaims toegevoegd.
+- **Controles:** gerichte ESLint en TypeScript geslaagd; alle vier oorspronkelijke cases en slugs behouden; optioneel diagram alleen voor de accountcase. Diagram heeft figcaption en gelabelde recordlijst, decoratieve verbindingslijn verborgen voor hulptechnologie. Documentdiff gecontroleerd. Geen browsercontrole op verzoek.
+- **Beperkingen:** geen actuele HubSpot-statusclaim en geen visuele review. Geen acceptatie namens Tom.
+- **Status:** zelfcontrole afgerond; volgende stap checkpoint 4. Niets gepusht of gedeployed.

@@ -18,6 +18,13 @@ export type CaseStudy = {
     cta: { title: string; description: string };
   };
   operatingModel?: { summary: string; controls: string[] };
+  architecture?: {
+    title: string;
+    description: string;
+    account: { label: string; detail: string };
+    records: Array<{ label: string; detail: string }>;
+    caption: string;
+  };
   challenge: string[];
   approach: Array<string | { title: string; description: string }>;
   solution: string[];
@@ -36,12 +43,12 @@ export const caseStudies: CaseStudy[] = [
     industry: "HR Technology",
     companySize: "50–200 employees",
     summary: "I connected AIHR's customer records through a custom Account object in HubSpot, with workflows and weekly checks to keep the data linked.",
-    statusNote: "September 2026: the core setup is live.",
+    statusNote: "September 2026 project snapshot: the core setup is live; enrichment remains in progress.",
     narrative: {
       eyebrow: "Account-Based CRM · AIHR",
       intro: [
         "At AIHR, one customer could have several company records, licenses, deals, and service projects in HubSpot. Those records weren't consistently connected, which made it difficult to see the full relationship and report on retention.",
-        "I led the project to connect them through a custom Account object, including the data model, historical cleanup, and workflows. I also added weekly checks to flag duplicates and missing links after launch."
+        "I led the project from the customer model and association design through historical cleanup and workflow implementation. I also added a weekly review to flag duplicates and missing links after launch."
       ],
       headings: {
         challenge: "Why the existing records weren't enough",
@@ -80,6 +87,18 @@ export const caseStudies: CaseStudy[] = [
       "The Account object groups companies, licenses, deals, and professional services under one customer relationship. Three automated paths link new records to Accounts.",
       "That gives the data team a consistent customer identifier for account-level retention reporting."
     ],
+    architecture: {
+      title: "One Account connects the customer relationship",
+      description: "The Account is the grouping layer. Company records anchor the matching, while licenses, deals and professional services link back to the same customer relationship.",
+      account: { label: "Account", detail: "Example Group" },
+      records: [
+        { label: "Companies", detail: "Example Netherlands and Example UK" },
+        { label: "Licenses", detail: "Team training license" },
+        { label: "Deals", detail: "Expansion deal" },
+        { label: "Professional services", detail: "Advisory engagement" },
+      ],
+      caption: "Illustrative customer and records, using fictional names. Workflows link new licenses, deals and professional services to the Account; the weekly review flags missing links and potential duplicates for investigation.",
+    },
     results: [
       {
         value: "3",
@@ -95,7 +114,8 @@ export const caseStudies: CaseStudy[] = [
       "Custom objects",
       "Workflows",
       "JavaScript",
-      "Claude"
+      "Codex",
+      "Claude Code"
     ],
     relatedServices: [
       "consultancy",
@@ -105,7 +125,7 @@ export const caseStudies: CaseStudy[] = [
     operatingModel: {
       summary: "Each week, I run a check that compares new Accounts with the full account base. It looks for possible duplicates and parent-company relationships using names, domains, and previously reviewed relationships.",
       controls: [
-        "The review also flags licenses and professional services without an Account, and signed deals where expected service records are missing. Claude helps me assess the exceptions and put the findings in context.",
+        "The review also flags licenses and professional services without an Account, and signed deals where expected service records are missing. Codex and Claude Code help assess candidate matches and put the findings in context. I start the review manually each week.",
         "If the source data is incomplete or the candidate list exceeds the expected range, the run stops for investigation. I review the findings before making changes in HubSpot. The check itself doesn't merge records or change associations."
       ]
     }

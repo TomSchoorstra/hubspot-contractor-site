@@ -10,6 +10,7 @@ import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import { caseStudies } from "@/content/caseStudies";
 import { services } from "@/content/services";
 import { SITE_URL } from "@/lib/site";
+import ArchitectureDiagram from "@/components/sections/ArchitectureDiagram";
 
 export async function generateStaticParams() {
   return caseStudies.map((caseStudy) => ({
@@ -267,6 +268,10 @@ export default async function CaseStudyDetail({
                   </ul>}
                 </div>
               </ScrollReveal>
+            )}
+
+            {caseStudy.architecture && (
+              <ArchitectureDiagram architecture={caseStudy.architecture} />
             )}
 
             {/* Stack */}
