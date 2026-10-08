@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: checkpoint 1 lokaal uitgewerkt en gecontroleerd; wacht op review van Tom.
+Status: checkpoint 1 geaccepteerd; checkpoints 2–8 worden achtereenvolgens uitgevoerd met zelfcontrole; gezamenlijke review volgt na checkpoint 8.
 
 ## Doel en uitgangspunten
 
@@ -18,7 +18,7 @@ De website moet Toms expertise overtuigend laten zien aan B2B-teams met een best
 
 ## Positionering en inhoudelijke basis
 
-Vastgelegd op 8 oktober 2026 voor checkpoint 1. De richting volgt Toms keuzes in deze sessie; onderstaande formuleringen en bewijsselectie wachten op zijn review. Dit is een redactionele basis, nog geen wijziging aan publieke websitecopy.
+Vastgelegd op 8 oktober 2026 voor checkpoint 1. De richting volgt Toms keuzes in deze sessie; onderstaande formuleringen en bewijsselectie zijn door Tom geaccepteerd bij de start van het overkoepelende Goal. Dit is een redactionele basis, nog geen wijziging aan publieke websitecopy.
 
 ### Doelgroep en relevantie
 
@@ -93,21 +93,21 @@ Onderstaande paden zijn lokale redactionele bronnen en worden niet als links in 
 
 Nieuwe offerings, pricing, qualificationflows, een nieuw ontwerp en commerciële KPI’s uit die backlog worden niet stilzwijgend aan deze uitvoering toegevoegd. Voor een latere ronde kunnen we ze apart bespreken.
 
-## Werkwijze per Goal
+## Werkwijze voor het overkoepelende Goal (checkpoints 2–8)
 
 We werken grotendeels per pagina. Eerst leggen we de inhoudelijke basis vast, daarna bouwen we het bewijs en vervolgens passen we de homepage aan. Zo kan die verwijzen naar afgeronde content.
 
-Elk checkpoint krijgt een afzonderlijk Goal. Start alleen het eerstvolgende checkpoint waarvan de voorgangers zijn geaccepteerd.
+Tom heeft op 8 oktober 2026 checkpoint 1 geaccepteerd en de tussentijdse reviews voor checkpoints 2–8 vervangen door inhoudelijke en technische zelfcontrole. Deze instructie gaat voor de oorspronkelijke reviewformulering in de individuele Goal-teksten hieronder.
 
-Ieder checkpoint eindigt met:
+Werk checkpoints 2–8 op volgorde af binnen één Goal. Ieder checkpoint eindigt met:
 
 1. Werk opgeslagen in deze websitefolder.
-2. Inhoudelijke en relevante technische checks uitgevoerd.
-3. Een lokale commit met uitsluitend wijzigingen voor dat checkpoint, inclusief de voortgangsupdate.
-4. Een korte oplevering: wat is veranderd, controlebevindingen en wat Tom moet beoordelen.
-5. Status **wacht op review** totdat Tom het resultaat accepteert.
+2. Inhoudelijke en relevante technische checks, zonder browsercontrole (op Toms verzoek van 8 oktober 2026); fouten opgelost voordat het volgende checkpoint begint.
+3. Een afzonderlijke lokale commit met alleen de wijzigingen voor dat checkpoint en een voortgangsupdate.
+4. Status **zelfcontrole afgerond**; dit betekent geen acceptatie door Tom.
+5. Vastgelegde besluiten, gebruikte bronnen, controle-uitkomsten en resterende beperkingen.
 
-Correcties blijven binnen hetzelfde checkpoint. Het volgende Goal begint pas na Toms acceptatie. Een afgerond uitvoerings-Goal betekent dus niet automatisch dat het checkpoint is geaccepteerd.
+Na checkpoint 8 volgt Toms gezamenlijke review van de complete lokale website. Checkpoint 9 blijft gepland; niets pushen of deployen binnen dit Goal. Routinekeuzes worden zelfstandig gemaakt en gedocumenteerd.
 
 Werk dit document bij tijdens ieder Goal en na review. Bewaar besluiten, controle-uitkomsten, open punten en de volgende stap. Noteer de lokale commit bij de oplevering; die kan tijdens het volgende checkpoint ook hier worden toegevoegd.
 
@@ -115,12 +115,12 @@ Gebruik één lokale featurebranch voor alle checkpoints. Tot checkpoint 9 niets
 
 ## Voortgang
 
-Toegestane statussen: **gepland**, **bezig**, **wacht op review**, **geaccepteerd**.
+Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht op review**, **geaccepteerd**. Alleen Tom kan een checkpoint accepteren.
 
 | # | Checkpoint | Status | Lokale commit | Reviewdatum |
 |---|---|---|---|---|
-| 1 | Positionering en uitvoeringsbasis | Wacht op review | Zie lokale commit met dit document; hash bij oplevering | — |
-| 2 | About | Gepland | — | — |
+| 1 | Positionering en uitvoeringsbasis | Geaccepteerd | 78749c1 | 2026-10-08 |
+| 2 | About | Zelfcontrole afgerond | Zie commit bij checkpoint-2-oplevering | — |
 | 3 | Account-based CRM-case | Gepland | — | — |
 | 4 | Datakwaliteitscase | Gepland | — | — |
 | 5 | Bestaande diensten | Gepland | — | — |
@@ -129,7 +129,7 @@ Toegestane statussen: **gepland**, **bezig**, **wacht op review**, **geaccepteer
 | 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** Tom beoordeelt de positionering, Engelse werkformulering en bewijsgrenzen van checkpoint 1. Correcties horen bij checkpoint 1. Checkpoint 2 pas starten na expliciete acceptatie en een bijgewerkte voortgangsstatus.
+**Eerstvolgende stap:** checkpoint 3 uitvoeren; About heeft zelfcontrole afgerond. Gezamenlijke review door Tom volgt na checkpoint 8.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -282,8 +282,8 @@ Iedere briefing bevat doelgroep, centrale vraag, outline, praktijkvoorbeeld, bro
 - **Checks en uitkomsten:** bronbestaan, brondata, onderscheid realisatie/vervolg/experiment, lokale documentlinks en checkpointvolgorde gecontroleerd. Commitinhoud en documentdiff op scope en whitespace gecontroleerd; alleen dit plan en de roadmap horen in de commit. Bron- en websitebestanden tegen de beginsituatie gecontroleerd. Geen build nodig voor uitsluitend Markdown-documentatie.
 - **Open punten of beperkingen:** finance-impactcijfers hebben nog geen primaire meetbron; B6 bevat open livevalidatie en tegenstrijdige deploynotities; rolcontext heeft geen eigen brondatum. Verificatie volgt bij het betreffende pagina-checkpoint.
 - **Lokale commit:** deze controlelog wordt in de checkpoint-1-commit opgeslagen. De hash staat in de oplevering en kan bij de reviewupdate in de voortgangstabel worden ingevuld; zo hoeft een commit niet zijn eigen hash te bevatten.
-- **Reviewbevindingen en acceptatie:** nog geen acceptatie. Tom beoordeelt doelgroep, kernbelofte/Engelse werkformulering en de grenzen voor het publieke bewijs.
-- **Eerstvolgende stap:** review of correcties binnen checkpoint 1. Checkpoint 2 niet gestart. Niets gepusht of gedeployed.
+- **Reviewbevindingen en acceptatie:** Tom accepteerde checkpoint 1 op 8 oktober 2026 bij het starten van het overkoepelende Goal.
+- **Eerstvolgende stap:** checkpoints 2–8 uitvoeren met zelfcontrole volgens de gewijzigde werkwijze. Niets pushen of deployen.
 
 ### Template voor volgende checkpoints
 
@@ -297,3 +297,19 @@ Vul bij ieder checkpoint kort aan:
 - **Lokale commit:**
 - **Reviewbevindingen en acceptatie:**
 - **Eerstvolgende stap:**
+
+### Gewijzigde werkwijze — 8 oktober 2026
+
+- Tom accepteerde checkpoint 1 (78749c1) en autoriseerde checkpoints 2–8 als één Goal.
+- Zelfcontrole vervangt tussentijdse review; geen acceptatie namens Tom.
+- Tom heeft tijdens uitvoering op 8 oktober 2026 alle Browser-skill- en browsercontroles uitgesloten. Geen verdere browseracties; inhoudelijke controle, lint, TypeScript en build blijven van toepassing. Visuele responsive/interactiecontrole wordt niet als uitgevoerd gerapporteerd.
+- Projectdependencies zijn deels iCloud-dataless en laten de eerste lint/dev-start vastlopen. Die eigen processen zijn gestopt. Technische checks gebruiken een tijdelijke bronkopie in /private/tmp/hs-website-validation met dezelfde package-lock.json; projectdependencies blijven gelijk.
+
+### Checkpoint 2 — About — 8 oktober 2026
+
+- **Wijzigingen:** About en metadata herpositioneerd op HubSpot & RevOps; AIHR-rol, projectverantwoordelijkheid, vier expertisegebieden en praktijklinks toegevoegd. Expertise centraal opgeslagen voor later hergebruik op de homepage. Losse project/hub-aantallen op About vervangen door brononderbouwde AIHR-context; oude certificeringen expliciet historisch gemaakt.
+- **Bronnen:** B1–B5, B7–B8. Formele rol exact overgenomen uit B1; geen extra claim over people management of algemene ontwikkelaarsenioriteit. AI beperkt tot onderzoek, documentatie en de handmatig gestarte accountreview.
+- **Controles:** lint geslaagd met uitsluitend twee bestaande unused-variable-waarschuwingen in loopschema-validaties; Next route-typegeneratie en TypeScript geslaagd in tijdelijke bronkopie met de exacte lockfile. Copy en vier bestaande case-links gecontroleerd. Geen browsercontrole op verzoek van Tom.
+- **Besluiten:** de AI-agentdiscovery niet toegevoegd; de bestaande AI-review is sterker bewijs. Geen nieuwe claims over aantallen projecten of hubs. Bestaande taal, componenten en diensten behouden.
+- **Beperkingen:** formele rol komt uit ongedateerde persoonlijke context; eindreview kan de formulering bevestigen. Visuele weergave niet getest. Geen acceptatie namens Tom.
+- **Status:** zelfcontrole afgerond; checkpoint 3 is de volgende stap. Niets gepusht of gedeployed.

@@ -1,4 +1,4 @@
-import React from "react";
+import Link from "next/link";
 import type { Metadata } from "next";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
@@ -6,57 +6,33 @@ import Button from "@/components/ui/Button";
 import CTASection from "@/components/sections/CTASection";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Badge from "@/components/ui/Badge";
-import ExperienceTimer from "@/components/ui/ExperienceTimer";
+import { expertiseAreas } from "@/content/expertise";
 
 export const metadata: Metadata = {
   title: "About Me — Tom Schoorstra",
   description:
-    "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
+    "HubSpot & RevOps specialist based in the Netherlands. Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
   alternates: { canonical: "/about" },
   openGraph: {
-    title: "About Tom Schoorstra — Independent HubSpot Contractor",
+    title: "About Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
-      "Independent HubSpot specialist helping SMBs and scale-ups build automation, RevOps, and scalable growth systems.",
+      "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
     url: "/about",
   },
 };
 
-const credentials = [
-  { value: "20+", label: "Projects delivered" },
-  { value: "5", label: "HubSpot Hubs covered" },
-];
-
-const expertiseAreas = [
-  {
-    title: "HubSpot automation",
-    description: "Workflows that eliminate repetitive tasks — from lead routing and follow-ups to deal stage automation.",
-  },
-  {
-    title: "HubSpot consultancy",
-    description: "Strategic advice on portal setup, data architecture, and process design.",
-  },
-  {
-    title: "Integrations",
-    description: "Connecting HubSpot to Exact, WooCommerce, and the rest of your stack through Zapier and n8n.",
-  },
-  {
-    title: "Custom objects",
-    description: "Data structures that match your business model — with proper associations and reporting.",
-  },
-  {
-    title: "Pipeline optimization",
-    description: "Cleaning up deal stages, standardizing fields, and building dashboards sales leaders can actually trust.",
-  },
-];
-
 const toolGroups = [
   {
     label: "HubSpot",
-    tools: ["Marketing Hub", "Sales Hub", "Operations Hub", "Custom objects", "Workflows", "Data Studio", "HubSpot API"],
+    tools: ["HubSpot CRM", "Custom objects", "Workflows", "Data Studio", "HubSpot API"],
   },
   {
     label: "Automation",
-    tools: ["Zapier", "n8n"],
+    tools: ["Zapier", "JavaScript", "WooCommerce", "Exact"],
+  },
+  {
+    label: "AI-assisted work",
+    tools: ["Codex", "Claude Code"],
   },
   {
     label: "Sales & communication",
@@ -88,17 +64,17 @@ export default function About() {
         <Container>
           <div className="relative grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
             <div className="space-y-6">
-              <Badge variant="teal">Independent HubSpot Specialist</Badge>
+              <Badge variant="teal">HubSpot &amp; RevOps specialist</Badge>
               <h1 className="font-display text-4xl font-extrabold tracking-tight text-text sm:text-5xl lg:text-6xl xl:text-7xl">
                 Tom<br />
                 <span className="text-gradient-orange">Schoorstra.</span>
               </h1>
               <p className="max-w-xl text-xl leading-relaxed text-text-secondary">
-                Independent HubSpot contractor based in the Netherlands, focused on automation, RevOps, and systems that actually drive results.
+                I help B2B teams make complex HubSpot setups easier to work with, connecting customer records, automating handovers, and building checks that keep operational data reliable.
               </p>
               <div className="flex flex-wrap gap-4 pt-2">
-                <Button href="/contact" variant="primary" size="lg" showArrow>
-                  See if we&apos;re a fit
+                <Button href="/case-studies" variant="primary" size="lg" showArrow>
+                  See the work
                 </Button>
                 <Button href="/services" variant="secondary" size="lg">
                   View services
@@ -114,7 +90,7 @@ export default function About() {
                 <div className="absolute -bottom-3 -right-3 h-full w-full rounded-2xl border-2 border-accent-2/30" aria-hidden="true" />
                 <Image
                   src="/about-photo.jpeg"
-                  alt="Tom Schoorstra, independent HubSpot contractor based in the Netherlands"
+                  alt="Tom Schoorstra, HubSpot and RevOps specialist based in the Netherlands"
                   width={480}
                   height={640}
                   sizes="(max-width: 768px) 100vw, 480px"
@@ -129,27 +105,15 @@ export default function About() {
         </Container>
       </section>
 
-      {/* Credentials bar */}
+      {/* Practice context */}
       <div className="border-b border-border bg-surface-2 py-8">
         <Container>
-          <div className="flex justify-center">
-            <div className="flex flex-col gap-3 rounded-2xl border border-border bg-surface px-8 py-5">
-              <div className="text-center text-xs font-medium uppercase tracking-wide text-text-muted">HubSpot experience</div>
-              <div className="flex items-center gap-4 sm:gap-8">
-                <div>
-                  <ExperienceTimer />
-                </div>
-                {credentials.map((cred) => (
-                  <React.Fragment key={cred.label}>
-                    <div className="h-10 w-px bg-border flex-shrink-0" />
-                    <div>
-                      <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">{cred.value}</div>
-                      <div className="mt-1 text-sm font-medium text-text-secondary">{cred.label}</div>
-                    </div>
-                  </React.Fragment>
-                ))}
-              </div>
+          <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent">In practice at AIHR</p>
+              <p className="mt-2 text-lg font-semibold text-text">System Operations Manager Senior, within Revenue Operations</p>
             </div>
+            <Link href="/case-studies/customer-lifecycle" className="font-semibold text-text underline underline-offset-4 hover:text-accent">Explore the account-based CRM project</Link>
           </div>
         </Container>
       </div>
@@ -203,13 +167,13 @@ export default function About() {
                   </h2>
                   <div className="space-y-4 text-lg leading-relaxed text-text-secondary">
                     <p>
-                      I&apos;m Tom — an independent HubSpot contractor based in the Netherlands, focused on automation, RevOps, and scalable growth systems.
+                      I&apos;m Tom, a HubSpot &amp; RevOps specialist based in the Netherlands. At AIHR, I work as System Operations Manager Senior within Revenue Operations, connecting CRM processes with the systems around them.
                     </p>
                     <p>
-                      I work with growing teams that know their HubSpot instance could do more, but don&apos;t have the in-house expertise to unlock it. Whether it&apos;s building workflows that eliminate hours of manual work, designing custom data structures, or connecting HubSpot to the rest of your stack — I help companies turn their CRM into a system that actually drives results.
+                      I led the account-based CRM project: defining the customer model, connecting historical records and building workflows that link licenses, deals and professional services to the right Account. I also developed recurring reviews to investigate missing links and potential duplicates.
                     </p>
                     <p>
-                      No agency overhead. No unnecessary complexity. Just focused execution on the things that move the needle.
+                      My work also includes integrations between HubSpot, WooCommerce and Exact, data quality dashboards, and custom interfaces that show renewal information directly on a deal.
                     </p>
                   </div>
                 </div>
@@ -223,13 +187,13 @@ export default function About() {
                   </h2>
                   <div className="space-y-4 text-lg leading-relaxed text-text-secondary">
                     <p>
-                      Every engagement starts with understanding what your team actually needs — not what looks impressive on a slide deck.
+                      I start by following the process: where the data comes from, who owns each decision and what needs to happen in the next system. That helps distinguish a record problem from a gap in the workflow.
                     </p>
                     <p>
-                      I work pragmatically: solutions that fit your team&apos;s current maturity and scale when you&apos;re ready. I work iteratively: ship, learn, refine. And I always tie the work back to measurable outcomes — time saved, pipeline visibility, conversion rates, or revenue impact.
+                      From there, I design the data model or automation, test the paths and exceptions, and document how the team can maintain it. Checks after launch help catch new issues as records and processes change.
                     </p>
                     <p>
-                      If we can&apos;t measure it, we rethink the approach.
+                      I use AI to support investigation, documentation and recurring quality reviews. In the weekly account review, Codex and Claude Code help assess candidate matches and prepare recommendations. I review the findings before making changes; the review itself does not write to HubSpot.
                     </p>
                   </div>
                 </div>
@@ -237,16 +201,16 @@ export default function About() {
 
               <ScrollReveal delay={0.05}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Clients</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Where I can help</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
-                    Who I work with
+                    When your CRM needs a clearer structure
                   </h2>
                   <div className="space-y-4 text-lg leading-relaxed text-text-secondary">
                     <p>
-                      Most of my clients are SMBs and scale-ups running HubSpot Marketing, Sales, or Operations Hub. They&apos;re typically led by RevOps, marketing, or sales leaders who need hands-on execution — not just another strategy deck.
+                      My focus is B2B teams with an existing HubSpot setup, where customer records and operational processes have become difficult to follow. RevOps and CRM owners often need a complete customer view, dependable handovers and a way to investigate exceptions.
                     </p>
                     <p>
-                      Common situations I step into: messy pipelines that nobody trusts, manual processes eating up hours every week, disconnected tools that don&apos;t talk to each other, or a HubSpot portal that was set up once and never properly configured.
+                      That could mean connecting several company records to one customer relationship, finding why two systems disagree, or showing associated data directly on the record a rep is reviewing.
                     </p>
                   </div>
                 </div>
@@ -262,12 +226,13 @@ export default function About() {
                     {expertiseAreas.map((area) => (
                       <div
                         key={area.title}
-                        className={`rounded-2xl border border-border bg-surface p-5 ${area.title === "Pipeline optimization" ? "sm:col-span-2" : ""}`}
+                        className="rounded-2xl border border-border bg-surface p-5"
                       >
                         <h3 className="font-semibold text-text">{area.title}</h3>
                         <p className="mt-2 text-sm leading-relaxed text-text-secondary">
                           {area.description}
                         </p>
+                        <Link href={area.proofHref} className="mt-4 inline-block text-sm font-semibold text-text underline underline-offset-4 hover:text-accent">{area.proofLabel}</Link>
                       </div>
                     ))}
                   </div>
@@ -278,8 +243,9 @@ export default function About() {
                 <div>
                   <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Certifications</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
-                    Licenses &amp; certifications
+                    Learning &amp; past certifications
                   </h2>
+                  <p className="mb-5 text-sm leading-relaxed text-text-secondary">These are past certifications and recognition. They are not presented as current credentials.</p>
                   <div className="grid gap-3 sm:grid-cols-2">
                     {certifications.map((cert) => (
                       <div

@@ -6,7 +6,7 @@ Laatste update: 8 oktober 2026
 
 Dit document bewaart de bredere strategische backlog voor tomschoorstra.com. Het verbindt businessstrategie met positionering, propositie, bewijs, content, conversie, ontwerp en technische uitvoering.
 
-**Actuele uitvoering:** [Websiteverbeteringen in afzonderlijke checkpoints](docs/website-improvements/plan.md) is het leidende uitvoerings- en voortgangsdocument. Het bevat negen afzonderlijke Goals met lokale opslag, controle en Toms review per checkpoint. Tot checkpoint 9 wordt niets gepusht of gedeployed. De 52 oudere items hieronder zijn geen extra releasevoorwaarden en geen parallelle uitvoeringsvolgorde.
+**Actuele uitvoering:** [Websiteverbeteringen in afzonderlijke checkpoints](docs/website-improvements/plan.md) is het leidende uitvoerings- en voortgangsdocument. Het bevat negen afzonderlijke Goals met lokale opslag en controle per checkpoint. Tom heeft checkpoint 1 geaccepteerd; checkpoints 2–8 lopen binnen één Goal met zelfcontrole en een gezamenlijke review na checkpoint 8. Tot checkpoint 9 wordt niets gepusht of gedeployed. De 52 oudere items hieronder zijn geen extra releasevoorwaarden en geen parallelle uitvoeringsvolgorde.
 
 De huidige ronde richt zich op expertpositionering voor B2B-teams met een bestaande, complexe HubSpot-omgeving. De website blijft Engelstalig en behoudt de bestaande stijl. De zes diensten blijven behouden; nieuwe vaardigheden worden zichtbaar via profiel, cases en inzichten. AI is onderdeel van de RevOps-werkwijze. Nieuwe offerings, pricing, qualificationflows en volledige blogherwerking blijven buiten deze ronde.
 
@@ -16,14 +16,14 @@ De huidige ronde richt zich op expertpositionering voor B2B-teams met een bestaa
 
 **Kernbelofte:** Tom ontwerpt, bouwt en onderhoudt de CRM-structuur, automatiseringen en controles waarmee teams hun klantprocessen betrouwbaar kunnen uitvoeren.
 
-Vier expertisegebieden: CRM-architectuur, automatisering en integraties, datakwaliteit en monitoring, custom HubSpot interfaces. De uitwerking, Engelse werkformulering en bewijsgrenzen staan uitsluitend in het [actuele plan](docs/website-improvements/plan.md). Checkpoint 1 wacht op Toms review; er is nog geen publieke websitecopy gewijzigd.
+Vier expertisegebieden: CRM-architectuur, automatisering en integraties, datakwaliteit en monitoring, custom HubSpot interfaces. De uitwerking, Engelse werkformulering en bewijsgrenzen staan uitsluitend in het [actuele plan](docs/website-improvements/plan.md). Checkpoint 1 is door Tom geaccepteerd; de pagina-uitvoering volgt in checkpoints 2–8.
 
 ## Voortgangsoverzicht
 
-- **Huidige fase:** Checkpoint 1 — Positionering en uitvoeringsbasis, wacht op review
-- **Volgende stap:** Tom beoordeelt de positionering en bewijsbasis; checkpoint 2 pas na acceptatie
+- **Huidige fase:** Checkpoints 2–8 — Pagina’s, briefings en eindcontrole met zelfcontrole
+- **Volgende stap:** Checkpoints 2–8 op volgorde uitvoeren; daarna Toms gezamenlijke lokale review
 - **Blokkades:** Geen
-- **Actuele voortgang:** zie de checkpointtabel in het plan; geen checkpoint door Tom geaccepteerd
+- **Actuele voortgang:** zie de checkpointtabel in het plan; checkpoint 1 door Tom geaccepteerd; latere checkpoints krijgen zelfcontrolestatus, geen acceptatie namens Tom
 - **Historische backlog:** 52 items behouden; de oudere afvinkstatussen zijn geen actuele uitvoeringsstatus
 
 ## Koppeling tussen checkpoints en backlog
