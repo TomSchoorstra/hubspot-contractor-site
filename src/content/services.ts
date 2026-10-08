@@ -8,23 +8,24 @@ export type Service = {
   faq: Array<{ q: string; a: string }>;
   metaDescription?: string;
   relatedCaseStudy?: string; // slug of a related case study
+  references?: Array<{ label: string; href: string }>;
 };
 
 export const servicesHeroIntro =
-  "Building a HubSpot setup that actually works for your team, not against it. Whether you're implementing HubSpot for the first time or untangling years of workarounds, I help SMBs and scale-ups build a solid foundation for growth.";
+  "Practical help for B2B teams with an existing HubSpot setup: understand the customer model, connect the processes and make operational exceptions easier to investigate.";
 
 export const services: Service[] = [
   {
     slug: "automation",
     title: "HubSpot automation",
     shortDescription:
-      "Workflows that handle the busywork so your team can focus on selling.",
+      "Connect operational handovers with workflows, review points and checks for exceptions.",
     metaDescription:
-      "HubSpot automation services by an independent contractor. I build workflows that eliminate manual tasks, speed up lead response, and keep your team focused on selling. No agency overhead.",
+      "HubSpot workflow design and implementation for B2B teams: connect handovers, reduce repeated entry and document how to investigate exceptions.",
     outcomes: [
       "Less time spent on repetitive manual tasks like data entry, follow-ups, and internal handoffs.",
       "Faster lead response times through automated routing and notification workflows.",
-      "Consistent processes across the team — no more deals falling through the cracks.",
+      "Clear handovers and exception checks so the team can investigate records that need attention.",
       "Clear visibility into what's automated and where bottlenecks remain.",
     ],
     deliverables: [
@@ -33,6 +34,7 @@ export const services: Service[] = [
       "Built and tested HubSpot workflows ready for production.",
       "Internal notifications and task assignments where needed.",
       "Documentation so your team can maintain and adjust workflows independently.",
+      "A review checklist for missing associations, failed handovers and other agreed exceptions.",
     ],
     process: [
       {
@@ -63,7 +65,7 @@ export const services: Service[] = [
       },
       {
         q: "What HubSpot tier do I need?",
-        a: "Basic workflows are available on Professional plans. More advanced branching logic, custom code actions, and operations workflows require Operations Hub Professional or Enterprise.",
+        a: "Workflow availability depends on the Hub and the actions you need. Custom code actions require Data Hub Professional or Enterprise. I check your subscription and the required objects and actions before designing the flow.",
       },
       {
         q: "Can you integrate with our existing systems?",
@@ -71,21 +73,23 @@ export const services: Service[] = [
       },
     ],
     relatedCaseStudy: "finance-automation",
+    references: [{ label: "HubSpot: custom code actions and subscription requirements", href: "https://developers.hubspot.com/docs/api-reference/legacy/automation/workflow-actions/custom-code-actions" }],
   },
   {
     slug: "consultancy",
     title: "HubSpot consultancy",
     shortDescription:
-      "Sparring partner for your operational, tactical, and strategic HubSpot questions.",
+      "Review your CRM architecture, data quality and workflows, then agree on what to improve first.",
     metaDescription:
-      "Independent HubSpot consultant for SMBs and scale-ups. Portal audits, strategic roadmaps, and hands-on sparring — prioritized by impact, not by what looks good on a slide deck.",
+      "HubSpot consultancy for B2B teams with complex CRM setups. Review customer relationships, data quality and workflows, with a practical implementation roadmap.",
     outcomes: [
       "A clear picture of what's working in your HubSpot portal and what's holding you back.",
       "Actionable recommendations prioritized by impact — not a 50-page report that collects dust.",
       "Alignment between marketing, sales, and ops on how HubSpot should support your processes.",
     ],
     deliverables: [
-      "Portal audit covering data quality, workflows, pipelines, and property usage.",
+      "Portal review covering the customer model, object associations, data quality, workflows and reporting.",
+      "Recommendations for recurring checks and a review process for operational exceptions.",
       "Prioritized list of recommendations with effort-vs-impact scoring.",
       "Strategic roadmap for the next 3-6 months.",
       "Hands-on sparring sessions to work through questions and decisions together.",
@@ -95,7 +99,7 @@ export const services: Service[] = [
       {
         title: "Audit",
         description:
-          "I review your portal setup, data model, workflows, and reporting to identify quick wins and structural issues.",
+          "I review the customer model, associations, source ownership and workflows to identify gaps in the process and data.",
       },
       {
         title: "Strategy",
@@ -116,14 +120,14 @@ export const services: Service[] = [
     faq: [
       {
         q: "What's included in an audit?",
-        a: "I review your portal structure, data quality, pipelines, workflows, properties, and reporting. You get a written summary of findings with prioritized recommendations — typically delivered within 1-2 weeks.",
+        a: "I review your portal structure, customer relationships, data quality, pipelines, workflows and reporting. We agree on scope and timing first. You get findings with prioritized recommendations and a clear distinction between record corrections and structural changes.",
       },
       {
         q: "Do you offer ongoing support?",
-        a: "Yes. Many clients start with a one-off audit and then move to a recurring arrangement — typically a set number of hours per month for sparring, troubleshooting, and incremental improvements.",
+        a: "Yes. We can agree on ongoing sparring, troubleshooting or incremental improvements after a portal review, with scope and responsibilities defined together.",
       },
     ],
-    relatedCaseStudy: "customer-lifecycle",
+    relatedCaseStudy: "crm-data-quality",
   },
   {
     slug: "integrations",
@@ -187,20 +191,21 @@ export const services: Service[] = [
     slug: "custom-objects",
     title: "Custom object development",
     shortDescription:
-      "Data structures that match how your business actually works.",
+      "Model the customer relationship with custom objects, clear associations and paths for new records.",
     metaDescription:
       "HubSpot custom object development for Enterprise portals. I design data models that reflect your business, build clean associations, and set up reporting dashboards on your custom data.",
     outcomes: [
       "A data model that reflects your actual business — not one that forces you to work around HubSpot's defaults.",
       "Clean associations between custom objects and standard HubSpot records (contacts, companies, deals).",
       "Reporting and dashboards built on your custom data — not workarounds with spreadsheets.",
-      "A scalable structure that grows with your business without needing a rebuild.",
+      "A documented structure and association rules that can evolve as your customer relationships change.",
     ],
     deliverables: [
       "Requirements document outlining the business logic and data relationships.",
       "Schema design with object definitions, properties, and association labels.",
       "Custom objects built and configured in your HubSpot portal.",
       "Association setup connecting custom objects to existing records.",
+      "Rules for linking new records and checking missing associations after rollout.",
       "Custom views and filters so your team can find records quickly.",
       "Reporting dashboards using custom object data.",
     ],
@@ -229,7 +234,7 @@ export const services: Service[] = [
     faq: [
       {
         q: "What HubSpot tier supports custom objects?",
-        a: "Custom objects are available on Enterprise plans. If you're on Professional, I can help evaluate whether custom objects are the right solution or if an alternative approach works better for your tier.",
+        a: "Custom objects require an eligible Enterprise subscription. I check your plan and object limits before we choose the model. We also evaluate whether standard objects and associations already cover the relationship you need.",
       },
       {
         q: "Can you migrate existing data?",
@@ -241,6 +246,7 @@ export const services: Service[] = [
       },
     ],
     relatedCaseStudy: "customer-lifecycle",
+    references: [{ label: "HubSpot: create and edit custom objects", href: "https://knowledge.hubspot.com/object-settings/create-custom-objects" }],
   },
   {
     slug: "pipeline-optimization",
@@ -301,11 +307,11 @@ export const services: Service[] = [
     shortDescription:
       "Custom sidebar cards that surface live CRM data where your team actually works — inside HubSpot.",
     metaDescription:
-      "Custom HubSpot UI Extension cards for deal and contact sidebars. I build React-based app cards with serverless functions that surface live data from custom objects — no external hosting, no maintenance overhead.",
+      "Custom HubSpot app cards that show relevant CRM context on a record. React-based interfaces with data access designed for your platform and subscription.",
     outcomes: [
       "Live, contextual data visible directly in the deal or contact sidebar — no switching between tabs, reports, or external tools.",
       "Custom UI that matches your team's workflow, showing exactly the data points that matter for each record.",
-      "Serverless architecture hosted inside HubSpot — nothing to deploy, maintain, or pay for outside your existing subscription.",
+      "A hosting and data-access approach matched to your HubSpot platform version, subscription and integration needs.",
       "Reduced reliance on workaround workflows, manual lookups, and dashboard-hopping to get operational context.",
     ],
     deliverables: [
@@ -341,15 +347,15 @@ export const services: Service[] = [
     faq: [
       {
         q: "What HubSpot plan do I need?",
-        a: "UI Extensions require access to HubSpot Developer Projects, available on Sales Hub or Service Hub Professional and Enterprise plans.",
+        a: "Requirements depend on the card and its data access. On the 2026.03 platform, private app functions require an Enterprise subscription or a free developer test account. I verify your subscription, platform version and scopes before choosing an implementation.",
       },
       {
         q: "Can the card pull data from custom objects?",
-        a: "Yes — reading from associated custom objects is one of the primary use cases. The card can fetch any property from any associated record and display it however makes sense for your team.",
+        a: "Yes, where the app has the required object access and scopes. My renewal-status card reads the associated License and displays its subscription status on the deal. We agree on the source and handle missing associations explicitly.",
       },
       {
         q: "Does this require external hosting or infrastructure?",
-        a: "No. The serverless functions run inside HubSpot's own infrastructure. There's nothing to host, deploy, or maintain outside your portal — and no additional costs beyond your existing HubSpot subscription.",
+        a: "HubSpot can host the interface and, on eligible plans and platform versions, app functions. Some integrations use an external backend. We confirm hosting, limits, costs and maintenance responsibilities during design instead of assuming the card is maintenance-free.",
       },
       {
         q: "What kinds of cards can you build?",
@@ -357,5 +363,9 @@ export const services: Service[] = [
       },
     ],
     relatedCaseStudy: "renewal-status-card",
+    references: [
+      { label: "HubSpot: UI extensions overview", href: "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview" },
+      { label: "HubSpot: 2026.03 platform and app function requirements", href: "https://developers.hubspot.com/changelog/spring-2026-spotlight" },
+    ],
   },
 ];

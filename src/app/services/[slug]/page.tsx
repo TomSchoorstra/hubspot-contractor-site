@@ -160,7 +160,7 @@ export default async function ServiceDetail({
                 <div className="font-display text-2xl font-bold text-text sm:text-3xl">
                   {service.outcomes.length}
                 </div>
-                <div className="mt-1 text-sm font-medium text-text-secondary">Clear, measurable results</div>
+                <div className="mt-1 text-sm font-medium text-text-secondary">Areas we work to improve</div>
               </div>
             </div>
           </div>
@@ -249,6 +249,18 @@ export default async function ServiceDetail({
                   FAQ
                 </h2>
                 <Accordion items={service.faq} />
+                {service.references && (
+                  <div className="mt-6">
+                    <p className="text-sm font-semibold text-text">Platform requirements and documentation</p>
+                    <ul className="mt-3 space-y-2">
+                      {service.references.map((reference) => (
+                        <li key={reference.href}>
+                          <a href={reference.href} className="text-sm text-text-secondary underline underline-offset-4 hover:text-text">{reference.label}</a>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
               </div>
             </ScrollReveal>
 

@@ -122,14 +122,14 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 1 | Positionering en uitvoeringsbasis | Geaccepteerd | 78749c1 | 2026-10-08 |
 | 2 | About | Zelfcontrole afgerond | 2e2e34f | — |
 | 3 | Account-based CRM-case | Zelfcontrole afgerond | 0a38251 | — |
-| 4 | Datakwaliteitscase | Zelfcontrole afgerond | Zie checkpoint-4-commit | — |
-| 5 | Bestaande diensten | Gepland | — | — |
+| 4 | Datakwaliteitscase | Zelfcontrole afgerond | 07ed704 | — |
+| 5 | Bestaande diensten | Zelfcontrole afgerond | Zie checkpoint-5-commit | — |
 | 6 | Homepage en gedeelde positionering | Gepland | — | — |
 | 7 | Drie artikelbriefings | Gepland | — | — |
 | 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** checkpoint 5 uitvoeren; checkpoints 2–4 hebben zelfcontrole afgerond.
+**Eerstvolgende stap:** checkpoint 6 uitvoeren; checkpoints 2–5 hebben zelfcontrole afgerond.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -330,3 +330,12 @@ Vul bij ieder checkpoint kort aan:
 - **Controles:** route-typegeneratie, gerichte ESLint en TypeScript geslaagd. Slugs, relatedServices en optionele diagramafhandeling gecontroleerd. Sitemap neemt de nieuwe case automatisch mee; definitieve gegenereerde output volgt in checkpoint 8. Geen browsercontrole op verzoek.
 - **Beperkingen:** automatisch herstel, realtime bronactualiteit en volledige member-countvalidatie worden niet geclaimd. Finance-impact kan later terugkomen bij primaire onderbouwing. Geen acceptatie namens Tom.
 - **Status:** zelfcontrole afgerond; checkpoint 5 volgt. Niets gepusht of gedeployed.
+
+### Checkpoint 5 — Diensten — 8 oktober 2026
+
+- **Wijzigingen:** bestaande zes slugs behouden. Consultancy richt zich op klantmodel, associaties en datakwaliteit; custom objects op CRM-architectuur en nieuwe-recordpaden; automation op handovers en exceptionchecks. Consultancy gekoppeld aan datakwaliteitscase; andere vijf diensten houden hun passende bestaande case. Overzicht gebruikt centrale intro en dynamisch aantal; template verwijst naar officiële platformdocumentatie waar relevant.
+- **Bronnen:** B2–B5 en officiële HubSpot-documentatie, gecontroleerd 08-10-2026. Custom-codevoorwaarden gecorrigeerd naar Data Hub; custom-objectvoorwaarden expliciet planafhankelijk; blanketclaims over gratis, onderhoudsvrije hosting van app cards verwijderd.
+- **Officiële referenties:** https://developers.hubspot.com/docs/api-reference/legacy/automation/workflow-actions/custom-code-actions ; https://knowledge.hubspot.com/object-settings/create-custom-objects ; https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview ; https://developers.hubspot.com/changelog/spring-2026-spotlight . Bronlinks ook zichtbaar onder de relevante FAQ.
+- **Controles:** gerichte ESLint en TypeScript geslaagd. Zes oorspronkelijke diensten en hun casekoppelingen gecontroleerd; optionele references breidt het bestaande model uit zonder bestaande diensten te breken. Geen browsercontrole op verzoek.
+- **Beperkingen:** daadwerkelijk passende implementatie blijft afhankelijk van het klantportaal. Geen nieuwe diensten, prijzen of garanties toegevoegd. Geen acceptatie namens Tom.
+- **Status:** zelfcontrole afgerond; checkpoint 6 volgt. Niets gepusht of gedeployed.

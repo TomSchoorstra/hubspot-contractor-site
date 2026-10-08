@@ -1,23 +1,25 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
+import { services, servicesHeroIntro } from "@/content/services";
+
+const servicesDescription = `${services.length} HubSpot services for B2B teams: automation, consultancy, integrations, custom objects, pipeline reviews and app cards.`;
 
 export const metadata: Metadata = {
   title: "Services — Tom Schoorstra",
   description:
-    "Six focused HubSpot services: automation, consultancy, integrations, custom objects, pipeline optimization, and custom app cards — no agency overhead.",
+    servicesDescription,
   alternates: { canonical: "/services" },
   openGraph: {
     title: "HubSpot Services — Tom Schoorstra",
     description:
-      "Six focused HubSpot services: automation, consultancy, integrations, custom objects, pipeline optimization, and custom app cards — no agency overhead.",
+      servicesDescription,
     url: "/services",
   },
 };
 import Container from "@/components/ui/Container";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import CTASection from "@/components/sections/CTASection";
-import { services } from "@/content/services";
 
 export default function Services() {
   return (
@@ -25,7 +27,7 @@ export default function Services() {
       <PageHeader
         eyebrow="Services"
         title="Building HubSpot that works for your team"
-        subtitle={`Six focused services across automation, strategy, integrations, data architecture, and custom UI extensions — no agency overhead, just hands-on execution.`}
+        subtitle={servicesHeroIntro}
         primaryCta={{ label: "Talk about your project", href: "/contact" }}
         secondaryCta={{ label: "See case studies", href: "/case-studies" }}
       />
