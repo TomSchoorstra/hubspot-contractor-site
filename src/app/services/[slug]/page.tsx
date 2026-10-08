@@ -132,7 +132,7 @@ export default async function ServiceDetail({
               <p className="text-xs font-semibold uppercase tracking-widest text-accent-text">
                 Service {String(serviceIndex + 1).padStart(2, "0")}
               </p>
-              <h1 className="font-display text-4xl font-extrabold tracking-tight text-text lg:text-5xl xl:text-6xl">
+              <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl xl:text-6xl">
                 {service.title}
               </h1>
               <p className="max-w-xl text-xl leading-relaxed text-text-secondary">

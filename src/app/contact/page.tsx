@@ -32,7 +32,7 @@ export default function Contact() {
             <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-4">
               Get in touch
             </p>
-            <h1 className="font-display text-4xl font-extrabold tracking-tight text-text lg:text-5xl">
+            <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl">
               Let&apos;s talk about your HubSpot setup
             </h1>
             <p className="mt-5 text-xl leading-relaxed text-text-secondary">

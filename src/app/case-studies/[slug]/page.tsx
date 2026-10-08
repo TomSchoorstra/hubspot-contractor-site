@@ -132,7 +132,7 @@ export default async function CaseStudyDetail({
                 {narrative.eyebrow}
               </p>
             )}
-            <h1 className="font-display text-4xl font-extrabold tracking-tight text-text lg:text-5xl xl:text-6xl max-w-4xl">
+            <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl xl:text-6xl max-w-4xl">
               {caseStudy.title}
             </h1>
             <div className="mt-6 max-w-2xl space-y-4 text-xl leading-relaxed text-text-secondary">

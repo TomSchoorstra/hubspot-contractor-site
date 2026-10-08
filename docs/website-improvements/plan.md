@@ -406,3 +406,10 @@ Vul bij ieder checkpoint kort aan:
 - **Terugvalpunt:** vorige productiebron `d8e67364a7296f3cd93f28e9d00ca491a9a65083`, vorige productiondeployment `6314617542`. Bij een regressie kan die deployment worden hersteld en de release gericht worden teruggedraaid; er is nu niets teruggedraaid.
 - **Voortgangsopslag:** deze nacontrole wordt afzonderlijk lokaal gecommit na de geslaagde deploy. Zij wijzigt alleen het plan en releaseoverzicht; geen tweede productie-deploy nodig voor de log. Websitecode blijft byte-inhoudelijk gelijk aan productiebron `6b8d352`.
 - **Status:** checkpoint 9 zelfcontrole afgerond; livegang voltooid. Niet-gerelateerde untracked documenten en excalidraw.log behouden.
+
+### Vervolgcorrectie — Typografie — 8 oktober 2026
+
+- Tom vindt de grote koppen te onrustig en wil professioneler met behoud van een speelse uitstraling.
+- [Lokaal typografievoorstel](typography-refresh.md): Geist voor koppen, H1-gewicht 600, regelhoogte 1,12, gebalanceerde regelafbreking en gelijke maximale titelschaal voor About/homepage. Bestaande kleuraccenten blijven.
+- Lint, TypeScript, volledige previewbuild en bestaande HTML/linkchecks geslaagd. Geen browserchecks; visuele weergave niet bevestigd. Geen contentwijzigingen, nieuwe fonts of dependencies.
+- Afzonderlijke lokale stijlcommit; niet gepusht of gedeployed. Deze correctie volgt op de afgeronde negen checkpoints en verandert hun publicatiehistorie niet. Live bron blijft `6b8d352`.

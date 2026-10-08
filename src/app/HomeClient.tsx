@@ -25,7 +25,7 @@ export default function HomeClient() {
           <div className="grid gap-12 lg:grid-cols-[3fr_2fr] lg:items-center">
             <div className="space-y-6">
               <Badge variant="teal">HubSpot &amp; RevOps specialist</Badge>
-              <h1 className="font-display text-4xl font-extrabold leading-[1.08] tracking-tight text-text sm:text-5xl lg:text-6xl">
+              <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">
                 A clearer customer picture.<br />
                 <span className="text-gradient-orange">Processes that connect.</span>
               </h1>

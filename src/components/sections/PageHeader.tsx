@@ -27,7 +27,7 @@ export default function PageHeader({
               {eyebrow}
             </p>
           )}
-          <h1 className="font-display text-4xl font-extrabold tracking-tight text-text lg:text-5xl xl:text-6xl">
+          <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl xl:text-6xl">
             {title}
           </h1>
 

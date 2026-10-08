@@ -203,7 +203,7 @@ export default async function BlogPost({
                 {formatDate(post.date)}
               </time>
             </div>
-            <h1 className="font-display mt-3 text-4xl font-extrabold tracking-tight text-text lg:text-5xl">
+            <h1 className="font-display mt-3 text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl">
               {post.title}
             </h1>
             <p className="mt-5 text-xl leading-relaxed text-text-secondary">
