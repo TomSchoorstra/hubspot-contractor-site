@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: de website is op 8 oktober 2026 gepubliceerd op Toms expliciete opdracht zonder previewreview. Checkpoints 2–9 hebben zelfcontrole afgerond; individuele inhoudelijke acceptatie is niet namens Tom ingevuld.
+Status: de website en de later door Tom lokaal goedgekeurde typografie/hero staan live. Actuele productiebron: `13d4e32`. Checkpoints 2–9 hebben zelfcontrole afgerond; individuele acceptatie is niet namens Tom ingevuld.
 
 ## Doel en uitgangspunten
 
@@ -425,3 +425,10 @@ Vul bij ieder checkpoint kort aan:
 - Tom geeft na beoordeling van de localhost-versie expliciet opdracht “i like it publish maar”. De typografie en persoonlijkere hero zijn daarmee goedgekeurd voor publicatie.
 - Scope: uitsluitend de gecontroleerde lokale wijzigingen uit `6f2516e` en `2216cf9`, plus de bijbehorende voortgangsdocumentatie. Geen browserchecks. Publicatie via main en de bestaande Vercel-integratie; live HTTP-controles volgen.
 - Terugvalpunt: productiebron `6b8d352`, Vercel-productiedeployment `6936980116`. Nieuwe releasegegevens worden na de deploy vastgelegd.
+
+### Vervolgcorrectie — Typografie gepubliceerd — 8 oktober 2026
+
+- Tom heeft de lokale versie expliciet goedgekeurd met “i like it publish maar”. Publicatie voltooid via normale branch/main-pushes; bron `13d4e3267c6c77d65c1eb110bd5575b851ef5cc3`.
+- Vercel Production-deployment `6942320436` succesvol. [Publieke website](https://www.tomschoorstra.com) toont de persoonlijke hero en nieuwe typografie.
+- Live HTML- en stylesheetcontrole bevestigen de nieuwe kop, Geist en cursief serifaccent; Syne is verwijderd. HTTP-nacontrole op 15 pagina’s, 18 unieke interne routes, metadata, schema, sitemap en OG-PNG geslaagd. Geen browserchecks of echte analytics-events.
+- Volledige [typografielog](typography-refresh.md) bevat goedkeuring, checks, releasegegevens en terugvalpunt `6b8d352` / deployment `6936980116`. Alleen de nacontrolelog wordt nog lokaal gecommit; geen aanvullende codewijziging of deploy nodig.

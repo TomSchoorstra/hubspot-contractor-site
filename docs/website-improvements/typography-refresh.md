@@ -1,6 +1,6 @@
 # Typografievoorstel na de livegang
 
-Datum: 8 oktober 2026. Status: door Tom goedgekeurd voor publicatie; productie-deploy wordt uitgevoerd.
+Datum: 8 oktober 2026. Status: door Tom goedgekeurd en gepubliceerd op 8 oktober 2026; live HTTP- en stylesheetcontroles geslaagd.
 
 Tom vindt de grote letters te onrustig en vraagt om professionelere typografie die nog speels blijft. De aangeleverde screenshot en lokale fontconfiguratie zijn de basis; geen browser gebruikt.
 
@@ -31,3 +31,13 @@ Controles tweede iteratie: scoped ESLint geslaagd; volledige previewbuild inclus
 ## Publicatieautorisatie — 8 oktober 2026
 
 Tom beoordeelde de lokale versie en gaf opdracht “i like it publish maar”. De twee lokale stijlcommits `6f2516e` en `2216cf9` worden met de bijbehorende release-/typografielogs via een normale fast-forward op main gepubliceerd. Geen nieuwe inhoud of stijlwijzigingen sinds de gecontroleerde lokale versie. Vorige productiebron: `6b8d352`; vorige Vercel-productiedeployment: `6936980116`.
+
+## Gepubliceerd en gecontroleerd — 8 oktober 2026
+
+- Productiebron: `13d4e3267c6c77d65c1eb110bd5575b851ef5cc3`; GitHub main en lokale main staan op deze release. Normale fast-forward pushes, geen force-push.
+- Vercel-productiedeployment `6942320436` meldt success en gebruikt dezelfde sha. [Deployment](https://hubspot-contractor-site-lgn2btf18-tomschoorstras-projects.vercel.app).
+- [tomschoorstra.com](https://www.tomschoorstra.com) toont “I work on the complicated bits of HubSpot.” De oude marketingkop ontbreekt in de gecontroleerde homepage-HTML. De live stylesheet bevat Geist en het Georgia-serifaccent; de Syne-variable ontbreekt.
+- HTTP-nacontrole geslaagd voor 15 pagina’s/templatevarianten en alle 18 unieke interne routes. Metadata, canonicals, socialcopy, schema, sitemap en OG-PNG zijn gecontroleerd. Sitemap behoudt zes diensten, vijf cases en acht bestaande blogs.
+- Production-omgeving en GTM-markup bevestigd, geen echte events verstuurd. Geen browser gebruikt; de visuele acceptatie was Toms beoordeling van de lokale versie.
+- De eerste domeincontrole tijdens rollout toonde nog de vorige homepage; na voltooiing van de Production-deploy is de nieuwe versie bevestigd en de volledige nacontrole geslaagd.
+- Terugvalpunt: productiebron `6b8d352` en Vercel-productiedeployment `6936980116`. Deze nacontrole wordt lokaal als documentatie gecommit, zonder extra productie-deploy. Websitecode blijft gelijk aan de gepubliceerde release.

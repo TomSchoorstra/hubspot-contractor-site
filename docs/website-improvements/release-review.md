@@ -103,3 +103,7 @@ Na publicatie zijn 15 gewijzigde pagina’s via HTTP gecontroleerd, inclusief ni
 Productieomgeving en GTM-markup zijn bevestigd; eventontvangst is niet getest. Er is geen JavaScript uitgevoerd of testlead/event verstuurd. Geen Browser-skill of browserchecks gebruikt. Visuele en interactieve controle blijven daardoor onbevestigd.
 
 Tom heeft de previewreview expliciet overgeslagen omdat hij de beveiligde preview niet kon bekijken. Dat besluit en de volledige nacontrole staan in [plan.md](plan.md). De vorige productiebron `d8e6736` en deployment `6314617542` zijn het terugvalpunt. Deze nacontrole wordt lokaal als documentatie opgeslagen zonder een extra productie-deploy; websitecode blijft gelijk aan de live broncommit.
+
+## Goedgekeurde typografie-update gepubliceerd
+
+Op 8 oktober 2026 heeft Tom de lokale vervolgaanpassing goedgekeurd. Actuele productiebron is `13d4e32`, Vercel Production-deployment `6942320436` is succesvol. De site gebruikt Geist voor koppen en een cursief serifaccent bij “I work on the complicated bits of HubSpot.” Live HTTP-controles van 15 pagina’s en de stylesheet zijn geslaagd. Zie [typography-refresh.md](typography-refresh.md) voor de publicatie- en controlelog. Terugvalpunt voor deze vervolgaanpassing: `6b8d352` / deployment `6936980116`.
