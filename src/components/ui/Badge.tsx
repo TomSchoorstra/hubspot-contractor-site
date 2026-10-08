@@ -10,9 +10,9 @@ export default function Badge({
   className?: string;
 }) {
   const variantStyles = {
-    orange: "bg-accent-light text-accent border border-accent/20",
-    "orange-solid": "bg-accent text-white",
-    teal: "bg-accent-2-light text-accent-2 border border-accent-2/20",
+    orange: "bg-accent-light text-accent-text border border-accent/20",
+    "orange-solid": "bg-accent-action text-white",
+    teal: "bg-accent-2-light text-accent-2-text border border-accent-2/20",
     neutral: "bg-surface-2 text-text-muted border border-border",
   };
 

@@ -19,7 +19,7 @@ export default function AnimatedNumber({
   const ref = useRef<HTMLSpanElement>(null);
   const reducedMotion = useReducedMotion();
   const inView = useInView(ref, { once: true, margin: "0px" });
-  const [displayed, setDisplayed] = useState(0);
+  const [displayed, setDisplayed] = useState(value);
 
   useEffect(() => {
     if (!inView || reducedMotion) return;
@@ -35,7 +35,8 @@ export default function AnimatedNumber({
 
   return (
     <span ref={ref} className={className}>
-      {prefix}{reducedMotion ? value : displayed}{suffix}
+      <span className="sr-only">{prefix}{value}{suffix}</span>
+      <span aria-hidden="true">{prefix}{reducedMotion ? value : displayed}{suffix}</span>
     </span>
   );
 }

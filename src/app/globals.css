@@ -19,6 +19,11 @@
   /* Accent Colors - HubSpot orange primary */
   --accent: #ff5c35;
   --accent-hover: #e84d28;
+  /* Darker variants for readable text and white button labels. */
+  --accent-text: #b83a1b;
+  --accent-action: #c83c1b;
+  --accent-action-hover: #ad3217;
+  --accent-2-text: #006d7e;
   --accent-light: #fff5f2;
   --accent-2: #00a4bd;
   --accent-2-hover: #0091a8;
@@ -57,6 +62,10 @@
   --color-text-muted: var(--text-muted);
   --color-accent: var(--accent);
   --color-accent-hover: var(--accent-hover);
+  --color-accent-text: var(--accent-text);
+  --color-accent-action: var(--accent-action);
+  --color-accent-action-hover: var(--accent-action-hover);
+  --color-accent-2-text: var(--accent-2-text);
   --color-accent-light: var(--accent-light);
   --color-accent-2: var(--accent-2);
   --color-accent-2-hover: var(--accent-2-hover);
@@ -92,7 +101,7 @@ body {
 
 /* Gradient text utility */
 .text-gradient-orange {
-  background: linear-gradient(135deg, var(--accent) 0%, #ff8c6b 100%);
+  background: linear-gradient(135deg, var(--accent-text) 0%, #a64224 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -211,3 +220,16 @@ body {
   border-bottom: none;
 }
 
+/* Keep keyboard focus visible on plain text and card links too. */
+a:focus-visible {
+  outline: 2px solid var(--accent-text);
+  outline-offset: 4px;
+}
+
+/* The preference applies before hydration as well as in the motion hook. */
+@media (prefers-reduced-motion: reduce) {
+  .scroll-reveal {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}

@@ -72,7 +72,7 @@ export default function Button({
 
   const variantStyles = {
     primary:
-      "bg-accent border-accent text-white shadow-sm hover:bg-accent-hover hover:border-accent-hover hover:shadow-md hover:-translate-y-px",
+      "bg-accent-action border-accent-action text-white shadow-sm hover:bg-accent-action-hover hover:border-accent-action-hover hover:shadow-md hover:-translate-y-px",
     secondary:
       "border-border bg-surface text-text hover:border-accent hover:shadow-md hover:-translate-y-px",
     ghost:

@@ -1,3 +1,4 @@
+import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 import Link from "next/link";
 import type { Metadata } from "next";
 import Image from "next/image";
@@ -14,10 +15,18 @@ export const metadata: Metadata = {
     "HubSpot & RevOps specialist based in the Netherlands. Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
   alternates: { canonical: "/about" },
   openGraph: {
+    images: [SITE_SOCIAL_IMAGE],
     title: "About Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
       "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
     url: "/about",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
+    title: "About Tom Schoorstra — HubSpot & RevOps Specialist",
+    description:
+      "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
   },
 };
 
@@ -110,10 +119,10 @@ export default function About() {
         <Container>
           <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent">In practice at AIHR</p>
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent-text">In practice at AIHR</p>
               <p className="mt-2 text-lg font-semibold text-text">System Operations Manager Senior, within Revenue Operations</p>
             </div>
-            <Link href="/case-studies/customer-lifecycle" className="font-semibold text-text underline underline-offset-4 hover:text-accent">Explore the account-based CRM project</Link>
+            <Link href="/case-studies/customer-lifecycle" className="font-semibold text-text underline underline-offset-4 hover:text-accent-text">Explore the account-based CRM project</Link>
           </div>
         </Container>
       </div>
@@ -141,7 +150,7 @@ export default function About() {
                 <p className="text-base font-semibold text-text">The Netherlands 🇳🇱</p>
                 <div className="mt-4 pt-4 border-t border-border-subtle">
                   <h3 className="text-xs font-semibold uppercase tracking-widest text-text-muted mb-4">
-                    Available for
+                    Engagement formats
                   </h3>
                   <div className="space-y-2">
                     <div className="flex items-center gap-2">
@@ -161,7 +170,7 @@ export default function About() {
             <div className="space-y-14 lg:space-y-16">
               <ScrollReveal>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Background</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">Background</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
                     Who I am
                   </h2>
@@ -181,7 +190,7 @@ export default function About() {
 
               <ScrollReveal delay={0.05}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Approach</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">Approach</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
                     How I work
                   </h2>
@@ -201,7 +210,7 @@ export default function About() {
 
               <ScrollReveal delay={0.05}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Where I can help</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">Where I can help</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-4">
                     When your CRM needs a clearer structure
                   </h2>
@@ -218,7 +227,7 @@ export default function About() {
 
               <ScrollReveal delay={0.05}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Skills</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">Skills</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
                     Areas of expertise
                   </h2>
@@ -232,7 +241,7 @@ export default function About() {
                         <p className="mt-2 text-sm leading-relaxed text-text-secondary">
                           {area.description}
                         </p>
-                        <Link href={area.proofHref} className="mt-4 inline-block text-sm font-semibold text-text underline underline-offset-4 hover:text-accent">{area.proofLabel}</Link>
+                        <Link href={area.proofHref} className="mt-4 inline-block text-sm font-semibold text-text underline underline-offset-4 hover:text-accent-text">{area.proofLabel}</Link>
                       </div>
                     ))}
                   </div>
@@ -241,7 +250,7 @@ export default function About() {
 
               <ScrollReveal delay={0.05}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Certifications</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">Certifications</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
                     Learning &amp; past certifications
                   </h2>
@@ -257,7 +266,7 @@ export default function About() {
                         }`}
                       >
                         <div className={`mt-0.5 flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-lg ${
-                          cert.active ? "bg-accent text-white" : "bg-surface-2 text-text-muted"
+                          cert.active ? "bg-accent-action text-white" : "bg-surface-2 text-text-muted"
                         }`}>
                           <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 24 24">
                             <path d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -267,7 +276,7 @@ export default function About() {
                           <div className="flex items-center gap-2 flex-wrap">
                             <p className="text-sm font-semibold text-text">{cert.name}</p>
                             {cert.active && (
-                              <span className="inline-flex items-center rounded-full bg-accent px-2 py-0.5 text-xs font-semibold text-white">
+                              <span className="inline-flex items-center rounded-full bg-accent-action px-2 py-0.5 text-xs font-semibold text-white">
                                 Active
                               </span>
                             )}
@@ -282,7 +291,7 @@ export default function About() {
 
               <ScrollReveal delay={0.05}>
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">Stack</p>
+                  <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">Stack</p>
                   <h2 className="font-display text-2xl font-bold text-text lg:text-3xl mb-6">
                     Tools & platforms
                   </h2>

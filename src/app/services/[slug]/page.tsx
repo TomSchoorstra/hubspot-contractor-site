@@ -9,7 +9,7 @@ import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import Accordion from "@/components/ui/Accordion";
 import { services } from "@/content/services";
 import { caseStudies } from "@/content/caseStudies";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, SITE_SOCIAL_IMAGE } from "@/lib/site";
 
 export async function generateStaticParams() {
   return services.map((service) => ({
@@ -39,9 +39,16 @@ export async function generateMetadata({
     description,
     alternates: { canonical: `/services/${slug}` },
     openGraph: {
+      images: [SITE_SOCIAL_IMAGE],
       title: `${service.title} — Tom Schoorstra`,
       description,
       url: `/services/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [SITE_SOCIAL_IMAGE.url],
+      title: `${service.title} — Tom Schoorstra`,
+      description,
     },
   };
 }
@@ -122,7 +129,7 @@ export default async function ServiceDetail({
           <div className="relative grid grid-cols-1 gap-12 lg:grid-cols-[3fr_2fr] lg:items-start">
             {/* Left */}
             <div className="space-y-6">
-              <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+              <p className="text-xs font-semibold uppercase tracking-widest text-accent-text">
                 Service {String(serviceIndex + 1).padStart(2, "0")}
               </p>
               <h1 className="font-display text-4xl font-extrabold tracking-tight text-text lg:text-5xl xl:text-6xl">
@@ -144,13 +151,13 @@ export default async function ServiceDetail({
             {/* Right: Quick stats */}
             <div className="grid grid-cols-2 gap-4">
               <div className="rounded-2xl border border-border bg-surface-2 p-5">
-                <div className="font-display text-2xl font-bold text-accent sm:text-3xl">
+                <div className="font-display text-2xl font-bold text-accent-text sm:text-3xl">
                   {service.deliverables.length}
                 </div>
                 <div className="mt-1 text-sm font-medium text-text-secondary">Deliverables</div>
               </div>
               <div className="rounded-2xl border border-border bg-surface-2 p-5">
-                <div className="font-display text-2xl font-bold text-accent-2 sm:text-3xl">
+                <div className="font-display text-2xl font-bold text-accent-2-text sm:text-3xl">
                   {service.process.length}
                 </div>
                 <div className="mt-1 text-sm font-medium text-text-secondary">Process steps</div>
@@ -174,7 +181,7 @@ export default async function ServiceDetail({
             {/* Outcomes */}
             <ScrollReveal>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                   What you get
                 </p>
                 <h2 className="font-display text-3xl font-bold text-text mb-10 lg:text-4xl">
@@ -187,7 +194,7 @@ export default async function ServiceDetail({
                       className="flex gap-4 rounded-2xl border border-border bg-surface p-6"
                     >
                       <div className="mt-0.5 flex h-6 w-6 flex-shrink-0 items-center justify-center rounded-lg bg-accent/10">
-                        <svg aria-hidden="true" className="h-3.5 w-3.5 text-accent" fill="none" viewBox="0 0 14 14">
+                        <svg aria-hidden="true" className="h-3.5 w-3.5 text-accent-text" fill="none" viewBox="0 0 14 14">
                           <path d="M2 7l4 4 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
@@ -203,7 +210,7 @@ export default async function ServiceDetail({
             {/* Deliverables */}
             <ScrollReveal>
               <div className="rounded-3xl bg-surface-2 border border-border p-8 lg:p-12">
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent-2 mb-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent-2-text mb-3">
                   What&apos;s included
                 </p>
                 <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
@@ -213,7 +220,7 @@ export default async function ServiceDetail({
                   {service.deliverables.map((deliverable, index) => (
                     <div key={index} className="flex gap-3">
                       <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-accent-2/15">
-                        <svg aria-hidden="true" className="h-3 w-3 text-accent-2" fill="none" viewBox="0 0 12 12">
+                        <svg aria-hidden="true" className="h-3 w-3 text-accent-2-text" fill="none" viewBox="0 0 12 12">
                           <path d="M1.5 6l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
@@ -229,7 +236,7 @@ export default async function ServiceDetail({
             {/* Process */}
             <ScrollReveal>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                   How it works
                 </p>
                 <h2 className="font-display text-3xl font-bold text-text mb-10 lg:text-4xl">
@@ -242,7 +249,7 @@ export default async function ServiceDetail({
             {/* FAQ */}
             <ScrollReveal>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                   Common questions
                 </p>
                 <h2 className="font-display text-3xl font-bold text-text mb-10 lg:text-4xl">
@@ -271,7 +278,7 @@ export default async function ServiceDetail({
               return (
                 <ScrollReveal>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-accent-2 mb-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-accent-2-text mb-3">
                       See it in practice
                     </p>
                     <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
@@ -282,7 +289,7 @@ export default async function ServiceDetail({
                         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
                           <div>
                             <p className="text-sm font-medium text-text-muted mb-2">{related.industry} · {related.companySize}</p>
-                            <h3 className="font-display text-xl font-bold text-text transition-colors group-hover:text-accent-2">
+                            <h3 className="font-display text-xl font-bold text-text transition-colors group-hover:text-accent-2-text">
                               {related.title}
                             </h3>
                             <p className="mt-3 text-base leading-relaxed text-text-secondary max-w-xl">
@@ -298,7 +305,7 @@ export default async function ServiceDetail({
                         <div className="mt-6 flex flex-wrap gap-3 border-t border-border pt-5">
                           {related.results.slice(0, 3).map((r) => (
                             <div key={r.label} className="rounded-lg bg-surface-2 border border-border-subtle px-3 py-2">
-                              <div className="font-display text-lg font-bold text-accent">{r.value}</div>
+                              <div className="font-display text-lg font-bold text-accent-text">{r.value}</div>
                               <div className="text-xs text-text-muted">{r.label}</div>
                             </div>
                           ))}

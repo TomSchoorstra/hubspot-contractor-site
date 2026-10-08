@@ -1,3 +1,4 @@
+import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
@@ -8,10 +9,18 @@ export const metadata: Metadata = {
     "Explore my HubSpot and RevOps work in CRM architecture, data quality monitoring, finance automation and custom record interfaces.",
   alternates: { canonical: "/case-studies" },
   openGraph: {
+    images: [SITE_SOCIAL_IMAGE],
     title: "Case Studies — Tom Schoorstra",
     description:
       "Explore CRM architecture, data quality monitoring, finance automation and custom record interfaces through practical projects.",
     url: "/case-studies",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
+    title: "Case Studies — Tom Schoorstra",
+    description:
+      "Explore CRM architecture, data quality monitoring, finance automation and custom record interfaces through practical projects.",
   },
 };
 import Container from "@/components/ui/Container";
@@ -53,7 +62,7 @@ export default function CaseStudies() {
                         <Badge variant="orange">{study.results[0].value}</Badge>
                       </div>
 
-                      <h2 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent">
+                      <h2 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent-text">
                         {study.title}
                       </h2>
                       <p className="mt-4 text-base leading-relaxed text-text-secondary flex-1">
@@ -86,7 +95,7 @@ export default function CaseStudies() {
                         ))}
                       </div>
 
-                      <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent">
+                      <div className="mt-6 inline-flex items-center gap-2 text-sm font-semibold text-accent-text">
                         Read case study
                         <svg
                           aria-hidden="true"

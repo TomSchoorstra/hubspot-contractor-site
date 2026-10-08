@@ -1,3 +1,4 @@
+import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
@@ -11,10 +12,18 @@ export const metadata: Metadata = {
     servicesDescription,
   alternates: { canonical: "/services" },
   openGraph: {
+    images: [SITE_SOCIAL_IMAGE],
     title: "HubSpot Services — Tom Schoorstra",
     description:
       servicesDescription,
     url: "/services",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
+    title: "HubSpot Services — Tom Schoorstra",
+    description:
+      servicesDescription,
   },
 };
 import Container from "@/components/ui/Container";
@@ -51,7 +60,7 @@ export default function Services() {
 
                     {/* Content */}
                     <div className="flex-1 min-w-0">
-                      <h2 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent lg:text-3xl">
+                      <h2 className="font-display text-2xl font-bold text-text transition-colors group-hover:text-accent-text lg:text-3xl">
                         {service.title}
                       </h2>
                       <p className="mt-3 text-base leading-relaxed text-text-secondary lg:text-lg">

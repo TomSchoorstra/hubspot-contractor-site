@@ -9,7 +9,7 @@ import Badge from "@/components/ui/Badge";
 import AnimatedNumber from "@/components/ui/AnimatedNumber";
 import { caseStudies } from "@/content/caseStudies";
 import { services } from "@/content/services";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, SITE_SOCIAL_IMAGE } from "@/lib/site";
 import ArchitectureDiagram from "@/components/sections/ArchitectureDiagram";
 
 export async function generateStaticParams() {
@@ -38,9 +38,16 @@ export async function generateMetadata({
     description: caseStudy.summary,
     alternates: { canonical: `/case-studies/${slug}` },
     openGraph: {
+      images: [SITE_SOCIAL_IMAGE],
       title: `${caseStudy.title} — Tom Schoorstra`,
       description: caseStudy.summary,
       url: `/case-studies/${slug}`,
+    },
+    twitter: {
+      card: "summary_large_image",
+      images: [SITE_SOCIAL_IMAGE.url],
+      title: `${caseStudy.title} — Tom Schoorstra`,
+      description: caseStudy.summary,
     },
   };
 }
@@ -109,7 +116,7 @@ export default async function CaseStudyDetail({
             <div className="mb-6 flex flex-wrap items-center gap-3">
               <Link
                 href="/case-studies"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-accent transition-colors"
+                className="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-accent-text transition-colors"
               >
                 <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
                   <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -121,7 +128,7 @@ export default async function CaseStudyDetail({
               <Badge variant="neutral" size="sm">{caseStudy.companySize}</Badge>
             </div>
             {narrative && (
-              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent">
+              <p className="mb-3 text-xs font-semibold uppercase tracking-widest text-accent-text">
                 {narrative.eyebrow}
               </p>
             )}
@@ -179,7 +186,7 @@ export default async function CaseStudyDetail({
             {/* Challenge */}
             <ScrollReveal>
               <div>
-                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                   The problem
                 </p>}
                 <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
@@ -205,7 +212,7 @@ export default async function CaseStudyDetail({
             {/* Approach */}
             <ScrollReveal>
               <div>
-                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                   How we solved it
                 </p>}
                 <h2 className="font-display text-3xl font-bold text-text mb-10 lg:text-4xl">
@@ -220,7 +227,7 @@ export default async function CaseStudyDetail({
             {/* Solution */}
             <ScrollReveal>
               <div className="rounded-3xl bg-surface-2 border border-border p-8 lg:p-12">
-                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent-2 mb-3">
+                {!narrative && <p className="text-xs font-semibold uppercase tracking-widest text-accent-2-text mb-3">
                   The build
                 </p>}
                 <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
@@ -234,7 +241,7 @@ export default async function CaseStudyDetail({
                   {caseStudy.solution.map((item, index) => (
                     <div key={index} className="flex gap-4">
                       <div className="mt-1 flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md bg-accent-2/15">
-                        <svg aria-hidden="true" className="h-3 w-3 text-accent-2" fill="none" viewBox="0 0 12 12">
+                        <svg aria-hidden="true" className="h-3 w-3 text-accent-2-text" fill="none" viewBox="0 0 12 12">
                           <path d="M1.5 6l3 3 6-6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                         </svg>
                       </div>
@@ -277,7 +284,7 @@ export default async function CaseStudyDetail({
             {/* Stack */}
             <ScrollReveal>
               <div>
-                <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                   Technologies used
                 </p>
                 <h2 className="font-display text-3xl font-bold text-text mb-6 lg:text-4xl">
@@ -300,7 +307,7 @@ export default async function CaseStudyDetail({
               return (
                 <ScrollReveal>
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-accent-text mb-3">
                       Related services
                     </p>
                     <h2 className="font-display text-3xl font-bold text-text mb-8 lg:text-4xl">
@@ -310,13 +317,13 @@ export default async function CaseStudyDetail({
                       {related.map((s) => (
                         <Link key={s.slug} href={`/services/${s.slug}`} className="group block">
                           <div className="h-full rounded-2xl border border-border bg-surface p-6 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)]">
-                            <h3 className="font-display text-lg font-bold text-text transition-colors group-hover:text-accent">
+                            <h3 className="font-display text-lg font-bold text-text transition-colors group-hover:text-accent-text">
                               {s.title}
                             </h3>
                             <p className="mt-2 text-sm leading-relaxed text-text-secondary">
                               {s.shortDescription}
                             </p>
-                            <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent">
+                            <div className="mt-4 inline-flex items-center gap-1.5 text-sm font-semibold text-accent-text">
                               Learn more
                               <svg aria-hidden="true" className="h-4 w-4 transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
                                 <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
@@ -345,7 +352,7 @@ export default async function CaseStudyDetail({
                       </svg>
                       <div>
                         <div className="text-xs font-medium text-text-muted">Previous</div>
-                        <div className="text-sm font-semibold text-text group-hover:text-accent transition-colors">{prevStudy.title}</div>
+                        <div className="text-sm font-semibold text-text group-hover:text-accent-text transition-colors">{prevStudy.title}</div>
                       </div>
                     </Link>
                   ) : <div className="flex-1" />}
@@ -356,7 +363,7 @@ export default async function CaseStudyDetail({
                     >
                       <div>
                         <div className="text-xs font-medium text-text-muted">Next</div>
-                        <div className="text-sm font-semibold text-text group-hover:text-accent transition-colors">{nextStudy.title}</div>
+                        <div className="text-sm font-semibold text-text group-hover:text-accent-text transition-colors">{nextStudy.title}</div>
                       </div>
                       <svg aria-hidden="true" className="h-5 w-5 text-text-muted transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 20 20">
                         <path d="M8 4l6 6-6 6" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>

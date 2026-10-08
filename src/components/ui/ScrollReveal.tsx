@@ -22,7 +22,7 @@ export default function ScrollReveal({
       initial={reducedMotion ? false : { opacity: 0, y: 24 }}
       animate={reducedMotion || inView ? { opacity: 1, y: 0 } : { opacity: 0, y: 24 }}
       transition={{ duration: reducedMotion ? 0 : 0.6, delay: reducedMotion ? 0 : delay, ease: "easeOut" }}
-      className={className}
+      className={`scroll-reveal ${className ?? ""}`}
     >
       {children}
     </motion.div>

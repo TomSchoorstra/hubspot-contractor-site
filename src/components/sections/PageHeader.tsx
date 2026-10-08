@@ -23,7 +23,7 @@ export default function PageHeader({
       <Container>
         <div className="relative space-y-7">
           {eyebrow && (
-            <p className="text-xs font-semibold uppercase tracking-widest text-accent">
+            <p className="text-xs font-semibold uppercase tracking-widest text-accent-text">
               {eyebrow}
             </p>
           )}

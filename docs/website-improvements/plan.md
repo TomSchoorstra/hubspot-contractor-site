@@ -1,7 +1,7 @@
 # Websiteverbeteringen in afzonderlijke checkpoints
 
 Datum: 8 oktober 2026
-Status: checkpoint 1 geaccepteerd; checkpoints 2–8 worden achtereenvolgens uitgevoerd met zelfcontrole; gezamenlijke review volgt na checkpoint 8.
+Status: checkpoint 1 geaccepteerd; checkpoints 2–8 hebben zelfcontrole afgerond; de complete lokale website wacht op Toms gezamenlijke review.
 
 ## Doel en uitgangspunten
 
@@ -125,11 +125,11 @@ Toegestane statussen: **gepland**, **bezig**, **zelfcontrole afgerond**, **wacht
 | 4 | Datakwaliteitscase | Zelfcontrole afgerond | 07ed704 | — |
 | 5 | Bestaande diensten | Zelfcontrole afgerond | 7dabdec | — |
 | 6 | Homepage en gedeelde positionering | Zelfcontrole afgerond | cf78b20 | — |
-| 7 | Drie artikelbriefings | Zelfcontrole afgerond | Zie checkpoint-7-commit | — |
-| 8 | Eindcontrole en releasevoorbereiding | Gepland | — | — |
+| 7 | Drie artikelbriefings | Zelfcontrole afgerond | 4b96b67 | — |
+| 8 | Eindcontrole en releasevoorbereiding | Zelfcontrole afgerond | Zie checkpoint-8-commit | — |
 | 9 | Gezamenlijke publicatie | Gepland | — | — |
 
-**Eerstvolgende stap:** checkpoint 8 uitvoeren; checkpoints 2–7 hebben zelfcontrole afgerond.
+**Eerstvolgende stap:** Tom beoordeelt de complete lokale website aan de hand van [release-review.md](release-review.md). Checkpoint 9 blijft gepland en vereist een nieuwe expliciete opdracht; niets is gepusht of gedeployed.
 
 ## Checkpoint 1: positionering en uitvoeringsbasis
 
@@ -356,3 +356,15 @@ Vul bij ieder checkpoint kort aan:
 - **Controles:** vereiste onderdelen, fictieve voorbeelden, claimgrenzen, bestaande interne routes en onderlinge onderscheidingen gecontroleerd; Markdown-diff zonder whitespacefouten. Geen build nodig voor uitsluitend documentatie; volledige build volgt bij checkpoint 8.
 - **Beperkingen:** actuele technische bronchecks en aanvullende publiceerbare projectinformatie zijn onderdeel van later artikelwerk. Deze briefings zijn geen geaccepteerde of gepubliceerde artikelen. Geen browsercontrole.
 - **Status:** zelfcontrole afgerond; checkpoint 8 volgt. Geen acceptatie namens Tom; niets gepusht of gedeployed.
+
+### Checkpoint 8 — Eindcontrole en releasevoorbereiding — 8 oktober 2026
+
+- **Oplevering:** [release-review.md](release-review.md) bevat scope, routes, controles, beperkingen, reviewvolgorde en terugvalpunt. Checkpoints 2–8 hebben zelfcontrole afgerond; alleen Tom kan de release accepteren.
+- **Gevonden en hersteld:** bestaande counters toonden vóór hydration nul; nu staan juiste cijfers in de HTML met een afzonderlijke vaste screenreaderwaarde. Twitter-metadata was generiek en OG-afbeeldingen ontbraken op onderliggende pagina’s; alle aangepaste routes hebben eigen socialcopy en een centrale afbeeldingverwijzing. Kleine accenttekst en witte knoplabels hadden onvoldoende berekend contrast; donkere oranje/teal-varianten toegevoegd met behoud van de bestaande kleurenfamilie en decoratieve accenten. Gewone links hebben expliciete toetsenbordfocus; reduced-motion CSS maakt reveal-content al vóór hydration zichtbaar. About benoemt engagementvormen zonder tegenstrijdige actuele beschikbaarheid te claimen.
+- **Technische checks:** volledige lint geslaagd (0 fouten; 2 bestaande waarschuwingen in loopschema-validaties); `npx tsc --noEmit` geslaagd; volledige `NEXT_PUBLIC_SITE_ENV=preview npm run build` geslaagd, inclusief Tom/Denise-validaties en 35 gegenereerde pagina’s. De bestaande edge-runtime-melding bij dynamische routes blijft informatief. Geen dependency- of configuratiewijzigingen.
+- **HTML-checks:** 15 aangepaste pagina’s/templatevarianten, 323 interne linkverwijzingen, één H1 per pagina, titels/descriptions, canonicals, Open Graph/Twitter inclusief imageverwijzing, geldige JSON-LD, image-alt, optioneel fictief diagram en sitemap gecontroleerd. Alle 6 diensten, 5 cases en 8 bestaande blogs gegenereerd; geen artikelbriefings gepubliceerd. De vijf casecounters hebben correcte initiële cijfers.
+- **Analytics:** preview-HTML heeft `data-site-env=preview` en geen GTM-script. Geïsoleerde test van de bestaande analyticsmodule: preview/development sturen 0 events; production levert verwachte events uitsluitend in een in-memory datalaag. Geen echte events of testleads verstuurd.
+- **Validatieomgeving:** tijdelijke kopie `/private/tmp/hs-website-validation`; 71 bron/script/migratiebestanden en zes buildconfiguratie/lockfiles byte-voor-byte gelijk aan de opgeslagen inputs. Deze kopie omzeilt alleen de vastgelopen iCloud-dataless lokale installatie; geen buildgate overgeslagen.
+- **Bron- en scopecontrole:** niet-gerelateerde documenten en dependency/deployconfiguratie behouden. Geen writes in ea-claude. Van 20 gecontroleerde baselinebestanden zijn 19 gelijk gebleven; het Account-project-README kreeg tijdens deze sessie buiten dit websitewerk een nieuwe MRR-cardsectie. Die wijziging is uitsluitend gelezen, niet teruggedraaid en niet in de websitescope opgenomen. Geen interne klantrecords, identifiers of systeemlinks aan publieke copy toegevoegd.
+- **Beperkingen:** geen Browser-skill of browsercontrole op Toms verzoek. Responsive weergave, daadwerkelijke tabvolgorde, menus/accordions, motion en social-afbeeldingsrendering zijn niet visueel of interactief bevestigd. Statische code/HTML- en contrastchecks zijn geen volledige toegankelijkheidsaudit. Gedateerde projectclaims blijven snapshots; geen externe productiestatus opnieuw geverifieerd.
+- **Status:** zelfcontrole afgerond; lokaal gereed voor gezamenlijke review. De checkpoint-8-commit bevat deze log; de hash staat in de oplevering en is te vinden met `git log -1 --format=%h`. Checkpoint 9 niet gestart; niets gepusht of gedeployed.
