@@ -1,6 +1,6 @@
 # Typografievoorstel na de livegang
 
-Datum: 8 oktober 2026. Status: lokaal uitgewerkt; nog niet gepusht of gedeployed.
+Datum: 8 oktober 2026. Status: door Tom goedgekeurd voor publicatie; productie-deploy wordt uitgevoerd.
 
 Tom vindt de grote letters te onrustig en vraagt om professionelere typografie die nog speels blijft. De aangeleverde screenshot en lokale fontconfiguratie zijn de basis; geen browser gebruikt.
 
@@ -27,3 +27,7 @@ De hoofdregel blijft Geist maar gebruikt gewicht 500. Alleen “of HubSpot.” k
 De lokale bronkopie en localhost-versie worden bijgewerkt. Geen browserchecks; geen push of deploy. De oude hero blijft onderdeel van productiebron `6b8d352` tot deze lokale richting apart wordt gepubliceerd.
 
 Controles tweede iteratie: scoped ESLint geslaagd; volledige previewbuild inclusief TypeScript en planvalidaties geslaagd; HTML/linkchecks opnieuw geslaagd voor 15 pagina’s/templatevarianten en 323 linkverwijzingen. Localhost-productieserver opnieuw gestart op poort 3100 met de previewbuild.
+
+## Publicatieautorisatie — 8 oktober 2026
+
+Tom beoordeelde de lokale versie en gaf opdracht “i like it publish maar”. De twee lokale stijlcommits `6f2516e` en `2216cf9` worden met de bijbehorende release-/typografielogs via een normale fast-forward op main gepubliceerd. Geen nieuwe inhoud of stijlwijzigingen sinds de gecontroleerde lokale versie. Vorige productiebron: `6b8d352`; vorige Vercel-productiedeployment: `6936980116`.

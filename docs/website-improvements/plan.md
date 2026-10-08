@@ -419,3 +419,9 @@ Vul bij ieder checkpoint kort aan:
 - Tom vraagt om iets creatievere typografie en vindt de hero te marketingachtig.
 - Lokale hero: “I work on the complicated bits of HubSpot.” met concretere toelichting op het AIHR-werk. Geist 500 met één cursief serifaccent; overige koppen houden de eerdere rustige richting.
 - [Typografielog](typography-refresh.md) bijgewerkt. Localhost-preview wordt bijgewerkt; geen browserchecks of productiepublicatie.
+
+### Vervolgcorrectie — Typografiepublicatie geautoriseerd — 8 oktober 2026
+
+- Tom geeft na beoordeling van de localhost-versie expliciet opdracht “i like it publish maar”. De typografie en persoonlijkere hero zijn daarmee goedgekeurd voor publicatie.
+- Scope: uitsluitend de gecontroleerde lokale wijzigingen uit `6f2516e` en `2216cf9`, plus de bijbehorende voortgangsdocumentatie. Geen browserchecks. Publicatie via main en de bestaande Vercel-integratie; live HTTP-controles volgen.
+- Terugvalpunt: productiebron `6b8d352`, Vercel-productiedeployment `6936980116`. Nieuwe releasegegevens worden na de deploy vastgelegd.
