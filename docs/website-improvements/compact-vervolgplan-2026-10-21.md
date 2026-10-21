@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 3 lokaal uitgewerkt; het consultancyvoorbeeld van checkpoint 4 is ook gereed voor Toms beoordeling. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -26,7 +26,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 1 Richting en Tom Voice | Stemreview, gewenste balans en belangrijkste herhaling beoordelen | Kort stijlkompas, enkele voor-en-na-voorbeelden en compacte paginaopzet | Zelfcontrole afgerond; stemvoorstel bij preview beoordelen |
 | 2 Publieke fouten | Zichtbare bloginstructies, mobiele overflow, canonical-signalen, meetfout en Slack-beschikbaarheid aanpakken | Kleine correcties met controles, zonder nieuwe marketingsecties | Zelfcontrole afgerond; externe Slack-werking blijft onbevestigd |
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
-| 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld zelf gecontroleerd; review voor overige vijf |
+| 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Gepland |
 | 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
@@ -163,3 +163,28 @@ De nulmeting telt 344 woorden en de nieuwe pagina 232 (−33%), inclusief alle o
 Productiebouw, TypeScript, beide verplichte validators en scoped ESLint slagen. De zes diensten zijn op 320, 390 en 1440 px gecontroleerd: geen overflow of browser-page-errors. Alle vier unieke interne links op de voorbeeldpagina geven 200; canonical en metadata zijn passend. De vijf overige dienstpagina's hebben exact dezelfde main-tekst als de nulmeting bij 390 en 1440 px. Hun layout blijft de bestaande variant. De consultancykaart in het dienstenoverzicht volgt automatisch de bijgewerkte bronbeschrijving en korte uitkomsten.
 
 Status: zelfcontrole afgerond, klaar voor Toms beoordeling. Eerst deze voorbeeldpagina beoordelen; daarna de vijf andere diensten op de gekozen basis uitwerken. Geen push of publicatie uitgevoerd.
+
+
+## Checkpoint 4 — overige diensten en overzicht gereed
+
+Tom heeft het consultancyvoorbeeld goedgekeurd en opdracht gegeven naar het volgende onderdeel te gaan. De overige vijf diensten gebruiken nu dezelfde compacte opzet. Het overzicht toont zes korte tekstregels met links. Alle bestaande dienst-URL’s zijn behouden. De goedgekeurde consultancytekst is op 320, 390 en 1440 px exact gelijk gebleven.
+
+Corey Haines’ copy-editing- en CRO-skills zijn toegepast met de bestaande productmarketingcontext en het Tom Voice-kompas. De pagina’s geven eerst persoonlijke expertise en een concrete bewijslink, daarna scope, aanpak en relevante platform- en beheergrenzen. Herhaalde outcomes, proceskaarten, tellers en grote verkoopafsluiters zijn verwijderd. Unieke FAQ-informatie is zichtbaar in de tekst verwerkt. Service- en BreadcrumbList-schema blijven op alle zes detailpagina’s; het niet meer passende FAQPage-schema is verwijderd.
+
+| Pagina | Woorden voor → na | Main-hoogte mobiel 390 px voor → na |
+|---|---:|---:|
+| `/services` | 304 → 168 | 4296 → 1726 px |
+| `/services/automation` | 385 → 251 | 5408 → 2007 px |
+| `/services/consultancy` | 232 → 232 | 1965 → 1965 px |
+| `/services/integrations` | 375 → 248 | 5234 → 2039 px |
+| `/services/custom-objects` | 409 → 270 | 5484 → 2264 px |
+| `/services/pipeline-optimization` | 339 → 272 | 4829 → 2150 px |
+| `/services/custom-app-cards` | 463 → 268 | 5776 → 2100 px |
+
+De telling gebruikt `main.innerText`, inclusief alle oude FAQ-antwoorden. De oude hoogtemeting heeft die antwoorden uitgeklapt; de oude screenshots tonen de standaard gesloten toestand. Navigatie en footer zijn uitgesloten. Leesbare bodytekst blijft behouden; er wordt geen conversieverbetering uit deze cijfers afgeleid.
+
+Scopecontrole: triggers en reviewpunten, foutmeldingen bij koppelingen, bron- en synchronisatierichting, custom-objectmigratie en rapportage, verplichte pipelinevelden en app-carduitrol blijven expliciet aanwezig. Platformvoorwaarden zijn met officiële HubSpot-documentatie gecontroleerd en op de relevante pagina gelinkt. De Finance-goedkeuring, Account-snapshot en resterend verrijkingswerk, en read-only renewal-case blijven concrete grenzen van het bewijs.
+
+Productiebouw inclusief TypeScript en beide verplichte validators slaagt; scoped ESLint op de vier gewijzigde bronbestanden is schoon. Alle zeven pagina’s geven 200 op 320, 390 en 1440 px, met één H1, passende canonicals en metadata, geen overflow en geen browser-page-errors. Vijftien unieke interne bestemmingen geven 200; de klikroute overzicht → app cards → renewal-case werkt. Representatieve screenshots zijn visueel beoordeeld. Er zijn geen echte formulieren verzonden.
+
+[Review, bronnen, metingen en controles](services-preview-2026-10-21/review.json) leggen de oplevering vast. Status: zelfcontrole afgerond voor de vijf diensten en het overzicht; nog geen beoordeling namens Tom. Geen push of publicatie uitgevoerd. Volgend onderdeel: checkpoint 5, met finance-automation als eerste compacte voorbeeldcase.

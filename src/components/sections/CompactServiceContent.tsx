@@ -9,7 +9,7 @@ export default function CompactServiceContent({
   details,
 }: {
   service: Service;
-  details: NonNullable<Service["compact"]>;
+  details: Service["compact"];
 }) {
   return (
     <>
@@ -34,7 +34,7 @@ export default function CompactServiceContent({
         <Container size="narrow">
           <div className="max-w-3xl space-y-9 text-lg leading-relaxed text-text-secondary">
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-semibold text-text">What I look at</h2>
+              <h2 className="font-display text-2xl font-semibold text-text">{details.headings.scope}</h2>
               <p>{details.scopeIntro}</p>
               <ul className="list-disc space-y-3 pl-5 marker:text-accent-text">
                 {service.deliverables.map(item => <li key={item}>{item}</li>)}
@@ -42,13 +42,20 @@ export default function CompactServiceContent({
             </div>
 
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-semibold text-text">What comes out of a review</h2>
-              {details.reviewOutput.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+              <h2 className="font-display text-2xl font-semibold text-text">{details.headings.approach}</h2>
+              {details.approach.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
             </div>
 
             <div className="space-y-4">
-              <h2 className="font-display text-2xl font-semibold text-text">Before making changes</h2>
-              <p>{details.boundaries}</p>
+              <h2 className="font-display text-2xl font-semibold text-text">{details.headings.boundaries}</h2>
+              {details.boundaries.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+              {service.references && (
+                <ul className="space-y-2 text-sm">
+                  {service.references.map(reference => (
+                    <li key={reference.href}><a href={reference.href} className={textLink}>{reference.label}</a></li>
+                  ))}
+                </ul>
+              )}
               <Link href="/about" className={`inline-block text-base ${textLink}`}>More about my approach</Link>
             </div>
 

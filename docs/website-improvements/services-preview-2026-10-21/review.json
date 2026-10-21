@@ -1,0 +1,131 @@
+{
+  "date": "2026-10-21",
+  "status": "Consultancy example approved by Tom; remaining five services and index self-checked and ready for review.",
+  "scope": "Checkpoint 4: remaining five service pages and services index; six service URLs retained. No case or blog rewrite in this checkpoint.",
+  "preview": "http://127.0.0.1:3102/services",
+  "skills": {
+    "upstream": "https://github.com/coreyhaines31/marketingskills",
+    "applied": [
+      "copy-editing mode B, seven sweeps and final checklist",
+      "cro: clarity, action, proof and expectations",
+      "existing product marketing context and Tom Voice compass"
+    ]
+  },
+  "copy_checks": {
+    "clarity": "One introduction with early case link; scope, approach and platform/ownership headings. Six concise index rows replace repeated outcome cards.",
+    "voice": "First person, concrete work, employer-independent general introductions. AIHR only as specific project context. Space Grotesk headings and Geist body retained.",
+    "so_what": "Explains what is reviewed/built and how the team uses and maintains it.",
+    "proof": "Only existing cases: Finance keeps approval, Account retains dated snapshot and enrichment work, renewal card remains read-only in its example.",
+    "specificity": "Unique technical scope retained visibly; duplicate outcomes, process panels, counters and large sales endings removed.",
+    "emotion": "Recognizable handover and record problems; no pressure or invented growth promises.",
+    "risk_and_expectations": "Portfolio, conversations welcome, no client projects. Subscription, permissions and maintenance conditions visible. No delivery deadline or unlimited connector promise.",
+    "final": "No em dashes, contrastive reveals, fake metrics or testimonials. Consultancy main text exactly matches approved version at all three widths."
+  },
+  "retained_scope": {
+    "automation": "Routing, triggers/logic, review points, missing associations, staged testing, rollout monitoring, documented exception follow-up, custom code plan requirements.",
+    "integrations": "Native/Zapier/API choice, source ownership, identifiers and mappings, direction/conflicts, failed/duplicate updates and alerts, edge-case testing, connector limits and ongoing owners.",
+    "custom-objects": "Standard-object alternative, model/properties/associations, record paths, configuration and sample testing, migration including spreadsheets, views/reporting, Enterprise and object/property limits, manual review boundary.",
+    "pipeline-optimization": "Stages/exit criteria, required deal properties per stage, migration and dependent automation, reporting/forecast assumptions, testing, handover and live monitoring, subscription/object limits.",
+    "custom-app-cards": "React UI extension, record location, linked records, scopes/missing data, labels alongside colours, sandbox testing, live-record verification, documentation/visibility and maintenance, hosting/platform requirements. Read-only is specific to renewal example."
+  },
+  "technical_sources": {
+    "verified": "2026-10-21",
+    "method": "Official HubSpot documentation checked during implementation; linked from relevant service pages.",
+    "urls": [
+      "https://developers.hubspot.com/docs/api-reference/legacy/automation/workflow-actions/custom-code-actions",
+      "https://knowledge.hubspot.com/object-settings/create-custom-objects",
+      "https://knowledge.hubspot.com/object-settings/set-up-and-customize-pipelines",
+      "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview",
+      "https://developers.hubspot.com/changelog/spring-2026-spotlight"
+    ]
+  },
+  "cro": {
+    "primary_action": "View a relevant case; index lets visitors choose the area of expertise.",
+    "secondary_action": "Contact for questions/conversations.",
+    "performance": "No analytics or conversion data available; no conversion uplift claimed."
+  },
+  "validation": {
+    "build": "passed including TypeScript and mandatory training validators",
+    "scoped_eslint": "passed on four changed source files",
+    "browser_checks": 21,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "internal_links": 15,
+    "all_internal_links_200": true,
+    "actual_navigation": "services index → app cards → renewal case passed",
+    "page_errors": [],
+    "overflow": false,
+    "heading_font": "Space Grotesk",
+    "metadata": "All canonical URLs, descriptions and OG images checked.",
+    "schema": "All six details retain Service and BreadcrumbList; FAQPage removed because no FAQ remains.",
+    "visual_review": "Index desktop/mobile; automation, app cards, custom objects and integrations mobile; pipeline desktop. Consultancy unchanged.",
+    "requests": "All POST requests aborted in separate Playwright session; no real form submissions.",
+    "runtime": "Clean temporary dependencies from unchanged lockfile; original dependency folder has read hangs."
+  },
+  "measurement": {
+    "method": "main.innerText after fonts load; all original FAQ answers expanded before counting and height measurement. Main excludes global navigation/footer. Before screenshots use original default FAQ state. No smaller body type used.",
+    "baselines": "Fresh baseline for services index and app cards; other five details use committed consultancy-preview/consultancy-after.json at previous checkpoint.",
+    "rows": [
+      {
+        "path": "/services",
+        "before_words": 304,
+        "after_words": 168,
+        "word_reduction_percent": 45,
+        "before_mobile_main_height": 4296,
+        "after_mobile_main_height": 1726
+      },
+      {
+        "path": "/services/automation",
+        "before_words": 385,
+        "after_words": 251,
+        "word_reduction_percent": 35,
+        "before_mobile_main_height": 5408,
+        "after_mobile_main_height": 2007
+      },
+      {
+        "path": "/services/consultancy",
+        "before_words": 232,
+        "after_words": 232,
+        "word_reduction_percent": 0,
+        "before_mobile_main_height": 1965,
+        "after_mobile_main_height": 1965
+      },
+      {
+        "path": "/services/integrations",
+        "before_words": 375,
+        "after_words": 248,
+        "word_reduction_percent": 34,
+        "before_mobile_main_height": 5234,
+        "after_mobile_main_height": 2039
+      },
+      {
+        "path": "/services/custom-objects",
+        "before_words": 409,
+        "after_words": 270,
+        "word_reduction_percent": 34,
+        "before_mobile_main_height": 5484,
+        "after_mobile_main_height": 2264
+      },
+      {
+        "path": "/services/pipeline-optimization",
+        "before_words": 339,
+        "after_words": 272,
+        "word_reduction_percent": 20,
+        "before_mobile_main_height": 4829,
+        "after_mobile_main_height": 2150
+      },
+      {
+        "path": "/services/custom-app-cards",
+        "before_words": 463,
+        "after_words": 268,
+        "word_reduction_percent": 42,
+        "before_mobile_main_height": 5776,
+        "after_mobile_main_height": 2100
+      }
+    ]
+  },
+  "publication": "Local commit only; no push or deploy."
+}

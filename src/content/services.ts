@@ -1,358 +1,243 @@
 export type Service = {
   slug: string;
   title: string;
+  indexDescription: string;
   shortDescription: string;
-  outcomes: string[];
+  metaDescription: string;
   deliverables: string[];
-  process: Array<{ title: string; description: string }>;
-  faq: Array<{ q: string; a: string }>;
-  compact?: {
+  relatedCaseStudy: string;
+  references?: Array<{ label: string; href: string }>;
+  compact: {
+    headings: { scope: string; approach: string; boundaries: string };
     proofContext: string;
     proofLabel: string;
     scopeIntro: string;
-    reviewOutput: string[];
-    boundaries: string;
+    approach: string[];
+    boundaries: string[];
   };
-  metaDescription?: string;
-  relatedCaseStudy?: string; // slug of a related case study
-  references?: Array<{ label: string; href: string }>;
 };
 
 export const servicesHeroIntro =
-  "Practical help for B2B teams with an existing HubSpot setup: understand the customer model, connect the processes and make operational exceptions easier to investigate.";
+  "My work covers the structure of a CRM, the processes around it and the information people need on a record. These pages explain the scope, practical examples and platform considerations.";
 
 export const services: Service[] = [
   {
-    slug: "automation",
-    title: "HubSpot automation",
-    shortDescription:
-      "Connect operational handovers with workflows, review points and checks for exceptions.",
-    metaDescription:
-      "HubSpot workflow design and implementation for B2B teams: connect handovers, reduce repeated entry and document how to investigate exceptions.",
-    outcomes: [
-      "Less time spent on repetitive manual tasks like data entry, follow-ups, and internal handoffs.",
-      "Faster lead response times through automated routing and notification workflows.",
-      "Clear handovers and exception checks so the team can investigate records that need attention.",
-      "Clear visibility into what's automated and where bottlenecks remain.",
+    "slug": "automation",
+    "title": "HubSpot automation",
+    "indexDescription": "Workflow logic and exception checks for recurring handovers and repeated data entry.",
+    "shortDescription": "I build HubSpot workflows that connect handovers, reduce repeated entry and make exceptions easier to follow up.",
+    "metaDescription": "Explore my HubSpot automation work: workflow logic, review points, testing and exception checks, with a Finance-led order flow as a practical example.",
+    "deliverables": [
+      "Workflow review: which routing and follow-up tasks need a flow, and where repeated data entry can be reduced.",
+      "Triggers and logic: enrollment rules, conditions, notifications and task assignments, with clear review points.",
+      "Testing: sample records, missing associations and failed handovers, including what needs manual attention.",
+      "Handover: documented workflow logic and a checklist the team can use to investigate exceptions."
     ],
-    deliverables: [
-      "Audit of your current workflows and manual processes.",
-      "Workflow design documents outlining triggers, actions, and logic.",
-      "Built and tested HubSpot workflows ready for production.",
-      "Internal notifications and task assignments where needed.",
-      "Documentation so your team can maintain and adjust workflows independently.",
-      "A review checklist for missing associations, failed handovers and other agreed exceptions.",
-    ],
-    process: [
-      {
-        title: "Discovery",
-        description:
-          "I map out your current processes to understand where time is being lost and which tasks are candidates for automation.",
+    "compact": {
+      "headings": {
+        "scope": "What I build",
+        "approach": "Testing and follow-up",
+        "boundaries": "Platform and ownership"
       },
+      "proofContext": "I connected HubSpot, WooCommerce and Exact through Zapier, with a Finance review before the order flow starts.",
+      "proofLabel": "See the Finance automation case",
+      "scopeIntro": "Automation starts with the process people follow and the points where work gets stuck. The scope can include:",
+      "approach": [
+        "I agree the logic with the team before building, then test the paths and exceptions in stages. Timing depends on the process and systems involved.",
+        "After rollout, I check how the flow behaves with real records and adjust the agreed rules when the process changes."
+      ],
+      "boundaries": [
+        "I check the HubSpot subscription and the required workflow actions before designing the flow. Custom code actions need Data Hub Professional or Enterprise.",
+        "Connections to other tools depend on their connectors or APIs. Access, monitoring and responsibility for manual review are part of the scope."
+      ]
+    },
+    "relatedCaseStudy": "finance-automation",
+    "references": [
       {
-        title: "Design",
-        description:
-          "Together we define the workflow logic — triggers, conditions, and actions — so nothing gets built without your sign-off.",
-      },
-      {
-        title: "Implementation",
-        description:
-          "I build and test the workflows in HubSpot, using a staged approach to avoid disrupting your live environment.",
-      },
-      {
-        title: "Optimization",
-        description:
-          "After launch, I monitor performance and fine-tune based on real data — adjusting triggers, timing, or logic as needed.",
-      },
-    ],
-    faq: [
-      {
-        q: "How long does implementation take?",
-        a: "Most automation projects take 2-4 weeks depending on complexity. A simple lead routing workflow can be live in days, while a multi-step process across teams takes longer to map and test properly.",
-      },
-      {
-        q: "What HubSpot tier do I need?",
-        a: "Workflow availability depends on the Hub and the actions you need. Custom code actions require Data Hub Professional or Enterprise. I check your subscription and the required objects and actions before designing the flow.",
-      },
-      {
-        q: "Can you integrate with our existing systems?",
-        a: "Yes — if your tools connect via Zapier, native HubSpot integrations, or APIs, I can include them in the automation flow. Common integrations include Slack, Exact, WooCommerce, and Google Workspace.",
-      },
-    ],
-    relatedCaseStudy: "finance-automation",
-    references: [{ label: "HubSpot: custom code actions and subscription requirements", href: "https://developers.hubspot.com/docs/api-reference/legacy/automation/workflow-actions/custom-code-actions" }],
+        "label": "HubSpot: custom code actions and plan requirements",
+        "href": "https://developers.hubspot.com/docs/api-reference/legacy/automation/workflow-actions/custom-code-actions"
+      }
+    ]
   },
   {
-    slug: "consultancy",
-    title: "HubSpot consultancy",
-    shortDescription:
-      "I review how a HubSpot setup supports the work around it, from customer records to handovers between teams.",
-    metaDescription:
-      "My approach to HubSpot consultancy: reviewing CRM structure, data quality and workflows, then prioritizing changes. See the scope and a practical example.",
-    outcomes: [
-      "Priorities based on the process and the data.",
-      "A roadmap with decisions, owners and next steps.",
-    ],
-    deliverables: [
+    "slug": "consultancy",
+    "title": "HubSpot consultancy",
+    "shortDescription": "I review how a HubSpot setup supports the work around it, from customer records to handovers between teams.",
+    "metaDescription": "My approach to HubSpot consultancy: reviewing CRM structure, data quality and workflows, then prioritizing changes. See the scope and a practical example.",
+    "deliverables": [
       "Customer model and associations: how records relate to each other.",
       "Data quality and source ownership: where values conflict and how exceptions are reviewed.",
       "Workflows and handovers: triggers, dependencies and records that need attention.",
-      "Pipelines and reporting: whether the pipeline reflects the process and reports answer the team's questions.",
+      "Pipelines and reporting: whether the pipeline reflects the process and reports answer the team's questions."
     ],
-    process: [],
-    faq: [],
-    compact: {
-      proofContext:
-        "At AIHR, I built a dashboard for investigating missing links and conflicting data. The case covers the review process and remaining validation work.",
-      proofLabel: "See the data quality case",
-      scopeIntro:
-        "Missing links, inconsistent data and manual workarounds are useful starting points. A review covers:",
-      reviewOutput: [
-        "A prioritized list of findings, with effort and impact considered together. I separate individual record corrections from structural changes and document the decisions.",
-        "I work through the options with the team and map out what to address first. The roadmap covers the next few months, with recurring checks and clear follow-up ownership.",
+    "compact": {
+      "proofContext": "At AIHR, I built a dashboard for investigating missing links and conflicting data. The case covers the review process and remaining validation work.",
+      "proofLabel": "See the data quality case",
+      "scopeIntro": "Missing links, inconsistent data and manual workarounds are useful starting points. A review covers:",
+      "boundaries": [
+        "I define scope and timing first. A review produces recommendations; implementation and ongoing support need their own scope, permissions and responsibilities. Available features and subscription limits shape what is practical."
       ],
-      boundaries:
-        "I define scope and timing first. A review produces recommendations; implementation and ongoing support need their own scope, permissions and responsibilities. Available features and subscription limits shape what is practical.",
+      "headings": {
+        "scope": "What I look at",
+        "approach": "What comes out of a review",
+        "boundaries": "Before making changes"
+      },
+      "approach": [
+        "A prioritized list of findings, with effort and impact considered together. I separate individual record corrections from structural changes and document the decisions.",
+        "I work through the options with the team and map out what to address first. The roadmap covers the next few months, with recurring checks and clear follow-up ownership."
+      ]
     },
-    relatedCaseStudy: "crm-data-quality",
+    "relatedCaseStudy": "crm-data-quality",
+    "indexDescription": "A review of CRM structure and data quality, with priorities and a practical roadmap."
   },
   {
-    slug: "integrations",
-    title: "Zapier & integrations",
-    shortDescription:
-      "Connect HubSpot to Exact, WooCommerce, Google Workspace, and the rest of your stack.",
-    metaDescription:
-      "HubSpot integrations via Zapier and native connectors. I connect HubSpot to Exact, WooCommerce, Google Workspace, and more — documented, tested, and built to last.",
-    outcomes: [
-      "Data flows automatically between HubSpot and your other tools — no more manual copying between systems.",
-      "A single source of truth for customer data, regardless of where it originates.",
-      "Less room for human error in data entry and cross-system updates.",
-      "Integrations that are documented, maintainable, and easy for your team to understand.",
+    "slug": "integrations",
+    "title": "HubSpot integrations",
+    "indexDescription": "Field mappings and source ownership for data moving between HubSpot and other systems.",
+    "shortDescription": "I connect HubSpot with the systems around it, with explicit field mappings, source ownership and a plan for failed updates.",
+    "metaDescription": "My approach to HubSpot integrations with Zapier, native connectors and APIs: field mapping, source ownership, testing and a documented way to handle failures.",
+    "deliverables": [
+      "Data ownership: which system is responsible for each field and which records should match.",
+      "Field mapping: identifiers, sync direction and how conflicting values are handled.",
+      "Flow logic: triggers and dependent steps, including review before an update is sent.",
+      "Exception handling: failed or duplicate updates, with alerts and a documented way to investigate them."
     ],
-    deliverables: [
-      "Integration architecture showing which systems connect and how data flows.",
-      "Zapier automations or native integrations built and tested end-to-end.",
-      "Field mapping documentation for every connected system.",
-      "Error handling and notification setup so issues get caught early.",
-      "Handover documentation for your team to manage and troubleshoot.",
-    ],
-    process: [
-      {
-        title: "Discovery",
-        description:
-          "I map your current tool stack and understand which data needs to move where — and what's currently being done manually.",
+    "compact": {
+      "headings": {
+        "scope": "What I connect",
+        "approach": "Testing and handover",
+        "boundaries": "Access and ownership"
       },
-      {
-        title: "Mapping",
-        description:
-          "I design the integration logic: field mappings, sync direction, trigger points, and how to handle edge cases.",
-      },
-      {
-        title: "Implementation",
-        description:
-          "I build the integrations in Zapier or via native connectors, using a staged approach with test data before going live.",
-      },
-      {
-        title: "Testing",
-        description:
-          "Every integration is tested with real-world scenarios to make sure data arrives correctly and edge cases are handled.",
-      },
-    ],
-    faq: [
-      {
-        q: "What tools can you integrate with HubSpot?",
-        a: "Any tool that supports Zapier, webhooks, or a REST API. Common examples include Exact, WooCommerce, Google Workspace, Slack, Jira, and various custom backends.",
-      },
-      {
-        q: "Do you use native integrations or Zapier?",
-        a: "It depends on the use case. Native integrations are preferred when they cover your requirements. Zapier is used when you need more flexibility, multi-step logic, or the native option is too limited.",
-      },
-      {
-        q: "How do you handle data mapping?",
-        a: "I create a detailed field mapping document that shows exactly which fields sync between systems, in which direction, and how conflicts are resolved. This becomes part of your documentation.",
-      },
-    ],
-    relatedCaseStudy: "finance-automation",
+      "proofContext": "In the order-to-invoice flow, I connected HubSpot, WooCommerce and Exact through Zapier. Finance keeps the decision to start the process.",
+      "proofLabel": "See the order-to-invoice case",
+      "scopeIntro": "A native connector may cover the need. I use Zapier or a custom API connection when the required flow calls for it.",
+      "approach": [
+        "I test the mapping with representative records and edge cases before rollout. That includes missing identifiers and updates arriving in an unexpected order.",
+        "The handover records the mappings and operating instructions, so the team knows where to look when systems disagree."
+      ],
+      "boundaries": [
+        "A connector or API does not guarantee that a tool supports the needed operation. I check permissions, API limits and subscription requirements before choosing the route.",
+        "Access credentials, connector costs and ongoing maintenance need clear owners. I agree which system can overwrite a value and where human approval remains necessary."
+      ]
+    },
+    "relatedCaseStudy": "finance-automation"
   },
   {
-    slug: "custom-objects",
-    title: "Custom object development",
-    shortDescription:
-      "Model the customer relationship with custom objects, clear associations and paths for new records.",
-    metaDescription:
-      "HubSpot custom object development for Enterprise portals. I design data models that reflect your business, build clean associations, and set up reporting dashboards on your custom data.",
-    outcomes: [
-      "A data model that reflects your actual business — not one that forces you to work around HubSpot's defaults.",
-      "Clean associations between custom objects and standard HubSpot records (contacts, companies, deals).",
-      "Reporting and dashboards built on your custom data — not workarounds with spreadsheets.",
-      "A documented structure and association rules that can evolve as your customer relationships change.",
+    "slug": "custom-objects",
+    "title": "HubSpot custom objects",
+    "indexDescription": "Customer models and association rules when the standard CRM objects do not cover the relationship.",
+    "shortDescription": "I design HubSpot data models for relationships that need more than the standard CRM objects can represent.",
+    "metaDescription": "Explore my HubSpot custom object work: customer models, associations, migration, reporting and recurring checks, with Enterprise requirements made explicit.",
+    "deliverables": [
+      "Data model: object definitions and properties, with association labels and naming conventions.",
+      "Record paths: links to existing contacts, companies and deals, plus rules for newly created records.",
+      "Migration: field mapping and association checks for existing records, including spreadsheet imports where appropriate.",
+      "Daily use: views and filters, reporting and checks for missing associations after rollout."
     ],
-    deliverables: [
-      "Requirements document outlining the business logic and data relationships.",
-      "Schema design with object definitions, properties, and association labels.",
-      "Custom objects built and configured in your HubSpot portal.",
-      "Association setup connecting custom objects to existing records.",
-      "Rules for linking new records and checking missing associations after rollout.",
-      "Custom views and filters so your team can find records quickly.",
-      "Reporting dashboards using custom object data.",
-    ],
-    process: [
-      {
-        title: "Requirements",
-        description:
-          "I work with your team to understand the business logic — what data you need to track, how records relate, and what you need to report on.",
+    "compact": {
+      "headings": {
+        "scope": "What I model",
+        "approach": "Testing and rollout",
+        "boundaries": "Platform and scope"
       },
+      "proofContext": "I led AIHR's Account-based CRM project, linking licenses, deals and professional services through a custom Account object. The case includes its September 2026 snapshot and remaining enrichment work.",
+      "proofLabel": "See the Account-based CRM case",
+      "scopeIntro": "I start by checking whether standard objects and associations already describe the relationship. When a custom object is justified, the work covers:",
+      "approach": [
+        "I configure and test the model with sample data before migrating existing records. I document the structure and work through how the team will use and maintain it.",
+        "For the Account project, recurring reviews help investigate potential duplicates and missing links. The review supports decisions; it does not automatically repair records."
+      ],
+      "boundaries": [
+        "Custom objects need an eligible HubSpot Enterprise subscription. I check object and property limits, permissions and the reporting requirements before committing to the model.",
+        "Standard objects may offer features a custom object cannot replace. Scope, rollout responsibility and ongoing review need to be agreed before changes are made."
+      ]
+    },
+    "relatedCaseStudy": "customer-lifecycle",
+    "references": [
       {
-        title: "Schema design",
-        description:
-          "I design the object schema: properties, associations, and naming conventions — documented clearly before any building starts.",
-      },
-      {
-        title: "Development",
-        description:
-          "I create the custom objects in HubSpot, set up associations, configure views, and build any automation that depends on the new data structure.",
-      },
-      {
-        title: "Testing & rollout",
-        description:
-          "I test with sample data, migrate existing records if needed, and train your team on how to use and maintain the new objects.",
-      },
-    ],
-    faq: [
-      {
-        q: "What HubSpot tier supports custom objects?",
-        a: "Custom objects require an eligible Enterprise subscription. I check your plan and object limits before we choose the model. We also evaluate whether standard objects and associations already cover the relationship you need.",
-      },
-      {
-        q: "Can you migrate existing data?",
-        a: "Yes. I can migrate data from spreadsheets, other CRM fields, or external systems into your new custom objects — including mapping associations to existing records.",
-      },
-      {
-        q: "How do custom objects affect reporting?",
-        a: "Custom objects unlock new reporting dimensions. You can build dashboards that show metrics across your custom data, filter by associations, and create reports that weren't possible with standard objects alone.",
-      },
-    ],
-    relatedCaseStudy: "customer-lifecycle",
-    references: [{ label: "HubSpot: create and edit custom objects", href: "https://knowledge.hubspot.com/object-settings/create-custom-objects" }],
+        "label": "HubSpot: custom object requirements and limitations",
+        "href": "https://knowledge.hubspot.com/object-settings/create-custom-objects"
+      }
+    ]
   },
   {
-    slug: "pipeline-optimization",
-    title: "Pipeline reviews & optimization",
-    shortDescription:
-      "Clean pipelines, consistent processes, forecasts you can trust.",
-    metaDescription:
-      "HubSpot pipeline optimization for sales teams. I clean up deal stages, standardize fields, and build forecasting dashboards your leadership team can actually rely on.",
-    outcomes: [
-      "Pipeline stages that reflect your actual sales process — not a default template.",
-      "Required fields and validation rules that keep data clean without slowing reps down.",
-      "Forecasting dashboards your leadership team can actually rely on.",
+    "slug": "pipeline-optimization",
+    "title": "HubSpot pipeline reviews",
+    "indexDescription": "Stage definitions, deal data and reporting that follow the team's actual process.",
+    "shortDescription": "I review pipeline structure and deal data so stages reflect the real process and handovers are easier to follow.",
+    "metaDescription": "My approach to HubSpot pipeline reviews: stage definitions, field use, deal migration and reporting, with a practical pipeline consolidation example.",
+    "deliverables": [
+      "Stages and exit criteria: what each stage means and what must happen before a deal moves on.",
+      "Field use: required deal properties per stage, and the gaps that make the next step unclear.",
+      "Configuration: the proposed structure, migration of existing deals and any dependent automation.",
+      "Reporting: pipeline health and conversion views, with the assumptions behind any revenue forecast made explicit."
     ],
-    deliverables: [
-      "Pipeline audit covering stages, deal flow, field usage, and data quality.",
-      "Recommended pipeline structure with clear stage definitions and exit criteria.",
-      "Required fields and deal properties configured per stage.",
-      "Dashboards for pipeline health, conversion rates, and revenue forecasting.",
-      "Documentation of the new pipeline structure and guidelines for the team.",
-    ],
-    process: [
-      {
-        title: "Review",
-        description:
-          "I analyze your current pipelines — stages, field usage, deal velocity, and where deals stall or get lost.",
+    "compact": {
+      "headings": {
+        "scope": "What I review",
+        "approach": "Rollout and monitoring",
+        "boundaries": "Scope and platform"
       },
+      "proofContext": "I consolidated several HubSpot pipelines into one process from MQL to Closed Won, so the team could follow progress and handovers in one place.",
+      "proofLabel": "See the pipeline consolidation case",
+      "scopeIntro": "The starting point is how the team works today and where deals stop moving. A review covers:",
+      "approach": [
+        "I work through the stage definitions with the team, then test the new structure and field requirements before rollout. The handover includes process guidelines and reporting definitions.",
+        "After rollout, I check how stages and required fields are used. A process change or a growing queue of stuck deals is a reason to review the setup."
+      ],
+      "boundaries": [
+        "The approach can apply to deal or ticket pipelines. Available rules, automation and reporting depend on the HubSpot subscription and object type.",
+        "I define scope, permissions and migration responsibility before changing live records. Better stage definitions support reporting; forecasts still depend on the underlying data and assumptions."
+      ]
+    },
+    "relatedCaseStudy": "pipeline-consolidation",
+    "references": [
       {
-        title: "Recommendations",
-        description:
-          "I present a clear recommendation: which stages to keep, merge, or remove, and what data to require at each step.",
-      },
-      {
-        title: "Implementation",
-        description:
-          "I restructure the pipelines in HubSpot, migrate existing deals, and set up the required fields and automation.",
-      },
-      {
-        title: "Monitoring",
-        description:
-          "After rollout, I check pipeline health metrics and adjust stage definitions or field requirements based on real usage.",
-      },
-    ],
-    faq: [
-      {
-        q: "What pipelines can you optimize?",
-        a: "Deals pipelines (new business, renewals, upsells), tickets pipelines, and any custom pipelines. The approach works for both sales and service teams.",
-      },
-      {
-        q: "How often should pipelines be reviewed?",
-        a: "At minimum every 6 months, or whenever your sales process changes significantly — new product lines, team growth, or market shifts are all good triggers for a review.",
-      },
-    ],
-    relatedCaseStudy: "pipeline-consolidation",
+        "label": "HubSpot: pipeline settings and subscription requirements",
+        "href": "https://knowledge.hubspot.com/object-settings/set-up-and-customize-pipelines"
+      }
+    ]
   },
   {
-    slug: "custom-app-cards",
-    title: "HubSpot custom app cards",
-    shortDescription:
-      "Custom sidebar cards that surface live CRM data where your team actually works — inside HubSpot.",
-    metaDescription:
-      "Custom HubSpot app cards that show relevant CRM context on a record. React-based interfaces with data access designed for your platform and subscription.",
-    outcomes: [
-      "Live, contextual data visible directly in the deal or contact sidebar — no switching between tabs, reports, or external tools.",
-      "Custom UI that matches your team's workflow, showing exactly the data points that matter for each record.",
-      "A hosting and data-access approach matched to your HubSpot platform version, subscription and integration needs.",
-      "Reduced reliance on workaround workflows, manual lookups, and dashboard-hopping to get operational context.",
+    "slug": "custom-app-cards",
+    "title": "HubSpot custom app cards",
+    "indexDescription": "Relevant context on a HubSpot record, with clear status labels and a defined data-access approach.",
+    "shortDescription": "I build HubSpot app cards that bring relevant information onto the record, with clear status labels and an explicit data-access design.",
+    "metaDescription": "Explore my HubSpot app card work: React interfaces, associated data and status logic, with explicit hosting, access and maintenance requirements.",
+    "deliverables": [
+      "Design: record location, data sources and status labels with colour rules.",
+      "Access: associated objects and scopes, with explicit handling for missing records.",
+      "Build: a React UI Extension and appropriate data-fetching route, tested in a development or sandbox environment.",
+      "Rollout: verify the card on live records and document the visibility rules and change process."
     ],
-    deliverables: [
-      "Discovery session to identify which data points your team needs at a glance and where they currently go to find them.",
-      "Card design spec covering layout, data sources, status logic, and color-coding rules.",
-      "React-based UI Extension built and tested in a HubSpot sandbox environment.",
-      "Serverless functions to fetch and process data from associated objects and properties.",
-      "Production deployment with verification on live records.",
-      "Documentation covering the card's data sources, logic, and how to request changes.",
-    ],
-    process: [
+    "compact": {
+      "headings": {
+        "scope": "What the card includes",
+        "approach": "Testing and maintenance",
+        "boundaries": "Hosting and access"
+      },
+      "proofContext": "My renewal-status card reads the linked License and displays its status on a deal. The card is read-only, with its function hosted in HubSpot for that implementation.",
+      "proofLabel": "See the renewal-status card case",
+      "scopeIntro": "I start with the question someone needs to answer on a record. The work includes:",
+      "approach": [
+        "I test the status logic and the paths for missing or unavailable data. Written labels explain each status alongside its colour.",
+        "Documentation covers the sources, permissions and maintenance owner, including how changes to fields or associations affect the card."
+      ],
+      "boundaries": [
+        "Data access and hosting depend on the subscription and platform version. Some integrations use an external backend, with its own costs and maintenance.",
+        "On platform 2026.03, private app functions need an Enterprise subscription or a free developer test account. I confirm scopes and runtime limits, and agree whether the card reads data or can write changes."
+      ]
+    },
+    "relatedCaseStudy": "renewal-status-card",
+    "references": [
       {
-        title: "Discovery",
-        description:
-          "I identify which data points your team needs at a glance and map out where that data currently lives in your portal.",
+        "label": "HubSpot: UI extensions and data access",
+        "href": "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview"
       },
       {
-        title: "Design",
-        description:
-          "We define the card layout, data sources, status logic, and color-coding rules before writing any code.",
-      },
-      {
-        title: "Development",
-        description:
-          "I build the React UI Extension and serverless functions inside HubSpot's platform, testing against sandbox data.",
-      },
-      {
-        title: "Rollout",
-        description:
-          "I deploy to production, verify with live records, configure visibility rules, and hand over documentation.",
-      },
-    ],
-    faq: [
-      {
-        q: "What HubSpot plan do I need?",
-        a: "Requirements depend on the card and its data access. On the 2026.03 platform, private app functions require an Enterprise subscription or a free developer test account. I verify your subscription, platform version and scopes before choosing an implementation.",
-      },
-      {
-        q: "Can the card pull data from custom objects?",
-        a: "Yes, where the app has the required object access and scopes. My renewal-status card reads the associated License and displays its subscription status on the deal. We agree on the source and handle missing associations explicitly.",
-      },
-      {
-        q: "Does this require external hosting or infrastructure?",
-        a: "HubSpot can host the interface and, on eligible plans and platform versions, app functions. Some integrations use an external backend. We confirm hosting, limits, costs and maintenance responsibilities during design instead of assuming the card is maintenance-free.",
-      },
-      {
-        q: "What kinds of cards can you build?",
-        a: "Any card that surfaces data your team needs while reviewing a record. Common examples: renewal or subscription status on deals, customer health scores on companies, contract expiration warnings, payment status from billing objects, onboarding progress, open support ticket summaries, compliance approval status, and cross-sell indicators based on purchased products.",
-      },
-    ],
-    relatedCaseStudy: "renewal-status-card",
-    references: [
-      { label: "HubSpot: UI extensions overview", href: "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview" },
-      { label: "HubSpot: 2026.03 platform and app function requirements", href: "https://developers.hubspot.com/changelog/spring-2026-spotlight" },
-    ],
-  },
+        "label": "HubSpot: 2026.03 app function requirements",
+        "href": "https://developers.hubspot.com/changelog/spring-2026-spotlight"
+      }
+    ]
+  }
 ];
