@@ -8,13 +8,13 @@ import Badge from "@/components/ui/Badge";
 export const metadata: Metadata = {
   title: "About Me | Tom Schoorstra",
   description:
-    "HubSpot & RevOps specialist based in the Netherlands. Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
+    "HubSpot & RevOps specialist based in the Netherlands. Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces.",
   alternates: { canonical: "/about" },
   openGraph: {
     images: [SITE_SOCIAL_IMAGE],
     title: "About Tom Schoorstra | HubSpot & RevOps Specialist",
     description:
-      "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
+      "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces.",
     url: "/about",
   },
   twitter: {
@@ -22,7 +22,7 @@ export const metadata: Metadata = {
     images: [SITE_SOCIAL_IMAGE.url],
     title: "About Tom Schoorstra | HubSpot & RevOps Specialist",
     description:
-      "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces at AIHR.",
+      "Explore my work in CRM architecture, integrations, data quality and custom HubSpot interfaces.",
   },
 };
 
@@ -69,7 +69,7 @@ export default function About() {
             <div className="space-y-5">
               <Badge variant="teal">HubSpot &amp; RevOps specialist</Badge>
               <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-text sm:text-5xl lg:text-6xl">Tom <span className="text-gradient-orange">Schoorstra.</span></h1>
-              <p className="max-w-2xl text-xl leading-relaxed text-text-secondary">I&apos;m based in the Netherlands. At AIHR, I work as System Operations Manager Senior within Revenue Operations, connecting CRM processes with the systems around them.</p>
+              <p className="max-w-2xl text-xl leading-relaxed text-text-secondary">I&apos;m a HubSpot &amp; RevOps specialist based in the Netherlands. I connect CRM processes with the systems around them.</p>
               <p className="max-w-2xl text-lg leading-relaxed text-text-secondary">My work includes customer models, workflows, integrations and record interfaces. I also build checks to investigate missing links and inconsistent data.</p>
             </div>
             <Image src="/about-photo.jpeg" alt="Tom Schoorstra" width={480} height={640} sizes="(max-width: 768px) 256px, 320px" priority className="mx-auto h-auto w-full max-w-64 rounded-2xl md:max-w-xs" />
@@ -100,7 +100,7 @@ export default function About() {
               </ul>
               <p className="text-sm leading-relaxed"><span className="font-semibold text-text">Tools I work with: </span>{toolGroups.flatMap((group) => group.tools).join(", ")}.</p>
             </div>
-            <p className="border-t border-border pt-6 text-base">I&apos;m focused on my role at AIHR and not taking on client projects at the moment. Questions and conversations about HubSpot are welcome. <Link href="/contact" className="font-semibold text-text underline underline-offset-4 hover:text-accent-text">Get in touch</Link>.</p>
+            <p className="border-t border-border pt-6 text-base">I&apos;m not taking on client projects at the moment. Questions and conversations about HubSpot are welcome. <Link href="/contact" className="font-semibold text-text underline underline-offset-4 hover:text-accent-text">Get in touch</Link>.</p>
           </div>
         </Container>
       </section>

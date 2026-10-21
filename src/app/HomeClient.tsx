@@ -28,7 +28,7 @@ export default function HomeClient() {
                 I work on the<br className="hidden sm:block" /> complicated bits<br className="hidden sm:block" />
                 <span className="block font-editorial font-normal italic tracking-normal text-accent-text">of HubSpot.</span>
               </h1>
-              <p className="max-w-xl text-xl leading-relaxed text-text-secondary">At AIHR, I work on CRM structure, workflows, integrations and data quality. I design the setup, build it and check what happens afterwards.</p>
+              <p className="max-w-xl text-xl leading-relaxed text-text-secondary">I work on CRM structure, workflows, integrations and data quality. I design the setup, build it and check what happens afterwards.</p>
               <Button href="/case-studies" size="lg" showArrow analyticsEvent="cta_click" analyticsParams={{ cta_label: "See the work", cta_location: "home_hero", destination: "/case-studies" }}>See the work</Button>
               <p className="text-sm text-text-secondary">Based in the Netherlands. <Link href="/about" className={textLink}>More about me</Link></p>
             </div>
