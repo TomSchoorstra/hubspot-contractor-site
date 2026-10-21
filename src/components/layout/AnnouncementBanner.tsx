@@ -46,7 +46,7 @@ export default function AnnouncementBanner() {
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-white" />
                 </span>
                 <p className="text-sm font-medium text-white">
-                  Not taking on clients just yet, but feel free to have a look around.
+                  Personal portfolio. Not taking on client projects at the moment.
                 </p>
               </div>
 

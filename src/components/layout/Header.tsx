@@ -91,7 +91,7 @@ function MobileMenuPortal({
                     analyticsLocation="mobile_menu"
                     showArrow
                   >
-                    Plan a call
+                    Get in touch
                   </Button>
                 </motion.div>
               </div>
@@ -182,14 +182,16 @@ export default function Header() {
         </nav>
 
         {/* Desktop CTA */}
-        <Button
-          href="/contact"
-          className="hidden md:inline-flex px-5 py-2.5 text-sm"
-          analyticsLocation="header"
-          showArrow
-        >
-          Plan a call
-        </Button>
+        <div className="hidden md:block">
+          <Button
+            href="/contact"
+            className="px-5 py-2.5 text-sm"
+            analyticsLocation="header"
+            showArrow
+          >
+            Get in touch
+          </Button>
+        </div>
 
         {/* Mobile Hamburger */}
         <button

@@ -1,0 +1,34 @@
+{
+  "date": "2026-10-21",
+  "preview": "http://127.0.0.1:3102",
+  "source_copy": "/private/tmp/tom-compact-verify-2026-10-21",
+  "source_matches_workspace": true,
+  "install": "npm ci --offline --ignore-scripts, clean dependencies from existing lockfile",
+  "source_lint": "eslint src next.config.ts: passed, zero warnings",
+  "full_lint": "npm run lint: passed; seven pre-existing warnings in vendor confetti and training validators",
+  "build": "npm run build: passed; training validators, TypeScript, 35 generated pages",
+  "browser": "27 public pages x 320/390/1440: 81 checks passed, no page errors",
+  "redirect": {
+    "request_host": "tomschoorstra.com",
+    "path": "/about",
+    "status": 308,
+    "location": "https://www.tomschoorstra.com/about"
+  },
+  "oauth_missing_config": {
+    "status": 307,
+    "path": "/hubspot-enablement?error=unavailable",
+    "external_oauth_started": false
+  },
+  "sitemap": {
+    "urls": 27,
+    "blog_index_included": true,
+    "all_www": true
+  },
+  "limitations": [
+    "Preview uses dummy Formspree endpoint; both POSTs intercepted and fulfilled locally. No real message sent.",
+    "Analytics tests enable the dataLayer gate in browser only; no GTM script or real analytics transmission.",
+    "Slack credentials, installation and scheduled delivery unverified; new installs unavailable.",
+    "Hosting-level redirects must be verified after separately authorized deployment.",
+    "No GSC, GA4 or field Core Web Vitals data."
+  ]
+}

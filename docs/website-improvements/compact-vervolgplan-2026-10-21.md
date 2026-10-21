@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: uitvoering van checkpoints 1 tot en met 3 gestart op Toms opdracht. Lokale preview volgt; publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 3 lokaal uitgewerkt en zelf gecontroleerd. De eerste compacte preview staat klaar voor Toms beoordeling. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -24,8 +24,8 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | Checkpoint | Werk | Concrete oplevering | Status |
 |---|---|---|---|
 | 1 Richting en Tom Voice | Stemreview, gewenste balans en belangrijkste herhaling beoordelen | Kort stijlkompas, enkele voor-en-na-voorbeelden en compacte paginaopzet | Zelfcontrole afgerond; stemvoorstel bij preview beoordelen |
-| 2 Publieke fouten | Zichtbare bloginstructies, mobiele overflow, canonical-signalen, meetfout en Slack-beschikbaarheid aanpakken | Kleine correcties met controles, zonder nieuwe marketingsecties | Bezig |
-| 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Gepland |
+| 2 Publieke fouten | Zichtbare bloginstructies, mobiele overflow, canonical-signalen, meetfout en Slack-beschikbaarheid aanpakken | Kleine correcties met controles, zonder nieuwe marketingsecties | Zelfcontrole afgerond; externe Slack-werking blijft onbevestigd |
+| 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Gepland |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Gepland |
 | 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Gepland |
@@ -109,3 +109,34 @@ Dat is een bruikbaar sessiedoel: een heldere stemrichting, zichtbare fouten aang
 Noteer na ieder deel de status, betrokken pagina's, gerealiseerde inkorting, relevante checks en open punten. Maak bij implementatie kleine lokale commits met alleen het betreffende werk; neem bestaande niet-gerelateerde bestanden niet mee. Statussen zijn gepland, bezig, zelfcontrole afgerond en door Tom beoordeeld. Zelfcontrole betekent geen acceptatie namens Tom.
 
 Er zijn gerichte reviewmomenten bij de stemrichting, homepage en About, de voorbeeldtemplates en de eindversie. Routinecorrecties krijgen zelfcontrole. De bestaande `ea-claude`-map blijft een leesbron. Tom heeft de uitvoering gestart; de eerste oplevering omvat checkpoints 1 tot en met 3. Checkpoints 4 tot en met 6 volgen na beoordeling van de compacte preview.
+
+
+## Oplevering checkpoints 1 tot en met 3
+
+21 oktober 2026. De lokale productiepreview draait op [homepage](http://127.0.0.1:3102), [About](http://127.0.0.1:3102/about) en [contact](http://127.0.0.1:3102/contact). Dit is een kopie van de bewerkte broncode met schone dependencies in `/private/tmp/tom-compact-verify-2026-10-21`; bestanden onder `src` en de Next-config zijn op gelijkheid gecontroleerd. De oorspronkelijke dependency-installatie bleef bij bestandslezingen hangen. Er zijn geen pakketversies of productie-instellingen gewijzigd.
+
+Checkpoint 1: het [Tom Voice-kompas](tom-voice-2026-10-21.md) is toegepast op de kernpagina's. De gekozen richting is een persoonlijk portfolio met ruimte voor gesprekken en nog geen klantwerk.
+
+Checkpoint 2: vijftien zichtbare bloginstructies zijn verwijderd of echte links geworden. Mobiele bloglinks mogen afbreken. De introductiedatum van Breeze en uitleg over lifecycle-automatisering, terugzetten en de richting van bedrijf-naar-contact-synchronisatie zijn gecorrigeerd met officiële bronnen. De artikelen zijn hiermee nog niet volledig inhoudelijk herzien; overige claims en productdetails blijven onderdeel van checkpoint 6. Er is daarom geen nieuwe volledige reviewdatum op de artikelen gezet.
+
+Canonical, schema, sitemap en auteurs-URL volgen `https://www.tomschoorstra.com`. De blogindex staat nu in de sitemap. Lokaal geeft de niet-www-host een permanente 308-redirect; de hostinglaag moet na een aparte publicatieopdracht opnieuw worden gecontroleerd. Slack toont nieuwe installaties als niet beschikbaar. Ontbrekende OAuth-configuratie leidt naar die melding en begint geen ongeldige autorisatie. Een echte installatie en wekelijkse aflevering zijn nog niet bevestigd.
+
+Het contactformulier registreert de eerste focus op ieder veld één keer, zet bij een ongeldige inzending focus op het eerste foutieve veld en biedt autocomplete en een zichtbare berichtlengtehint. Budget en tijdlijn zijn verwijderd. Foutmeldingen bewaren de invoer; alleen een geslaagde mock maakt een lead-event. De preview gebruikt een dummy Formspree-endpoint en alle POST-verzoeken zijn onderschept. Productieverzending en de volledige analytics-rapportageketen zijn hiermee niet getest.
+
+Checkpoint 3: homepage, About, contact, header, banner en footer zijn compacter en sluiten op de portfolio-beschikbaarheid aan. De homepage heeft vier secties en twee projectkaarten. About heeft één portret; eigen werk, reviewgrenzen en historische certificeringen blijven aanwezig. Diensten- en casetemplates zijn nog niet herontworpen.
+
+| Meting | Live nulmeting | Lokale preview | Verschil |
+|---|---:|---:|---:|
+| Homepagewoorden in main | 522 | 322 | −38% |
+| Aboutwoorden, desktop | 589 | 354 | −40% |
+| Aboutwoorden, mobiel | 578 | 354 | −39% |
+| Homepage secties | 6 | 4 | −2 |
+| About portretten | 2 | 1 | −1 |
+| Homepage main-hoogte, mobiel 390 px | 6.653 px | 3.328 px | −50% |
+| About main-hoogte, mobiel 390 px | 6.566 px | 2.787 px | −58% |
+
+Geteld met dezelfde browsermethode: zichtbare `main.innerText`, na laden van fonts, bij 390 × 844 en 1440 × 1000. De oude Aboutpagina bevatte een andere zichtbare hoeveelheid tekst per breedte; beide uitgangswaarden zijn daarom opgenomen. Main-hoogte sluit de globale banner, navigatie en footer uit. De lagere woordenaantallen zijn bereikt zonder bodytekst kleiner te maken om het doel te halen.
+
+Controles: productiebouw, TypeScript en beide verplichte trainingsschema-validaties slagen. ESLint op broncode en Next-config geeft nul fouten en waarschuwingen; de volledige linttaak heeft zeven bestaande waarschuwingen in vendorcode en trainingsvalidators. Alle 27 publieke pagina's zijn op 320, 390 en 1440 px gecontroleerd: 200-status, één H1, geen horizontale overflow, geldige JSON-LD, geen zichtbare schrijfmarkeringen en www-canonicals. Geen browser-page-errors. Formulier-, menu-, redirect- en sitemapchecks slagen. Desktop- en mobiele screenshots zijn visueel beoordeeld.
+
+[Meetgegevens, screenshots en testscripts](compact-preview-2026-10-21/validation.json) staan bij deze oplevering. Geen deploy of push uitgevoerd. Volgende checkpoint: Tom beoordeelt eerst de compactheid, stem en balans van homepage en About; daarna volgt één dienstenpagina als voorbeeld.
