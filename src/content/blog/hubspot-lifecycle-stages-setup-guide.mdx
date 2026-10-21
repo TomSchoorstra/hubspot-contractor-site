@@ -1,192 +1,87 @@
 ---
 title: "HubSpot lifecycle stages: a practical setup guide"
 date: "2026-04-21"
-excerpt: "Most teams either accept HubSpot's defaults without defining what each stage means, or mix lifecycle stages up with deal stages and lead status. Here's how to set them up correctly."
-description: "Learn how to define and automate HubSpot lifecycle stages correctly. Covers all 8 stages, MQL vs SQL definitions, workflow setup, and the most common mistakes to avoid."
+updated: "2026-10-21"
+excerpt: "Define what MQL and SQL mean, check HubSpot's native automation, and add workflows where your qualification rules need them."
+description: "A practical guide to HubSpot lifecycle stages: clear MQL and SQL criteria, native automation, workflow examples and checks before changing existing records."
 author: "Tom Schoorstra"
 ---
 
-Ask five people at a company what "MQL" means and you'll get five different answers. One person says it's anyone who fills out a form. Another says it's someone who attended a webinar. Sales says it's a contact they'd actually pick up the phone for. Nobody wrote any of this down.
+If marketing calls every form submission an MQL while sales expects a qualified buyer, a workflow will pass that disagreement straight into the CRM. I would start with a written definition that both teams can use.
 
-This is the most common lifecycle stage problem I see. Not a technical problem — a definition problem. And HubSpot can't solve it for you. It can only surface the mess you already have.
+Then check which changes HubSpot already makes. Add automation for the decisions your process still needs, with someone responsible for reviewing exceptions.
 
-This guide covers what lifecycle stages actually are, how they're different from deal stages and lead status, how to define and automate them for your business, and the mistakes that break them most often.
+## Lifecycle stage, deal stage and lead status
 
-If you're starting from scratch, also read [the most common HubSpot onboarding mistakes I see](/blog/hubspot-onboarding-mistakes) — mistake #4 is directly about lifecycle and deal stage setup.
+**Lifecycle stage** describes a contact or company's relationship with your business. **Deal stage** describes a specific sales opportunity; one contact can have several deals. **Lead status** describes sales follow-up, such as Attempted to Contact or Connected. HubSpot positions it within the SQL lifecycle stage. [See HubSpot's property definitions](https://knowledge.hubspot.com/properties/hubspots-default-contact-properties).
 
----
+HubSpot includes eight default lifecycle stages, which you can customize. Use them as a starting point for your own definitions:
 
-> **Key Takeaways**
-> - 76% of CRM users say less than half their organization's CRM data is accurate ([Validity](https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/), 2025). Misconfigured lifecycle stages are one of the biggest contributors.
-> - HubSpot has configurable lifecycle automation for record creation, deals, associated leads and company-to-contact sync. Use workflows when your own qualification rules need them.
-> - Lifecycle stages track the relationship. Deal stages track the transaction. Lead status tracks short-term sales activity. These are three separate systems.
-> - Define what each stage means in writing before you touch the platform.
+| Stage | Practical meaning |
+|---|---|
+| Subscriber | Signed up to hear from you. |
+| Lead | Interacted beyond a subscription, such as submitting an enquiry. |
+| Marketing Qualified Lead (MQL) | Marketing considers the record ready for sales. |
+| Sales Qualified Lead (SQL) | Sales considers the record a potential customer. |
+| Opportunity | Associated with a deal. |
+| Customer | Has become a customer; define the purchase event that sets this. |
+| Evangelist | A customer who advocates for the business. |
+| Other | Does not fit the other categories. |
 
----
+[HubSpot's lifecycle guide](https://knowledge.hubspot.com/records/use-lifecycle-stages) documents the defaults and update behavior. Keep activities such as attempted calls in lead status, so the lifecycle property can describe the broader relationship.
 
-## What are HubSpot lifecycle stages, and why do they matter?
+## Agree what qualifies an MQL and SQL
 
-Lifecycle stages answer one question: where is this contact or company in their relationship with your business? They're not about a specific deal or a sales task. They track the full arc from first-ever interaction to loyal customer.
+For MQL, separate **fit** from **engagement**. Fit might mean a relevant role, company size or market. Engagement might mean a demo request or a scoring threshold. A pricing-page visit alone says little about whether the person is a plausible buyer.
 
-HubSpot has eight default stages. Here's what each one is actually supposed to represent:
+Write a rule the team can check: “A contact becomes an MQL when they meet our fit criteria and show the agreed engagement.” Specify the actual properties and thresholds before building.
 
-| Stage | What it means |
-|-------|--------------|
-| **Subscriber** | Opted in for your blog or newsletter. Minimal intent signal. |
-| **Lead** | Filled out a form that isn't a subscription — ebook, contact form, webinar registration. |
-| **MQL** | Engaged enough and fits your profile well enough that marketing considers them worth passing to sales. |
-| **SQL** | Sales has reviewed the contact and agrees they're worth pursuing. |
-| **Opportunity** | Associated with an active deal in the pipeline. |
-| **Customer** | Closed a deal. |
-| **Evangelist** | Actively refers or promotes your business. |
-| **Other** | Doesn't fit any category — partners, press, vendors, etc. |
+For SQL, agree what sales must review and accept. Assigning a contact to a rep is not evidence that the review happened. A sales-acceptance checkpoint can use a custom review property, with an owner and a rejection reason. It does not have to become another lifecycle stage.
 
-HubSpot’s default automatic updates move lifecycle stages forward. A form submission therefore does not normally move a Customer back to Lead. You can move a stage backward manually; automatic tools generally need the current value cleared before setting an earlier stage. [HubSpot explains the different update methods here](https://knowledge.hubspot.com/records/use-lifecycle-stages).
+For rejected or poorly timed leads, keep the review outcome separate from lifecycle stage when you need to retain qualification history. Decide how those records can be reconsidered later.
 
----
+## Check native automation before adding workflows
 
-## How is lifecycle stage different from deal stage and lead status?
+Under **Settings → Objects → Contacts → Lifecycle Stage → Automate**, review the settings already enabled:
 
-This is where most setups go wrong. These three systems look similar but track completely different things. Mixing them up corrupts your reporting across all three.
+- **Record creation:** a default stage can be set for new contacts and companies. Check form-level defaults and connected-app behavior too.
+- **Deals:** creation of the first associated deal, or a deal being won, can set a selected lifecycle stage on associated contacts and companies.
+- **Associated leads:** a setting can update lifecycle stage when a lead is associated. Leads created by automation are an exception.
+- **Company sync:** the primary company's stage can update associated contacts. A contact's stage does not update its company through this setting.
 
-{/* [UNIQUE INSIGHT] */}
-**Lifecycle stage = the relationship.** It's a property on contacts and companies, with one value per record. It tells you where that record stands in its relationship with your business.
+These settings move stages forward. Check the [automation rules and exceptions](https://knowledge.hubspot.com/object-settings/manage-how-lifecycle-stages-sync-between-objects) before enabling them, including what happens to existing records. A missing association needs investigation; another workflow cannot identify the right customer by itself.
 
-**Deal stage = the transaction.** It's a deal-level property. A contact can have multiple deals at different stages simultaneously. It tracks what's happening inside a specific sales opportunity — not the contact's broader relationship.
+## Add workflows for your qualification rules
 
-**Lead status = short-term sales activity within a stage.** It tracks the operational status of a rep's outreach: "Attempted Contact", "Connected", "In Progress", "Unqualified", "Bad Timing". It lives inside MQL or SQL. It's not about the relationship — it's about the rep's current task queue.
+Use the native deal settings where they fit. For custom qualification, a possible design is:
 
-According to a 2024 Gartner survey, marketing and sales teams collaborate on only 3 out of 15 commercial activities ([Gartner](https://www.gartner.com/en/newsroom/press-releases/2024-06-03-gartner-survey-reveals-marketing-and-sales-functions-collaborate-on-only-three-out-of-15-commercial-activities), 2024). Lifecycle stage confusion is usually downstream of that gap — when sales and marketing haven't aligned on definitions, each team configures the system to match their own mental model and both break each other's reporting.
+1. **Lead to MQL:** enroll contacts at the intended starting stage who meet the agreed fit and engagement filters. Set MQL, then notify the owner or create a task if needed.
+2. **MQL to SQL:** use an explicit acceptance decision, such as a custom MQL Review property set to Accepted. Record rejection reasons separately and define the follow-up responsibility.
+3. **Review stalled records:** flag contacts that have stayed in MQL or SQL without relevant activity. A quarterly review of records older than 90 days is an example; choose a threshold that fits your sales cycle.
 
-For deal stage setup specifically, [pipeline optimization](/services/pipeline-optimization) is one of the things I help teams get right.
+The workflow property-update action requires a Professional or Enterprise account. Confirm the actions available in your subscription before choosing the design.
 
----
+Test a small set of records first: an eligible lead, an existing customer, a rejected MQL and a record with missing associations. Check enrollment and re-enrollment rules, property history and any notifications. Existing customers should not be treated as new MQLs because they submit another form.
 
-## How to define your MQL and SQL before you build anything
+For stage-based review, use the entry date or the time since lifecycle stage changed. HubSpot's calculated latest/cumulative time values have special behavior while a record is still in a stage; check the [property guidance](https://knowledge.hubspot.com/records/use-lifecycle-stages#understand-lifecycle-stage-calculated-properties) before using them as triggers.
 
-HubSpot can't tell you what your MQL or SQL means. That's a business decision. If you set up workflows before you define the criteria, you'll spend the next six months cleaning up bad data.
+## Correct existing records in controlled batches
 
-Here's the framework I use with clients:
+Start with evidence you trust, such as purchase records, deal history and recorded qualification decisions. Keep uncertain cases for review rather than forcing every record into a guessed stage.
 
-### Defining MQL
+Before a bulk import or workflow update:
 
-An MQL has two components: **fit** and **engagement**.
+- Export record IDs and current values, and identify automation that could react to the change.
+- Agree the mapping and review a representative sample with marketing and sales.
+- Test a small batch, inspect property history and downstream effects, then expand the update.
+- Assign an owner to unresolved records and repeat the check after the next relevant data refresh.
 
-Fit criteria are firmographic or demographic filters — the things that make a contact a plausible buyer at all. Examples: company size, industry, job title, geography. If a contact doesn't meet fit criteria, no amount of engagement should promote them to MQL.
+You can manually move a stage backward. Imports, forms, APIs and workflows require the current value to be cleared before setting an earlier stage. A manual backward move can reset legacy “Became a” dates; newer calculated history properties behave differently. [Check the documented date effects](https://knowledge.hubspot.com/records/use-lifecycle-stages#update-a-record-s-lifecycle-stage) before clearing or resetting values. A property export alone does not restore every historical date or downstream action.
 
-Engagement criteria are behavioral signals — what the contact has actually done. Examples: visited pricing page, downloaded a specific piece of content, attended a webinar, hit a lead score threshold, requested a demo.
+## Measure the handover using your own definitions
 
-{/* [PERSONAL EXPERIENCE] */}
-In practice, I find that teams who try to use engagement alone end up with MQL lists full of students, competitors, and people who clicked the wrong link. Adding one or two fit filters — even just job title and company size — dramatically improves MQL-to-SQL conversion rates. The industry average MQL-to-SQL conversion rate is around 13% ([Martal](https://martal.ca/mql-vs-sql-lb/)). If you're significantly below that, your MQL criteria probably need fit filters.
+For MQL-to-SQL conversion, define the MQL cohort and how long it has to reach SQL. Measure the proportion accepted under the same criteria, then compare sources and rejection reasons. A generic benchmark cannot tell you whether the issue is fit, follow-up or a different definition of SQL.
 
-Write your MQL definition as a sentence: "A contact is an MQL if they [engagement criteria] AND [fit criteria]." Get both marketing and sales to sign off on it before building a single workflow.
+My [data quality case](/case-studies/crm-data-quality) shows how I separate a detected mismatch from the decision to correct it. For the surrounding sales process, see my [pipeline review approach](/services/pipeline-optimization).
 
-### Defining SQL
-
-SQL means sales has reviewed the contact and accepted them for active pursuit. The key word is "accepted." Not "assigned" — accepted.
-
-The most useful addition here is a **Sales Accepted Lead (SAL)** checkpoint. After marketing passes an MQL, a rep reviews it and either accepts it (SQL) or rejects it with a reason. This step catches misaligned MQL criteria early — if reps are consistently rejecting MQLs from a specific source or campaign, that's signal your criteria need adjusting.
-
-Document the SQL criteria too: "A contact is an SQL if a sales rep has reviewed them, confirmed they meet [ICP criteria], and has moved them to active outreach."
-
----
-
-## Which lifecycle stages does HubSpot set automatically?
-
-HubSpot has several configurable lifecycle settings:
-
-- **Record creation:** choose a default stage for new contacts and companies. A form can also specify a default stage.
-- **Deals:** choose the stage to set when a deal is created or won. These updates depend on the setting and the record’s associations.
-- **Associated leads:** a setting can update lifecycle stage when a lead is associated, with exceptions for leads created by automation.
-- **Company sync:** the primary company’s lifecycle stage can update its associated contacts.
-
-Check which options are enabled in your account before adding workflows. Your own fit and engagement criteria may still need workflow logic. [HubSpot documents these settings and their exceptions](https://knowledge.hubspot.com/object-settings/manage-how-lifecycle-stages-sync-between-objects).
-
-If you need help building those workflows, [HubSpot automation setup](/services/automation) is one of the things I can help with.
-
----
-
-## How to set up lifecycle stage automation in HubSpot
-
-Once your definitions are written and agreed, here's the core workflow structure:
-
-**Workflow 1: Lead → MQL**
-
-Trigger: Contact meets your fit criteria AND engagement threshold (lead score, form submission, page visit combination).
-
-Action: Set lifecycle stage to MQL. Optionally notify the sales team or create a task.
-
-Enrollment criteria: Contacts with lifecycle stage = Lead. Add the specific conditions from your MQL definition as filters.
-
-**Workflow 2: MQL → SQL (with SAL checkpoint)**
-
-Trigger: A sales rep manually changes a custom property "MQL Review" to "Accepted."
-
-Action: Set lifecycle stage to SQL. Assign to rep, create follow-up task.
-
-If rejected: Set a "Disqualification Reason" property. Do not move the stage backward. This preserves your funnel reporting — a rejected MQL stays as MQL but gets flagged, so you can measure rejection rates by source or campaign.
-
-**Workflow 3: Deal created → Opportunity**
-
-Use the deal-created lifecycle setting when it matches your process. Verify the associated records and the selected target stage before adding a separate workflow.
-
-**Workflow 4: Deal Closed-Won → Customer**
-
-Use the deal-won lifecycle setting when it matches your process. Missing associations need investigation; an additional workflow cannot infer which customer a deal belongs to.
-
-{/* [PERSONAL EXPERIENCE] */}
-One thing I always add: a quarterly "lifecycle stage audit" enrollment — contacts who have been at MQL or SQL for more than 90 days with no activity get a property flag. These are contacts your team has forgotten about. They're not customers, they're not disqualified — they're just stuck. Surfacing them regularly prevents the "forever SQL" problem where the stage loses meaning entirely.
-
----
-
-## The most common lifecycle stage mistakes I see
-
-**1. No written definition before setup.** Building workflows first and figuring out definitions later guarantees you'll rebuild everything twice.
-
-**2. Using lifecycle stage to track sales activity.** That's what lead status is for. If you're putting values like "Attempted Contact" or "In Progress" into lifecycle stage, you're conflating two separate systems and breaking both.
-
-**3. The "forever SQL" problem.** Contacts get marked SQL when they book a call. The call happens. Nothing closes. The contact goes cold. Nobody updates the stage. Six months later, SQL is full of dead contacts and your pipeline reports are meaningless.
-
-**4. Assuming lifecycle sync works in both directions.** HubSpot’s lifecycle sync setting applies the primary company’s stage to associated contacts. Updating a contact does not update its company through that setting. Decide which records should drive the change before configuring automation.
-
-37% of CRM users report losing revenue as a direct consequence of poor data quality ([Validity](https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/), 2025). Lifecycle stage misconfiguration sits at the center of that problem — once stages are wrong, every funnel report, every automation trigger, and every segmentation query built on top of them produces bad output.
-
-**5. Skipping the alignment conversation.** I covered this earlier, but it's the root cause of most of the others. If marketing and sales haven't agreed in writing on what MQL and SQL mean, every configuration decision that follows will reflect that disagreement.
-
-See also: [the most common HubSpot onboarding mistakes](/blog/hubspot-onboarding-mistakes), specifically mistake #4 on wrong lifecycle and deal stages.
-
----
-
-## Frequently Asked Questions
-
-### What's the difference between HubSpot lifecycle stages and deal stages?
-
-Lifecycle stages track a contact's overall relationship with your business — from first form fill to customer. Deal stages track a specific sales opportunity from open to close. A contact can have multiple deals at different stages, but only one lifecycle stage at a time. Mixing them up is one of the most common HubSpot configuration mistakes.
-
-### Does HubSpot automatically update lifecycle stages?
-
-Yes. Configurable settings can set a default stage on creation and update stages from deals, associated leads or the primary company. The stage and behavior depend on your settings. Workflows can apply your own qualification rules; check your subscription and the available actions.
-
-### Can a lifecycle stage move backward in HubSpot?
-
-Yes, you can set an earlier stage manually. Default automatic updates only move forward, and tools such as imports or workflows generally require clearing the current value before setting an earlier stage. Check the effect on lifecycle date properties before doing this. For a rejected lead, a separate disqualification property may preserve the history you need.
-
-### What is MQL-to-SQL conversion rate and what's a good benchmark?
-
-MQL-to-SQL conversion rate measures how many marketing-qualified leads sales accepts for active pursuit. The average across B2B is around 13% ([Martal](https://martal.ca/mql-vs-sql-lb/)). High-performing teams reach 20-30%. Consistently below 10% usually means your MQL criteria are too loose — you're passing contacts to sales that don't meet their ICP.
-
-### How do I handle contacts who were never properly staged?
-
-If you have an existing database with messy lifecycle stages, the cleanest approach is a bulk re-enrollment campaign. Use contact properties you trust — deal history, form submissions, purchase records — to infer the correct stage and update via import or workflow. Don't try to manually review thousands of records.
-
----
-
-## The bottom line
-
-Most lifecycle stage problems aren't technical. They're definition problems that got baked into a technical system. The platform reflects whatever decisions (or non-decisions) went into the setup.
-
-Before you touch HubSpot: get marketing and sales in a room, write down what each stage means, and get both sides to sign off. That document is worth more than any workflow.
-
-Once you have the definitions, the automation is straightforward. Use the native settings where they fit, then add workflows for your qualification rules. The maintenance work — quarterly audits, rejection rate reviews, sync configuration — is what keeps it clean over time.
-
-If your lifecycle stages are already a mess and you're not sure where to start, [get in touch](/contact). A portal audit usually surfaces the issues in a day.
+Questions about the setup? You're welcome to [compare notes](/contact).

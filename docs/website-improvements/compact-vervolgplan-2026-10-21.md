@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. Het eerste blogdeel van checkpoint 6 is zelf gecontroleerd; zes artikelen volgen nog. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -28,7 +28,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld als basis gekozen; overige vier en overzicht zelfcontrole afgerond |
-| 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Gepland |
+| 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Deel 1 zelfcontrole afgerond (2/8); delen 2–4 gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
 
 ## Checkpoint 1 Richting en Tom Voice
@@ -229,3 +229,25 @@ Bewijscontrole: Account behoudt de projectlead-rol, historische koppelingen, dri
 De copy-editing- en CRO-skills zijn opnieuw toegepast met productmarketingcontext en Tom Voice. Bouw inclusief TypeScript en beide verplichte validators slaagt; scoped ESLint is schoon. Twintig browsercontroles slagen: de vijf cases en het overzicht op 320/390/1440 px, plus homepage op 390/1440 px. Geen overflow of page-errors. Dertien unieke interne bestemmingen geven 200; de klikroute overzicht → Account → datakwaliteit werkt. Canonicals, metadata en BreadcrumbList zijn gecontroleerd. Screenshots zijn visueel beoordeeld. Er zijn geen echte formulieren verzonden.
 
 [Review, bewijsregister, metingen en screenshots](cases-preview-2026-10-21/review.json) leggen dit deel vast. Status: checkpoint 5 lokaal uitgewerkt en zelfcontrole afgerond; de nieuwe vier cases en het overzicht zijn klaar voor Toms beoordeling. Geen push of publicatie. Het volgende onderdeel is checkpoint 6, eerst lifecycle stages en classic CRM cards als eerste blogdeel.
+
+
+## Checkpoint 6 — blogdeel 1 gereed
+
+Tom heeft de compacte caseronde positief beoordeeld en opdracht gegeven met de blogs door te gaan. Lifecycle stages en classic CRM cards zijn inhoudelijk gecontroleerd met officiële HubSpot-bronnen en aangescherpt met copy-editing en Tom Voice. Voor de bron- en claimcontrole is ook blog-factcheck gebruikt. [Review en controles](blogs-part1-preview-2026-10-21/review.json) en het [claimregister](blogs-part1-preview-2026-10-21/factcheck.json) documenteren de keuzes.
+
+Lifecycle houdt de acht defaults, MQL/SQL-afspraken, native instellingen, workflowvoorbeelden en veilige correctie van bestaande records. De uitleg over primaire-company-sync, lead-automatiseringsexcepties, clear-first bij eerdere stages en de date-property-effecten is met actuele primaire bronnen gecontroleerd. Algemene conversiebenchmarks en niet-onderbouwde persoonlijke klantclaims zijn vervangen door eigen cohortmeting en herkenbaar advies. De raw Validity- en Gartner-cijfers zijn op hun bronpagina’s aanwezig, maar bewijzen geen lifecycle-specifieke causaliteit en zijn voor de focus weggelaten. De 90-dagenreview is een expliciet voorbeeld, geen resultaatclaim.
+
+Bij classic cards spreken officiële bronnen elkaar tegen: de oude changelog vermeldt 31 oktober; de actuele migratiehandleiding (gewijzigd 9 oktober 2026) vermeldt verwijdering uit klantweergaven op 2 november en migratie-UI/API tot 1 december. Het artikel toont dit bronverschil. Afronden vóór 31 oktober is herkenbaar Toms planningsadvies, geen claim dat HubSpot een gewijzigde datum definitief heeft bevestigd. De toolperiode is niet gelijkgesteld aan zichtbaarheid van oude cards. Converter, ticketlocaties, visibility flags en het niet-omkeerbare karakter van view migration blijven zichtbaar. Niet-onderbouwde halve-dag- en vendorclaims vervallen. De herhaalde timeline en samenvattingen zijn vervangen door één leesbare bronvergelijking en een gerichte checklist.
+
+De gedeelde blogwrapper heeft minder witruimte, een auteurslink en expliciete publicatie-/updatedatums. Het grote generieke verkoopslot is verwijderd. Alleen de twee echt herziene artikelen hebben `updated: 2026-10-21`; hun oorspronkelijke publicatiedatum blijft behouden. BlogPosting gebruikt diezelfde datums. De dubbele FAQ-antwoorden staan nu op de passende plek in de tekst; de twee artikelen hebben daarom geen FAQPage-schema meer. Een ontbrekende social-previewafbeelding valt terug op de bestaande siteafbeelding, ook op de blogindex.
+
+| Artikel | Artikelwoorden voor → na | Main-hoogte mobiel 390 px voor → na |
+|---|---:|---:|
+| `hubspot-lifecycle-stages-setup-guide` | 2089 → 999 | 16989 → 8174 px |
+| `hubspot-classic-crm-cards-sunset` | 1601 → 640 | 11993 → 5648 px |
+
+Woorden zijn uitsluitend in `.prose-blog` geteld. Main-hoogte omvat ook de wrapper en laat globale navigatie/footer buiten beschouwing; de hoogtereductie komt daardoor uit tekst én opmaak. Bodytekst is niet verkleind. De andere zes artikelteksten zijn op alle drie breedtes exact gelijk gebleven; hun lagere main-hoogte komt alleen uit de gedeelde wrapper. Er wordt geen SEO- of conversiewinst uit afgeleid.
+
+Bouw inclusief TypeScript en beide verplichte validators slaagt; scoped ESLint op beide TSX-bestanden is schoon. Alle negen blogroutes zijn op 320/390/1440 px gecontroleerd: 27 geslaagde controles, geen overflow of page-errors. Zeven interne bestemmingen geven 200; de klikroute naar de renewal-case werkt. Canonicals, metadata, schemas en datums zijn gecontroleerd. De standaard social-image-route geeft 200 image/png. Mobiele tabellen en representatieve screenshots zijn visueel beoordeeld; de bronkolom is na die review beter verdeeld. Geen echte formulieren verzonden.
+
+Status: blogdeel 1 zelfcontrole afgerond en klaar voor Tom. Nog geen volledige review van de andere zes artikelen. App cards guide en Spring Spotlight herhalen nog de oude oktoberclaim; die kruisverwijzingen horen bij hun geplande inhoudsrondes en moeten vóór publicatie aansluiten. Het volgende deel bevat Breeze en contractor versus agency. Geen push of publicatie.

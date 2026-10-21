@@ -1,0 +1,144 @@
+{
+  "date": "2026-10-21",
+  "status": "Checkpoint 6, first blog pair self-checked and ready for review. Six other articles await their planned content rounds.",
+  "scope": "Lifecycle stages and classic CRM card migration content, plus shared blog wrapper and social metadata fallback. Other six article bodies and review dates unchanged.",
+  "preview": [
+    "http://127.0.0.1:3102/blog/hubspot-lifecycle-stages-setup-guide",
+    "http://127.0.0.1:3102/blog/hubspot-classic-crm-cards-sunset"
+  ],
+  "skills": {
+    "applied": [
+      "Corey Haines copy-editing, mode B, seven sweeps and final checklist",
+      "existing Tom Voice compass and product marketing context",
+      "blog routing and blog-factcheck for claim/source verification"
+    ],
+    "constraints": "User’s compactness requirement takes precedence over stock-image, long template and extra summary recommendations. No new marketing blocks, fabricated experience, statistics or FAQ padding."
+  },
+  "copy_checks": {
+    "clarity": "Lifecycle guide retains distinct stage meanings, criteria, native settings, workflow examples and controlled backfill. Cards guide puts date conflict first, then inventory, ownership, replacement and tested view migration.",
+    "voice": "Personal recommendations using I would; existing vocabulary and actual project links. Removed unsupported with-clients/portals-I-audited/always-do claims, urgency, sales turnaround promise and AI citation-capsule text.",
+    "so_what": "Explains handover decisions and the source of CRM changes; cards checklist preserves information/actions used by reps.",
+    "proof": "Technical product facts linked to official HubSpot sources. Existing data-quality and renewal cases replace unsupported personal anecdotes.",
+    "specificity": "Primary-company sync direction, automation-created lead exception, earlier-stage/date effects, subscription boundary, view swapping, ticket locations and visibility flags remain.",
+    "emotion": "Recognizable disagreement over qualification and undocumented interfaces; no scare tactics or migration-duration guarantee.",
+    "risk_and_expectations": "Existing-record updates are sampled and reviewed; current docs say view migration cannot be reversed, so testing precedes it. Contact invites questions, not client-project availability.",
+    "final": "No em dashes in rewritten content, repeated takeaways/conclusions or duplicate FAQ answers. Former unique FAQ topics now have visible body sections. No FAQPage schema on the two articles because no Q&A remains."
+  },
+  "retained_scope": {
+    "lifecycle": [
+      "Lifecycle/deal/lead-status distinction and eight customizable defaults",
+      "Written MQL fit plus engagement and SQL acceptance, ownership and rejection/reconsideration",
+      "Creation/form/app, first-deal/won-deal, lead and primary-company settings, direction and exceptions",
+      "Qualification workflow examples, subscriptions, staged tests and re-enrollment",
+      "Stalled-stage review as example; entry-date/calculated-time caveat",
+      "Backfill from trusted evidence, export/sample/batch, review ambiguous cases",
+      "Backward updates, clear-first requirement and legacy/new date-property effects",
+      "Own cohort/time-window conversion measurement instead of generic benchmarks"
+    ],
+    "classic_cards": [
+      "Specific legacy technology scope and no sidebar-based assumption",
+      "Conflicting official dates explicitly attributed; 31 October is a planning recommendation",
+      "Inventory, accountable vendor/developer and replace/rebuild/remove decision",
+      "React UI extensions, data access, converter sample and documented differences",
+      "Separate test environment; normal/missing data, permissions, labels, actions and locations",
+      "Ticket CRM/help desk card distinction",
+      "Build versus customer-view migration, Marketplace visibility flags and irreversible migration",
+      "Verify views, document owner and remove legacy card when safe"
+    ]
+  },
+  "shared_wrapper": "Smaller existing padding, same article font/width, visible author and published date, updated date only when present. Removed large generic CTA on all eight blogs. Semantic article element. Social image uses existing site fallback if no article image; blog index also has fallback.",
+  "date_conflict": "Official HubSpot dates conflict. The article surfaces both and labels the earlier internal target as a recommendation. App-specific behavior is not tested by this editorial review.",
+  "pending_cross_article_consistency": "App cards guide and Spring 2026 Spotlight still repeat older October 31 statements. Update those references during their planned content rounds before publication; do not present them as reviewed in this pair.",
+  "validation": {
+    "build": "passed with TypeScript and both mandatory training validators",
+    "scoped_eslint": "passed on both changed TSX files; stylesheet compiled by build",
+    "browser_checks": 27,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "pages": "Eight blog details and blog index",
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "Seven unique destinations from the rewritten articles, all 200",
+    "actual_navigation": "Migration article → renewal case passed",
+    "metadata": "Canonicals, descriptions and OG images checked on all nine routes. Default social image endpoint returns 200 image/png.",
+    "dates": "Original publication dates retained; only two updated/dateModified values set to 2026-10-21. Six other bodies and dates unchanged.",
+    "schema": "BlogPosting/BreadcrumbList parse; FAQPage absent on rewritten pair, other articles keep their existing automatic schema behavior.",
+    "visual_review": "Mobile hero and table crops, mobile and desktop full-page structure reviewed; fixed date-table column split after visual check.",
+    "requests": "All POST requests aborted in isolated Playwright session; no real submission.",
+    "runtime": "Clean temporary preview copy using unchanged lockfile; original dependencies have read hangs.",
+    "source_table": "Fixed 40% source column measured at 320/390/1440 px; labels readable after CSS correction. MDX renderer drops inline style expressions, so style is scoped in existing stylesheet."
+  },
+  "measurement": {
+    "method": "Article words use .prose-blog.innerText after fonts load. Main height includes wrapper and excludes global navigation/footer. Other six articles get wrapper-only height reduction; do not attribute that to content editing.",
+    "rows": [
+      {
+        "slug": "hubspot-lifecycle-stages-setup-guide",
+        "before_article_words": 2089,
+        "after_article_words": 999,
+        "article_reduction_percent": 52,
+        "before_main_height": 16989,
+        "after_main_height": 8174
+      },
+      {
+        "slug": "hubspot-classic-crm-cards-sunset",
+        "before_article_words": 1601,
+        "after_article_words": 640,
+        "article_reduction_percent": 60,
+        "before_main_height": 11993,
+        "after_main_height": 5648
+      },
+      {
+        "slug": "hubspot-breeze-ai-smb",
+        "before_article_words": 2648,
+        "after_article_words": 2648,
+        "article_reduction_percent": 0,
+        "before_main_height": 19056,
+        "after_main_height": 18347
+      },
+      {
+        "slug": "hubspot-contractor-vs-agency",
+        "before_article_words": 2217,
+        "after_article_words": 2217,
+        "article_reduction_percent": 0,
+        "before_main_height": 17112,
+        "after_main_height": 16403
+      },
+      {
+        "slug": "hubspot-onboarding-mistakes",
+        "before_article_words": 1475,
+        "after_article_words": 1475,
+        "article_reduction_percent": 0,
+        "before_main_height": 13040,
+        "after_main_height": 12331
+      },
+      {
+        "slug": "hubspot-spring-2026-spotlight",
+        "before_article_words": 2045,
+        "after_article_words": 2045,
+        "article_reduction_percent": 0,
+        "before_main_height": 15904,
+        "after_main_height": 15195
+      },
+      {
+        "slug": "hubspot-app-cards-guide",
+        "before_article_words": 1799,
+        "after_article_words": 1799,
+        "article_reduction_percent": 0,
+        "before_main_height": 12978,
+        "after_main_height": 12269
+      },
+      {
+        "slug": "hubspot-aeo-smb",
+        "before_article_words": 1794,
+        "after_article_words": 1794,
+        "article_reduction_percent": 0,
+        "before_main_height": 12875,
+        "after_main_height": 12166
+      }
+    ]
+  },
+  "publication": "Local commit only; no push or deploy."
+}

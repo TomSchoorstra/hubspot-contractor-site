@@ -220,6 +220,13 @@ body {
 .prose-blog tr:last-child td {
   border-bottom: none;
 }
+/* Keep source labels readable in the two-column migration date comparison. */
+.prose-blog .source-dates {
+  table-layout: fixed;
+}
+.prose-blog .source-dates th:first-child {
+  width: 40%;
+}
 
 /* Keep keyboard focus visible on plain text and card links too. */
 a:focus-visible {

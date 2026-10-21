@@ -3,6 +3,7 @@ import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
 import Container from "@/components/ui/Container";
 import { getAllPosts } from "@/lib/blog";
+import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "Blog — Tom Schoorstra",
@@ -10,10 +11,15 @@ export const metadata: Metadata = {
     "Practical insights on HubSpot, automation, and RevOps — straight from real projects.",
   alternates: { canonical: "/blog" },
   openGraph: {
+    images: [SITE_SOCIAL_IMAGE],
     title: "Blog — Tom Schoorstra",
     description:
       "Practical insights on HubSpot, automation, and RevOps — straight from real projects.",
     url: "/blog",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
   },
 };
 

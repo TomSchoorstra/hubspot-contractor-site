@@ -1,0 +1,110 @@
+{
+  "date": "2026-10-21",
+  "method": "blog-factcheck claim extraction and source presence verification using primary documentation for technical claims. Scores measure match to cited page, not truth probability or transferability. Statistical source pages were fetched sequentially.",
+  "sources": {
+    "lifecycle": "https://knowledge.hubspot.com/records/use-lifecycle-stages",
+    "automation": "https://knowledge.hubspot.com/object-settings/manage-how-lifecycle-stages-sync-between-objects",
+    "properties": "https://knowledge.hubspot.com/properties/hubspots-default-contact-properties",
+    "changelog": "https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards",
+    "migration": "https://developers.hubspot.com/docs/apps/developer-platform/build-apps/migrate-an-app/migrate-legacy-crm-cards-to-app-cards",
+    "ui_extensions": "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview",
+    "converter": "https://github.com/HubSpot/ui-extensions-examples/tree/main/legacy-card-converter",
+    "validity": "https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/",
+    "gartner": "https://www.gartner.com/en/newsroom/press-releases/2024-06-03-gartner-survey-reveals-marketing-and-sales-functions-collaborate-on-only-three-out-of-15-commercial-activities",
+    "martal": "https://martal.ca/mql-vs-sql-lb/"
+  },
+  "claims": [
+    {
+      "claim": "76% said less than half their CRM data is accurate",
+      "source": "https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "notes": "Landing page says accurate and complete, from 602 CRM users/stakeholders. Removed as broad background; not evidence for lifecycle-stage causation."
+    },
+    {
+      "claim": "37% reported revenue lost from poor CRM data",
+      "source": "https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "notes": "Number present, but not lifecycle-specific. Removed for focus; no assertion that raw survey number is false."
+    },
+    {
+      "claim": "Marketing and sales collaborate on 3 of 15 commercial activities",
+      "source": "https://www.gartner.com/en/newsroom/press-releases/2024-06-03-gartner-survey-reveals-marketing-and-sales-functions-collaborate-on-only-three-out-of-15-commercial-activities",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "notes": "Primary press release contains the figure; it does not establish the article’s lifecycle-specific causal argument. Removed for focus."
+    },
+    {
+      "claim": "13% is a universal MQL-to-SQL benchmark",
+      "source": "https://martal.ca/mql-vs-sql-lb/",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "notes": "Score only indicates number is present on cited secondary page. No primary cohort/method verification; removed as a universal diagnostic threshold."
+    },
+    {
+      "claim": "High-performing teams reach 20–30%, and sub-10% proves loose fit criteria",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "notes": "No primary cohort supporting these generalizations established. Replaced with own cohort, acceptance-window and rejection-reason measurement guidance."
+    },
+    {
+      "claim": "Eight default lifecycle stages",
+      "source": "https://knowledge.hubspot.com/records/use-lifecycle-stages",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "notes": "All eight retained as a practical interpretation, with customization and business criteria explicit."
+    },
+    {
+      "claim": "Quarterly review after 90 days",
+      "source": null,
+      "score": null,
+      "status": "EXAMPLE",
+      "notes": "Now explicitly an optional design example selected for a sales cycle, not an empirical benchmark or claim about Tom’s client work."
+    },
+    {
+      "claim": "Classic card listing freeze from 16 June 2025",
+      "source": "https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "notes": "Kept with original announcement attribution."
+    },
+    {
+      "claim": "Sunset 31 October 2026",
+      "source": "https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards",
+      "score": 1.0,
+      "status": "VERIFIED_WITH_SOURCE_CONFLICT",
+      "notes": "Original changelog still lists this; current migration guide differs. Article shows both sources."
+    },
+    {
+      "claim": "Customer-view removal 2 November 2026; migration UI/API until 1 December 2026",
+      "source": "https://developers.hubspot.com/docs/apps/developer-platform/build-apps/migrate-an-app/migrate-legacy-crm-cards-to-app-cards",
+      "score": 1.0,
+      "status": "VERIFIED_WITH_SOURCE_CONFLICT",
+      "notes": "Current guide, last modified 9 October 2026, contains these dates. No claim that the older announcement has officially been amended. 31 October is labelled Tom’s planning recommendation."
+    },
+    {
+      "claim": "Most migrations take half a day; big vendors have already migrated; 2,000+ apps mostly unaffected",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "notes": "Removed. Scope and ownership replace unsupported duration, population and vendor generalizations."
+    },
+    {
+      "claim": "Existing app features are guaranteed to keep working",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "notes": "Replaced by narrow technology scope and a request to confirm wider integration effects with owner."
+    },
+    {
+      "claim": "Tom has audited many client portals; lifecycle audit completed in one day",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "notes": "No supplied case evidence for these personal/service promises. Removed; recommendations remain in first person and link to actual project evidence."
+    }
+  ],
+  "remaining_uncertainty": "Official HubSpot dates conflict. The article surfaces both and labels the earlier internal target as a recommendation. App-specific behavior is not tested by this editorial review."
+}

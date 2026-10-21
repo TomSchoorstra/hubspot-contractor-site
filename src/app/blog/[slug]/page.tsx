@@ -4,9 +4,8 @@ import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import Container from "@/components/ui/Container";
-import CTASection from "@/components/sections/CTASection";
 import { getAllPosts, getPost } from "@/lib/blog";
-import { SITE_URL } from "@/lib/site";
+import { SITE_URL, SITE_SOCIAL_IMAGE } from "@/lib/site";
 
 export async function generateStaticParams() {
   return getAllPosts().map((post) => ({ slug: post.slug }));
@@ -22,7 +21,7 @@ export async function generateMetadata({
   if (!post) return { title: "Post niet gevonden — Tom Schoorstra" };
 
   const metaDescription = post.description ?? post.excerpt;
-  const socialImage = post.ogImage ?? post.coverImage;
+  const socialImage = post.ogImage ?? post.coverImage ?? SITE_SOCIAL_IMAGE.url;
 
   return {
     title: `${post.title} — Tom Schoorstra`,
@@ -50,7 +49,8 @@ export async function generateMetadata({
 }
 
 function formatDate(dateStr: string) {
-  return new Date(dateStr).toLocaleDateString("nl-NL", {
+  return new Date(dateStr).toLocaleDateString("en-GB", {
+    timeZone: "UTC",
     day: "numeric",
     month: "long",
     year: "numeric",
@@ -183,51 +183,31 @@ export default async function BlogPost({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      {/* Header */}
-      <header className="relative overflow-hidden border-b border-border-subtle py-20 lg:py-28">
-        <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
-        <div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
-        <Container>
-          <div className="relative max-w-2xl">
-            <div className="flex items-center justify-between mb-8">
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-1.5 text-sm font-medium text-text-muted hover:text-accent transition-colors"
-              >
-                <svg aria-hidden="true" className="h-4 w-4" fill="none" viewBox="0 0 16 16">
-                  <path d="M10 3L5 8l5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
-                </svg>
-                All posts
-              </Link>
-              <time className="text-xs font-semibold uppercase tracking-widest text-accent-2">
-                {formatDate(post.date)}
-              </time>
-            </div>
-            <h1 className="font-display mt-3 text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl">
-              {post.title}
-            </h1>
-            <p className="mt-5 text-xl leading-relaxed text-text-secondary">
-              {post.excerpt}
+      <header className="relative overflow-hidden border-b border-border-subtle py-12 lg:py-16">
+        <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
+        <Container size="narrow" className="relative">
+          <div className="max-w-2xl">
+            <Link href="/blog" className="text-sm font-semibold text-text underline underline-offset-4 hover:text-accent-text">← All posts</Link>
+            <p className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-sm leading-relaxed text-text-secondary">
+              <span>By <Link href="/about" className="underline underline-offset-4 hover:text-text">{post.author ?? "Tom Schoorstra"}</Link></span>
+              <span>Published <time dateTime={post.date}>{formatDate(post.date)}</time></span>
+              {post.updated && <span>Updated <time dateTime={post.updated}>{formatDate(post.updated)}</time></span>}
             </p>
+            <h1 className="mt-3 font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl">{post.title}</h1>
+            <p className="mt-5 text-xl leading-relaxed text-text-secondary">{post.excerpt}</p>
           </div>
         </Container>
       </header>
 
       {/* Content */}
-      <section className="py-20 lg:py-28">
-        <Container>
-          <div className="prose-blog max-w-2xl">
+      <section className="py-12 lg:py-16">
+        <Container size="narrow">
+          <article className="prose-blog max-w-2xl">
             <MDXRemote source={post.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
-          </div>
+          </article>
         </Container>
       </section>
 
-      <CTASection
-        title="Questions about your HubSpot setup?"
-        description="I'm happy to think along — even if you're not sure yet what you need."
-        cta={{ label: "Get in touch", href: "/contact" }}
-        secondaryCta={{ label: "View services", href: "/services" }}
-      />
     </main>
   );
 }
