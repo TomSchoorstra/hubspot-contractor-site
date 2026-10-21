@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Geist, Geist_Mono, Josefin_Sans } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -19,8 +19,8 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const josefinSans = Josefin_Sans({
+  variable: "--font-josefin-sans",
   subsets: ["latin"],
   display: "swap",
 });
@@ -108,7 +108,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-site-env={siteEnv}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} min-h-screen bg-bg text-text antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} ${josefinSans.variable} min-h-screen bg-bg text-text antialiased`}
       >
         {analyticsEnabled && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
         <script

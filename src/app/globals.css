@@ -74,7 +74,7 @@
   --color-accent-3-hover: var(--accent-3-hover);
   --font-sans: var(--font-geist-sans);
   --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-space-grotesk);
+  --font-display: var(--font-josefin-sans);
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
@@ -96,7 +96,7 @@ body {
 
 /* Characterful headings paired with Geist for readable body text. */
 .font-display {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-family: var(--font-josefin-sans), system-ui, sans-serif;
 }
 
 /* Gradient text utility */
@@ -131,7 +131,7 @@ body {
   line-height: 1.8;
 }
 .prose-blog h2 {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-family: var(--font-josefin-sans), system-ui, sans-serif;
   font-size: 1.75rem;
   font-weight: 600;
   color: var(--text);
@@ -140,7 +140,7 @@ body {
   letter-spacing: -0.01em;
 }
 .prose-blog h3 {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-family: var(--font-josefin-sans), system-ui, sans-serif;
   font-size: 1.25rem;
   font-weight: 600;
   color: var(--text);

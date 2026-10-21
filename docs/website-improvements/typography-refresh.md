@@ -52,3 +52,12 @@ De integratie gebruikt de bestaande `next/font/google`-loader met een variabel f
 Controles: scoped ESLint, volledige productiebouw, TypeScript en beide verplichte brondata-validaties slagen. Op alle 27 publieke pagina's is de daadwerkelijke Space Grotesk-fontface geladen; de koppen hebben de juiste fontfamilie. Op 320, 390 en 1440 px zijn geen horizontale overflow of browser-page-errors gevonden. Bodytekst gebruikt Geist. De browser doet geen verzoeken naar Google Fonts tijdens paginabezoek. De homepage en About zijn met screenshots op desktop en mobiel bekeken.
 
 [Controles en screenshots](space-grotesk-2026-10-21/space-grotesk-pages.json) documenteren deze lokale variant. De [preview](http://127.0.0.1:3102) op poort 3102 is bijgewerkt. Lokaal ter beoordeling; geen push of publicatie uitgevoerd.
+
+
+## Definitieve fontkeuze na vergelijking — Josefin Sans, 21 oktober 2026
+
+Tom heeft de twee homepages naast elkaar bekeken en kiest Josefin Sans omdat het iets speelser is. Deze keuze vervangt Space Grotesk als vaste familie voor gedeelde koppen, blogsubkoppen en naamlabels. Bodytekst blijft Geist. Gewichten, lettergroottes, kleuren en compacte opbouw volgen de gecontroleerde vorige variant. De homepagekop gebruikt 500; de meeste overige koppen 600.
+
+Josefin Sans wordt via `next/font/google` als variabel font met Latin-subset en `display: swap` lokaal geserveerd. De officiële gratis SIL Open Font License staat in `public/licenses/Josefin-Sans-OFL.txt`. De actieve fontloader voor Space Grotesk is verwijderd. De aparte [vergelijkingspreview](http://127.0.0.1:3103/compare) blijft als referentie beschikbaar; de [hoofdpreview](http://127.0.0.1:3102) gebruikt nu de gekozen Josefin Sans.
+
+Productiebouw inclusief TypeScript en verplichte validators, plus scoped ESLint, slagen. Alle 27 publieke pagina's zijn op 320, 390 en 1440 px gecontroleerd: 81 controles zonder overflow of browser-page-errors, met geladen Josefin Sans-koppen en Geist-bodytekst. Geen runtimeverzoeken naar Google Fonts. De homepage op desktop en About op mobiel zijn visueel bekeken. [Checks en screenshots](josefin-sans-2026-10-21/josefin-sans-pages.json) leggen dit vast. Toms acceptatie betreft de fontkeuze; de overige checkpoints blijven hun bestaande reviewmomenten volgen. Geen push of publicatie uitgevoerd.
