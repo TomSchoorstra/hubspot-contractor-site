@@ -12,8 +12,6 @@ type FormData = {
   email: string;
   company: string;
   message: string;
-  budget: string;
-  timeline: string;
 };
 
 type FormErrors = {
@@ -35,8 +33,6 @@ export default function ContactForm() {
     email: "",
     company: "",
     message: "",
-    budget: "",
-    timeline: "",
   });
 
   const [errors, setErrors] = useState<FormErrors>({});
@@ -101,6 +97,12 @@ export default function ContactForm() {
     e.preventDefault();
 
     if (!validateForm()) {
+      const firstInvalidField = ["name", "email", "message"].find((name) =>
+        validateField(name, formData[name as keyof FormData]),
+      );
+      if (firstInvalidField) {
+        e.currentTarget.querySelector<HTMLElement>(`#${firstInvalidField}`)?.focus();
+      }
       return;
     }
 
@@ -135,8 +137,6 @@ export default function ContactForm() {
           email: "",
           company: "",
           message: "",
-          budget: "",
-          timeline: "",
         });
         setErrors({});
         setTouched({});
@@ -158,7 +158,7 @@ export default function ContactForm() {
         </div>
         <h3 className="font-display text-2xl font-bold text-text">Message sent!</h3>
         <p className="mt-3 text-base leading-relaxed text-text-secondary">
-          Thanks for reaching out. I&apos;ll review your message and get back to you within one business day.
+          Thanks for reaching out. I&apos;ll read your message and get back to you soon.
         </p>
         <div className="mt-6">
           <Button href="/" variant="primary" showArrow>
@@ -170,14 +170,14 @@ export default function ContactForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} noValidate>
+    <form onSubmit={handleSubmit} onFocus={handleFocus} noValidate>
       <div className="space-y-5">
         <h2 className="font-display text-xl font-bold text-text">Send a message</h2>
 
         {!FORMSPREE_ENDPOINT && (
           <div className="rounded-xl border border-accent/20 bg-accent-light p-4" role="alert">
             <p className="text-sm font-medium text-text">
-              Form endpoint not configured yet.
+              The form is currently unavailable. Please contact me on LinkedIn instead.
             </p>
           </div>
         )}
@@ -194,7 +194,8 @@ export default function ContactForm() {
               value={formData.name}
               onChange={handleChange}
               onBlur={handleBlur}
-              onFocus={handleFocus}
+              required
+              autoComplete="name"
               placeholder="Your name"
               aria-invalid={errors.name ? "true" : "false"}
               aria-describedby={errors.name ? "name-error" : undefined}
@@ -215,6 +216,8 @@ export default function ContactForm() {
               type="email"
               id="email"
               name="email"
+              required
+              autoComplete="email"
               value={formData.email}
               onChange={handleChange}
               onBlur={handleBlur}
@@ -239,6 +242,7 @@ export default function ContactForm() {
             type="text"
             id="company"
             name="company"
+            autoComplete="organization"
             value={formData.company}
             onChange={handleChange}
             placeholder="Your company (optional)"
@@ -253,60 +257,23 @@ export default function ContactForm() {
           <textarea
             id="message"
             name="message"
+            required
+            minLength={20}
             value={formData.message}
             onChange={handleChange}
             onBlur={handleBlur}
             rows={5}
-            placeholder="Tell me what you're working on or struggling with in HubSpot..."
+            placeholder="Your question or idea..."
             aria-invalid={errors.message ? "true" : "false"}
-            aria-describedby={errors.message ? "message-error" : undefined}
+            aria-describedby={errors.message ? "message-hint message-error" : "message-hint"}
             className={`${inputClasses} resize-none ${errors.message ? "border-accent ring-2 ring-accent/15" : ""}`}
           />
+          <p id="message-hint" className="mt-1.5 text-xs text-text-secondary">A little context helps. Please use at least 20 characters.</p>
           {errors.message && (
             <p id="message-error" className="mt-1.5 text-sm text-accent" role="alert">
               {errors.message}
             </p>
           )}
-        </div>
-
-        <div className="grid gap-5 sm:grid-cols-2">
-          <div>
-            <label htmlFor="budget" className={labelClasses}>
-              Budget
-            </label>
-            <select
-              id="budget"
-              name="budget"
-              value={formData.budget}
-              onChange={handleChange}
-              className={inputClasses}
-            >
-              <option value="">Select budget</option>
-              <option value="< €2k">&lt; €2k</option>
-              <option value="€2k–€5k">€2k–€5k</option>
-              <option value="€5k–€10k">€5k–€10k</option>
-              <option value="€10k+">€10k+</option>
-            </select>
-          </div>
-
-          <div>
-            <label htmlFor="timeline" className={labelClasses}>
-              Timeline
-            </label>
-            <select
-              id="timeline"
-              name="timeline"
-              value={formData.timeline}
-              onChange={handleChange}
-              className={inputClasses}
-            >
-              <option value="">Select timeline</option>
-              <option value="ASAP">ASAP</option>
-              <option value="This month">This month</option>
-              <option value="Next month">Next month</option>
-              <option value="This quarter">This quarter</option>
-            </select>
-          </div>
         </div>
 
         {formState === "error" && (

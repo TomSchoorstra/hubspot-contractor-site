@@ -9,6 +9,14 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  async redirects() {
+    return [{
+      source: "/:path*",
+      has: [{ type: "host", value: "tomschoorstra.com" }],
+      destination: "https://www.tomschoorstra.com/:path*",
+      permanent: true,
+    }];
+  },
   async headers() {
     return [{ source: "/(.*)", headers: securityHeaders }];
   },

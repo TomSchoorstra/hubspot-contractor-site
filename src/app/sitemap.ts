@@ -12,6 +12,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${siteUrl}/about`, priority: 0.8, changeFrequency: "monthly" as const },
     { url: `${siteUrl}/services`, priority: 0.9, changeFrequency: "monthly" as const },
     { url: `${siteUrl}/case-studies`, priority: 0.9, changeFrequency: "monthly" as const },
+    { url: `${siteUrl}/blog`, priority: 0.8, changeFrequency: "monthly" as const },
     { url: `${siteUrl}/contact`, priority: 0.7, changeFrequency: "yearly" as const },
     { url: `${siteUrl}/app-catalog`, priority: 0.7, changeFrequency: "monthly" as const },
     { url: `${siteUrl}/hubspot-enablement`, priority: 0.6, changeFrequency: "monthly" as const },
@@ -31,7 +32,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
 
   const blogPosts = getAllPosts().map((post) => ({
     url: `${siteUrl}/blog/${post.slug}`,
-    lastModified: new Date(post.date),
+    lastModified: new Date(post.updated ?? post.date),
     priority: 0.7,
     changeFrequency: "monthly" as const,
   }));

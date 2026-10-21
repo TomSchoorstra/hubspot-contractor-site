@@ -9,6 +9,10 @@ export default function StatusBanner() {
 
   if (!success && !error) return null;
 
+  if (error === "unavailable") {
+    return <p role="status" className="text-sm text-text-secondary">Installation is currently unavailable. You can still read about the project below.</p>;
+  }
+
   if (success) {
     return (
       <div className="rounded-xl border border-accent-2/30 bg-accent-2-light px-5 py-4 text-sm font-medium text-accent-2">

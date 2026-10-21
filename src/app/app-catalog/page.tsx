@@ -8,12 +8,12 @@ import Container from "@/components/ui/Container";
 export const metadata: Metadata = {
   title: "App Catalog | Tom Schoorstra",
   description:
-    "Browse free tools and integrations built for HubSpot teams. Install in minutes, no setup required.",
+    "Small tools and integration projects for HubSpot teams, with their current availability.",
   alternates: { canonical: "/app-catalog" },
   openGraph: {
     title: "App Catalog — Tom Schoorstra",
     description:
-      "Browse free tools and integrations built for HubSpot teams. Install in minutes, no setup required.",
+      "Small tools and integration projects for HubSpot teams, with their current availability.",
     url: "/app-catalog",
   },
 };
@@ -22,7 +22,7 @@ const apps = [
   {
     title: "HubSpot Tips for Slack",
     description:
-      "Get a practical HubSpot tip delivered to your Slack workspace every Monday. Install once, learn every week.",
+      "A project for sharing weekly HubSpot tips in Slack. New installations are currently unavailable.",
     badge: "Slack",
     badgeVariant: "teal" as const,
     href: "/hubspot-enablement",
@@ -31,11 +31,11 @@ const apps = [
 
 export default function AppCatalogPage() {
   return (
-    <>
+    <main>
       <PageHeader
         eyebrow="Apps"
         title="App Catalog"
-        subtitle="Free tools and integrations built for HubSpot teams. Install in minutes and get more out of HubSpot without extra configuration."
+        subtitle="Small tools and integration projects for HubSpot teams."
       />
 
       <section className="py-16 lg:py-20">
@@ -55,7 +55,7 @@ export default function AppCatalogPage() {
                       {app.description}
                     </p>
                     <p className="mt-5 text-sm font-semibold text-accent flex items-center gap-1.5">
-                      Learn more
+                      View project
                       <svg aria-hidden="true" className="h-3.5 w-3.5 transition-transform group-hover:translate-x-0.5" fill="none" viewBox="0 0 14 14">
                         <path d="M2.5 7h9M7 2.5l4.5 4.5L7 11.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
                       </svg>
@@ -67,6 +67,6 @@ export default function AppCatalogPage() {
           </div>
         </Container>
       </section>
-    </>
+    </main>
   );
 }

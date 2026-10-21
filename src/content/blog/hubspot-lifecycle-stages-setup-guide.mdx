@@ -18,7 +18,7 @@ If you're starting from scratch, also read [the most common HubSpot onboarding m
 
 > **Key Takeaways**
 > - 76% of CRM users say less than half their organization's CRM data is accurate ([Validity](https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/), 2025). Misconfigured lifecycle stages are one of the biggest contributors.
-> - HubSpot only auto-sets three stages natively: Lead, Opportunity, and Customer. MQL and SQL require workflows you have to build.
+> - HubSpot has configurable lifecycle automation for record creation, deals, associated leads and company-to-contact sync. Use workflows when your own qualification rules need them.
 > - Lifecycle stages track the relationship. Deal stages track the transaction. Lead status tracks short-term sales activity. These are three separate systems.
 > - Define what each stage means in writing before you touch the platform.
 
@@ -26,7 +26,7 @@ If you're starting from scratch, also read [the most common HubSpot onboarding m
 
 ## What are HubSpot lifecycle stages, and why do they matter?
 
-Lifecycle stages answer one question: where is this contact in their relationship with your business? They're not about a specific deal or a sales task. They track the full arc from first-ever interaction to loyal customer.
+Lifecycle stages answer one question: where is this contact or company in their relationship with your business? They're not about a specific deal or a sales task. They track the full arc from first-ever interaction to loyal customer.
 
 HubSpot has eight default stages. Here's what each one is actually supposed to represent:
 
@@ -41,7 +41,7 @@ HubSpot has eight default stages. Here's what each one is actually supposed to r
 | **Evangelist** | Actively refers or promotes your business. |
 | **Other** | Doesn't fit any category — partners, press, vendors, etc. |
 
-One thing HubSpot enforces that most teams don't know: lifecycle stages only move forward. If a Customer fills out a top-of-funnel form, HubSpot won't overwrite their stage back to Lead. That's intentional. The stage reflects the highest relationship milestone reached, not the most recent action.
+HubSpot’s default automatic updates move lifecycle stages forward. A form submission therefore does not normally move a Customer back to Lead. You can move a stage backward manually; automatic tools generally need the current value cleared before setting an earlier stage. [HubSpot explains the different update methods here](https://knowledge.hubspot.com/records/use-lifecycle-stages).
 
 ---
 
@@ -50,7 +50,7 @@ One thing HubSpot enforces that most teams don't know: lifecycle stages only mov
 This is where most setups go wrong. These three systems look similar but track completely different things. Mixing them up corrupts your reporting across all three.
 
 {/* [UNIQUE INSIGHT] */}
-**Lifecycle stage = the relationship.** It's a contact-level property. One value at a time. It tells you where someone stands with your brand overall.
+**Lifecycle stage = the relationship.** It's a property on contacts and companies, with one value per record. It tells you where that record stands in its relationship with your business.
 
 **Deal stage = the transaction.** It's a deal-level property. A contact can have multiple deals at different stages simultaneously. It tracks what's happening inside a specific sales opportunity — not the contact's broader relationship.
 
@@ -93,13 +93,14 @@ Document the SQL criteria too: "A contact is an SQL if a sales rep has reviewed 
 
 ## Which lifecycle stages does HubSpot set automatically?
 
-Three transitions happen natively in HubSpot with no workflow required:
+HubSpot has several configurable lifecycle settings:
 
-1. **Lead** — Any contact created via a HubSpot form is set to the default stage configured in your form settings, which is typically Lead.
-2. **Opportunity** — When a deal is created, HubSpot can automatically set the associated contact and company to Opportunity. This is a toggle in your deal settings — check it's enabled.
-3. **Customer** — When a deal is marked Closed-Won, HubSpot automatically sets the associated contact and company to Customer.
+- **Record creation:** choose a default stage for new contacts and companies. A form can also specify a default stage.
+- **Deals:** choose the stage to set when a deal is created or won. These updates depend on the setting and the record’s associations.
+- **Associated leads:** a setting can update lifecycle stage when a lead is associated, with exceptions for leads created by automation.
+- **Company sync:** the primary company’s lifecycle stage can update its associated contacts.
 
-Everything else — MQL, SQL, Evangelist — requires workflows. There's no native "if lead score reaches X, set to MQL" trigger. You have to build it.
+Check which options are enabled in your account before adding workflows. Your own fit and engagement criteria may still need workflow logic. [HubSpot documents these settings and their exceptions](https://knowledge.hubspot.com/object-settings/manage-how-lifecycle-stages-sync-between-objects).
 
 If you need help building those workflows, [HubSpot automation setup](/services/automation) is one of the things I can help with.
 
@@ -127,11 +128,11 @@ If rejected: Set a "Disqualification Reason" property. Do not move the stage bac
 
 **Workflow 3: Deal created → Opportunity**
 
-Usually handled natively (see above). Add a workflow as a backup: if a deal is created and the associated contact's lifecycle stage is Lead, MQL, or SQL, set it to Opportunity.
+Use the deal-created lifecycle setting when it matches your process. Verify the associated records and the selected target stage before adding a separate workflow.
 
 **Workflow 4: Deal Closed-Won → Customer**
 
-Also handled natively. A workflow backup catches edge cases where the association wasn't set up correctly.
+Use the deal-won lifecycle setting when it matches your process. Missing associations need investigation; an additional workflow cannot infer which customer a deal belongs to.
 
 {/* [PERSONAL EXPERIENCE] */}
 One thing I always add: a quarterly "lifecycle stage audit" enrollment — contacts who have been at MQL or SQL for more than 90 days with no activity get a property flag. These are contacts your team has forgotten about. They're not customers, they're not disqualified — they're just stuck. Surfacing them regularly prevents the "forever SQL" problem where the stage loses meaning entirely.
@@ -146,7 +147,7 @@ One thing I always add: a quarterly "lifecycle stage audit" enrollment — conta
 
 **3. The "forever SQL" problem.** Contacts get marked SQL when they book a call. The call happens. Nothing closes. The contact goes cold. Nobody updates the stage. Six months later, SQL is full of dead contacts and your pipeline reports are meaningless.
 
-**4. Not configuring contact-company lifecycle sync.** When you update a contact's lifecycle stage, the associated company's stage doesn't automatically update unless you enable it in your object sync settings. Many teams don't know this exists and end up with mismatched reporting between contact and company views.
+**4. Assuming lifecycle sync works in both directions.** HubSpot’s lifecycle sync setting applies the primary company’s stage to associated contacts. Updating a contact does not update its company through that setting. Decide which records should drive the change before configuring automation.
 
 37% of CRM users report losing revenue as a direct consequence of poor data quality ([Validity](https://www.validity.com/resource-center/the-state-of-crm-data-management-in-2025/), 2025). Lifecycle stage misconfiguration sits at the center of that problem — once stages are wrong, every funnel report, every automation trigger, and every segmentation query built on top of them produces bad output.
 
@@ -164,11 +165,11 @@ Lifecycle stages track a contact's overall relationship with your business — f
 
 ### Does HubSpot automatically update lifecycle stages?
 
-HubSpot natively sets Lead on form submission, Opportunity when a deal is created, and Customer when a deal closes. Everything else — MQL, SQL, Evangelist — requires workflows you build. There's no automatic lead scoring or stage promotion built into the platform.
+Yes. Configurable settings can set a default stage on creation and update stages from deals, associated leads or the primary company. The stage and behavior depend on your settings. Workflows can apply your own qualification rules; check your subscription and the available actions.
 
 ### Can a lifecycle stage move backward in HubSpot?
 
-No. HubSpot won't overwrite a lifecycle stage with a lower value. If a Customer fills out a top-of-funnel form, they stay Customer. This is intentional — the stage reflects the highest milestone reached. To track sales rejection or disqualification, use a separate custom property rather than moving the stage backward.
+Yes, you can set an earlier stage manually. Default automatic updates only move forward, and tools such as imports or workflows generally require clearing the current value before setting an earlier stage. Check the effect on lifecycle date properties before doing this. For a rejected lead, a separate disqualification property may preserve the history you need.
 
 ### What is MQL-to-SQL conversion rate and what's a good benchmark?
 
@@ -186,6 +187,6 @@ Most lifecycle stage problems aren't technical. They're definition problems that
 
 Before you touch HubSpot: get marketing and sales in a room, write down what each stage means, and get both sides to sign off. That document is worth more than any workflow.
 
-Once you have the definitions, the automation is straightforward. Four core workflows cover most setups. The maintenance work — quarterly audits, rejection rate reviews, sync configuration — is what keeps it clean over time.
+Once you have the definitions, the automation is straightforward. Use the native settings where they fit, then add workflows for your qualification rules. The maintenance work — quarterly audits, rejection rate reviews, sync configuration — is what keeps it clean over time.
 
 If your lifecycle stages are already a mess and you're not sure where to start, [get in touch](/contact). A portal audit usually surfaces the issues in a day.

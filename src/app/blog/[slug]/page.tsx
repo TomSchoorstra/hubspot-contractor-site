@@ -37,7 +37,7 @@ export async function generateMetadata({
       type: "article",
       publishedTime: post.date,
       modifiedTime: post.updated ?? post.date,
-      authors: ["https://tomschoorstra.com/about"],
+      authors: [`${SITE_URL}/about`],
       ...(socialImage ? { images: [{ url: socialImage }] } : {}),
     },
     twitter: {
