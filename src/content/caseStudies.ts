@@ -4,6 +4,7 @@ export type CaseStudy = {
   industry: string;
   companySize: string;
   summary: string;
+  layout?: "compact";
   statusNote?: string;
   narrative?: {
     eyebrow: string;
@@ -186,47 +187,42 @@ export const caseStudies: CaseStudy[] = [
   },
   {
     slug: "finance-automation",
+    layout: "compact",
     title: "From manual order entry to one-click invoicing",
     industry: "HR Software",
     companySize: "50–200 employees",
-    summary: "I connected HubSpot, WooCommerce, and Exact through Zapier so order details can pass through the process without repeated manual entry. Finance keeps a review step before the flow starts.",
+    summary: "I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information.",
     narrative: {
       eyebrow: "Finance automation",
       intro: [
-        "Finance was copying order details between HubSpot, WooCommerce, and Exact. The same information had to be entered again at each step.",
-        "I connected the process through Zapier, with a review step in HubSpot before Finance starts the flow. The order details now pass between systems without repeated entry."
+        "I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information."
       ],
       headings: {
-        challenge: "The same order details, entered again",
-        approach: "How I approached it",
-        solution: "Finance reviews the details, then starts the flow"
+        challenge: "Keep the billing decision with Finance",
+        approach: "How I connected the process",
+        solution: "What changed"
       },
       cta: {
-        title: "Still copying order details between systems?",
-        description: "Tell me where your order data starts and what Finance needs to do with it. I can help you work out which steps can be automated and where a review still makes sense."
+        title: "Questions about this setup?",
+        description: "Questions and conversations about HubSpot are welcome."
       }
     },
     challenge: [
-      "The customer and billing details were already in HubSpot. For each new order, Finance copied them into WooCommerce and then into Exact for invoicing. Repeated entry added work and left room for mistakes.",
-      "The process still needed a billing review. I needed to keep that decision with Finance while removing the repeated work around it."
+      "Customer and billing details were already in HubSpot. For each order, Finance copied them into WooCommerce and then into Exact for invoicing. That repeated work left room for mistakes.",
+      "The process still needed a billing review, so I kept the decision to start with Finance."
     ],
     approach: [
       {
         title: "Follow the order through each system",
-        description: "I mapped the order-to-invoice process across HubSpot, WooCommerce, and Exact. That established which details each system needed and when they should be passed on."
+        description: "I mapped the order-to-invoice process across all three systems, checking which details each needed and when they should be passed on."
       },
       {
-        title: "Keep the billing review in HubSpot",
-        description: "I added a review step so Finance could check the billing details before starting the automation. The approval became the trigger for the rest of the process."
-      },
-      {
-        title: "Connect the order and invoicing steps",
-        description: "I built the Zapier automation connecting HubSpot with WooCommerce and Exact. Once Finance starts the flow, the order details are passed through without being typed into each system again."
+        title: "Build the flow around the billing review",
+        description: "I added a billing review in HubSpot and built the Zapier automation. Finance checks the details and starts the flow with one click. The automation creates the WooCommerce order and passes the information through the invoicing process in Exact."
       }
     ],
     solution: [
-      "Finance checks the billing details in HubSpot and starts the flow with one click. The automation creates the WooCommerce order and passes the information through the invoicing process in Exact.",
-      "Finance still reviews the order; the repeated entry between systems has been removed. The review remains the decision point that starts the flow."
+      "Order details now move between systems without being typed in again. Finance still owns the review that starts the flow."
     ],
     results: [
       {

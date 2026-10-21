@@ -1,0 +1,89 @@
+{
+  "date": "2026-10-21",
+  "status": "Finance example self-checked, ready for Tom review. Checkpoint 5 is in progress; other four cases retain their existing content/layout.",
+  "preview": "http://127.0.0.1:3102/case-studies/finance-automation",
+  "scope": "Compact finance example only. Shared summary also updates its existing teasers/metadata. No case URL, service URL, font or global layout change.",
+  "skills": {
+    "upstream": "https://github.com/coreyhaines31/marketingskills",
+    "applied": [
+      "copy-editing mode B, seven sweeps and final checklist",
+      "cro: clarity, visual hierarchy, evidence and realistic next action",
+      "existing product marketing context and Tom Voice compass"
+    ]
+  },
+  "copy_checks": {
+    "clarity": "A short introduction followed by the billing-review requirement, personal implementation and qualitative outcome. Result bar and repeated stack/process/sales panels removed.",
+    "voice": "First-person mapping and building. Existing headline and key vocabulary retained. Direct English, no em dashes or contrast reveals.",
+    "so_what": "Explains why copying details was a problem and how mapped system handovers remove repeated entry.",
+    "proof": "Same existing project facts; no new customer, testimonial, delivery claim, error percentage or measured time saving.",
+    "specificity": "HubSpot, Zapier, WooCommerce and Exact named; billing review occurs in HubSpot; Finance initiates the flow; WooCommerce order creation and Exact invoicing route explicit.",
+    "emotion": "Recognizable repeated administrative work and room for mistakes; no urgency or exaggerated transformation.",
+    "risk_and_expectations": "Finance approval and start decision retained. Portfolio contact explicitly invites conversation and does not offer client projects.",
+    "final": "Original industry/size context, own mapping and build, four tools, review ownership, single-click start, qualitative change, two related services and previous/next destinations all retained. Body type remains readable."
+  },
+  "cro": {
+    "page_type": "Portfolio case as evidence of expertise",
+    "primary_action": "Read the implementation and explore another case through simple case links.",
+    "secondary_action": "Explore relevant automation/integration scope, or contact for a conversation.",
+    "traffic_and_performance": "No channel or conversion data. No performance uplift claim or A/B-test claim."
+  },
+  "validation": {
+    "build": "passed with TypeScript and both mandatory training validators",
+    "scoped_eslint": "passed on three changed source files",
+    "browser_checks": 19,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "pages": "Five case detail pages at three widths; home and case index at 390 and 1440.",
+    "other_cases": "All four other cases have exactly the same main text as the baseline at all three widths.",
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "All six unique destinations on finance case return 200.",
+    "navigation": "Actual Next case click opens renewal-status card.",
+    "metadata": "Canonical, description, OG/Twitter description and OG image checked; BreadcrumbList retained.",
+    "visual_review": "Finance full-page mobile and desktop screenshots reviewed.",
+    "requests": "All POST requests aborted in separate Playwright session; no real form submission.",
+    "runtime": "Clean temporary preview copy using unchanged lockfile; original dependency installation has read hangs."
+  },
+  "measurement": {
+    "method": "main.innerText after fonts load; global navigation and footer excluded. Full-page screenshots include global layout. Main height measured at equal viewport widths.",
+    "rows": [
+      {
+        "width": 320,
+        "before_words": 432,
+        "after_words": 219,
+        "before_main_height": 5839,
+        "after_main_height": 2219,
+        "before_cards": 6,
+        "after_cards": 0
+      },
+      {
+        "width": 390,
+        "before_words": 432,
+        "after_words": 219,
+        "before_main_height": 4998,
+        "after_main_height": 1911,
+        "before_cards": 6,
+        "after_cards": 0
+      },
+      {
+        "width": 1440,
+        "before_words": 432,
+        "after_words": 219,
+        "before_main_height": 3620,
+        "after_main_height": 1412,
+        "before_cards": 6,
+        "after_cards": 0
+      }
+    ]
+  },
+  "next_case_treatment": {
+    "customer-lifecycle": "Keep Account versus Company explanation, own project-lead role, historical linkage and three new-record paths. Keep illustrative diagram with fictional names, September 2026 snapshot/core live/enrichment open. Keep manually initiated weekly review, AI-assisted investigation, stop conditions and human decisions; review does not merge or change associations. Fold repeated result/process explanation into the narrative.",
+    "crm-data-quality": "Keep both contact comparison directions and separate license/member-count dataset; preserve distinct-license counting, dataset logic/report filters and source refresh timing. August 2026 snapshot, member-count validation and freshness improvements remain open. Investigation comes before correction; no automatic repair claimed. Give these limits one clear visible section.",
+    "renewal-status-card": "Keep all three written status outcomes, linked License lookup, serverless choice after unreliable initial lookup, pipeline visibility, read-only boundary and hosting specific to the described implementation.",
+    "pipeline-consolidation": "Keep mapping, stage/field/workflow review, migration/history intent, reporting from MQL to Closed Won and handovers. Do not add a conversion improvement figure."
+  },
+  "publication": "Local commit only; no push or deploy."
+}

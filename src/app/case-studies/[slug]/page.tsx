@@ -11,6 +11,7 @@ import { caseStudies } from "@/content/caseStudies";
 import { services } from "@/content/services";
 import { SITE_URL, SITE_SOCIAL_IMAGE } from "@/lib/site";
 import ArchitectureDiagram from "@/components/sections/ArchitectureDiagram";
+import CompactCaseStudyContent from "@/components/sections/CompactCaseStudyContent";
 
 export async function generateStaticParams() {
   return caseStudies.map((caseStudy) => ({
@@ -100,6 +101,18 @@ export default async function CaseStudyDetail({
       { "@type": "ListItem", position: 3, name: caseStudy.title, item: `${SITE_URL}/case-studies/${slug}` },
     ],
   };
+
+  if (caseStudy.layout === "compact") {
+    return (
+      <main>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+        />
+        <CompactCaseStudyContent caseStudy={caseStudy} previous={prevStudy} next={nextStudy} />
+      </main>
+    );
+  }
 
   return (
     <main>

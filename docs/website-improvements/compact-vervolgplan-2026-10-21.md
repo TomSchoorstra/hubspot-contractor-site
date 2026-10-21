@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is gestart met de finance-voorbeeldcase. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -27,7 +27,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 2 Publieke fouten | Zichtbare bloginstructies, mobiele overflow, canonical-signalen, meetfout en Slack-beschikbaarheid aanpakken | Kleine correcties met controles, zonder nieuwe marketingsecties | Zelfcontrole afgerond; externe Slack-werking blijft onbevestigd |
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
-| 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Gepland |
+| 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld zelfcontrole afgerond; overige vier volgen na voorbeeldreview |
 | 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
 
@@ -188,3 +188,20 @@ Scopecontrole: triggers en reviewpunten, foutmeldingen bij koppelingen, bron- en
 Productiebouw inclusief TypeScript en beide verplichte validators slaagt; scoped ESLint op de vier gewijzigde bronbestanden is schoon. Alle zeven pagina’s geven 200 op 320, 390 en 1440 px, met één H1, passende canonicals en metadata, geen overflow en geen browser-page-errors. Vijftien unieke interne bestemmingen geven 200; de klikroute overzicht → app cards → renewal-case werkt. Representatieve screenshots zijn visueel beoordeeld. Er zijn geen echte formulieren verzonden.
 
 [Review, bronnen, metingen en controles](services-preview-2026-10-21/review.json) leggen de oplevering vast. Status: zelfcontrole afgerond voor de vijf diensten en het overzicht; nog geen beoordeling namens Tom. Geen push of publicatie uitgevoerd. Volgend onderdeel: checkpoint 5, met finance-automation als eerste compacte voorbeeldcase.
+
+
+## Checkpoint 5 — financevoorbeeld gereed
+
+Op Toms opdracht is [finance-automation](http://127.0.0.1:3102/case-studies/finance-automation) als eerste compacte case uitgewerkt. De eigen bijdrage, systeemroute en Finance-goedkeuring blijven de kern. De resultaatbalk, timeline, apart stackblok en grote dienst-/navigatie-/verkoopkaarten zijn vervangen door doorlopende tekst en gewone links. De vier tools staan in het verhaal; sector en bedrijfsgrootte blijven kort boven de titel. De bestaande URL en titel zijn behouden. De gedeelde summary is ingekort en werkt ook door in metadata en bestaande teasers.
+
+De pagina telt 219 woorden tegenover 432 in de verse nulmeting (−49%). Main-hoogte op mobiel 390 px daalt van 4.998 naar 1.911 px (−62%); op desktop van 3.620 naar 1.412 px. De bodytekst is niet kleiner gemaakt. De 6 oude kaartvlakken verdwijnen uit main. De telling sluit navigatie en footer uit en volgt dezelfde browsermethode voor en na. Dit is een compactheidsmeting, geen gemeten conversiewinst.
+
+De zeven copy-editingcontroles, CRO-afwegingen, bronbehoud en checks staan in [review en meetgegevens](finance-preview-2026-10-21/review.json). Bouw, TypeScript, beide verplichte validators en scoped ESLint slagen. Negentien browsercontroles op 320, 390 en 1440 px slagen; geen overflow of page-errors. De vier andere casepagina’s hebben op alle drie breedtes exact dezelfde main-tekst als hun nulmeting. Zes unieke interne links geven 200, de echte klik naar de volgende case werkt, metadata en BreadcrumbList zijn gecontroleerd. Desktop- en mobiele screenshots zijn visueel beoordeeld.
+
+### Behandeling van de uitgebreidere cases
+
+- **Account-case:** behoud projectlead-rol, model en historische koppelingen, drie paden voor nieuwe records en het diagram met fictieve voorbeelden. De September 2026-snapshot, open enrichment, handmatige start van de wekelijkse AI-review, stopvoorwaarden en menselijke beslissing blijven zichtbaar. Deze review wijzigt zelf geen associaties en voegt geen records samen. Benodigde ruimte hiervoor blijft behouden.
+- **Datakwaliteit:** behoud beide vergelijkingsrichtingen voor contacten en de aparte licentie-/member-countcontrole. Bronverversing, distinct-license-telling, validatie en de August 2026-snapshot horen bij de betekenis van het bewijs. Een eigen zichtbaar controledeel houdt de grens tussen detectie en correctie duidelijk; automatisch herstel wordt niet als geleverd beschreven.
+- **Renewal-card en pipeline:** behoud respectievelijk de drie statussen/read-only/hosting en de bestaande migratie-/rapportagekeuzes. Geen nieuwe tijdwinst- of conversiecijfers.
+
+Status: financevoorbeeld zelfcontrole afgerond, klaar voor Toms beoordeling. De complexere cases krijgen deze beschermde informatie mee bij de uitwerking; de finance-template wordt daar niet blind overheen gezet. Daarna volgen de overige vier cases. Geen push of publicatie uitgevoerd.
