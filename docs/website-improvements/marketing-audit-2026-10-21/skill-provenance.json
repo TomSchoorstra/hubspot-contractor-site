@@ -1,0 +1,27 @@
+{
+  "source": "https://github.com/coreyhaines31/marketingskills",
+  "installed_on": "2026-10-21",
+  "ref": "main",
+  "skills": [
+    {
+      "name": "product-marketing",
+      "sha256": "19ece0fa75c72a5a8b6e90db80f506586f54cc93bae6bffbb1bd2ef4ae7d603c",
+      "path": ".agents/skills/product-marketing/SKILL.md"
+    },
+    {
+      "name": "copy-editing",
+      "sha256": "2a072606d9d5662509ea6ef62c65719487dcb68876acab9286bde4d1af5c030f",
+      "path": ".agents/skills/copy-editing/SKILL.md"
+    },
+    {
+      "name": "cro",
+      "sha256": "6e172cc38178c800ff41ceb097f36c6a1db8035fb88a1fee53043f8ec38a6f35",
+      "path": ".agents/skills/cro/SKILL.md"
+    },
+    {
+      "name": "seo-audit",
+      "sha256": "e0ebb5808787f2ff26b96d7b429423874d9785541cd4ab775629a5cf1137e7a9",
+      "path": ".agents/skills/seo-audit/SKILL.md"
+    }
+  ]
+}

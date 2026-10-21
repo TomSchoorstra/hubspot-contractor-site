@@ -1,0 +1,5 @@
+User-Agent: *
+Allow: /
+Disallow: /l/
+
+Sitemap: https://tomschoorstra.com/sitemap.xml
