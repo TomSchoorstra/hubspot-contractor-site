@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 3 lokaal uitgewerkt en zelf gecontroleerd. De eerste compacte preview staat klaar voor Toms beoordeling. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 3 lokaal uitgewerkt; het consultancyvoorbeeld van checkpoint 4 is ook gereed voor Toms beoordeling. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -26,7 +26,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 1 Richting en Tom Voice | Stemreview, gewenste balans en belangrijkste herhaling beoordelen | Kort stijlkompas, enkele voor-en-na-voorbeelden en compacte paginaopzet | Zelfcontrole afgerond; stemvoorstel bij preview beoordelen |
 | 2 Publieke fouten | Zichtbare bloginstructies, mobiele overflow, canonical-signalen, meetfout en Slack-beschikbaarheid aanpakken | Kleine correcties met controles, zonder nieuwe marketingsecties | Zelfcontrole afgerond; externe Slack-werking blijft onbevestigd |
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
-| 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Gepland |
+| 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld zelf gecontroleerd; review voor overige vijf |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Gepland |
 | 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
@@ -150,3 +150,16 @@ Tom wil de algemene positionering los van een werkgever houden. Homepage, About-
 ### Gekozen typografie na de eerste review
 
 Na de homepagevergelijking heeft Tom gevraagd Space Grotesk terug te zetten. Space Grotesk is de actuele keuze voor alle koppen; de bodytekst blijft Geist. De [typografienotitie](typography-refresh.md) beschrijft uitvoering en browserchecks. Het font verandert de huidige checkpointvolgorde niet: de compacte kernpagina's blijven eerst ter beoordeling voor we diensten en cases uitwerken.
+
+
+## Checkpoint 4 — consultancyvoorbeeld gereed
+
+Tom heeft opdracht gegeven met de diensten te beginnen en de eerder gekozen GitHub-skills te gebruiken. Eerst is alleen [HubSpot consultancy](http://127.0.0.1:3102/services/consultancy) als voorbeeld uitgewerkt met Corey Haines' copy-editing- en CRO-skills, de bestaande productmarketingcontext en het Tom Voice-kompas. De zeven tekstcontroles zijn vastgelegd in [review en controles](consultancy-preview-2026-10-21/review.json).
+
+De pagina beschrijft nu de reviewscope, prioriteiten/roadmap en grenzen rond uitvoering. De datakwaliteitscase staat in de intro als concreet bewijs, inclusief verwijzing naar nog open validatiewerk. Dertien kaders/kaarten, de drie aantaltellers, het herhaalde proces en het grote verkoopslot zijn vervangen door tekst en één scopelijst. Unieke FAQ-informatie staat zichtbaar in de tekst; de belofte van beschikbare ondersteuning is afgestemd op de gekozen portfolio-beschikbaarheid. Er staat geen FAQPage-schema meer op deze pagina; Service en BreadcrumbList blijven behouden.
+
+De nulmeting telt 344 woorden en de nieuwe pagina 232 (−33%), inclusief alle oude FAQ-antwoorden. Main-hoogte op mobiel 390 px daalt van 5.036 naar 1.965 px (−61%); op desktop van 3.569 naar 1.406 px. Het lettertype blijft Space Grotesk voor koppen en Geist voor bodytekst. Bodytekst is 18 px; inkorting komt uit inhoud en opbouw.
+
+Productiebouw, TypeScript, beide verplichte validators en scoped ESLint slagen. De zes diensten zijn op 320, 390 en 1440 px gecontroleerd: geen overflow of browser-page-errors. Alle vier unieke interne links op de voorbeeldpagina geven 200; canonical en metadata zijn passend. De vijf overige dienstpagina's hebben exact dezelfde main-tekst als de nulmeting bij 390 en 1440 px. Hun layout blijft de bestaande variant. De consultancykaart in het dienstenoverzicht volgt automatisch de bijgewerkte bronbeschrijving en korte uitkomsten.
+
+Status: zelfcontrole afgerond, klaar voor Toms beoordeling. Eerst deze voorbeeldpagina beoordelen; daarna de vijf andere diensten op de gekozen basis uitwerken. Geen push of publicatie uitgevoerd.

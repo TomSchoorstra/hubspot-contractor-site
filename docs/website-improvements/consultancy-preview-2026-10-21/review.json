@@ -1,0 +1,56 @@
+{
+  "date": "2026-10-21",
+  "scope": "Consultancy example only; five other service detail pages retain their content and layout. The consultancy card on the services index follows its shared description and outcome text.",
+  "preview": "http://127.0.0.1:3102/services/consultancy",
+  "status": "self-checked, awaiting Tom review before remaining services",
+  "skills": {
+    "upstream": "https://github.com/coreyhaines31/marketingskills",
+    "applied": [
+      "copy-editing, mode B, seven sweeps and final checklist",
+      "cro, clarity/CTA/proof/friction framework",
+      "Existing product marketing context and Tom Voice compass"
+    ]
+  },
+  "cro": {
+    "page_type": "expertise/service detail within a personal portfolio",
+    "primary_action": "view the relevant data quality case",
+    "secondary_action": "questions or conversations through contact",
+    "traffic": "No channel or conversion-rate data available; no performance uplift claimed."
+  },
+  "copy_checks": {
+    "clarity": "Scope, review output and implementation boundary have separate headings.",
+    "voice": "First-person specialist voice; general introduction independent of employer; AIHR only in concrete project evidence.",
+    "so_what": "Shows what is reviewed and how findings become priorities and a roadmap.",
+    "proof": "Existing data quality case, including unresolved validation work; no fabricated metrics or client results.",
+    "specificity": "Customer model, associations, source ownership, workflows, handovers, pipeline and reporting remain explicit.",
+    "emotion": "Recognizable missing links and workarounds; no pressure, urgency or inflated promises.",
+    "risk_and_expectations": "No client-project availability promised. Review and implementation have separate scope, permissions and ownership. Removed support FAQ replaced by visible boundary text.",
+    "final": "No em dashes, dusty-report cliche, generic sales panel or duplicated process cards. Decisions, team discussion, documentation, roadmap and recurring checks retained."
+  },
+  "validation": {
+    "build": "passed, including TypeScript and both required project validators",
+    "scoped_eslint": "passed",
+    "browser_checks": 18,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "4 unique destinations, all 200",
+    "structured_data": "Service and BreadcrumbList retained; FAQPage absent on consultancy because there is no FAQ; five other services retain their FAQ structure."
+  },
+  "measurement": {
+    "method": "Visible main.innerText with all FAQ answers expanded; main height includes expanded answers. Screenshots show default FAQ state before expansion. Global navigation and footer excluded.",
+    "before_words": 344,
+    "after_words": 232,
+    "before_mobile_main_height": 5036,
+    "after_mobile_main_height": 1965,
+    "before_desktop_main_height": 3569,
+    "after_desktop_main_height": 1406,
+    "before_cards": 13,
+    "after_cards": 0
+  },
+  "publication": "Local commit only; no push or deploy."
+}

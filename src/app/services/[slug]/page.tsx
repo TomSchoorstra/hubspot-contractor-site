@@ -4,6 +4,7 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import CTASection from "@/components/sections/CTASection";
 import Container from "@/components/ui/Container";
+import CompactServiceContent from "@/components/sections/CompactServiceContent";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import ProcessTimeline from "@/components/sections/ProcessTimeline";
 import Accordion from "@/components/ui/Accordion";
@@ -111,8 +112,8 @@ export default async function ServiceDetail({
     ],
   };
 
-  return (
-    <main>
+  const structuredData = (
+    <>
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(serviceSchema) }}
@@ -121,6 +122,21 @@ export default async function ServiceDetail({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
       />
+    </>
+  );
+
+  if (service.compact) {
+    return (
+      <main>
+        {structuredData}
+        <CompactServiceContent service={service} details={service.compact} />
+      </main>
+    );
+  }
+
+  return (
+    <main>
+      {structuredData}
       {/* Hero */}
       <header className="relative overflow-hidden border-b border-border-subtle py-14 lg:py-28">
         <div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />

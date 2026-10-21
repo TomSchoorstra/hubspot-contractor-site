@@ -6,6 +6,13 @@ export type Service = {
   deliverables: string[];
   process: Array<{ title: string; description: string }>;
   faq: Array<{ q: string; a: string }>;
+  compact?: {
+    proofContext: string;
+    proofLabel: string;
+    scopeIntro: string;
+    reviewOutput: string[];
+    boundaries: string;
+  };
   metaDescription?: string;
   relatedCaseStudy?: string; // slug of a related case study
   references?: Array<{ label: string; href: string }>;
@@ -79,54 +86,34 @@ export const services: Service[] = [
     slug: "consultancy",
     title: "HubSpot consultancy",
     shortDescription:
-      "Review your CRM architecture, data quality and workflows, then agree on what to improve first.",
+      "I review how a HubSpot setup supports the work around it, from customer records to handovers between teams.",
     metaDescription:
-      "HubSpot consultancy for B2B teams with complex CRM setups. Review customer relationships, data quality and workflows, with a practical implementation roadmap.",
+      "My approach to HubSpot consultancy: reviewing CRM structure, data quality and workflows, then prioritizing changes. See the scope and a practical example.",
     outcomes: [
-      "A clear picture of what's working in your HubSpot portal and what's holding you back.",
-      "Actionable recommendations prioritized by impact — not a 50-page report that collects dust.",
-      "Alignment between marketing, sales, and ops on how HubSpot should support your processes.",
+      "Priorities based on the process and the data.",
+      "A roadmap with decisions, owners and next steps.",
     ],
     deliverables: [
-      "Portal review covering the customer model, object associations, data quality, workflows and reporting.",
-      "Recommendations for recurring checks and a review process for operational exceptions.",
-      "Prioritized list of recommendations with effort-vs-impact scoring.",
-      "Strategic roadmap for the next 3-6 months.",
-      "Hands-on sparring sessions to work through questions and decisions together.",
-      "Follow-up documentation summarizing decisions and next steps.",
+      "Customer model and associations: how records relate to each other.",
+      "Data quality and source ownership: where values conflict and how exceptions are reviewed.",
+      "Workflows and handovers: triggers, dependencies and records that need attention.",
+      "Pipelines and reporting: whether the pipeline reflects the process and reports answer the team's questions.",
     ],
-    process: [
-      {
-        title: "Audit",
-        description:
-          "I review the customer model, associations, source ownership and workflows to identify gaps in the process and data.",
-      },
-      {
-        title: "Strategy",
-        description:
-          "Based on the audit, I develop a recommendation plan that aligns your HubSpot setup with your actual business goals.",
-      },
-      {
-        title: "Roadmap",
-        description:
-          "We prioritize together — what to fix now, what to plan for next quarter, and what to leave alone.",
-      },
-      {
-        title: "Support",
-        description:
-          "I stay available for follow-up questions, implementation guidance, or hands-on execution if needed.",
-      },
-    ],
-    faq: [
-      {
-        q: "What's included in an audit?",
-        a: "I review your portal structure, customer relationships, data quality, pipelines, workflows and reporting. We agree on scope and timing first. You get findings with prioritized recommendations and a clear distinction between record corrections and structural changes.",
-      },
-      {
-        q: "Do you offer ongoing support?",
-        a: "Yes. We can agree on ongoing sparring, troubleshooting or incremental improvements after a portal review, with scope and responsibilities defined together.",
-      },
-    ],
+    process: [],
+    faq: [],
+    compact: {
+      proofContext:
+        "At AIHR, I built a dashboard for investigating missing links and conflicting data. The case covers the review process and remaining validation work.",
+      proofLabel: "See the data quality case",
+      scopeIntro:
+        "Missing links, inconsistent data and manual workarounds are useful starting points. A review covers:",
+      reviewOutput: [
+        "A prioritized list of findings, with effort and impact considered together. I separate individual record corrections from structural changes and document the decisions.",
+        "I work through the options with the team and map out what to address first. The roadmap covers the next few months, with recurring checks and clear follow-up ownership.",
+      ],
+      boundaries:
+        "I define scope and timing first. A review produces recommendations; implementation and ongoing support need their own scope, permissions and responsibilities. Available features and subscription limits shape what is practical.",
+    },
     relatedCaseStudy: "crm-data-quality",
   },
   {
