@@ -149,4 +149,4 @@ Tom wil de algemene positionering los van een werkgever houden. Homepage, About-
 
 ### Gekozen typografie na de eerste review
 
-Tom heeft eerst Space Grotesk geprobeerd en vervolgens de homepage naast een Josefin Sans-variant bekeken. De definitieve keuze is Josefin Sans, omdat het iets speelser is. Die keuze is lokaal op alle koppen toegepast; de bodytekst blijft Geist. De [typografienotitie](typography-refresh.md) beschrijft uitvoering en browserchecks. Het font verandert de huidige checkpointvolgorde niet: de compacte kernpagina's blijven eerst ter beoordeling voor we diensten en cases uitwerken.
+Na de homepagevergelijking heeft Tom gevraagd Space Grotesk terug te zetten. Space Grotesk is de actuele keuze voor alle koppen; de bodytekst blijft Geist. De [typografienotitie](typography-refresh.md) beschrijft uitvoering en browserchecks. Het font verandert de huidige checkpointvolgorde niet: de compacte kernpagina's blijven eerst ter beoordeling voor we diensten en cases uitwerken.

@@ -61,3 +61,10 @@ Tom heeft de twee homepages naast elkaar bekeken en kiest Josefin Sans omdat het
 Josefin Sans wordt via `next/font/google` als variabel font met Latin-subset en `display: swap` lokaal geserveerd. De officiële gratis SIL Open Font License staat in `public/licenses/Josefin-Sans-OFL.txt`. De actieve fontloader voor Space Grotesk is verwijderd. De aparte [vergelijkingspreview](http://127.0.0.1:3103/compare) blijft als referentie beschikbaar; de [hoofdpreview](http://127.0.0.1:3102) gebruikt nu de gekozen Josefin Sans.
 
 Productiebouw inclusief TypeScript en verplichte validators, plus scoped ESLint, slagen. Alle 27 publieke pagina's zijn op 320, 390 en 1440 px gecontroleerd: 81 controles zonder overflow of browser-page-errors, met geladen Josefin Sans-koppen en Geist-bodytekst. Geen runtimeverzoeken naar Google Fonts. De homepage op desktop en About op mobiel zijn visueel bekeken. [Checks en screenshots](josefin-sans-2026-10-21/josefin-sans-pages.json) leggen dit vast. Toms acceptatie betreft de fontkeuze; de overige checkpoints blijven hun bestaande reviewmomenten volgen. Geen push of publicatie uitgevoerd.
+
+
+## Actuele fontkeuze — Space Grotesk hersteld, 21 oktober 2026
+
+Op Toms verzoek is Space Grotesk opnieuw de gekozen familie voor koppen; bodytekst blijft Geist. De fontconfiguratie in layout en CSS is exact gelijk aan de eerder gecontroleerde Space Grotesk-variant uit commit `8c88084`. De projectcontext en het vervolgplan volgen deze actuele keuze.
+
+De lokale hoofdpreview op poort 3102 is opnieuw gebouwd en gestart. Productiebouw inclusief TypeScript en verplichte validators, plus scoped ESLint, slagen. Een gerichte browsercontrole bevestigt geladen Space Grotesk-koppen en Geist-bodytekst op homepage en About bij 320, 390 en 1440 px, zonder overflow of page-errors. [Controles](space-grotesk-2026-10-21/restored-check.json). De eerdere controle van alle 27 pagina's blijft de onderbouwing voor deze identieke fontconfiguratie. Geen push of publicatie uitgevoerd.
