@@ -2,6 +2,7 @@ import Link from "next/link";
 import Container from "@/components/ui/Container";
 import type { CaseStudy } from "@/content/caseStudies";
 import { services } from "@/content/services";
+import ArchitectureDiagram from "@/components/sections/ArchitectureDiagram";
 
 const textLink = "font-semibold text-text underline underline-offset-4 hover:text-accent-text";
 
@@ -43,15 +44,21 @@ export default function CompactCaseStudyContent({
             </div>
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-semibold text-text">{narrative?.headings.approach ?? "My approach"}</h2>
-              {caseStudy.approach.map(item => {
-                const paragraph = typeof item === "string" ? item : item.description;
-                return <p key={paragraph}>{paragraph}</p>;
-              })}
+              {caseStudy.approach.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
             </div>
             <div className="space-y-4">
               <h2 className="font-display text-2xl font-semibold text-text">{narrative?.headings.solution ?? "What changed"}</h2>
               {caseStudy.solution.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+              {caseStudy.architecture && <ArchitectureDiagram architecture={caseStudy.architecture} compact />}
             </div>
+
+            {caseStudy.operatingModel && (
+              <div className="space-y-4">
+                <h2 className="font-display text-2xl font-semibold text-text">{narrative.headings.operatingModel ?? "Checks and limits"}</h2>
+                <p>{caseStudy.operatingModel.summary}</p>
+                {caseStudy.operatingModel.controls.map(paragraph => <p key={paragraph}>{paragraph}</p>)}
+              </div>
+            )}
 
             {related.length > 0 && (
               <p className="text-base">Related expertise: {related.map((service, index) => (

@@ -1,0 +1,162 @@
+{
+  "date": "2026-10-21",
+  "status": "Tom authorized rollout after finance example; remaining four cases and index now self-checked and ready for review. Checkpoint 5 implementation complete locally; no publication.",
+  "scope": "Remaining four case details and case index. Shared template supports explicit operational limits and retained Account diagram. Finance main text and home main text unchanged.",
+  "preview": "http://127.0.0.1:3102/case-studies",
+  "skills": {
+    "upstream": "https://github.com/coreyhaines31/marketingskills",
+    "applied": [
+      "copy-editing mode B, seven sweeps and final checklist",
+      "cro: clarity, hierarchy, evidence and contact expectations",
+      "existing product marketing context and Tom Voice compass"
+    ]
+  },
+  "copy_checks": {
+    "clarity": "One short project introduction, problem, personal approach and qualitative result. Complex cases retain a separate visible review/limits section. Diagram remains in Account result section.",
+    "voice": "First person, concrete actions and decisions, original case titles retained. General overview independent of employer; AIHR appears only as actual project context. English, Space Grotesk headings and Geist body unchanged.",
+    "so_what": "Customer grouping enables retention reporting; comparison direction exposes missing populations; card avoids extra lookup; consolidated pipeline supports full-funnel reporting and handovers.",
+    "proof": "Uses existing project evidence only. All dated status notes retained. No new client, testimonial, time saving, error percentage or conversion uplift.",
+    "specificity": "Model, workflow matching, review stop conditions, comparison directions, distinct-license counting, renewal states, serverless lookup and migration intent all remain explicit.",
+    "emotion": "Recognizable scattered records, conflicting statuses, repeated lookups and split pipeline views. No pressure or inflated claims.",
+    "risk_and_expectations": "Human review and open work visible; no automatic record repair claimed. Contact is for conversations and states no client-project availability.",
+    "final": "No em dashes or contrast reveals in edited copy. Repeated metrics, process cards, separate stack sections and large sales endings removed. Unique technologies are present in narrative, diagram or relevant expertise links. Finance and home main text match their prior reviewed version."
+  },
+  "retained_evidence": {
+    "customer-lifecycle": [
+      "Project lead from model/associations through historical cleanup and workflows",
+      "Account versus Company, parent-child and duplicate review, current/historical B2B records and older licenses",
+      "Three new-record paths and associated Company as matching point; workflows/JavaScript",
+      "Consistent customer identifier for retention reporting",
+      "Diagram with four record types and original example labels/details; fictional-data caption",
+      "September 2026: core live, enrichment open",
+      "Manually initiated weekly comparison of new Accounts with full base using names/domains/reviewed relationships",
+      "Missing associations and signed deals missing expected service records; Codex/Claude Code assistance",
+      "Incomplete source data or unexpectedly large candidate list stops run; Tom reviews before changes; check does not merge/change associations"
+    ],
+    "crm-data-quality": [
+      "AIHR, three comparison datasets, Data Studio, HubSpot, Snowflake and learning platform",
+      "Roles/status/membership differences; identity/association/earlier-step causes",
+      "Both contact directions preserve starting population; separate license/member-count comparison accounts for multiple source rows",
+      "Alignment logic in datasets; report filters select findings; population-level dashboard",
+      "August 2026 snapshot with member-count validation/source freshness still open",
+      "Verify identity, association and authoritative source before correction/access change",
+      "Snapshot-sensitive findings require another Snowflake refresh; realtime alignment not guaranteed",
+      "Semi-automated/automated repair follow-up only; no automatic repair delivered"
+    ],
+    "renewal-status-card": [
+      "Reps lookup on associated License; written labels plus colour",
+      "Auto-renewal active, manual renewal required and subscription cancelled",
+      "Initial unreliable lookup moved to serverless function retrieving association/subscription data",
+      "React UI Extension, relevant deal pipeline, reads on load without copying License properties",
+      "Card and function hosted in HubSpot for this implementation; card read-only"
+    ],
+    "pipeline-consolidation": [
+      "Review stages/fields/workflows and map overlaps",
+      "Single pipeline with consistent stages and required fields",
+      "Migration planned to preserve history, without claiming a separate validation result",
+      "Reporting between stages and MQL to Closed Won",
+      "Internal handovers in same process; no new conversion uplift"
+    ]
+  },
+  "index": "Five plain linked rows replace large cards, repeated metrics and stacks. Both existing dated status notes are now visible on index. Five URLs unchanged.",
+  "cro": {
+    "page_type": "Portfolio proof and case selection",
+    "primary_action": "Choose/read a relevant case and navigate to another case",
+    "secondary_action": "Relevant service scope or a conversation through contact",
+    "performance": "No visitor, traffic-channel or conversion data; no uplift or A/B-test claim."
+  },
+  "validation": {
+    "build": "passed including TypeScript and mandatory training validators",
+    "scoped_eslint": "passed on five changed source files",
+    "browser_checks": 20,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "pages": "Six case routes at three widths, plus homepage at 390/1440",
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "13 unique destinations, all 200",
+    "actual_navigation": "Case index → Account → data-quality case passed",
+    "diagram": "Four linked record nodes, original illustrative details and fictional caption retained; H3 inside result section; mobile/desktop reviewed",
+    "unchanged": "Finance main text exactly matches at all three widths; homepage matches at 390 and 1440",
+    "metadata": "Canonical, description, OG/Twitter descriptions and OG image checked; BreadcrumbList on all five details",
+    "visual_review": [
+      "index mobile",
+      "Account mobile and desktop",
+      "data quality mobile",
+      "renewal mobile",
+      "pipeline desktop"
+    ],
+    "requests": "All POST requests aborted in separate Playwright session; no real form submissions",
+    "runtime": "Clean temporary preview copy with unchanged lockfile; original dependency folder has read hangs."
+  },
+  "measurement": {
+    "method": "main.innerText after fonts loaded, global navigation/footer excluded. Heights use same width; full-page screenshots include global layout. Readable body type unchanged.",
+    "baselines": "Fresh cases-before for index/Account; other cases use finance-preview/finance-after.json from immediately preceding checkpoint.",
+    "rows": [
+      {
+        "path": "/case-studies",
+        "before_words": 346,
+        "after_words": 233,
+        "word_reduction_percent": 33,
+        "before_mobile_main_height": 5019,
+        "after_mobile_main_height": 1911,
+        "before_cards": 6,
+        "after_cards": 0
+      },
+      {
+        "path": "/case-studies/customer-lifecycle",
+        "before_words": 709,
+        "after_words": 371,
+        "word_reduction_percent": 48,
+        "before_mobile_main_height": 7531,
+        "after_mobile_main_height": 3539,
+        "before_cards": 12,
+        "after_cards": 5
+      },
+      {
+        "path": "/case-studies/crm-data-quality",
+        "before_words": 628,
+        "after_words": 347,
+        "word_reduction_percent": 45,
+        "before_mobile_main_height": 6621,
+        "after_mobile_main_height": 2779,
+        "before_cards": 7,
+        "after_cards": 0
+      },
+      {
+        "path": "/case-studies/finance-automation",
+        "before_words": 219,
+        "after_words": 219,
+        "word_reduction_percent": 0,
+        "before_mobile_main_height": 1911,
+        "after_mobile_main_height": 1911,
+        "before_cards": 0,
+        "after_cards": 0
+      },
+      {
+        "path": "/case-studies/renewal-status-card",
+        "before_words": 463,
+        "after_words": 246,
+        "word_reduction_percent": 47,
+        "before_mobile_main_height": 5060,
+        "after_mobile_main_height": 1940,
+        "before_cards": 6,
+        "after_cards": 0
+      },
+      {
+        "path": "/case-studies/pipeline-consolidation",
+        "before_words": 418,
+        "after_words": 209,
+        "word_reduction_percent": 50,
+        "before_mobile_main_height": 4606,
+        "after_mobile_main_height": 1862,
+        "before_cards": 4,
+        "after_cards": 0
+      }
+    ]
+  },
+  "publication": "Local commit only; no push or deploy."
+}

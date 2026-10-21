@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is gestart met de finance-voorbeeldcase. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -27,7 +27,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 2 Publieke fouten | Zichtbare bloginstructies, mobiele overflow, canonical-signalen, meetfout en Slack-beschikbaarheid aanpakken | Kleine correcties met controles, zonder nieuwe marketingsecties | Zelfcontrole afgerond; externe Slack-werking blijft onbevestigd |
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
-| 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld zelfcontrole afgerond; overige vier volgen na voorbeeldreview |
+| 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld als basis gekozen; overige vier en overzicht zelfcontrole afgerond |
 | 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
 
@@ -205,3 +205,27 @@ De zeven copy-editingcontroles, CRO-afwegingen, bronbehoud en checks staan in [r
 - **Renewal-card en pipeline:** behoud respectievelijk de drie statussen/read-only/hosting en de bestaande migratie-/rapportagekeuzes. Geen nieuwe tijdwinst- of conversiecijfers.
 
 Status: financevoorbeeld zelfcontrole afgerond, klaar voor Toms beoordeling. De complexere cases krijgen deze beschermde informatie mee bij de uitwerking; de finance-template wordt daar niet blind overheen gezet. Daarna volgen de overige vier cases. Geen push of publicatie uitgevoerd.
+
+
+## Checkpoint 5 — overige vier cases en overzicht gereed
+
+Tom gaf na het financevoorbeeld opdracht door te gaan. De overige vier cases gebruiken nu dezelfde compacte opbouw. De Account- en datakwaliteitscase houden een eigen zichtbaar onderdeel voor controles en grenzen. Het Accountdiagram blijft aanwezig met alle vier recordtypen, oorspronkelijke voorbeeldgegevens en een expliciete fictieve-data-caption. Het diagram past binnen de smallere tekstkolom, met twee kolommen op desktop en een gestapelde mobiele weergave. De nodekaders blijven omdat ze de relaties uitleggen; algemene resultaat- en verkoopkaarten verdwijnen.
+
+Het overzicht bevat vijf gewone titel-/beschrijvingsregels. De September 2026- en August 2026-status staan nu ook daar bij hun case. Alle vijf case-URL’s, titels, sector-/groottecontext en relevante expertise- en vorige/volgende links blijven behouden. De financepagina en homepage hebben op de gecontroleerde breedtes exact dezelfde main-tekst als vóór deze ronde. De homepage gebruikt nog haar bestaande projectlabels; de bouwcontrole heeft die gedeelde afhankelijkheid meegenomen.
+
+| Pagina | Woorden voor → na | Main-hoogte mobiel 390 px voor → na |
+|---|---:|---:|
+| `/case-studies` | 346 → 233 | 5019 → 1911 px |
+| `/case-studies/customer-lifecycle` | 709 → 371 | 7531 → 3539 px |
+| `/case-studies/crm-data-quality` | 628 → 347 | 6621 → 2779 px |
+| `/case-studies/finance-automation` | 219 → 219 | 1911 → 1911 px |
+| `/case-studies/renewal-status-card` | 463 → 246 | 5060 → 1940 px |
+| `/case-studies/pipeline-consolidation` | 418 → 209 | 4606 → 1862 px |
+
+De vier aangepaste detailcases zijn 45–50% korter; het overzicht 33%. Deze meting sluit navigatie en footer uit, telt het zichtbare diagram mee en gebruikt gelijke schermbreedtes. De vijf diagramnodes op Account zijn functionele uitleg. De overige cases en het overzicht hebben geen grote kaartvlakken meer. Er is geen kleinere bodytekst gebruikt om de reductie te behalen en er wordt geen conversieverbetering uit afgeleid.
+
+Bewijscontrole: Account behoudt de projectlead-rol, historische koppelingen, drie paden, matching via Company, gedateerde open enrichment en handmatig gestarte AI-review met stopvoorwaarden/menselijke beslissing. Datakwaliteit behoudt beide contactrichtingen, de aparte licentiecontrole, telling op distinct-license-niveau, datasets/reportfilters, bronverversing en de open member-countvalidatie; automatisch herstel blijft vervolgwerk. Renewal behoudt drie geschreven statussen, de serverless-lookupkeuze, pipelinezichtbaarheid en read-only/hostinggrenzen. Pipeline behoudt mapping, vereiste velden, migratieplan en volledige conversierapportage, zonder nieuwe impactcijfers.
+
+De copy-editing- en CRO-skills zijn opnieuw toegepast met productmarketingcontext en Tom Voice. Bouw inclusief TypeScript en beide verplichte validators slaagt; scoped ESLint is schoon. Twintig browsercontroles slagen: de vijf cases en het overzicht op 320/390/1440 px, plus homepage op 390/1440 px. Geen overflow of page-errors. Dertien unieke interne bestemmingen geven 200; de klikroute overzicht → Account → datakwaliteit werkt. Canonicals, metadata en BreadcrumbList zijn gecontroleerd. Screenshots zijn visueel beoordeeld. Er zijn geen echte formulieren verzonden.
+
+[Review, bewijsregister, metingen en screenshots](cases-preview-2026-10-21/review.json) leggen dit deel vast. Status: checkpoint 5 lokaal uitgewerkt en zelfcontrole afgerond; de nieuwe vier cases en het overzicht zijn klaar voor Toms beoordeling. Geen push of publicatie. Het volgende onderdeel is checkpoint 6, eerst lifecycle stages en classic CRM cards als eerste blogdeel.
