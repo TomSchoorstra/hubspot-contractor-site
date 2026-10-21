@@ -145,3 +145,8 @@ Controles: productiebouw, TypeScript en beide verplichte trainingsschema-validat
 ### Bijstelling na Toms eerste feedback
 
 Tom wil de algemene positionering los van een werkgever houden. Homepage, About-intro, About-afsluiting en hun SEO- en social-beschrijvingen zijn daarom aangepast: eigen expertise en werkwijze staan voorop. AIHR blijft context bij concrete projectvoorbeelden en bewijslinks. Deze regel is ook opgenomen in het stijlkompas voor de volgende checkpoints. De bovenstaande nulmeting en eerste screenshots blijven de eerste oplevering documenteren; de bijgewerkte homepage telt 320 woorden en About 341. De lokale preview op poort 3102 is bijgewerkt. Productiebouw inclusief TypeScript en verplichte validators slaagt; beide pagina's geven 200 en hebben geen overflow op 390 en 1440 px. Introducties en metadata zijn in de browser gecontroleerd; [de nieuwe meetgegevens](compact-preview-2026-10-21/personal-copy.json) leggen deze bijstelling vast. Nog niet gepubliceerd.
+
+
+### Gekozen typografie na de eerste review
+
+Tom heeft Space Grotesk gekozen voor een speelse, professionele eigen uitstraling zonder fontkosten. De koppen zijn lokaal omgezet; de bodytekst blijft Geist. De [typografienotitie](typography-refresh.md) beschrijft uitvoering en browserchecks. Het font verandert de huidige checkpointvolgorde niet: de compacte kernpagina's blijven eerst ter beoordeling voor we diensten en cases uitwerken.

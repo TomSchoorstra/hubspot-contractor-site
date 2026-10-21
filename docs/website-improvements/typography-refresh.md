@@ -41,3 +41,14 @@ Tom beoordeelde de lokale versie en gaf opdracht “i like it publish maar”. D
 - Production-omgeving en GTM-markup bevestigd, geen echte events verstuurd. Geen browser gebruikt; de visuele acceptatie was Toms beoordeling van de lokale versie.
 - De eerste domeincontrole tijdens rollout toonde nog de vorige homepage; na voltooiing van de Production-deploy is de nieuwe versie bevestigd en de volledige nacontrole geslaagd.
 - Terugvalpunt: productiebron `6b8d352` en Vercel-productiedeployment `6936980116`. Deze nacontrole wordt lokaal als documentatie gecommit, zonder extra productie-deploy. Websitecode blijft gelijk aan de gepubliceerde release.
+
+
+## Lokale vervolgkeuze — Space Grotesk, 21 oktober 2026
+
+Tom kiest expliciet voor Space Grotesk: speels, professioneel en met eigen karakter, met een fontbudget van €0. De gedeelde koppen en blogsubkoppen gebruiken nu Space Grotesk; de homepagekop heeft gewicht 500 en de meeste andere koppen 600. De oranje slotregel “of HubSpot.” gebruikt dezelfde familie. De Georgia-cursiefuitzondering is verwijderd. Bodytekst blijft Geist. De bestaande grootte, kleuren en compacte paginaopbouw zijn de basis.
+
+De integratie gebruikt de bestaande `next/font/google`-loader met een variabel font, Latin-subset en `display: swap`. De bouw haalt het font op en serveert de bestanden daarna vanaf de eigen website. De officiële SIL Open Font License staat in `public/licenses/Space-Grotesk-OFL.txt`; er zijn geen betaalde fontbestanden, nieuwe packages of abonnementsdiensten toegevoegd.
+
+Controles: scoped ESLint, volledige productiebouw, TypeScript en beide verplichte brondata-validaties slagen. Op alle 27 publieke pagina's is de daadwerkelijke Space Grotesk-fontface geladen; de koppen hebben de juiste fontfamilie. Op 320, 390 en 1440 px zijn geen horizontale overflow of browser-page-errors gevonden. Bodytekst gebruikt Geist. De browser doet geen verzoeken naar Google Fonts tijdens paginabezoek. De homepage en About zijn met screenshots op desktop en mobiel bekeken.
+
+[Controles en screenshots](space-grotesk-2026-10-21/space-grotesk-pages.json) documenteren deze lokale variant. De [preview](http://127.0.0.1:3102) op poort 3102 is bijgewerkt. Lokaal ter beoordeling; geen push of publicatie uitgevoerd.

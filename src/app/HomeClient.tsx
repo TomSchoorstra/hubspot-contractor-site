@@ -26,7 +26,7 @@ export default function HomeClient() {
               <Badge variant="teal">HubSpot &amp; RevOps specialist</Badge>
               <h1 className="font-display text-4xl font-medium leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">
                 I work on the<br className="hidden sm:block" /> complicated bits<br className="hidden sm:block" />
-                <span className="block font-editorial font-normal italic tracking-normal text-accent-text">of HubSpot.</span>
+                <span className="block text-accent-text">of HubSpot.</span>
               </h1>
               <p className="max-w-xl text-xl leading-relaxed text-text-secondary">I work on CRM structure, workflows, integrations and data quality. I design the setup, build it and check what happens afterwards.</p>
               <Button href="/case-studies" size="lg" showArrow analyticsEvent="cta_click" analyticsParams={{ cta_label: "See the work", cta_location: "home_hero", destination: "/case-studies" }}>See the work</Button>
