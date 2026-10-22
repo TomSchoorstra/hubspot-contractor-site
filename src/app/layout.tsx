@@ -3,7 +3,6 @@ import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/layout/Header";
-import AnnouncementBanner from "@/components/layout/AnnouncementBanner";
 import Footer from "@/components/layout/Footer";
 import GoogleTagManager from "@/components/analytics/GoogleTagManager";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
@@ -109,7 +108,6 @@ export default function RootLayout({
             <PageViewTracker />
           </Suspense>
         ) : null}
-        <AnnouncementBanner />
         <Header />
         {children}
         <Footer />

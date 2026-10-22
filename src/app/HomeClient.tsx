@@ -10,7 +10,7 @@ import ContentIcon from "@/components/ui/ContentIcon";
 import { caseStudies } from "@/content/caseStudies";
 import { expertiseAreas } from "@/content/expertise";
 
-const featuredCases = ["customer-lifecycle", "crm-data-quality"].flatMap((slug) => {
+const featuredCases = ["customer-lifecycle", "renewal-status-card"].flatMap((slug) => {
   const study = caseStudies.find((item) => item.slug === slug);
   return study ? [study] : [];
 });

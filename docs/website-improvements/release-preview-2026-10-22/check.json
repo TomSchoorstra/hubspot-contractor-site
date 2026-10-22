@@ -1,0 +1,190 @@
+{
+  "routes": 25,
+  "responsiveChecks": 100,
+  "widths": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "pageErrors": [],
+  "internalLinks": [
+    {
+      "path": "/",
+      "status": 200
+    },
+    {
+      "path": "/services",
+      "status": 200
+    },
+    {
+      "path": "/case-studies",
+      "status": 200
+    },
+    {
+      "path": "/blog",
+      "status": 200
+    },
+    {
+      "path": "/about",
+      "status": 200
+    },
+    {
+      "path": "/contact",
+      "status": 200
+    },
+    {
+      "path": "/case-studies/customer-lifecycle",
+      "status": 200
+    },
+    {
+      "path": "/case-studies/renewal-status-card",
+      "status": 200
+    },
+    {
+      "path": "/case-studies/finance-automation",
+      "status": 200
+    },
+    {
+      "path": "/case-studies/crm-data-quality",
+      "status": 200
+    },
+    {
+      "path": "/services/automation",
+      "status": 200
+    },
+    {
+      "path": "/services/consultancy",
+      "status": 200
+    },
+    {
+      "path": "/services/integrations",
+      "status": 200
+    },
+    {
+      "path": "/services/custom-objects",
+      "status": 200
+    },
+    {
+      "path": "/services/pipeline-optimization",
+      "status": 200
+    },
+    {
+      "path": "/services/custom-app-cards",
+      "status": 200
+    },
+    {
+      "path": "/case-studies/pipeline-consolidation",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-onboarding-mistakes",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-breeze-ai-smb",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-classic-crm-cards-sunset",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-app-cards-guide",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-lifecycle-stages-setup-guide",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-aeo-smb",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-contractor-vs-agency",
+      "status": 200
+    },
+    {
+      "path": "/blog/hubspot-spring-2026-spotlight",
+      "status": 200
+    }
+  ],
+  "removedBanner": true,
+  "overflow": false,
+  "homepageCases": [
+    {
+      "level": "H3",
+      "text": "Connecting the full customer relationship in HubSpot"
+    },
+    {
+      "level": "H3",
+      "text": "Seeing the renewal status directly on the deal"
+    }
+  ],
+  "other23PagesBodyUnchanged": true,
+  "metadataUnchanged": true,
+  "availabilityOnAboutAndContact": true,
+  "portraitLoading": [
+    {
+      "path": "/",
+      "before": {
+        "declared": [
+          384,
+          384
+        ],
+        "attributes": [
+          "512",
+          "512"
+        ],
+        "box": {
+          "width": 384,
+          "height": 384
+        },
+        "complete": false
+      },
+      "after": {
+        "natural": [
+          384,
+          384
+        ],
+        "box": {
+          "width": 384,
+          "height": 384
+        }
+      },
+      "shifts": []
+    },
+    {
+      "path": "/about",
+      "before": {
+        "declared": [
+          320,
+          320
+        ],
+        "attributes": [
+          "512",
+          "512"
+        ],
+        "box": {
+          "width": 320,
+          "height": 320
+        },
+        "complete": false
+      },
+      "after": {
+        "natural": [
+          320,
+          320
+        ],
+        "box": {
+          "width": 320,
+          "height": 320
+        }
+      },
+      "shifts": []
+    }
+  ],
+  "build": "pass including TypeScript and both validators",
+  "changedSourceLint": "pass without warnings"
+}

@@ -94,7 +94,7 @@ export default function About() {
                 <h2 className="font-display text-2xl font-semibold text-text">My role at AIHR</h2>
                 <p>At AIHR, I&apos;m responsible for our tech stack, including HubSpot, WooCommerce, Exact and the other tools our teams use. I look after how they work together and build the workflows and integrations between them.</p>
                 <p>I build in HubSpot Workflow Builder and Zapier, and increasingly write code with help from Codex and Claude Code. The tool depends on what the process needs.</p>
-                <p>I also use Codex and Claude Code to prepare recommendations for the <Link href="/case-studies/customer-lifecycle" className="font-semibold text-text underline underline-offset-4 hover:text-accent-text">weekly account review</Link>. I start the review and decide what to do with the findings. The review itself does not write to HubSpot.</p>
+                <p>I use them for the <Link href="/case-studies/customer-lifecycle" className="font-semibold text-text underline underline-offset-4 hover:text-accent-text">weekly account review</Link> too, checking the recommendations myself before making changes.</p>
                 <Link href="/case-studies" className="inline-block font-semibold text-text underline underline-offset-4 hover:text-accent-text">See what I&apos;ve built</Link>
               </div>
               <div className="space-y-4 border-t border-border pt-6">
