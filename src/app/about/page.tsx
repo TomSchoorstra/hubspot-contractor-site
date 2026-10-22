@@ -4,6 +4,7 @@ import type { Metadata } from "next";
 import Image from "next/image";
 import Container from "@/components/ui/Container";
 import Badge from "@/components/ui/Badge";
+import ToolOrnaments from "@/components/sections/ToolOrnaments";
 
 export const metadata: Metadata = {
   title: "About Me | Tom Schoorstra",
@@ -49,14 +50,6 @@ const toolGroups = [
   },
 ];
 
-const featuredTools = [
-  { name: "HubSpot", src: "/logos/HubSpot_Logo.svg", width: 106, height: 31 },
-  { name: "Zapier", src: "/logos/Zapier_idMPnFrbc7_0.svg", width: 500, height: 136 },
-  { name: "Exact", src: "/logos/Exact_id4ip-rhAF_1.svg", width: 842, height: 179 },
-  { name: "WooCommerce", src: "/logos/WooCommerce_logo_(2015).svg", width: 256, height: 153 },
-  { name: "Chili Piper", src: "/logos/Chili Piper_idovklU7ME_0.svg", width: 42, height: 45 },
-];
-
 const certifications = [
   { name: "HubSpot Sales Hub Software", issuer: "HubSpot Academy", year: "2024", active: false },
   { name: "Form Concierge Admin Certificate", issuer: "Chili Piper", year: "2022", active: false },
@@ -82,15 +75,7 @@ export default function About() {
             </div>
             <div className="mx-auto w-full max-w-xs">
               <Image src="/about-photo.jpeg" alt="Tom Schoorstra" width={480} height={640} sizes="(max-width: 768px) 256px, 320px" priority className="mx-auto h-auto w-full max-w-64 rounded-2xl md:max-w-xs" />
-              <ul aria-label="Tools I work with" className="about-tool-mobile">
-                {featuredTools.map(tool => (
-                  <li key={tool.name} className="about-tool-ornament">
-                    <span className="about-tool-ball">
-                      <Image src={tool.src} alt={tool.name} width={tool.width} height={tool.height} className={tool.name === "Chili Piper" ? "relative z-10 h-8 w-7 object-contain" : tool.name === "WooCommerce" ? "relative z-10 h-8 w-12 object-contain" : "relative z-10 h-5 w-12 object-contain"} />
-                    </span>
-                  </li>
-                ))}
-              </ul>
+              <ToolOrnaments />
             </div>
           </div>
         </Container>
