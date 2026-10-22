@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. Het eerste blogdeel van checkpoint 6 is zelf gecontroleerd; zes artikelen volgen nog. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. De eerste twee blogdelen van checkpoint 6 zijn zelf gecontroleerd (4/8 artikelen); vier artikelen volgen nog. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -28,7 +28,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld als basis gekozen; overige vier en overzicht zelfcontrole afgerond |
-| 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Deel 1 zelfcontrole afgerond (2/8); delen 2–4 gepland |
+| 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Delen 1–2 zelfcontrole afgerond (4/8); delen 3–4 gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
 
 ## Checkpoint 1 Richting en Tom Voice
@@ -251,3 +251,23 @@ Woorden zijn uitsluitend in `.prose-blog` geteld. Main-hoogte omvat ook de wrapp
 Bouw inclusief TypeScript en beide verplichte validators slaagt; scoped ESLint op beide TSX-bestanden is schoon. Alle negen blogroutes zijn op 320/390/1440 px gecontroleerd: 27 geslaagde controles, geen overflow of page-errors. Zeven interne bestemmingen geven 200; de klikroute naar de renewal-case werkt. Canonicals, metadata, schemas en datums zijn gecontroleerd. De standaard social-image-route geeft 200 image/png. Mobiele tabellen en representatieve screenshots zijn visueel beoordeeld; de bronkolom is na die review beter verdeeld. Geen echte formulieren verzonden.
 
 Status: blogdeel 1 zelfcontrole afgerond en klaar voor Tom. Nog geen volledige review van de andere zes artikelen. App cards guide en Spring Spotlight herhalen nog de oude oktoberclaim; die kruisverwijzingen horen bij hun geplande inhoudsrondes en moeten vóór publicatie aansluiten. Het volgende deel bevat Breeze en contractor versus agency. Geen push of publicatie.
+
+
+## Checkpoint 6 — blogdeel 2 gereed
+
+22 oktober 2026. Breeze en contractor versus agency zijn met copy-editing, het Tom Voice-kompas en blog-factcheck herzien. De [review en browsermetingen](blogs-part2-preview-2026-10-22/review.json) en het [claimregister](blogs-part2-preview-2026-10-22/factcheck.json) leggen de broncontrole en redactionele keuzes vast.
+
+Breeze behandelt vijf concrete gebruikssituaties, met actuele namen, toegang, bronkeuze en menselijke review. De tekst maakt onderscheid tussen standaardverrijking zonder HubSpot Credits, smart properties met credits en de overige gebruiksafhankelijke functies. De private-sourcegrens van Customer Agent en de reviewinstellingen van Prospecting Agent blijven zichtbaar. Historische prijzen, algemene ROI-cijfers, sterbeoordelingen en niet-onderbouwde persoonlijke klantvoorbeelden zijn verwijderd. Weggelaten cijfers zijn niet automatisch als onwaar bestempeld.
+
+Contractor versus agency helpt kiezen op scope, uitvoerende personen, capaciteit, totale kosten en overdracht. Universele tariefreeksen, besparingsclaims en garanties over snelheid vervallen. HubSpot-partnertiers zijn gekoppeld aan recurring-revenuepunten en aanvullende voorwaarden, niet aan aantallen implementaties. Praktijklinks verwijzen naar bestaand werk; contact nodigt uit tot een gesprek.
+
+| Artikel | Artikelwoorden voor → na | Main-hoogte mobiel 390 px voor → na |
+|---|---:|---:|
+| `hubspot-breeze-ai-smb` | 2648 → 864 | 18347 → 7161 px |
+| `hubspot-contractor-vs-agency` | 2217 → 745 | 16403 → 6207 px |
+
+Artikeltekst is respectievelijk 67% en 66% korter, gemeten in `.prose-blog.innerText` bij dezelfde breedte en geladen fonts. Opmaak en bodygrootte zijn in dit deel ongewijzigd. Er wordt geen SEO- of conversiewinst uit afgeleid. Oorspronkelijke publicatiedatums blijven behouden; alleen dit paar krijgt een updatedatum van 22 oktober 2026. De overige zes artikelteksten, datums en schema's zijn exact gelijk aan de nulmeting.
+
+Bouw, TypeScript en beide verplichte trainingsvalidators slagen. Alle negen blogroutes zijn op 320/390/1440 px gecontroleerd: 27 controles, geen overflow of page-errors. Acht interne bestemmingen geven 200 en de klikroute naar de Account-case werkt. Metadata, canonicals, fonts en BlogPosting/BreadcrumbList zijn gecontroleerd; geen FAQPage op dit paar zonder zichtbare Q&A. Representatieve mobiele en desktopbeelden zijn visueel beoordeeld. De bestaande mobiele beschikbaarheidsbanner heeft een afgeknotte tweede regel; dit gedeelde opmaakpunt gaat mee naar checkpoint 7. Geen echte formulieren verzonden.
+
+Status: blogdeel 2 zelfcontrole afgerond, totaal 4/8. Volgende deel: onboarding en Spring Spotlight; daarna app cards guide en AEO. De eerdere carddatum-kruisverwijzingen blijven vóór publicatie te corrigeren. Geen push of publicatie.

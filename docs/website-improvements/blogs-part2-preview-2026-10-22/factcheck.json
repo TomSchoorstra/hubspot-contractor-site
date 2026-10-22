@@ -1,0 +1,92 @@
+{
+  "review_date": "2026-10-22",
+  "scope": "Retained product claims and decisions about removed claims; not a complete revalidation of every historical statistic.",
+  "method": "Primary HubSpot pages read online during this editorial round. Presence of a vendor statistic does not prove a universal outcome or causal provider comparison. Editorial recommendations are not product guarantees. No numeric confidence score invented.",
+  "retained_primary_claims": [
+    {
+      "topic": "Breeze Assistant name, functions, settings and permissions",
+      "source": "https://knowledge.hubspot.com/ai/use-breeze-assistant",
+      "status": "verified against primary documentation",
+      "decision": "Current Assistant terminology and task/access explanation retained."
+    },
+    {
+      "topic": "Customer Agent source types and private-source visibility",
+      "source": "https://knowledge.hubspot.com/customer-agent/manage-the-customer-agents-content-sources",
+      "status": "verified against primary documentation",
+      "decision": "KB, site pages, URLs and files retained; private source content may appear in responses even without citing that source."
+    },
+    {
+      "topic": "Content Agent beta requirements and context",
+      "source": "https://knowledge.hubspot.com/website-and-landing-pages/create-content-with-content-agent",
+      "status": "verified against primary documentation",
+      "decision": "Current documented beta requires Marketing Hub Professional or Enterprise; do not assume all features are included with Content Hub."
+    },
+    {
+      "topic": "Prospecting Agent email review settings",
+      "source": "https://knowledge.hubspot.com/prospecting/use-the-prospecting-agent",
+      "status": "verified against primary documentation",
+      "decision": "Review before sending versus send without review documented. Narrow/manual pilot is editorial advice."
+    },
+    {
+      "topic": "Standard enrichment versus smart-property credits",
+      "source": "https://knowledge.hubspot.com/records/get-started-with-data-enrichment",
+      "status": "verified against primary documentation",
+      "decision": "Standard data enrichment does not consume HubSpot Credits; smart properties do. Subscription requirements still apply."
+    },
+    {
+      "topic": "Enrichment eligibility and overwrite behavior",
+      "source": "https://knowledge.hubspot.com/records/enrich-your-contact-and-company-data",
+      "status": "verified against primary documentation",
+      "decision": "Business email/domain and differing automatic/manual/continuous update behavior retained."
+    },
+    {
+      "topic": "Feature-specific credit access and billing",
+      "source": "https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing",
+      "status": "verified against primary documentation",
+      "decision": "Usage, subscriptions/seats, allowances and overage settings retained; no old dollar pricing repeated."
+    },
+    {
+      "topic": "Partner tiers",
+      "source": "https://www.hubspot.com/partners/how-tiers-work",
+      "status": "verified against primary documentation",
+      "decision": "Sourced/assisted/managed recurring-revenue points plus program requirements; not completed implementation counts."
+    }
+  ],
+  "removed_claims": [
+    {
+      "topic": "Breeze adoption, productivity, ROI and company-size thresholds",
+      "status": "not retained; not fully revalidated",
+      "decision": "Removed broad percentages, thresholds and ratings. No claim that every original number is false."
+    },
+    {
+      "topic": "Older per-outcome AI dollar prices",
+      "status": "historical announcement not sufficient for current account total",
+      "source": "https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete",
+      "decision": "Removed fixed cash figures; current feature/account rules linked instead."
+    },
+    {
+      "topic": "Universal contractor/agency hourly rates and percentage savings",
+      "status": "supplier-specific examples do not establish a representative market comparison",
+      "source": "https://bootstrapcreative.com/hubspot-agency-vs-freelance-developer-vs-in-house/",
+      "decision": "Removed ranges/charts; compare equivalent scope and actual proposals."
+    },
+    {
+      "topic": "General CRM failure survey used to imply provider-model outcomes",
+      "status": "not evidence of contractor versus agency causality",
+      "source": "https://johnnygrow.com/crm/the-crm-failure-rate-is-55-percent/",
+      "decision": "Removed. No independent survey-method validation claimed."
+    },
+    {
+      "topic": "Other historical McKinsey, ZoomInfo, OpenAI, Fool and supplier statistics",
+      "status": "not retained; not revalidated in this round",
+      "decision": "Do not treat omission as proof of falsehood."
+    },
+    {
+      "topic": "Personal client examples, delivery speed guarantees and star ratings",
+      "status": "no traceable project evidence in this repository",
+      "decision": "Removed; actual Account/data-quality case links used without adding new impact claims."
+    }
+  ],
+  "editorial_recommendations": "Small pilots, review-enabled outreach and provider-selection questions are recommendations. No client tests, cost savings or product outcomes measured.",
+  "limits": "Documentation may change after the review date. No live HubSpot agent/enrichment execution, billing or provider purchase tested."
+}

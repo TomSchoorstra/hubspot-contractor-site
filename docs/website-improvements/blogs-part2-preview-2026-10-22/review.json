@@ -1,0 +1,69 @@
+{
+  "date": "2026-10-22",
+  "status": "Checkpoint 6, blog pair 2 self-checked; 4/8 articles reviewed. Four remaining content reviews are planned.",
+  "scope": "Breeze and contractor versus agency MDX only. Shared wrapper, six other article bodies and their dates/schemas unchanged.",
+  "preview": [
+    "http://127.0.0.1:3102/blog/hubspot-breeze-ai-smb",
+    "http://127.0.0.1:3102/blog/hubspot-contractor-vs-agency"
+  ],
+  "skills": [
+    "Corey Haines copy-editing, mode B, seven sweeps and final checklist",
+    "Existing product marketing context and Tom Voice compass",
+    "Blog routing and blog-factcheck for retained technical claims"
+  ],
+  "constraints": "Compact personal portfolio. No fabricated experience, impact figures, new marketing blocks, stock images or repetitive FAQ. Conversations welcome; no client-project availability.",
+  "copy_checks": {
+    "clarity": "Breeze is organized by concrete tasks and their evaluation. Provider comparison starts with scope and the assigned people.",
+    "voice": "First-person recommendations clearly phrased as I would; no unsupported client anecdotes or sales promises.",
+    "so_what": "Each AI use case explains what to check before expanding. Provider questions connect to ownership, capacity, testing and handover.",
+    "proof": "Current product facts use official HubSpot documentation. Actual portfolio cases replace unverifiable personal anecdotes. Removed general statistics are not presented as disproved.",
+    "specificity": "Preserves source visibility, review settings, enrichment overwrite differences, subscription/credit distinctions and named delivery responsibilities.",
+    "emotion": "Recognizable repeat tasks and project uncertainty; no fear, inflated productivity promises or pressure to purchase.",
+    "risk_and_expectations": "Human review, defined pilots, accountable source ownership, continuity and maintenance remain explicit. No legal classification advice.",
+    "final": "Repeated summaries, rate charts, star ratings and duplicate FAQ removed. No em dashes in revised copy. No FAQPage markup without visible Q&A."
+  },
+  "validation": {
+    "build": "Passed with TypeScript and both mandatory training validators in clean temporary validation copy using unchanged lockfile.",
+    "lint": "No TSX/CSS changed in this pair; no new ESLint run claimed.",
+    "browser_checks": 27,
+    "pages": "Eight blog details and blog index",
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "Eight distinct internal destinations from rewritten pages return 200.",
+    "actual_navigation": "Contractor article → Account-based CRM case passed.",
+    "metadata": "All nine routes have expected www canonical, descriptions and OG images. Space Grotesk headings and Geist body retained.",
+    "dates": "Original publication dates retained; pair updated/dateModified set to 2026-10-22. Other six article texts, visible dates and schema objects exactly match baseline on every width.",
+    "schema": "BlogPosting and BreadcrumbList parse. No FAQPage on revised pair.",
+    "visual_review": "Both mobile hero crops and desktop full-page structure inspected. Full mobile screenshots retained. Global mobile availability banner wraps into its fixed-height boundary; this pre-existing shared issue is reserved for the final site-wide check.",
+    "requests": "All POST requests aborted in isolated Playwright session. No real form submission.",
+    "diff_check": "git diff --check passed."
+  },
+  "measurement": {
+    "method": "Article words counted in .prose-blog.innerText after fonts load, at 390 × 844. Main height excludes global navigation/footer. Same unchanged wrapper before and after. No SEO, speed or conversion improvement inferred.",
+    "rows": [
+      {
+        "slug": "hubspot-breeze-ai-smb",
+        "before_article_words": 2648,
+        "after_article_words": 864,
+        "article_reduction_percent": 67,
+        "before_main_height": 18347,
+        "after_main_height": 7161
+      },
+      {
+        "slug": "hubspot-contractor-vs-agency",
+        "before_article_words": 2217,
+        "after_article_words": 745,
+        "article_reduction_percent": 66,
+        "before_main_height": 16403,
+        "after_main_height": 6207
+      }
+    ]
+  },
+  "next": "Onboarding mistakes and Spring 2026 Spotlight; then app cards guide and AEO. Existing cross-article card date conflict must be addressed before publication.",
+  "publication": "Local commit only; no push or deploy."
+}
