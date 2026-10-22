@@ -5,6 +5,8 @@ import Link from "next/link";
 import Button from "@/components/ui/Button";
 import Container from "@/components/ui/Container";
 import Badge from "@/components/ui/Badge";
+import SoftContentCard from "@/components/ui/SoftContentCard";
+import ContentIcon from "@/components/ui/ContentIcon";
 import { caseStudies } from "@/content/caseStudies";
 import { expertiseAreas } from "@/content/expertise";
 
@@ -48,13 +50,7 @@ export default function HomeClient() {
           </div>
           <div className="grid gap-5 md:grid-cols-2">
             {featuredCases.map((study) => (
-              <Link key={study.slug} href={`/case-studies/${study.slug}`} className="group block rounded-2xl border border-border bg-surface p-6 transition-colors hover:border-accent/40">
-                <p className="text-xs font-semibold uppercase tracking-widest text-text-secondary">{study.narrative?.eyebrow ?? study.industry}</p>
-                <h3 className="mt-3 font-display text-2xl font-semibold text-text">{study.title}</h3>
-                <p className="mt-3 leading-relaxed text-text-secondary">{study.summary}</p>
-                {study.statusNote && <p className="mt-3 text-sm leading-relaxed text-text-secondary">{study.statusNote}</p>}
-                <span className="mt-4 inline-block font-semibold text-text underline underline-offset-4">Read case study</span>
-              </Link>
+              <SoftContentCard key={study.slug} href={`/case-studies/${study.slug}`} title={study.title} description={study.summary} icon={expertiseAreas.find(area => area.proofHref === `/case-studies/${study.slug}`)?.icon ?? "article"} detail={study.statusNote} eyebrow={study.narrative?.eyebrow ?? study.industry} headingLevel="h3" />
             ))}
           </div>
         </Container>
@@ -66,7 +62,7 @@ export default function HomeClient() {
           <div className="mt-7 grid gap-x-10 gap-y-7 sm:grid-cols-2">
             {expertiseAreas.map((area) => (
               <div key={area.title}>
-                <h3 className="font-display text-xl font-semibold text-text">{area.title}</h3>
+                <h3 className="flex items-start gap-3 font-display text-xl font-semibold text-text"><span className="mt-0.5 h-6 w-6 shrink-0 text-accent-text"><ContentIcon name={area.icon} /></span><span>{area.title}</span></h3>
                 <p className="mt-2 leading-relaxed text-text-secondary">{area.description}</p>
                 <Link href={area.proofHref} className={`mt-2 inline-block text-sm ${textLink}`}>{area.proofLabel}</Link>
               </div>
