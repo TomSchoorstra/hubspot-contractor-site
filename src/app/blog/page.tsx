@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
-import Link from "next/link";
 import Container from "@/components/ui/Container";
+import SoftContentCard from "@/components/ui/SoftContentCard";
 import { getAllPosts } from "@/lib/blog";
 import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 
@@ -38,30 +38,25 @@ export default function BlogPage() {
 
   return (
     <main>
-      <header className="border-b border-border-subtle py-12 lg:py-16">
-        <Container size="narrow">
+      <header className="relative overflow-hidden py-12 lg:py-16">
+        <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
+        <Container size="narrow" className="relative">
           <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-text sm:text-5xl lg:text-6xl">Blog</h1>
         </Container>
       </header>
-      <section className="py-12 lg:py-16">
-        <Container size="narrow">
-          <div className="max-w-3xl">
-            {posts.length === 0 ? (
-              <p className="text-text-muted">More posts coming soon.</p>
-            ) : (
-              <ul className="divide-y divide-border">
-                {posts.map(post => (
-                  <li key={post.slug} className="py-6 first:pt-0">
-                    <time dateTime={post.date} className="text-sm text-text-secondary">{formatDate(post.date)}</time>
-                    <h2 className="mt-2 font-display text-2xl font-semibold text-text">
-                      <Link href={`/blog/${post.slug}`} className="underline underline-offset-4 hover:text-accent-text">{post.title}</Link>
-                    </h2>
-                    <p className="mt-3 text-lg leading-relaxed text-text-secondary">{post.excerpt}</p>
-                  </li>
-                ))}
-              </ul>
-            )}
-          </div>
+      <section className="pb-12 lg:pb-16">
+        <Container>
+          {posts.length === 0 ? (
+            <p className="text-text-muted">More posts coming soon.</p>
+          ) : (
+            <ul className="grid gap-5 md:grid-cols-2" data-content-cards>
+              {posts.map(post => (
+                <li key={post.slug}>
+                  <SoftContentCard href={`/blog/${post.slug}`} title={post.title} description={post.excerpt} icon="article" date={{ value: post.date, label: formatDate(post.date) }} />
+                </li>
+              ))}
+            </ul>
+          )}
         </Container>
       </section>
     </main>

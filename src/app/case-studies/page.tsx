@@ -2,6 +2,7 @@ import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 import type { Metadata } from "next";
 import Link from "next/link";
 import Container from "@/components/ui/Container";
+import SoftContentCard from "@/components/ui/SoftContentCard";
 import { caseStudies } from "@/content/caseStudies";
 
 export const metadata: Metadata = {
@@ -25,11 +26,18 @@ export const metadata: Metadata = {
   },
 };
 const textLink = "font-semibold text-text underline underline-offset-4 hover:text-accent-text";
+const caseIcons: Record<string, string> = {
+  "customer-lifecycle": "custom-objects",
+  "crm-data-quality": "consultancy",
+  "finance-automation": "integrations",
+  "renewal-status-card": "custom-app-cards",
+  "pipeline-consolidation": "pipeline-optimization",
+};
 
 export default function CaseStudies() {
   return (
     <main>
-      <header className="relative overflow-hidden border-b border-border-subtle py-12 lg:py-16">
+      <header className="relative overflow-hidden py-12 lg:py-16">
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
         <Container size="narrow" className="relative">
           <div className="max-w-3xl">
@@ -39,20 +47,16 @@ export default function CaseStudies() {
         </Container>
       </header>
 
-      <section className="py-12 lg:py-16">
-        <Container size="narrow">
-          <div className="max-w-3xl">
-            <ul className="divide-y divide-border">
-              {caseStudies.map(study => (
-                <li key={study.slug} className="py-6 first:pt-0">
-                  <h2 className="font-display text-2xl font-semibold text-text"><Link href={`/case-studies/${study.slug}`} className="underline underline-offset-4 hover:text-accent-text">{study.title}</Link></h2>
-                  <p className="mt-3 text-lg leading-relaxed text-text-secondary">{study.summary}</p>
-                  {study.statusNote && <p className="mt-3 text-sm leading-relaxed text-text-secondary">{study.statusNote}</p>}
-                </li>
-              ))}
-            </ul>
-            <p className="border-t border-border pt-6 text-base leading-relaxed text-text-secondary">Questions about the work? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
-          </div>
+      <section className="pb-12 lg:pb-16">
+        <Container>
+          <ul className="grid gap-5 md:grid-cols-2" data-content-cards>
+            {caseStudies.map(study => (
+              <li key={study.slug}>
+                <SoftContentCard href={`/case-studies/${study.slug}`} title={study.title} description={study.summary} icon={caseIcons[study.slug]} detail={study.statusNote} />
+              </li>
+            ))}
+          </ul>
+          <p className="mt-8 text-base leading-relaxed text-text-secondary">Questions about the work? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
         </Container>
       </section>
     </main>
