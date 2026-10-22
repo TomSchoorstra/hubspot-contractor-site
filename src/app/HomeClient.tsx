@@ -79,8 +79,7 @@ export default function HomeClient() {
         <Container>
           <div className="max-w-3xl">
             <h2 className="font-display text-3xl font-semibold text-text">How I work</h2>
-            <p className="mt-4 text-lg leading-relaxed text-text-secondary">I start with the process: where the data comes from, which records belong together and who owns the next decision. Then I build, test and document the setup. Recurring checks help catch issues as records and processes change.</p>
-            <p className="mt-4 leading-relaxed text-text-secondary">The cases explain the work and its limits. You can also read <Link href="/about" className={textLink}>more about my approach</Link> or explore the <Link href="/services" className={textLink}>areas I work in</Link>.</p>
+            <p className="mt-4 text-lg leading-relaxed text-text-secondary">I follow the data across records and systems, then test the handovers and exceptions. Read <Link href="/about" className={textLink}>more about my approach</Link>, including how I use AI-assisted reviews, or explore my <Link href="/services" className={textLink}>HubSpot expertise</Link>.</p>
             <p className="mt-5 leading-relaxed text-text-secondary">Want to compare notes on HubSpot? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
           </div>
         </Container>

@@ -33,7 +33,7 @@ const toolGroups = [
   },
   {
     label: "Automation",
-    tools: ["Zapier", "JavaScript", "WooCommerce", "Exact"],
+    tools: ["Zapier", "JavaScript", "React", "WooCommerce", "Exact"],
   },
   {
     label: "AI-assisted work",

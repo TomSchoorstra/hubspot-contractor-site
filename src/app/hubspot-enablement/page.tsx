@@ -4,15 +4,23 @@ import Link from "next/link";
 import PageHeader from "@/components/sections/PageHeader";
 import Container from "@/components/ui/Container";
 import StatusBanner from "./StatusBanner";
+import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "HubSpot Tips for Slack | Tom Schoorstra",
   description: "A small Slack integration for sharing weekly HubSpot tips. Read about the project and its current availability.",
   alternates: { canonical: "/hubspot-enablement" },
   openGraph: {
+    images: [SITE_SOCIAL_IMAGE],
     title: "HubSpot Tips for Slack | Tom Schoorstra",
     description: "A small Slack integration for sharing weekly HubSpot tips. New installations are currently unavailable.",
     url: "/hubspot-enablement",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
+    title: "HubSpot Tips for Slack | Tom Schoorstra",
+    description: "A small Slack integration for sharing weekly HubSpot tips. New installations are currently unavailable.",
   },
 };
 

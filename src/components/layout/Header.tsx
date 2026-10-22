@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
@@ -16,6 +16,45 @@ function MobileMenuPortal({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const menuRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!open || !menuRef.current) return;
+
+    const menu = menuRef.current;
+    const previousFocus = document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    const background = Array.from(document.body.children)
+      .filter((node): node is HTMLElement => node instanceof HTMLElement && !node.contains(menu) && !["SCRIPT", "STYLE", "LINK"].includes(node.tagName))
+      .map(node => ({ node, inert: node.inert }));
+
+    menu.inert = false;
+    background.forEach(({ node }) => { node.inert = true; });
+    menu.querySelector<HTMLButtonElement>('button[aria-label="Close menu"]')?.focus({ preventScroll: true });
+
+    const keepFocusInMenu = (event: KeyboardEvent) => {
+      if (event.key !== "Tab") return;
+      const controls = menu.querySelectorAll<HTMLElement>('a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])');
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (!first || !last) return;
+      if (!menu.contains(document.activeElement) || (event.shiftKey && document.activeElement === first)) {
+        event.preventDefault();
+        (event.shiftKey ? last : first).focus();
+      } else if (!event.shiftKey && document.activeElement === last) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", keepFocusInMenu);
+    return () => {
+      document.removeEventListener("keydown", keepFocusInMenu);
+      menu.inert = true;
+      background.forEach(({ node, inert }) => { node.inert = inert; });
+      previousFocus?.focus({ preventScroll: true });
+    };
+  }, [open]);
+
   if (typeof document === "undefined") return null;
 
   const navItems = site.nav;
@@ -24,6 +63,10 @@ function MobileMenuPortal({
     <AnimatePresence>
       {open && (
         <motion.div
+          ref={menuRef}
+          role="dialog"
+          aria-modal="true"
+          aria-label="Main navigation"
           key="mobile-menu"
           initial={{ opacity: 0, x: "100%" }}
           animate={{ opacity: 1, x: 0 }}
@@ -68,7 +111,8 @@ function MobileMenuPortal({
                       <Link
                         href={item.href}
                         onClick={onClose}
-                        className={`group flex items-center justify-between rounded-xl px-4 py-4 text-xl font-semibold transition-colors hover:bg-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${pathname === item.href ? "text-accent" : "text-text"}`}
+                        aria-current={pathname === item.href ? "page" : pathname.startsWith(item.href + "/") ? "true" : undefined}
+                        className={`group flex items-center justify-between rounded-xl px-4 py-4 text-xl font-semibold transition-colors hover:bg-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-accent" : "text-text"}`}
                       >
                         {item.label}
                         <svg aria-hidden="true" className="h-4 w-4 text-text-muted transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
@@ -79,21 +123,6 @@ function MobileMenuPortal({
                   ))}
                 </div>
 
-                <motion.div
-                  className="mt-10 pt-8 border-t border-border-subtle"
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ delay: 0.35 }}
-                >
-                  <Button
-                    href="/contact"
-                    className="w-full px-6 py-4 text-base"
-                    analyticsLocation="mobile_menu"
-                    showArrow
-                  >
-                    Get in touch
-                  </Button>
-                </motion.div>
               </div>
             </nav>
           </div>
@@ -131,10 +160,16 @@ export default function Header() {
     const originalOverflow = document.body.style.overflow;
     document.body.style.overflow = "hidden";
     document.addEventListener("keydown", handleEscape);
+    const desktop = window.matchMedia("(min-width: 768px)");
+    const closeOnDesktop = (event: MediaQueryListEvent) => {
+      if (event.matches) setOpen(false);
+    };
+    desktop.addEventListener("change", closeOnDesktop);
 
     return () => {
       document.body.style.overflow = originalOverflow;
       document.removeEventListener("keydown", handleEscape);
+      desktop.removeEventListener("change", closeOnDesktop);
     };
   }, [open]);
 
@@ -164,6 +199,7 @@ export default function Header() {
               <Link
                 key={item.href}
                 href={item.href}
+                aria-current={pathname === item.href ? "page" : isActive ? "true" : undefined}
                 className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group ${
                   isActive ? "text-accent" : "text-text-secondary hover:text-text hover:bg-surface-2"
                 }`}

@@ -1,0 +1,376 @@
+{
+  "date": "2026-10-22",
+  "status": "Checkpoint 7 local final review complete; ready for Tom to review. Publication remains a separate instruction.",
+  "scope": "All 27 public pages: home, About, contact, six expertise details and index, five cases and index, eight blogs and index, app catalog and Slack project.",
+  "skills": [
+    "Copy-editing with seven sweeps and final checklist",
+    "CRO, including contact-form reference, adapted to personal-portfolio goal",
+    "SEO audit framework for rendered metadata, schema, navigation and sitemap",
+    "Existing product marketing context and Tom Voice compass"
+  ],
+  "verdict": "The site tells one specialist story: understand the customer model and process, build the workflows/integrations/interfaces, then inspect exceptions and maintain ownership. Existing work supports the expertise. Contact invites conversations without suggesting client capacity.",
+  "page_roles": {
+    "/": "Introduce Tom and the HubSpot/RevOps focus; link directly to proof. Four compact sections, two selected projects and four expertise areas remain.",
+    "/services": "Expertise overview with six distinct areas; navigation/H1/backlinks/breadcrumb use Expertise, URLs preserved.",
+    "/case-studies": "Evidence of actual design/build decisions, results and limits; all five projects remain.",
+    "/about": "Person, working method, AI-assisted review and historical background. Employer used only as actual project context.",
+    "/blog": "Practical subject-specific notes and checks. Calm list with eight original article URLs, same excerpts and larger readable body text.",
+    "/contact": "Question or conversation, simple four-field form with optional company and LinkedIn alternative.",
+    "/app-catalog and /hubspot-enablement": "Small supplementary project, accurate unavailable-installation status."
+  },
+  "changes": [
+    "Shortened homepage approach to a useful bridge to About, rather than repeating the full process explanation.",
+    "Changed Services navigation to Expertise and matching index heading/backlinks/breadcrumb labels; all six /services URLs retained.",
+    "Replaced the repeated full availability paragraph on 13 expertise/case pages with a short contextual conversation link. Availability stays in global banner, About and contact.",
+    "Added React to existing About tool list, supported by the actual renewal-card case; no additional skill panels or unsupported capabilities.",
+    "Removed blog-index timeline and eight padded card panels; kept every date, title and excerpt as simple divided rows.",
+    "Removed mobile-menu duplicate contact CTA. Fixed initial focus, Tab/Shift+Tab loop, inert background, Escape/close focus return, parent-section state and desktop-resize cleanup.",
+    "Removed banner height animation, so wrapped text uses natural layout at every width; dismissal persists.",
+    "Added missing app-page social images, explicit app/contact Twitter metadata and global image defaults. Removed redundant ProfessionalService identity from global schema; Person remains the portfolio identity."
+  ],
+  "preserved_proof": {
+    "checks": "Automated comparison confirms every existing expertise/case paragraph remains, except the deliberately shortened shared closing text. About changes only the additional proven tool. All eight blog main texts remain exactly equal to the pre-final baseline at every width.",
+    "account": "Projectlead/model/three paths/diagram/September snapshot/open enrichment/manual weekly review/human decision/stop conditions remain.",
+    "data_quality": "Two contact directions plus license/member comparison, distinct counting, source freshness, August snapshot and open validation remain. Detection is separate from repair.",
+    "finance": "Finance review before order flow; HubSpot/WooCommerce/Exact via Zapier remain.",
+    "renewal": "Three written statuses, React UI extension, associated-License lookup, read-only and hosting boundaries remain.",
+    "pipeline": "Consolidation, migration/history, stage definitions and conversion reporting remain.",
+    "blogs": "Source-linked reviewed content, original publication dates and actual review dates unchanged; official classic-card source conflict stays attributed."
+  },
+  "duplication_review": {
+    "method": "Read rendered main text across all routes; compare exact repeated paragraphs of at least 12 words, then assess semantic overlap by page purpose. No automatic deletion of necessary evidence or wayfinding.",
+    "removed": "Long identical availability closing on 13 pages; homepage/About method overlap; repeated menu contact action; decorative repetition in blog overview.",
+    "retained": [
+      {
+        "text": "I connected AIHR's customer records through a custom Account object in HubSpot, with workflows and weekly checks to keep the data linked.",
+        "pages": [
+          "/",
+          "/case-studies"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "September 2026 project snapshot: the core setup is live; enrichment remains in progress.",
+        "pages": [
+          "/",
+          "/case-studies",
+          "/case-studies/customer-lifecycle"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "At AIHR, I built a detection layer that compares HubSpot with learning-platform data through Snowflake, bringing missing links and conflicting statuses into one data quality dashboard.",
+        "pages": [
+          "/",
+          "/case-studies"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "August 2026 project snapshot: datasets and dashboard are in place; member-count validation and source freshness still need follow-up.",
+        "pages": [
+          "/",
+          "/case-studies",
+          "/case-studies/crm-data-quality"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information.",
+        "pages": [
+          "/case-studies",
+          "/case-studies/finance-automation"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Use AEO to understand brand mentions and citations in AI answers. Check your content, buyer questions and measurement plan before paying for another tool.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-aeo-smb"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Bring useful context or a focused action onto a HubSpot record. How app cards differ from native cards, when custom work fits and what to check before building.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-app-cards-guide"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Identify affected legacy cards, confirm who owns the migration and test the replacement. HubSpot's current guide and older announcement list different cutoff dates.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-classic-crm-cards-sunset"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Choose based on the work, the people delivering it and the capacity you need. Compare scope, costs, continuity and handover before picking a contractor or agency.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-contractor-vs-agency"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Choose a specific task for Breeze, check its data and access requirements, and test the result before expanding. Here is how I would evaluate the main use cases.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-breeze-ai-smb"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Define what MQL and SQL mean, check HubSpot's native automation, and add workflows where your qualification rules need them.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-lifecycle-stages-setup-guide"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "A practical review of the spring announcements, updated for October: agent costs, workflow review, data preparation, quoting and custom-app maintenance.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-spring-2026-spotlight"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      },
+      {
+        "text": "Agree the process, prepare the data and assign ownership before launch. Nine checks for a HubSpot setup your team can use and maintain.",
+        "pages": [
+          "/blog",
+          "/blog/hubspot-onboarding-mistakes"
+        ],
+        "decision": "Retained as a specific teaser, snapshot boundary or article excerpt used in an overview and its destination."
+      }
+    ],
+    "interpretation": "Teaser/excerpt reuse connects an overview to a detail page. Repeated snapshot notes protect the meaning of project evidence. These serve the reader and are not extra sales sections."
+  },
+  "validation": {
+    "build": "Passed final production build, TypeScript and both mandatory training validators.",
+    "lint": "Full project ESLint: zero errors, seven pre-existing warnings in vendor confetti and training validators. Changed source files also passed scoped lint.",
+    "preview_parity": "75 source/config/lockfiles match repo and clean temporary validation copy. No dependency versions changed.",
+    "pages": 27,
+    "widths": [
+      320,
+      390,
+      768,
+      1440
+    ],
+    "page_viewport_checks": 108,
+    "page_errors": [],
+    "layout": "One H1, logical heading progression, matching mobile/desktop main text, loaded/alt-labeled main images, no horizontal overflow, Space Grotesk/Geist retained.",
+    "links": "27 distinct internal destinations return 200. All 27 pages reachable within two links of homepage, including global navigation.",
+    "journey": "Home See the work → case index → Account case → custom objects expertise → About → contact passed. Mobile Expertise route and blog index → AEO passed.",
+    "menu": "Initial focus on Close; forward/reverse wrap and 22 Tab steps remain inside dialog; background inert; Escape/button close restore focus; resizing to desktop releases page.",
+    "banner": "No clipping over six rapid 320–1440 width changes; natural height and persistent dismissal verified.",
+    "form": "Fully intercepted POST. Starting from email produces one form_start; invalid submit focuses name and flags three fields. Mock failure preserves message and produces no lead; mock success produces one generate_lead.",
+    "metadata": "Every public route has unique title/description, www canonical, OG description/image and Twitter image. BlogPosting/BreadcrumbList parse; no FAQPage without Q&A. Global Person identity retained.",
+    "routing": "Local non-www Host request redirects 308 to www; three missing detail routes return 404. Sitemap has exactly 27 canonical URLs; robots retains /l/ exclusion. Social image returns 200 image/png.",
+    "slack": "Unavailable status visible, install link absent, unconfigured OAuth redirects to unavailable status without contacting Slack.",
+    "visual_review": "Mobile/desktop home, About, expertise and blog overview plus Account case, contact and mobile-menu states inspected. Screenshots retained.",
+    "measurement": "Main.innerText after fonts at 390px, excluding global header/banner/footer. No ranking, conversion or speed uplift inferred."
+  },
+  "metrics": [
+    {
+      "path": "/",
+      "before_words": 320,
+      "after_words": 289,
+      "before_main_height": 3328,
+      "after_main_height": 3234
+    },
+    {
+      "path": "/about",
+      "before_words": 341,
+      "after_words": 342,
+      "before_main_height": 2698,
+      "after_main_height": 2721
+    },
+    {
+      "path": "/services",
+      "before_words": 168,
+      "after_words": 153,
+      "before_main_height": 1726,
+      "after_main_height": 1660
+    },
+    {
+      "path": "/case-studies",
+      "before_words": 233,
+      "after_words": 220,
+      "before_main_height": 1911,
+      "after_main_height": 1859
+    },
+    {
+      "path": "/contact",
+      "before_words": 74,
+      "after_words": 74,
+      "before_main_height": 1056,
+      "after_main_height": 1056
+    },
+    {
+      "path": "/app-catalog",
+      "before_words": 32,
+      "after_words": 32,
+      "before_main_height": 656,
+      "after_main_height": 656
+    },
+    {
+      "path": "/hubspot-enablement",
+      "before_words": 62,
+      "after_words": 62,
+      "before_main_height": 746,
+      "after_main_height": 746
+    },
+    {
+      "path": "/services/automation",
+      "before_words": 251,
+      "after_words": 240,
+      "before_main_height": 2007,
+      "after_main_height": 1983
+    },
+    {
+      "path": "/services/consultancy",
+      "before_words": 232,
+      "after_words": 221,
+      "before_main_height": 1965,
+      "after_main_height": 1941
+    },
+    {
+      "path": "/services/integrations",
+      "before_words": 248,
+      "after_words": 237,
+      "before_main_height": 2039,
+      "after_main_height": 2015
+    },
+    {
+      "path": "/services/custom-objects",
+      "before_words": 270,
+      "after_words": 259,
+      "before_main_height": 2264,
+      "after_main_height": 2240
+    },
+    {
+      "path": "/services/pipeline-optimization",
+      "before_words": 272,
+      "after_words": 261,
+      "before_main_height": 2150,
+      "after_main_height": 2126
+    },
+    {
+      "path": "/services/custom-app-cards",
+      "before_words": 268,
+      "after_words": 257,
+      "before_main_height": 2100,
+      "after_main_height": 2076
+    },
+    {
+      "path": "/case-studies/customer-lifecycle",
+      "before_words": 371,
+      "after_words": 361,
+      "before_main_height": 3539,
+      "after_main_height": 3515
+    },
+    {
+      "path": "/case-studies/crm-data-quality",
+      "before_words": 347,
+      "after_words": 337,
+      "before_main_height": 2779,
+      "after_main_height": 2755
+    },
+    {
+      "path": "/case-studies/finance-automation",
+      "before_words": 219,
+      "after_words": 209,
+      "before_main_height": 1911,
+      "after_main_height": 1887
+    },
+    {
+      "path": "/case-studies/renewal-status-card",
+      "before_words": 246,
+      "after_words": 236,
+      "before_main_height": 1940,
+      "after_main_height": 1916
+    },
+    {
+      "path": "/case-studies/pipeline-consolidation",
+      "before_words": 209,
+      "after_words": 199,
+      "before_main_height": 1862,
+      "after_main_height": 1838
+    },
+    {
+      "path": "/blog/hubspot-aeo-smb",
+      "before_words": 763,
+      "after_words": 763,
+      "before_main_height": 5863,
+      "after_main_height": 5863
+    },
+    {
+      "path": "/blog/hubspot-app-cards-guide",
+      "before_words": 716,
+      "after_words": 716,
+      "before_main_height": 5456,
+      "after_main_height": 5456
+    },
+    {
+      "path": "/blog/hubspot-classic-crm-cards-sunset",
+      "before_words": 685,
+      "after_words": 685,
+      "before_main_height": 5648,
+      "after_main_height": 5648
+    },
+    {
+      "path": "/blog/hubspot-contractor-vs-agency",
+      "before_words": 792,
+      "after_words": 792,
+      "before_main_height": 6207,
+      "after_main_height": 6207
+    },
+    {
+      "path": "/blog/hubspot-breeze-ai-smb",
+      "before_words": 915,
+      "after_words": 915,
+      "before_main_height": 7161,
+      "after_main_height": 7161
+    },
+    {
+      "path": "/blog/hubspot-lifecycle-stages-setup-guide",
+      "before_words": 1039,
+      "after_words": 1039,
+      "before_main_height": 8174,
+      "after_main_height": 8174
+    },
+    {
+      "path": "/blog/hubspot-spring-2026-spotlight",
+      "before_words": 843,
+      "after_words": 843,
+      "before_main_height": 6902,
+      "after_main_height": 6902
+    },
+    {
+      "path": "/blog/hubspot-onboarding-mistakes",
+      "before_words": 905,
+      "after_words": 905,
+      "before_main_height": 7302,
+      "after_main_height": 7302
+    },
+    {
+      "path": "/blog",
+      "before_words": 283,
+      "after_words": 283,
+      "before_main_height": 2706,
+      "after_main_height": 2675
+    }
+  ],
+  "external_limits": [
+    "Contact delivery tested using intercepted responses and dummy preview endpoint; no real message sent and production inbox delivery not verified.",
+    "Slack installation/delivery remains unavailable until its own workspace verification; this final review did not activate it.",
+    "Hosting redirects and production analytics/reporting require a check after a separate deployment. Local Host-header/dataLayer checks do not prove the external chain.",
+    "Official card cutoff dates conflict; the three relevant articles explain the difference and retain the earlier planning recommendation."
+  ],
+  "publication": "Local commit only. No push/deploy, real form submission, Slack installation or CRM mutation."
+}

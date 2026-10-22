@@ -17,7 +17,7 @@ export default function CompactServiceContent({
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
         <Container size="narrow" className="relative">
           <div className="max-w-3xl">
-            <Link href="/services" className={`text-sm ${textLink}`}><span aria-hidden="true">← </span>All services</Link>
+            <Link href="/services" className={`text-sm ${textLink}`}><span aria-hidden="true">← </span>All expertise</Link>
             <h1 className="mt-6 font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">{service.title}</h1>
             <p className="mt-5 text-xl leading-relaxed text-text-secondary">{service.shortDescription}</p>
             {service.relatedCaseStudy && (
@@ -59,7 +59,7 @@ export default function CompactServiceContent({
               <Link href="/about" className={`inline-block text-base ${textLink}`}>More about my approach</Link>
             </div>
 
-            <p className="border-t border-border pt-6 text-base">I&apos;m not taking on client projects at the moment, but questions and conversations about HubSpot are welcome. <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
+            <p className="border-t border-border pt-6 text-base">Questions about this area of HubSpot? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
           </div>
         </Container>
       </section>

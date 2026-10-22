@@ -14,7 +14,7 @@ export const site: SiteConfig = {
   tagline: "HubSpot & RevOps specialist for CRM architecture, integrations and operational data quality.",
   nav: [
     {
-      label: "Services",
+      label: "Expertise",
       href: "/services",
     },
     {

@@ -32,7 +32,7 @@ export default function Services() {
         <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
         <Container size="narrow" className="relative">
           <div className="max-w-3xl">
-            <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">How I work with HubSpot</h1>
+            <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text sm:text-5xl lg:text-6xl">HubSpot expertise</h1>
             <p className="mt-5 text-xl leading-relaxed text-text-secondary">{servicesHeroIntro}</p>
             <p className="mt-5 leading-relaxed text-text-secondary">For the work behind these areas, <Link href="/case-studies" className={textLink}>explore the case studies</Link>.</p>
           </div>
@@ -50,7 +50,7 @@ export default function Services() {
                 </li>
               ))}
             </ul>
-            <p className="border-t border-border pt-6 text-base leading-relaxed text-text-secondary">I&apos;m not taking on client projects at the moment, but questions and conversations about HubSpot are welcome. <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
+            <p className="border-t border-border pt-6 text-base leading-relaxed text-text-secondary">Questions or ideas about HubSpot? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
           </div>
         </Container>
       </section>

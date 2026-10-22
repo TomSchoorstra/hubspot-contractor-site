@@ -1,0 +1,191 @@
+[
+  {
+    "path": "/",
+    "before_words": 320,
+    "after_words": 289,
+    "before_main_height": 3328,
+    "after_main_height": 3234
+  },
+  {
+    "path": "/about",
+    "before_words": 341,
+    "after_words": 342,
+    "before_main_height": 2698,
+    "after_main_height": 2721
+  },
+  {
+    "path": "/services",
+    "before_words": 168,
+    "after_words": 153,
+    "before_main_height": 1726,
+    "after_main_height": 1660
+  },
+  {
+    "path": "/case-studies",
+    "before_words": 233,
+    "after_words": 220,
+    "before_main_height": 1911,
+    "after_main_height": 1859
+  },
+  {
+    "path": "/contact",
+    "before_words": 74,
+    "after_words": 74,
+    "before_main_height": 1056,
+    "after_main_height": 1056
+  },
+  {
+    "path": "/app-catalog",
+    "before_words": 32,
+    "after_words": 32,
+    "before_main_height": 656,
+    "after_main_height": 656
+  },
+  {
+    "path": "/hubspot-enablement",
+    "before_words": 62,
+    "after_words": 62,
+    "before_main_height": 746,
+    "after_main_height": 746
+  },
+  {
+    "path": "/services/automation",
+    "before_words": 251,
+    "after_words": 240,
+    "before_main_height": 2007,
+    "after_main_height": 1983
+  },
+  {
+    "path": "/services/consultancy",
+    "before_words": 232,
+    "after_words": 221,
+    "before_main_height": 1965,
+    "after_main_height": 1941
+  },
+  {
+    "path": "/services/integrations",
+    "before_words": 248,
+    "after_words": 237,
+    "before_main_height": 2039,
+    "after_main_height": 2015
+  },
+  {
+    "path": "/services/custom-objects",
+    "before_words": 270,
+    "after_words": 259,
+    "before_main_height": 2264,
+    "after_main_height": 2240
+  },
+  {
+    "path": "/services/pipeline-optimization",
+    "before_words": 272,
+    "after_words": 261,
+    "before_main_height": 2150,
+    "after_main_height": 2126
+  },
+  {
+    "path": "/services/custom-app-cards",
+    "before_words": 268,
+    "after_words": 257,
+    "before_main_height": 2100,
+    "after_main_height": 2076
+  },
+  {
+    "path": "/case-studies/customer-lifecycle",
+    "before_words": 371,
+    "after_words": 361,
+    "before_main_height": 3539,
+    "after_main_height": 3515
+  },
+  {
+    "path": "/case-studies/crm-data-quality",
+    "before_words": 347,
+    "after_words": 337,
+    "before_main_height": 2779,
+    "after_main_height": 2755
+  },
+  {
+    "path": "/case-studies/finance-automation",
+    "before_words": 219,
+    "after_words": 209,
+    "before_main_height": 1911,
+    "after_main_height": 1887
+  },
+  {
+    "path": "/case-studies/renewal-status-card",
+    "before_words": 246,
+    "after_words": 236,
+    "before_main_height": 1940,
+    "after_main_height": 1916
+  },
+  {
+    "path": "/case-studies/pipeline-consolidation",
+    "before_words": 209,
+    "after_words": 199,
+    "before_main_height": 1862,
+    "after_main_height": 1838
+  },
+  {
+    "path": "/blog/hubspot-aeo-smb",
+    "before_words": 763,
+    "after_words": 763,
+    "before_main_height": 5863,
+    "after_main_height": 5863
+  },
+  {
+    "path": "/blog/hubspot-app-cards-guide",
+    "before_words": 716,
+    "after_words": 716,
+    "before_main_height": 5456,
+    "after_main_height": 5456
+  },
+  {
+    "path": "/blog/hubspot-classic-crm-cards-sunset",
+    "before_words": 685,
+    "after_words": 685,
+    "before_main_height": 5648,
+    "after_main_height": 5648
+  },
+  {
+    "path": "/blog/hubspot-contractor-vs-agency",
+    "before_words": 792,
+    "after_words": 792,
+    "before_main_height": 6207,
+    "after_main_height": 6207
+  },
+  {
+    "path": "/blog/hubspot-breeze-ai-smb",
+    "before_words": 915,
+    "after_words": 915,
+    "before_main_height": 7161,
+    "after_main_height": 7161
+  },
+  {
+    "path": "/blog/hubspot-lifecycle-stages-setup-guide",
+    "before_words": 1039,
+    "after_words": 1039,
+    "before_main_height": 8174,
+    "after_main_height": 8174
+  },
+  {
+    "path": "/blog/hubspot-spring-2026-spotlight",
+    "before_words": 843,
+    "after_words": 843,
+    "before_main_height": 6902,
+    "after_main_height": 6902
+  },
+  {
+    "path": "/blog/hubspot-onboarding-mistakes",
+    "before_words": 905,
+    "after_words": 905,
+    "before_main_height": 7302,
+    "after_main_height": 7302
+  },
+  {
+    "path": "/blog",
+    "before_words": 283,
+    "after_words": 283,
+    "before_main_height": 2706,
+    "after_main_height": 2675
+  }
+]

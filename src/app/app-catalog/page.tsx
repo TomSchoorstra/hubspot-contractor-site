@@ -4,6 +4,7 @@ import PageHeader from "@/components/sections/PageHeader";
 import ScrollReveal from "@/components/ui/ScrollReveal";
 import Badge from "@/components/ui/Badge";
 import Container from "@/components/ui/Container";
+import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 
 export const metadata: Metadata = {
   title: "App Catalog | Tom Schoorstra",
@@ -11,10 +12,17 @@ export const metadata: Metadata = {
     "Small tools and integration projects for HubSpot teams, with their current availability.",
   alternates: { canonical: "/app-catalog" },
   openGraph: {
+    images: [SITE_SOCIAL_IMAGE],
     title: "App Catalog — Tom Schoorstra",
     description:
       "Small tools and integration projects for HubSpot teams, with their current availability.",
     url: "/app-catalog",
+  },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
+    title: "App Catalog | Tom Schoorstra",
+    description: "Small tools and integration projects for HubSpot teams, with their current availability.",
   },
 };
 

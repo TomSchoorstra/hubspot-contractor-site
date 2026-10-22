@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. Alle vier blogdelen van checkpoint 6 zijn inhoudelijk uitgewerkt en zelf gecontroleerd (8/8 artikelen). Checkpoint 7, de eindcontrole van de hele site, volgt nog. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Bijgewerkt: 22 oktober 2026. Alle zeven checkpoints zijn lokaal uitgewerkt en zelf gecontroleerd. De compacte stijl is gedurende de sessie met Tom afgestemd. De definitieve versie staat klaar voor zijn review; publicatie blijft een afzonderlijke opdracht.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -29,7 +29,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld als basis gekozen; overige vier en overzicht zelfcontrole afgerond |
 | 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Alle vier delen zelfcontrole afgerond (8/8) |
-| 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
+| 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Lokale eindcontrole afgerond; publicatie afzonderlijk |
 
 ## Checkpoint 1 Richting en Tom Voice
 
@@ -313,3 +313,22 @@ Productiebouw, TypeScript en beide verplichte trainingsvalidators slagen. De neg
 Over alle acht artikelen samen gaat de zichtbare bodytekst van 15668 naar 6288 woorden (60% korter). De [totaalmeting](blogs-part4-preview-2026-10-22/all-blogs-word-summary.json) vergelijkt dezelfde artikelcontainer met de nulmeting van deel 1; dit is geen SEO-, conversie- of snelheidsmeting.
 
 Status: checkpoint 6 zelfcontrole afgerond, 8/8. Checkpoint 7 staat nog open: samenhang, stem en compactheid van de hele site, gedeelde banner/navigatie, formulieren en foutstatussen, metadata en publicatieafhankelijkheden. Publicatie vraagt een afzonderlijke opdracht. Geen push of deploy.
+
+
+## Checkpoint 7 — lokale eindcontrole afgerond
+
+22 oktober 2026. Tom vroeg de hele site te toetsen op samenhang, herhaling, eenvoud en herkenbare expertise. De [eindreview, metingen en bewijs](final-preview-2026-10-22/review.json) leggen de redactionele beoordeling en functionele controles vast.
+
+Het verhaal heeft één lijn: Tom ontwerpt de CRM-structuur, bouwt de processen en koppelingen en controleert daarna de uitzonderingen. De homepage introduceert dit en verwijst naar bewijs. Expertise beschrijft de zes vakgebieden; cases tonen eigen keuzes en grenzen; About behandelt persoon en werkwijze; blogs beantwoorden specifieke praktijkvragen. Contact blijft een uitnodiging tot een gesprek, zonder beschikbare projectcapaciteit te suggereren. AIHR staat alleen bij concrete projecten.
+
+De laatste wijzigingen zijn beperkt gebleven. Homepage/About-overlap is verkort: de homepage telt nu 289 in plaats van 320 woorden. “Services” heet in navigatie, overzicht en teruglinks “Expertise”, met behoud van alle URL’s. De lange identieke beschikbaarheidsafsluiter op dertien pagina’s is een korte inhoudelijke contactverwijzing geworden. De banner, About en contact houden de beschikbaarheid expliciet. React is toegevoegd aan de bestaande toollijst op basis van de renewal-case. Alle casetekst en voorwaarden zijn verder behouden.
+
+Het blogoverzicht gebruikt dezelfde rustige lijstvorm als expertise en cases. De acht titels, datums en excerpts blijven staan; de timeline en grote kaartvlakken verdwijnen. De tekst blijft goed leesbaar en is niet verkleind. Herhaalde excerpts in overzichten en gedateerde bewijsgrenzen zijn bewust behouden. Alle acht blogteksten zijn tijdens deze eindronde exact gelijk gebleven.
+
+Het mobiele menu houdt toetsenbordfocus nu in het dialoogvenster, maakt de achtergrond tijdelijk inert en herstelt focus bij sluiten. Escape, sluitknop, navigeren en omschakelen naar desktop zijn getest. De dubbele contactknop is verwijderd. De beschikbaarheidsbanner gebruikt natuurlijke hoogte in plaats van een hoogte-animatie; tekst blijft tijdens breedtewissels binnen beeld. De twee apppagina’s hebben een social-previewafbeelding gekregen. Global schema presenteert Tom als Person; de extra bedrijfsidentiteit is verwijderd.
+
+De definitieve productiebuild inclusief TypeScript en beide trainingsvalidators slaagt. De volledige linttaak heeft nul fouten en zeven bestaande waarschuwingen in vendorcode en validators; gewijzigde broncode is schoon. Alle 27 publieke pagina’s zijn op 320, 390, 768 en 1440 px gecontroleerd: 108 checks, geen horizontale overflow of page-errors, één H1, dezelfde hoofdinhoud op mobiel/desktop en correcte fonts. Alle 27 interne bestemmingen geven 200 en zijn binnen twee links bereikbaar. De volledige bezoekersroute van homepage via Account-case en custom objects naar About/contact werkt, evenals het blogoverzicht.
+
+Het formulier is uitsluitend met onderschepte verzending getest. Eén start-event bij eerste focus, juiste foutfocus, behouden tekst bij een fout en precies één lead-event bij mocksucces zijn bevestigd. Metadata en JSON-LD zijn gecontroleerd, sitemap bevat 27 canonical-URL’s, de niet-www Host-test geeft lokaal 308 naar www en onbekende detailroutes geven 404. De previewkopie is voor 75 bron-/config-/lockbestanden gelijk aan de repository.
+
+De lokale eindcontrole is hiermee afgerond. Productieaflevering van Formspree, de externe analyticsketen en hostinggedrag worden niet door deze lokale mocks bewezen. Nieuwe Slack-installaties blijven bewust gesloten tot een eigen verificatie. Het bekende verschil tussen officiële carddatums is zichtbaar toegelicht. Dit zijn vastgelegde grenzen, geen reden om extra contentblokken toe te voegen. Geen push of deploy uitgevoerd.

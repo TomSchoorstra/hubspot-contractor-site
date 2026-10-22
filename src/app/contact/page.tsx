@@ -14,6 +14,12 @@ export const metadata: Metadata = {
     url: "/contact",
     images: [SITE_SOCIAL_IMAGE],
   },
+  twitter: {
+    card: "summary_large_image",
+    images: [SITE_SOCIAL_IMAGE.url],
+    title: "Contact Tom Schoorstra | HubSpot & RevOps Specialist",
+    description: "Questions and conversations about HubSpot are welcome. I'm not taking on client projects at the moment.",
+  },
 };
 
 export default function Contact() {

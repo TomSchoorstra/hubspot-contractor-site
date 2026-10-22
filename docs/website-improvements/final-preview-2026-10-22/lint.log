@@ -1,0 +1,19 @@
+> hubspot-contractor-site@0.1.0 lint
+> eslint
+
+
+/private/tmp/tom-compact-verify-2026-10-21/public/vendor/confetti-1.9.3.browser.js
+    4:1   warning  Expected an assignment or function call and instead saw an expression          @typescript-eslint/no-unused-expressions
+   34:14  warning  'e' is defined but never used                                                  @typescript-eslint/no-unused-vars
+  217:11  warning  Unused eslint-disable directive (no problems were reported from 'no-console')
+  218:11  warning  Expected an assignment or function call and instead saw an expression          @typescript-eslint/no-unused-expressions
+  450:7   warning  Expected an assignment or function call and instead saw an expression          @typescript-eslint/no-unused-expressions
+
+/private/tmp/tom-compact-verify-2026-10-21/scripts/validate-denise-plan.mjs
+  21:7  warning  'EXPECTED_WEEK_TOTALS_DENISE' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+/private/tmp/tom-compact-verify-2026-10-21/scripts/validate-tom-plan.mjs
+  22:7  warning  'EXPECTED_WEEK_TOTALS_TOM' is assigned a value but never used  @typescript-eslint/no-unused-vars
+
+✖ 7 problems (0 errors, 7 warnings)
+  0 errors and 1 warning potentially fixable with the `--fix` option.

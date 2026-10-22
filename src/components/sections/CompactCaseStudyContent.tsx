@@ -71,7 +71,7 @@ export default function CompactCaseStudyContent({
               {next && <p>Next: <Link href={`/case-studies/${next.slug}`} className={textLink}>{next.title}</Link></p>}
             </nav>
 
-            <p className="border-t border-border pt-6 text-base">I&apos;m not taking on client projects at the moment, but questions and conversations about HubSpot are welcome. <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
+            <p className="border-t border-border pt-6 text-base">Want to compare notes on this project? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
           </div>
         </Container>
       </section>

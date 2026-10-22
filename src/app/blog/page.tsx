@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import PageHeader from "@/components/sections/PageHeader";
 import Container from "@/components/ui/Container";
 import { getAllPosts } from "@/lib/blog";
 import { SITE_SOCIAL_IMAGE } from "@/lib/site";
@@ -8,18 +7,20 @@ import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 export const metadata: Metadata = {
   title: "Blog — Tom Schoorstra",
   description:
-    "Practical insights on HubSpot, automation, and RevOps — straight from real projects.",
+    "Notes on HubSpot, CRM structure, automation and data quality, with practical checks and clear limits.",
   alternates: { canonical: "/blog" },
   openGraph: {
     images: [SITE_SOCIAL_IMAGE],
     title: "Blog — Tom Schoorstra",
     description:
-      "Practical insights on HubSpot, automation, and RevOps — straight from real projects.",
+      "Notes on HubSpot, CRM structure, automation and data quality, with practical checks and clear limits.",
     url: "/blog",
   },
   twitter: {
     card: "summary_large_image",
     images: [SITE_SOCIAL_IMAGE.url],
+    title: "Blog — Tom Schoorstra",
+    description: "Notes on HubSpot, CRM structure, automation and data quality, with practical checks and clear limits.",
   },
 };
 
@@ -28,6 +29,7 @@ function formatDate(dateStr: string) {
     day: "numeric",
     month: "long",
     year: "numeric",
+    timeZone: "UTC",
   });
 }
 
@@ -36,41 +38,30 @@ export default function BlogPage() {
 
   return (
     <main>
-      <PageHeader title="Blog" />
-
-      <section className="py-4 lg:py-6">
-        <Container>
-          {posts.length === 0 ? (
-            <p className="text-text-muted">More posts coming soon.</p>
-          ) : (
-            <div className="max-w-2xl">
-              <div className="relative">
-                {/* Vertical line */}
-                <div className="absolute left-0 top-2 bottom-2 w-px bg-border" />
-
-                <div className="flex flex-col gap-0">
-                  {posts.map((post) => (
-                    <Link key={post.slug} href={`/blog/${post.slug}`} className="group relative pl-8 py-4 sm:pl-10">
-                      {/* Dot */}
-                      <div className="absolute left-0 top-9 -translate-x-1/2 h-2.5 w-2.5 rounded-full border-2 border-accent bg-bg transition-colors group-hover:bg-accent" />
-
-                      <div className="rounded-2xl border border-border bg-surface px-8 py-7 transition-all duration-300 group-hover:border-accent/40 group-hover:-translate-y-0.5 group-hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)]">
-                        <time className="text-xs font-semibold uppercase tracking-widest text-accent-2">
-                          {formatDate(post.date)}
-                        </time>
-                        <h2 className="font-display mt-2 text-xl font-bold text-text transition-colors group-hover:text-accent">
-                          {post.title}
-                        </h2>
-                        <p className="mt-2 text-sm leading-relaxed text-text-secondary">
-                          {post.excerpt}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
+      <header className="border-b border-border-subtle py-12 lg:py-16">
+        <Container size="narrow">
+          <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-text sm:text-5xl lg:text-6xl">Blog</h1>
+        </Container>
+      </header>
+      <section className="py-12 lg:py-16">
+        <Container size="narrow">
+          <div className="max-w-3xl">
+            {posts.length === 0 ? (
+              <p className="text-text-muted">More posts coming soon.</p>
+            ) : (
+              <ul className="divide-y divide-border">
+                {posts.map(post => (
+                  <li key={post.slug} className="py-6 first:pt-0">
+                    <time dateTime={post.date} className="text-sm text-text-secondary">{formatDate(post.date)}</time>
+                    <h2 className="mt-2 font-display text-2xl font-semibold text-text">
+                      <Link href={`/blog/${post.slug}`} className="underline underline-offset-4 hover:text-accent-text">{post.title}</Link>
+                    </h2>
+                    <p className="mt-3 text-lg leading-relaxed text-text-secondary">{post.excerpt}</p>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
         </Container>
       </section>
     </main>

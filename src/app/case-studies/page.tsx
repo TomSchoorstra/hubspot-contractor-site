@@ -51,7 +51,7 @@ export default function CaseStudies() {
                 </li>
               ))}
             </ul>
-            <p className="border-t border-border pt-6 text-base leading-relaxed text-text-secondary">I&apos;m not taking on client projects at the moment, but questions and conversations about HubSpot are welcome. <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
+            <p className="border-t border-border pt-6 text-base leading-relaxed text-text-secondary">Questions about the work? <Link href="/contact" className={textLink}>Get in touch</Link>.</p>
           </div>
         </Container>
       </section>
