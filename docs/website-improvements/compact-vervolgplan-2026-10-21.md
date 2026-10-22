@@ -1,6 +1,6 @@
 # Vervolgplan voor een compacte persoonlijke website
 
-Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. De eerste twee blogdelen van checkpoint 6 zijn zelf gecontroleerd (4/8 artikelen); vier artikelen volgen nog. Publicatie is een afzonderlijke stap.
+Datum: 21 oktober 2026. Status: checkpoints 1 tot en met 4 lokaal uitgewerkt. Tom heeft het consultancyvoorbeeld goedgekeurd; de overige vijf diensten en het overzicht zijn zelf gecontroleerd en klaar voor review. Checkpoint 5 is nu ook lokaal uitgewerkt: alle vijf cases en het overzicht zijn zelf gecontroleerd. De eerste drie blogdelen van checkpoint 6 zijn zelf gecontroleerd (6/8 artikelen); app cards guide en AEO volgen nog. Publicatie is een afzonderlijke stap.
 
 De website presenteert Tom als persoon en HubSpot & RevOps specialist, met concrete praktijkvoorbeelden en een toegankelijke contactmogelijkheid. De commerciële laag helpt een bezoeker een vervolgstap te zetten. Compactheid, overzicht en een herkenbare persoonlijke stem bepalen hoe we de auditbevindingen oplossen.
 
@@ -28,7 +28,7 @@ Dit is het werkplan voor de vervolgronde op de [marketingaudit](marketing-audit-
 | 3 Homepage en About | Dubbele expertise, werkwijze en contactuitnodigingen verminderen; header en footer meenemen | Eerste lokale preview van de compacte persoonlijke richting | Zelfcontrole afgerond; klaar voor Tom |
 | 4 Diensten | Eén dienst als voorbeeld uitwerken, daarna de vijf andere op dezelfde basis | Zes kortere diensten met duidelijke scope, voorwaarden en bewijslink | Consultancyvoorbeeld door Tom beoordeeld; overige vijf en overzicht zelfcontrole afgerond |
 | 5 Cases | Eén representatieve case compact maken, daarna overige cases nalopen | Vijf cases met minder herhaling en behouden bewijs | Financevoorbeeld als basis gekozen; overige vier en overzicht zelfcontrole afgerond |
-| 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Delen 1–2 zelfcontrole afgerond (4/8); delen 3–4 gepland |
+| 6 Blogs in kleine delen | Feiten corrigeren, onafgewerkte inhoud afmaken en dubbele uitleg inkorten | Per één of twee artikelen een gecontroleerde update | Delen 1–3 zelfcontrole afgerond (6/8); deel 4 gepland |
 | 7 Eindcontrole en publicatiebesluit | Samenhang, compactheid en werking over de hele site toetsen | Reviewbare lokale versie en voorstel voor gezamenlijke publicatie | Gepland |
 
 ## Checkpoint 1 Richting en Tom Voice
@@ -271,3 +271,23 @@ Artikeltekst is respectievelijk 67% en 66% korter, gemeten in `.prose-blog.inner
 Bouw, TypeScript en beide verplichte trainingsvalidators slagen. Alle negen blogroutes zijn op 320/390/1440 px gecontroleerd: 27 controles, geen overflow of page-errors. Acht interne bestemmingen geven 200 en de klikroute naar de Account-case werkt. Metadata, canonicals, fonts en BlogPosting/BreadcrumbList zijn gecontroleerd; geen FAQPage op dit paar zonder zichtbare Q&A. Representatieve mobiele en desktopbeelden zijn visueel beoordeeld. De bestaande mobiele beschikbaarheidsbanner heeft een afgeknotte tweede regel; dit gedeelde opmaakpunt gaat mee naar checkpoint 7. Geen echte formulieren verzonden.
 
 Status: blogdeel 2 zelfcontrole afgerond, totaal 4/8. Volgende deel: onboarding en Spring Spotlight; daarna app cards guide en AEO. De eerdere carddatum-kruisverwijzingen blijven vóór publicatie te corrigeren. Geen push of publicatie.
+
+
+## Checkpoint 6 — blogdeel 3 gereed
+
+22 oktober 2026. Onboarding en Spring Spotlight zijn met copy-editing, Tom Voice en blog-factcheck herzien. De [review en metingen](blogs-part3-preview-2026-10-22/review.json), het [claimregister](blogs-part3-preview-2026-10-22/factcheck.json) en de oorspronkelijke cijferpassages leggen de keuzes vast.
+
+Onboarding behoudt de negen onderwerpen: proces, scope, imports, lifecycle/deals, automatisering, adoptie, properties, integraties en marketingcontacten. De te beperkte definitie van onboarding is gecorrigeerd met HubSpots eigen dienstenbeschrijving. Importidentificatie en associaties krijgen concrete checks; subscription- en suppressioninformatie blijft bij migratie behouden. Marketingstatus, emailvoorkeuren, contacttier, updatedatum en verlenging worden uit elkaar gehouden. Een tierdowngrade wordt niet als onmiddellijke besparing beloofd. Niet-onderbouwde minimumdoorlooptijden, tijdmultipliers, ervaringsclaims en motieven van bureaus zijn verwijderd. De 55%-bron bevat het oorspronkelijke onderzoeksgetal, maar bewijst geen universeel HubSpot-faalpercentage. Het huidige Avidly-voorbeeld bevat andere eurobedragen dan de oorspronkelijke GBP-claim; exacte bedragen zijn daarom vervallen.
+
+Spring Spotlight is herkenbaar een oorspronkelijk aprilartikel met actualisatie op 22 oktober. Historische outcome-based pricing staat los van actuele accountkosten. Run Agent wordt niet meer als toegang tot elke Breeze-agent of met een vast tarief van tien workflowcredits beschreven. Data Hubs eerdere introductie, Data Studio-activatie, de huidige Closing Agent-beta en Revenue Hub-voorwaarden, App Pages en serverless-toegang zijn met primaire bronnen gecontroleerd. De augustusdatum is verstreken. Het eerdere bronconflict rond classic cards staat nu ook hier zichtbaar: 31 oktober in de springrelease versus 2 november in de actuele migratiegids, met tooling tot 1 december. Afronden vóór 31 oktober blijft een eigen planningsadvies. Dubbele FAQ, takeaways en conclusie vervallen; geen generiek verkoopslot of blind trialadvies.
+
+| Artikel | Artikelwoorden voor → na | Main-hoogte mobiel 390 px voor → na |
+|---|---:|---:|
+| `hubspot-onboarding-mistakes` | 1475 → 860 | 12331 → 7302 px |
+| `hubspot-spring-2026-spotlight` | 2045 → 800 | 15195 → 6902 px |
+
+Artikeltekst is 42% en 61% korter, met dezelfde `.prose-blog.innerText`-meting, breedte en fonts. Bodytekst en wrapper zijn ongewijzigd; er wordt geen ranking- of conversiewinst uit afgeleid. De publicatiedatums van 30 maart en 14 april blijven staan; alleen het herziene paar krijgt `updated: 2026-10-22`. De andere zes bodies, datums en schemaobjecten zijn op alle breedtes gelijk aan de nulmeting.
+
+Productiebouw inclusief TypeScript en beide verplichte trainingsvalidators slaagt. De negen blogroutes zijn op 320/390/1440 px gecontroleerd: 27 checks, geen overflow of page-errors, acht interne bestemmingen met 200-status en een geslaagde klikroute van Spotlight naar de cardmigratiegids. Metadata, fonts en schemas zijn gecontroleerd; geen FAQPage zonder Q&A. Mobiele hero's en desktopstructuur zijn visueel beoordeeld. In de huidige stabiele screenshots is de mobiele beschikbaarheidsbanner volledig leesbaar zonder codewijziging; gezien de eerdere afgeknotte screenshot blijft de gedeelde banner in de eindcontrole. Alle POST-verzoeken zijn geblokkeerd; geen echte inzending of CRM-wijziging.
+
+Status: blogdeel 3 zelfcontrole afgerond; totaal 6/8. Volgende deel: app cards guide en AEO. Daarna volgt checkpoint 7 met samenhang en werking over de hele site. Geen push of publicatie.

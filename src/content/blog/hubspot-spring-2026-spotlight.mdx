@@ -1,163 +1,66 @@
 ---
-title: "HubSpot Spring 2026 Spotlight: what actually matters for SMBs"
+title: "HubSpot Spring 2026 Spotlight: what I would review now"
 date: "2026-04-14"
-excerpt: "HubSpot dropped a lot of announcements today. Here's what an independent contractor thinks SMBs should actually pay attention to — and what's just noise."
-description: "HubSpot Spring 2026 Spotlight recap: outcome-based AI pricing, Data Hub, Commerce Hub CPQ, and the August 1 developer deadline. What SMBs need to know."
+updated: "2026-10-22"
+excerpt: "A practical review of the spring announcements, updated for October: agent costs, workflow review, data preparation, quoting and custom-app maintenance."
+description: "Review HubSpot Spring 2026 Spotlight with current context for Breeze pricing, Data Studio, Closing Agent, app pages and developer migration dates."
 author: "Tom Schoorstra"
 ---
 
-HubSpot released its Spring 2026 Spotlight today. As usual, there's a lot of marketing language wrapped around a handful of things that genuinely matter. If you're running a small or mid-sized team on HubSpot, you don't need a summary of every bullet point on the announcements page. You need to know what changes your costs, what changes how your team works, and what has a deadline attached.
+HubSpot's spring announcements raised useful questions about agent costs, data preparation and custom apps. I would evaluate them against a task your team already needs to complete.
 
-Here's my take after going through everything.
+This article was first published in April and **reviewed on 22 October 2026**. The sections below distinguish the spring announcements from current documentation. The August developer deadline has passed; the classic CRM card migration still needs attention.
 
----
+## Breeze pricing: distinguish the announcement from your account cost
 
-> **Key Takeaways**
-> - Breeze AI agents move to outcome-based pricing: you only pay when the agent actually delivers a result, cutting Customer Agent cost in half ([HubSpot](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete), April 2026).
-> - You can now trigger Breeze agents directly inside HubSpot workflows — this is the integration that makes AI automation practical for most teams.
-> - The August 1, 2026 deadline for Projects v2025.1 deprecation affects any team with custom-built HubSpot apps.
-> - Data Hub is more than a rebrand of Operations Hub — it adds external data sources and a no-code Data Studio worth understanding.
+In April, HubSpot announced outcome-based pricing for Customer Agent and Prospecting Agent, paid through HubSpot Credits. The [announcement](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete) tied charges to resolved conversations and leads recommended for outreach.
 
----
+That billing event does not establish the quality of every answer or recommendation. I would include corrections, repeat contacts and human review when evaluating the result.
 
-## The headline: Breeze AI agents now charge per result, not per use
+For a new pilot, check current access, credit rates, included allowance and overage settings in your account. [HubSpot's credit guide](https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing) explains the usage model. The [Breeze guide](/blog/hubspot-breeze-ai-smb) covers practical checks for the individual use cases.
 
-This is the Spring 2026 Spotlight announcement that will have the most direct impact on your budget.
+## Agents in workflows: define what happens after the output
 
-HubSpot's Breeze Customer Agent drops from $1.00 per conversation to **$0.50 per resolved conversation** ([HubSpot company-news](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete), April 2026). The Prospecting Agent shifts to **$1 per qualified lead recommended for outreach**. Both come with a free 28-day trial for Professional and Enterprise users.
+The current [Run Agent documentation](https://knowledge.hubspot.com/workflows/run-agents-using-workflows) describes choosing an agent already added to the account, providing inputs and using its output in later workflow actions. It requires an eligible Professional or Enterprise subscription and HubSpot Credits. Do not assume every Breeze product can be invoked through this action.
 
-That pricing structure change is worth pausing on. Most AI tooling charges you for usage regardless of outcome — you pay whether the model helps or doesn't. Outcome-based pricing means you only pay when something actually gets resolved or a lead actually gets qualified. For teams that have been hesitant to turn these agents on because of unpredictable costs, this removes most of the risk.
+Start with narrow enrollment criteria and review the result before allowing it to update important fields or trigger customer communication. Test missing data, repeat enrollment and failure handling. Assign someone to investigate unexpected output and check the current execution limits before expanding.
 
-{/* [PERSONAL EXPERIENCE] */}
-In practice, the Customer Agent works best when your Knowledge Base is clean and up to date. If your articles are thin, the agent can't resolve much — and won't charge you for it. That's a meaningful change in how you should think about Knowledge Base maintenance: it's now directly tied to what you pay.
+## Data Hub: focus on the dataset you need
 
-HubSpot reports the Customer Agent resolves 65% of conversations and cuts resolution time by 39% across its current 8,000+ customers. Prospecting Agent activations are up 57% quarter over quarter. Those numbers are from HubSpot's own announcements, so treat them as directional rather than gospel — but they're not nothing.
+Data Hub replaced Operations Hub in [September 2025](https://ir.hubspot.com/news-releases/news-release-details/hubspot-unveils-blueprint-building-hybrid-human-ai-teams-200). Its launch predates Spring 2026.
 
-For help setting up Breeze or any HubSpot AI feature in your workflows, see [HubSpot automation setup](/services/automation).
+[Data Studio](https://www.hubspot.com/products/data/data-studio) combines data from HubSpot and external sources in a spreadsheet-style interface. It is available with Data Hub Professional and Enterprise; activating data outside the studio can consume credits.
 
----
+I would begin with one question your current reports cannot answer reliably. Define the join keys, source refresh and calculation, then compare the dataset with a known sample. Check supported connectors and activation costs for that use case. A visual interface still needs clear rules for what each row and value means.
 
-## Breeze agents now work inside your workflows
+## Quoting: test the answers and the human handover
 
-The second Breeze announcement matters more for how you build automations.
+Closing Agent can answer buyer questions on a quote using the knowledge supplied to it. The [current setup guide](https://knowledge.hubspot.com/quotes/set-up-use-the-closing-agent) labels it beta and lists Revenue Hub Professional or Enterprise, with seat requirements. Older material refers to Commerce Hub.
 
-The **Run Agent workflow action** (in private beta since January, wider rollout with Spring Spotlight) lets you trigger any Breeze agent from inside a standard HubSpot workflow. A deal moves to a new stage, a form is submitted, a ticket gets created — you can now set an agent as one of the actions that fires in response.
+Test questions about scope, pricing and terms against approved information. Include questions that need the quote owner or another team, then verify the configured handover. For any AI-drafted quote content, review the line items, totals and promises before sending it to a buyer.
 
-Each execution uses 10 workflow credits. That's the main operational consideration: if you're building complex automation and you're on a plan with limited workflow credits, you'll want to model the cost before rolling it out at scale.
+I would evaluate this on a controlled set of quotes before making it part of the normal sales process.
 
-{/* [UNIQUE INSIGHT] */}
-The practical implication most teams haven't considered yet: you can chain this with enrollment criteria to create genuinely conditional AI behavior. An agent only runs on high-value deals over a certain amount, or only on contacts with a specific lifecycle stage. You're not just automating a task — you're applying AI selectively where it actually justifies the cost.
+## Custom apps: keep the interface as small as the task
 
-The audit card feature rolls out alongside this. Every time an agent acts on a CRM record, a log appears showing exactly what it did: which properties were updated, what the values were before and after, which Knowledge Base articles it referenced, and why a conversation was or wasn't resolved. This is the transparency layer that was missing from AI-in-CRM tooling for most of the past year. It makes compliance and quality-checking much more manageable.
+The [spring developer release](https://developers.hubspot.com/changelog/spring-2026-spotlight) expanded App Homes into multi-page **App Pages** and described sharing code across UI extensions with npm workspaces. A full app page can suit a task that spans records; a focused app card may be enough for information needed on one record.
 
----
+Platform 2026.03 also restored HubSpot-hosted serverless functions. Hosted app functions require Enterprise access or a developer test account; public endpoints require Content Hub Enterprise and are not available in developer test accounts. Check the current migration path and limits for your app before choosing its hosting approach.
 
-## Data Hub: more than a rebrand of Operations Hub
+My [renewal-status card](/case-studies/renewal-status-card) is an example of keeping a record interface focused on one decision.
 
-If you're using Operations Hub, you're now on Data Hub. The name changed at INBOUND 2025 and it's worth understanding what actually changed with it, because it's not just cosmetic.
+## Developer dates: August has passed, and card guidance differs
 
-{/* [UNIQUE INSIGHT] */}
-Operations Hub was primarily an ops team tool — programmable automation, data sync, and integrations. Data Hub extends that to all teams by adding external data sources you couldn't connect before: Snowflake, BigQuery, Redshift, AWS S3, standard CSVs and spreadsheets.
+The spring developer release set **1 August 2026** as the end of support for Projects 2025.1, with builds on that version failing. That date is now in the past. If a project still uses 2025.1, have its owner confirm the migration status, build and deployment path before the next change.
 
-The flagship addition is **Data Studio** — a no-code, spreadsheet-style interface that lets anyone on your team combine data from multiple HubSpot objects and external sources without writing a query. Build calculated fields like lifetime customer value or MRR directly in the interface. The File Ingestion API, now in public beta, lets you upload files up to 512 MB as reusable Data Studio sources.
+For classic CRM cards, the spring release lists **31 October 2026**. The [current migration guide](https://developers.hubspot.com/docs/apps/developer-platform/build-apps/migrate-an-app/migrate-legacy-crm-cards-to-app-cards) instead says cards are removed from customer views on **2 November**, with migration tooling available until **1 December**. The tooling window does not mean old cards remain visible through November.
 
-What this means practically for SMBs: if you've been exporting reports from HubSpot into Excel and doing calculations there, Data Studio removes most of that friction. You're not replacing a data analyst — but for the 80% of ad hoc data questions that don't require one, it's a meaningful improvement.
+I would plan to finish before 31 October and confirm the guidance with the app owner. The [classic CRM card migration guide](/blog/hubspot-classic-crm-cards-sunset) compares the sources and covers testing and view replacement. Sidebar placement alone does not identify a legacy card.
 
-Pricing is unchanged. Existing Operations Hub customers migrated automatically.
+## What I would prioritize
 
----
+- **Check maintenance first.** Confirm who owns custom apps, their supported version and any legacy-card replacement.
+- **Choose one pilot.** Test an agent or dataset against a defined task, with an owner, review criteria and usage limits.
+- **Expand after review.** Use the observed corrections, handovers and costs to decide what is worth keeping.
 
-## Commerce Hub gets AI-assisted quoting
-
-The Closing Agent is the Commerce Hub addition that's worth knowing about if you're on a plan that includes CPQ.
-
-When a buyer views a quote, the Closing Agent appears directly on the quote page. It can answer pricing questions, scope questions, and terms questions — without the sales rep being in the room. HubSpot's framing is that it removes friction at the final stage of a deal, particularly for asynchronous or async-heavy sales cycles.
-
-The AI quote creation feature auto-drafts personalized quotes using deal context, line items, and buyer information. It generates cover letters and executive summaries based on what's in the deal. Whether your team will trust that output enough to send it without editing depends on how clean your deal data is — which is true of every AI feature in HubSpot.
-
-{/* [PERSONAL EXPERIENCE] */}
-In my experience, AI-generated quotes work well when the line item library is clean and well-described. If your product library has 40 items with names like "Package A" and one-line descriptions, the generated cover letter won't say much. The output quality directly reflects the input quality.
-
-Product Builder now supports up to 100,000 products in the library. March 2026 also added one-time invoices creatable from quotes and deals via workflow actions, and bidirectional credit memo sync with QuickBooks Online — useful if you're already using Commerce Hub for invoicing.
-
----
-
-## UI Extensions: App Home pages and Settings pages are live
-
-For teams with custom HubSpot apps — or anyone looking at building internal tooling on top of HubSpot — two additions from this cycle are worth noting.
-
-**App Home pages** give developers a full-page, dedicated space inside HubSpot that the app owns entirely. Not a sidebar card, not a modal — a proper page accessible at a direct URL within HubSpot. Use cases include centralized dashboards, custom reporting surfaces, and cross-team task management views that live inside the CRM instead of a separate tool.
-
-**Settings pages** let users who install an app navigate to it and configure behavior per account — using the same React-based UI Extensions SDK as App Cards. Previously, app configuration happened outside HubSpot or required custom solutions.
-
-Both App Home and Settings Pages share a codebase via npm workspace support introduced in February, so teams building custom apps can maintain one component library and share types across all their extensions.
-
-For a deeper look at what HubSpot App Cards can do, see [custom app cards](/services/custom-app-cards).
-
----
-
-## One deadline that affects you if you have custom apps
-
-If your team has custom-built HubSpot apps using Projects v2025.1, **August 1, 2026 is a hard deadline**.
-
-From that date, HubSpot is deprecating Projects v2025.1 — the underlying cause is AWS Lambda's end-of-life for Node.js v20. Existing deployed apps keep running until the sunset date, but no new builds or deployments on v2025.1 will be possible after August 1.
-
-The migration path is to v2025.2 or v2026.03. The reason many developers held off migrating was serverless functions — v2025.2 removed built-in serverless hosting, forcing teams to move functions to external platforms. Platform v2026.03 (released March 2026) re-introduces serverless hosting inside HubSpot. If serverless was your blocker, that blocker is now gone.
-
-There's a second deadline worth flagging alongside this: **October 31, 2026** is when classic CRM cards (non-React, legacy sidebar customizations) are deprecated. If you have any of those, that migration window is shorter than it looks.
-
-If you need help with that migration, [custom app cards](/services/custom-app-cards) is a service I offer.
-
----
-
-## What I'd actually prioritize as an SMB
-
-Not everything in a product spotlight is relevant to a 20-person sales team or a 50-person B2B services business. Here's where I'd focus attention:
-
-**Do now:**
-- If you're using Commerce Hub, turn on the Closing Agent 28-day trial for a deal pipeline and see what your buyers do with it.
-- If you have custom HubSpot apps on Projects v2025.1, confirm your migration plan with whoever built them. August 1 is less than four months away.
-
-**Worth exploring in Q2:**
-- Outcome-based Breeze pricing. Turn on the Customer Agent trial if you have an active support inbox and a reasonably maintained Knowledge Base. The economics are better than they were six months ago.
-- Data Studio if you have Operations Hub and you're still exporting data to Excel for reporting.
-
-**Lower priority for most SMBs:**
-- App Home pages and Settings Pages are developer features. If you're not building custom apps, ignore them for now.
-- AEO Grader (HubSpot's new answer engine optimization tool) is worth checking in later in the year, but it's early-stage enough that the practical impact for most teams is low right now.
-
----
-
-## FAQ
-
-### What is the new Breeze AI pricing model?
-
-HubSpot's Customer Agent dropped to $0.50 per resolved conversation (from $1.00), and the Prospecting Agent now charges $1 per qualified lead recommended for outreach. Both include a free 28-day trial for Professional and Enterprise plans. You only pay when the agent delivers a result ([HubSpot company-news](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete), April 2026).
-
-### What is HubSpot Data Hub and how is it different from Operations Hub?
-
-Data Hub is the rebrand and expansion of Operations Hub, launched at INBOUND 2025. It adds external data sources (Snowflake, BigQuery, CSV files), a no-code Data Studio interface for combining and calculating across data sets, and automated data quality tools. All Operations Hub customers migrated automatically at no price change.
-
-### What is the August 1, 2026 HubSpot developer deadline?
-
-Projects v2025.1 is being deprecated on August 1, 2026 due to AWS Lambda's end-of-life for Node.js v20. Teams with custom HubSpot apps on that platform version need to migrate to v2025.2 or v2026.03 before that date. The March 2026 release of v2026.03 restored serverless function hosting, removing the last major migration blocker.
-
-### What is the HubSpot Closing Agent?
-
-The Closing Agent is a Breeze-powered AI assistant that appears on a buyer's quote page. It answers pricing, scope, and terms questions autonomously when a buyer is reviewing a quote — without requiring the sales rep to be available. It's part of Commerce Hub Professional and Enterprise.
-
-### Do I need to do anything about classic CRM cards?
-
-If you have legacy sidebar customizations using the old classic CRM card format, the deprecation deadline is October 31, 2026. After that date, they stop working. You'll need to migrate them to React-based UI Extensions. Most teams with custom sidebar cards built in the last two years are already on the new format.
-
----
-
-## The bottom line
-
-The Breeze pricing change is the story most relevant to the most teams. Outcome-based AI pricing is a meaningful structural shift — it changes the risk calculus for turning on features your team has been avoiding because of cost unpredictability.
-
-The workflow integration for agents and the audit trail are what make AI features usable inside actual operations rather than as isolated tools. Those two together are more significant than any individual feature announcement.
-
-And if you have custom apps: check the August 1 deadline today.
-
-If you want a second set of eyes on how these updates apply to your specific HubSpot setup, [get in touch](/contact).
+Questions about how these changes fit your setup? You're welcome to [compare notes](/contact).

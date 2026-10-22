@@ -1,167 +1,74 @@
 ---
-title: "The most common HubSpot onboarding mistakes I see"
+title: "Nine HubSpot onboarding mistakes to check before launch"
 date: "2026-03-30"
-excerpt: "55% of CRM projects fail. Here are the nine mistakes I see most often, including one nobody in the agency world talks about because they make money cleaning it up."
-description: "55% of CRM projects fail. Here are the nine HubSpot onboarding mistakes I see most often, including the marketing contacts pricing trap nobody warns you about."
+updated: "2026-10-22"
+excerpt: "Agree the process, prepare the data and assign ownership before launch. Nine checks for a HubSpot setup your team can use and maintain."
+description: "Check nine HubSpot onboarding risks, from scope and imports to lifecycle stages, integrations, adoption and marketing contact billing."
 author: "Tom Schoorstra"
 ---
 
-You sign the contract. You get the keys. Someone in the team is assigned "HubSpot" on top of their actual job. Three months later, the pipeline reports are wrong, half the team isn't logging anything, and leadership is asking why deals are still tracked in a spreadsheet.
+I would start a HubSpot rollout by agreeing what the team needs to do in it. That means defining the process, preparing the records and naming the people responsible for decisions.
 
-This is not a HubSpot problem. It is a setup problem. And it is almost always avoidable.
+The checks below cover both a new setup and an existing account that needs attention. They give you a way to review the work before expanding it.
 
-In my experience working with SMBs on HubSpot setups and rebuilds, the same mistakes come up again and again. [55% of CRM implementations fail to achieve their planned objectives](https://johnnygrow.com/crm/the-crm-failure-rate-is-55-percent/), and the causes are almost always people and process, not the software. Here are the nine I see most often.
+## 1. Building before agreeing the process
 
----
+Map how a lead arrives, becomes qualified and passes to sales. Define who owns each handover and what evidence allows a deal to move forward. Include rejected leads and purchases completed outside HubSpot.
 
-## 1. You start building before documenting your process
+Use real examples to resolve disagreements before configuring stages. A short process document gives the team something concrete to test against.
 
-Ask five sales reps how a deal moves from first call to close. You will get five different answers.
+## 2. Assuming onboarding includes every implementation task
 
-HubSpot does not fix an undefined process. It surfaces the fact that you do not have one. If your stages, handoff criteria, and lead definitions are not documented before you touch the portal, the CRM becomes a digital version of your existing chaos, just more expensive.
+[HubSpot describes its onboarding](https://www.hubspot.com/services/onboarding) as technical and strategic guidance tailored to your goals, products and technology stack. The delivery scope still needs to be explicit.
 
-Before you configure anything: map your actual process on paper. Where does a lead come from? When does it become qualified? Who owns it at each stage? What needs to happen before a deal moves forward?
+Check who configures the account, cleans and migrates data, builds integrations, tests changes and trains users. Record what your own team must deliver. Avoid estimating the schedule from the word “onboarding” alone; the work and dependencies determine it.
 
-That document is your setup blueprint.
+## 3. Importing without a record-matching plan
 
----
+Review duplicates, field formats and missing values before importing. Decide how records will be identified and associated. HubSpot supports Record ID for existing records, with Email and Company domain name among the other identifiers available for contacts and companies. Follow the [import requirements](https://knowledge.hubspot.com/import-and-export/set-up-your-import-file) for your objects.
 
-## 2. You confuse onboarding with implementation
+I would test a small sample, then check updates, new records and associations before importing the rest. Preserve relevant subscription and suppression information during migration; excluding someone from a campaign does not automatically mean deleting their CRM history.
 
-These are not the same thing.
+## 4. Leaving lifecycle and deal stages undefined
 
-**Onboarding** turns the system on. It covers connecting your email, importing contacts, setting up a pipeline, and a few training calls. HubSpot sells this starting at $1,500.
+Lifecycle stages describe a contact or company's relationship with the business. Deal stages describe progress through a sales process. Agree what qualification, sales acceptance and becoming a customer mean in your setup.
 
-**Implementation** makes the system work. It means aligning the CRM to how your revenue process actually operates: lifecycle stages, automation logic, reporting, integrations, team adoption. This takes 60 to 120 days minimum.
+If purchases happen elsewhere, decide how that evidence reaches HubSpot. The [lifecycle stage guide](/blog/hubspot-lifecycle-stages-setup-guide) covers the native settings, automation options and care needed when correcting existing records.
 
-If you buy onboarding when you need implementation, you end up with a portal that is technically live but operationally useless. You will know this has happened when you hear: "We set it all up but nobody's really using it."
+## 5. Automating rules the team has not tested
 
----
+Begin with a process people can explain and records they trust. Add automation where its inputs, expected result and owner are clear.
 
-## 3. You import dirty data
+Test normal records, missing information and records that should be excluded. Check repeat enrollment and what happens when another system updates the same field. Keep workflows focused enough to investigate, and agree how to stop one if it behaves unexpectedly. Automation can support adoption; its rollout needs the same review as the rest of the setup.
 
-Every team does this. You export a CSV from your old CRM or a spreadsheet, click import, and move on.
+## 6. Treating training as the end of adoption
 
-Six weeks later: duplicate contacts, missing email addresses, wrong lifecycle stages, contacts not linked to companies. Your automation is firing on the wrong people. Your reports are meaningless. Sales says the data is wrong and stops trusting the system.
+Name an internal owner for questions and changes. Give that person time to maintain the setup, with a sponsor who can resolve disagreements about business rules.
 
-Data debt compounds. Cleaning after import takes three to six times longer than cleaning before.
+Train people on their actual tasks and reports. After launch, review incomplete handovers, missing activity and work still happening elsewhere. Use those findings to adjust the process and training. Include CRM training in the plan for new colleagues.
 
-Before you import anything, audit the file:
-- Remove duplicates
-- Standardize company name formatting
-- Fill required fields (email, company, lifecycle stage)
-- Remove bounced and unsubscribed contacts
-- Do not mark everything as a marketing contact (more on this below)
+## 7. Creating properties without a clear use
 
----
+Check the meaning of an existing property before adding another. For a new property, record its purpose, owner, allowed values and where the value comes from. Decide who needs to see or edit it.
 
-## 4. Your lifecycle stages and deal stages are wrong
+Review forms and record layouts around the task the user is doing. Remove unused fields only after checking their dependencies in workflows, reports and integrations. A field that looks empty may still be part of an active process.
 
-Most teams accept HubSpot's default lifecycle stages without defining what each one actually means for their business. Marketing thinks a Lead is anyone who fills out a form. Sales thinks a Lead is someone they have spoken to. Neither definition is written down anywhere.
+## 8. Connecting systems without ownership rules
 
-Two failure modes make this worse:
+For each integration, document which system owns each field, the sync direction and what happens when values disagree. Check associations and record matching alongside property updates.
 
-**Using lifecycle stages as deal stages.** "Demo Completed" and "Proposal Sent" are deal stages, not lifecycle stages. When you put them in the wrong place, your funnel reporting breaks and conversion rates become meaningless.
+Test conflicting updates and sync failures before enabling the connection broadly. My [data quality case](/case-studies/crm-data-quality) shows how I separate a detected mismatch from the decision to correct a record. Finding a difference is the start of the review.
 
-**Contacts never reaching Customer.** If the purchase happens outside HubSpot (in an invoicing tool or e-commerce platform you have not integrated), contacts stay in Opportunity forever. Every funnel metric becomes wrong.
+## 9. Overlooking marketing contact settings and billing
 
-Fix this before setup: align your team on what each stage means and when a contact moves. Write it down. Make it the source of truth.
+First check whether your subscription uses marketing contacts. In that model, marketing contacts count towards the paid contact tier; non-marketing contacts do not. Marketing status is a billing designation, separate from email subscription preferences. [HubSpot explains which tools use marketing contacts](https://knowledge.hubspot.com/records/marketing-contacts).
 
----
+Review the settings for imports, forms and connected tools before adding records. Monitor the current count, tier limit and next update date. Under the documented marketing-contact model, exceeding the tier triggers an upgrade. Changing contacts to non-marketing takes effect on the next update date. Purchased tiers can only be downgraded at renewal under these rules. Check the [billing rules for your account](https://knowledge.hubspot.com/account/understand-marketing-contacts-billing), including the maximum marketing contacts setting.
 
-## 5. You build automation before anyone is using the system
+I would resolve this before a large import. Keep subscription preferences intact and agree who can change marketing status.
 
-Automation is the exciting part. It is also the part that causes the most damage when implemented too early.
+## Agree what is ready for launch
 
-If your team has not formed habits in HubSpot, automation runs on incomplete data. Workflows fire on wrong contacts. Reps get flooded with irrelevant tasks and stop responding. Complex workflows become unmaintainable within months.
+Choose a first process the team can complete from start to finish. Confirm the records, ownership and reports support it, then give users a route to report problems. Keep unfinished work in an owned list with clear priorities.
 
-The pattern I see most often: a single workflow with 20 or more steps handling lead scoring, internal alerts, lifecycle changes, and email sequences simultaneously. When it breaks, and it will, no one can diagnose it.
-
-Sequence your rollout. Get adoption first. Add automation second.
-
----
-
-## 6. You treat adoption as a one-time training session
-
-Go-live day happens. You run a training call. Everyone says they get it. Two months later, half the team is not logging anything.
-
-Adoption is not an event. It is a project with prerequisites:
-
-**Executive sponsorship.** If leadership visibly uses HubSpot (pulls reports from it, references it in meetings), the team treats it as required. If they do not, the team treats it as optional.
-
-**An internal champion.** One person who knows the system well, answers questions, catches bad habits early, and bridges marketing and sales. Without this person, adoption stalls.
-
-**Ongoing training.** HubSpot updates its platform significantly several times a year. Users who were trained at launch fall further behind every quarter. New hires get no onboarding to the CRM at all.
-
-Avison Young went from 23% adoption across multiple offices to 90%+ across North America, the UK, and Europe. The difference was a structured implementation with proper change management, not better software.
-
----
-
-## 7. You add custom properties for everything
-
-Someone asks "can we track this?" You create a property. Then another. Then twenty more.
-
-Within six months, you have a contact record no one can navigate, forms that kill conversion rates, and a system where new hires need two weeks just to understand the layout.
-
-Check HubSpot's native properties first. There are hundreds of them, and most teams use fewer than a third. Create custom properties only when no native equivalent exists, and assign clear ownership for every one you do create.
-
-Over-customization is technical debt. It makes every future change harder and every new hire slower.
-
----
-
-## 8. You connect integrations without defining the rules
-
-Salesforce sync enabled. Eventbrite connected. Typeform, LinkedIn, Zapier. Each one writes to HubSpot contacts. None of them agree on which system is the source of truth.
-
-Two-way syncs especially cause problems. If a lifecycle stage gets updated in both systems simultaneously, you get conflicts that break attribution. If your Salesforce sync overwrites HubSpot's lead source data, you lose your marketing attribution permanently.
-
-Before connecting any integration, decide: which system owns each field? What happens if both systems update the same field at the same time? Document the rules and configure the sync accordingly.
-
----
-
-## 9. The marketing contacts pricing trap nobody warns you about
-
-This one I almost never see covered. Probably because agencies make money cleaning it up.
-
-HubSpot Marketing Hub bills by marketing contacts, not total contacts. Marketing contacts are any contact you can market to. Non-marketing contacts are in your database but not billed.
-
-During onboarding, HubSpot asks: "Would you like to set these as marketing contacts?" Most people click yes without understanding the billing impact.
-
-Here is what that costs in practice. [A company with 22,000 contacts](https://www.avidlyagency.com/blog/hubspot-marketing-contacts-pricing-cost-reduction), all set as marketing contacts, pays around £1,500 per month. The same company, with 7,000 marketing contacts and 15,000 non-marketing, pays around £930 per month. That is roughly £6,900 per year saved from understanding one checkbox.
-
-Three scenarios that trigger accidental tier upgrades:
-
-- Importing a CSV of trade show attendees and marking all of them as marketing contacts
-- Syncing a Salesforce or Eventbrite database that floods your portal with historical contacts
-- Keeping bounced and unsubscribed contacts as marketing contacts despite them being undeliverable
-
-The high-water mark problem: if you exceed your tier and then delete the contacts the next day, your bill does not drop until renewal or a manual request to HubSpot support.
-
-Audit your marketing contacts before your first import.
-
----
-
-## Before you open HubSpot: a checklist
-
-These are the things to have ready before you configure anything:
-
-- Sales process documented end to end
-- Lifecycle stage definitions agreed between marketing and sales
-- Deal stage criteria written down with clear progression rules
-- Contact data cleaned, deduped, and audited
-- Integration source-of-truth ownership decided for each field
-- Internal champion identified
-- Marketing contact strategy decided before first import
-- Executive sponsor confirmed and briefed
-
----
-
-## The Bottom Line
-
-Most HubSpot onboarding failures are predictable and avoidable. The mistakes above are not unique to your company. They are structural. They happen when teams prioritize speed over sequencing.
-
-If your setup has already gone wrong, you are not stuck. But fixing it costs more the longer you wait. The patterns I described above get harder to unwind at month 12 than they were at month two.
-
-If you are not sure where you stand, start with the data. Pull a report on lifecycle stage distribution. Check how many contacts have no company associated. Look at your marketing contact count versus your total contact count.
-
-What you find will tell you what needs fixing.
+If you are reviewing an existing setup, start with a sample of recent leads or deals and follow their handovers. Questions about what you find? You're welcome to [compare notes](/contact).

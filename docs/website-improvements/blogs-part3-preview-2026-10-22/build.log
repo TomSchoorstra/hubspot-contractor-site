@@ -1,0 +1,67 @@
+> hubspot-contractor-site@0.1.0 build
+> npm run validate:tom-plan && npm run validate:denise-plan && next build
+
+
+> hubspot-contractor-site@0.1.0 validate:tom-plan
+> node scripts/validate-tom-plan.mjs
+
+PLAN_TOM validatie OK — 14 weken.
+Weektotalen: 20.5, 18.5, 23.5, 25.5, 23.5, 27, 29.5, 0, 0, 20, 26.5, 30.5, 21, 30.1
+
+> hubspot-contractor-site@0.1.0 validate:denise-plan
+> node scripts/validate-denise-plan.mjs
+
+PLAN_DENISE validatie OK — 15 weken.
+Weektotalen: 21, 23, 19, 25, 26, 29, 22, 30, 32, 34, 27, 38, 38, 22, 30.1
+▲ Next.js 16.1.6 (Turbopack)
+
+  Creating an optimized production build ...
+✓ Compiled successfully in 3.6s
+  Running TypeScript ...
+  Collecting page data using 7 workers ...
+⚠ Using edge runtime on a page currently disables static generation for that page
+  Generating static pages using 7 workers (0/35) ...
+  Generating static pages using 7 workers (8/35)
+  Generating static pages using 7 workers (17/35)
+  Generating static pages using 7 workers (26/35)
+✓ Generating static pages using 7 workers (35/35) in 475.4ms
+  Finalizing page optimization ...
+
+Route (app)
+┌ ○ /
+├ ○ /_not-found
+├ ○ /about
+├ ƒ /api/cron/send-tips
+├ ƒ /api/loopschema
+├ ƒ /api/slack/callback
+├ ƒ /api/slack/oauth
+├ ○ /app-catalog
+├ ○ /blog
+├ ● /blog/[slug]
+│ ├ /blog/hubspot-aeo-smb
+│ ├ /blog/hubspot-app-cards-guide
+│ ├ /blog/hubspot-classic-crm-cards-sunset
+│ └ [+5 more paths]
+├ ○ /case-studies
+├ ● /case-studies/[slug]
+│ ├ /case-studies/customer-lifecycle
+│ ├ /case-studies/crm-data-quality
+│ ├ /case-studies/finance-automation
+│ └ [+2 more paths]
+├ ○ /contact
+├ ○ /hubspot-enablement
+├ ƒ /l/[slug]
+├ ƒ /opengraph-image
+├ ○ /robots.txt
+├ ○ /services
+├ ● /services/[slug]
+│ ├ /services/automation
+│ ├ /services/consultancy
+│ ├ /services/integrations
+│ └ [+3 more paths]
+└ ○ /sitemap.xml
+
+
+○  (Static)   prerendered as static content
+●  (SSG)      prerendered as static HTML (uses generateStaticParams)
+ƒ  (Dynamic)  server-rendered on demand

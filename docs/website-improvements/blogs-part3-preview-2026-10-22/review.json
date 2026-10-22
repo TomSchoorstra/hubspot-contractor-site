@@ -1,0 +1,91 @@
+{
+  "date": "2026-10-22",
+  "status": "Checkpoint 6, pair 3 self-checked. Six of eight articles reviewed; app cards guide and AEO remain.",
+  "scope": "Onboarding and Spring 2026 Spotlight MDX only, plus progress documentation. Shared templates, styling, fonts and other six article bodies/dates/schemas unchanged.",
+  "preview": [
+    "http://127.0.0.1:3102/blog/hubspot-onboarding-mistakes",
+    "http://127.0.0.1:3102/blog/hubspot-spring-2026-spotlight"
+  ],
+  "skills": [
+    "Corey Haines copy-editing, mode B, seven sweeps and final checklist",
+    "Existing product marketing context and Tom Voice compass",
+    "Blog-factcheck for product facts, dates and original statistical claims"
+  ],
+  "constraints": "Compact English personal portfolio, conversations welcome without project-availability promises. No new marketing blocks, stock imagery, invented clients, implementation guarantees or impact figures.",
+  "copy_checks": {
+    "clarity": "Nine onboarding topics retained with concrete checks. Spotlight separates April announcements, current product requirements and elapsed deadlines.",
+    "voice": "Direct personal recommendations; removes untraceable claims about what I see most often, client stories and agency motives.",
+    "so_what": "Explains which rollout decisions affect record matching, team use, billing, review and ongoing maintenance. News topics lead to a specific evaluation task.",
+    "proof": "Technical and billing facts linked to official HubSpot documentation. Existing data-quality and renewal cases support examples without adding result claims. Historical source presence distinguished from universal applicability.",
+    "specificity": "Maintains import identifiers, associations, subscription/suppression history, lifecycle/deal distinction, workflow exceptions, owner/field rules, marketing status/update/renewal distinction and app migration dates.",
+    "emotion": "Recognizable handover disagreements, unused fields and uncertain ownership; removes scare tactics and unproven failure probabilities.",
+    "risk_and_expectations": "Review samples before imports or automation, maintain suppression history, verify source refresh and agent handover. Trials are not blindly recommended; no live account changes.",
+    "final": "No em dashes, repeated key-takeaways/FAQ/conclusion or generic sales ending. One quiet compare-notes link per article. Point-of-view retained with no new experiential claims."
+  },
+  "retained_scope": {
+    "onboarding": [
+      "Process and handovers, including rejected leads and external purchases",
+      "Guidance versus explicitly assigned implementation scope",
+      "Import matching, identifiers, sample review and associations",
+      "Lifecycle/deal definitions with link to reviewed guide",
+      "Controlled automation, exclusion/re-enrollment and stop ownership",
+      "Training, internal owner/sponsor and ongoing adoption review",
+      "Native-property meaning and custom-field dependencies",
+      "Integration ownership, direction and conflicting updates",
+      "Marketing-contact eligibility, billing tier, update date and renewal distinction"
+    ],
+    "spotlight": [
+      "Historical outcome-based pricing, current account costs and review effort",
+      "Run Agent account eligibility, inputs/outputs and controlled downstream actions",
+      "Data Hub origin before Spring 2026 and Data Studio source/activation evaluation",
+      "Closing Agent current beta/Revenue Hub/seat requirements and human handover",
+      "App Pages, shared UI-extension code and hosted-function access boundaries",
+      "August 2026 deadline treated as elapsed; classic-card official source conflict surfaced",
+      "Small task-based pilots and maintenance-first prioritization"
+    ]
+  },
+  "validation": {
+    "build": "Passed production build with TypeScript and both mandatory training validators in clean temp copy, unchanged lockfile.",
+    "lint": "No TSX/CSS changes in this round; no additional ESLint run claimed.",
+    "browser_checks": 27,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "pages": "Eight blog details and blog index",
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "Eight unique internal destinations from revised pages return 200.",
+    "actual_navigation": "Spotlight → classic CRM card migration guide passed.",
+    "metadata": "www canonicals, descriptions, OG images, one H1, semantic article and Space Grotesk/Geist checked on nine routes.",
+    "dates": "Original 2026-03-30 and 2026-04-14 publication dates retained. Pair updated/dateModified = 2026-10-22. Other six article texts, dates and schema objects exactly match baseline at every width.",
+    "schema": "BlogPosting and BreadcrumbList parse. FAQPage absent on rewritten pair without Q&A.",
+    "visual_review": "Both mobile hero crops and both desktop full-page structures inspected. Full mobile screenshots retained. Availability banner is fully readable in current settled screenshots without a styling change; retain final shared-component check because prior screenshot showed clipping.",
+    "requests": "POST requests aborted in isolated Playwright session. No real submissions, live CRM edits or AI agent execution.",
+    "runtime": "Local temporary production preview on port 3102; original dependency installation has file-read hangs."
+  },
+  "measurement": {
+    "method": "Words in .prose-blog.innerText after fonts load at 390 × 844; main height excludes global nav/footer. Same wrapper and body typography before/after. No performance, ranking or conversion uplift claimed.",
+    "rows": [
+      {
+        "slug": "hubspot-onboarding-mistakes",
+        "before_article_words": 1475,
+        "after_article_words": 860,
+        "article_reduction_percent": 42,
+        "before_main_height": 12331,
+        "after_main_height": 7302
+      },
+      {
+        "slug": "hubspot-spring-2026-spotlight",
+        "before_article_words": 2045,
+        "after_article_words": 800,
+        "article_reduction_percent": 61,
+        "before_main_height": 15195,
+        "after_main_height": 6902
+      }
+    ]
+  },
+  "remaining": "App cards guide and AEO content rounds. App cards guide still needs its legacy-date statement aligned before publication. Site-wide final QA follows.",
+  "publication": "Local commit only; no push/deploy."
+}

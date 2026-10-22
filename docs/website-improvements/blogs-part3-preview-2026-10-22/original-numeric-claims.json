@@ -1,0 +1,289 @@
+[
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 4,
+    "section": "Frontmatter / introduction",
+    "text": "excerpt: \"55% of CRM projects fail. Here are the nine mistakes I see most often, including one nobody in the agency world talks about because they make money cleaning it up.\"",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 5,
+    "section": "Frontmatter / introduction",
+    "text": "description: \"55% of CRM projects fail. Here are the nine HubSpot onboarding mistakes I see most often, including the marketing contacts pricing trap nobody warns you about.\"",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 9,
+    "section": "Frontmatter / introduction",
+    "text": "You sign the contract. You get the keys. Someone in the team is assigned \"HubSpot\" on top of their actual job. Three months later, the pipeline reports are wrong, half the team isn't logging anything, and leadership is asking why deals are still tracked in a spreadsheet.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 13,
+    "section": "Frontmatter / introduction",
+    "text": "In my experience working with SMBs on HubSpot setups and rebuilds, the same mistakes come up again and again. [55% of CRM implementations fail to achieve their planned objectives](https://johnnygrow.com/crm/the-crm-failure-rate-is-55-percent/), and the causes are almost always people and process, not the software. Here are the nine I see most often.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 33,
+    "section": "## 2. You confuse onboarding with implementation",
+    "text": "**Onboarding** turns the system on. It covers connecting your email, importing contacts, setting up a pipeline, and a few training calls. HubSpot sells this starting at $1,500.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 35,
+    "section": "## 2. You confuse onboarding with implementation",
+    "text": "**Implementation** makes the system work. It means aligning the CRM to how your revenue process actually operates: lifecycle stages, automation logic, reporting, integrations, team adoption. This takes 60 to 120 days minimum.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 78,
+    "section": "## 5. You build automation before anyone is using the system",
+    "text": "The pattern I see most often: a single workflow with 20 or more steps handling lead scoring, internal alerts, lifecycle changes, and email sequences simultaneously. When it breaks, and it will, no one can diagnose it.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 86,
+    "section": "## 6. You treat adoption as a one-time training session",
+    "text": "Go-live day happens. You run a training call. Everyone says they get it. Two months later, half the team is not logging anything.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 96,
+    "section": "## 6. You treat adoption as a one-time training session",
+    "text": "Avison Young went from 23% adoption across multiple offices to 90%+ across North America, the UK, and Europe. The difference was a structured implementation with proper change management, not better software.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 104,
+    "section": "## 7. You add custom properties for everything",
+    "text": "Within six months, you have a contact record no one can navigate, forms that kill conversion rates, and a system where new hires need two weeks just to understand the layout.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 106,
+    "section": "## 7. You add custom properties for everything",
+    "text": "Check HubSpot's native properties first. There are hundreds of them, and most teams use fewer than a third. Create custom properties only when no native equivalent exists, and assign clear ownership for every one you do create.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 130,
+    "section": "## 9. The marketing contacts pricing trap nobody warns you about",
+    "text": "Here is what that costs in practice. [A company with 22,000 contacts](https://www.avidlyagency.com/blog/hubspot-marketing-contacts-pricing-cost-reduction), all set as marketing contacts, pays around £1,500 per month. The same company, with 7,000 marketing contacts and 15,000 non-marketing, pays around £930 per month. That is roughly £6,900 per year saved from understanding one checkbox.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-onboarding-mistakes",
+    "line": 163,
+    "section": "## The Bottom Line",
+    "text": "If your setup has already gone wrong, you are not stuck. But fixing it costs more the longer you wait. The patterns I described above get harder to unwind at month 12 than they were at month two.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 2,
+    "section": "Frontmatter / introduction",
+    "text": "title: \"HubSpot Spring 2026 Spotlight: what actually matters for SMBs\"",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 5,
+    "section": "Frontmatter / introduction",
+    "text": "description: \"HubSpot Spring 2026 Spotlight recap: outcome-based AI pricing, Data Hub, Commerce Hub CPQ, and the August 1 developer deadline. What SMBs need to know.\"",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 9,
+    "section": "Frontmatter / introduction",
+    "text": "HubSpot released its Spring 2026 Spotlight today. As usual, there's a lot of marketing language wrapped around a handful of things that genuinely matter. If you're running a small or mid-sized team on HubSpot, you don't need a summary of every bullet point on the announcements page. You need to know what changes your costs, what changes how your team works, and what has a deadline attached.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 16,
+    "section": "Frontmatter / introduction",
+    "text": "> - Breeze AI agents move to outcome-based pricing: you only pay when the agent actually delivers a result, cutting Customer Agent cost in half ([HubSpot](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete), April 2026).",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 18,
+    "section": "Frontmatter / introduction",
+    "text": "> - The August 1, 2026 deadline for Projects v2025.1 deprecation affects any team with custom-built HubSpot apps.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 25,
+    "section": "## The headline: Breeze AI agents now charge per result, not per use",
+    "text": "This is the Spring 2026 Spotlight announcement that will have the most direct impact on your budget.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 27,
+    "section": "## The headline: Breeze AI agents now charge per result, not per use",
+    "text": "HubSpot's Breeze Customer Agent drops from $1.00 per conversation to **$0.50 per resolved conversation** ([HubSpot company-news](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete), April 2026). The Prospecting Agent shifts to **$1 per qualified lead recommended for outreach**. Both come with a free 28-day trial for Professional and Enterprise users.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 34,
+    "section": "## The headline: Breeze AI agents now charge per result, not per use",
+    "text": "HubSpot reports the Customer Agent resolves 65% of conversations and cuts resolution time by 39% across its current 8,000+ customers. Prospecting Agent activations are up 57% quarter over quarter. Those numbers are from HubSpot's own announcements, so treat them as directional rather than gospel — but they're not nothing.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 46,
+    "section": "## Breeze agents now work inside your workflows",
+    "text": "Each execution uses 10 workflow credits. That's the main operational consideration: if you're building complex automation and you're on a plan with limited workflow credits, you'll want to model the cost before rolling it out at scale.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 57,
+    "section": "## Data Hub: more than a rebrand of Operations Hub",
+    "text": "If you're using Operations Hub, you're now on Data Hub. The name changed at INBOUND 2025 and it's worth understanding what actually changed with it, because it's not just cosmetic.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 60,
+    "section": "## Data Hub: more than a rebrand of Operations Hub",
+    "text": "Operations Hub was primarily an ops team tool — programmable automation, data sync, and integrations. Data Hub extends that to all teams by adding external data sources you couldn't connect before: Snowflake, BigQuery, Redshift, AWS S3, standard CSVs and spreadsheets.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 62,
+    "section": "## Data Hub: more than a rebrand of Operations Hub",
+    "text": "The flagship addition is **Data Studio** — a no-code, spreadsheet-style interface that lets anyone on your team combine data from multiple HubSpot objects and external sources without writing a query. Build calculated fields like lifetime customer value or MRR directly in the interface. The File Ingestion API, now in public beta, lets you upload files up to 512 MB as reusable Data Studio sources.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 64,
+    "section": "## Data Hub: more than a rebrand of Operations Hub",
+    "text": "What this means practically for SMBs: if you've been exporting reports from HubSpot into Excel and doing calculations there, Data Studio removes most of that friction. You're not replacing a data analyst — but for the 80% of ad hoc data questions that don't require one, it's a meaningful improvement.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 79,
+    "section": "## Commerce Hub gets AI-assisted quoting",
+    "text": "In my experience, AI-generated quotes work well when the line item library is clean and well-described. If your product library has 40 items with names like \"Package A\" and one-line descriptions, the generated cover letter won't say much. The output quality directly reflects the input quality.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 81,
+    "section": "## Commerce Hub gets AI-assisted quoting",
+    "text": "Product Builder now supports up to 100,000 products in the library. March 2026 also added one-time invoices creatable from quotes and deals via workflow actions, and bidirectional credit memo sync with QuickBooks Online — useful if you're already using Commerce Hub for invoicing.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 101,
+    "section": "## One deadline that affects you if you have custom apps",
+    "text": "If your team has custom-built HubSpot apps using Projects v2025.1, **August 1, 2026 is a hard deadline**.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 103,
+    "section": "## One deadline that affects you if you have custom apps",
+    "text": "From that date, HubSpot is deprecating Projects v2025.1 — the underlying cause is AWS Lambda's end-of-life for Node.js v20. Existing deployed apps keep running until the sunset date, but no new builds or deployments on v2025.1 will be possible after August 1.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 105,
+    "section": "## One deadline that affects you if you have custom apps",
+    "text": "The migration path is to v2025.2 or v2026.03. The reason many developers held off migrating was serverless functions — v2025.2 removed built-in serverless hosting, forcing teams to move functions to external platforms. Platform v2026.03 (released March 2026) re-introduces serverless hosting inside HubSpot. If serverless was your blocker, that blocker is now gone.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 107,
+    "section": "## One deadline that affects you if you have custom apps",
+    "text": "There's a second deadline worth flagging alongside this: **October 31, 2026** is when classic CRM cards (non-React, legacy sidebar customizations) are deprecated. If you have any of those, that migration window is shorter than it looks.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 115,
+    "section": "## What I'd actually prioritize as an SMB",
+    "text": "Not everything in a product spotlight is relevant to a 20-person sales team or a 50-person B2B services business. Here's where I'd focus attention:",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 118,
+    "section": "## What I'd actually prioritize as an SMB",
+    "text": "- If you're using Commerce Hub, turn on the Closing Agent 28-day trial for a deal pipeline and see what your buyers do with it.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 119,
+    "section": "## What I'd actually prioritize as an SMB",
+    "text": "- If you have custom HubSpot apps on Projects v2025.1, confirm your migration plan with whoever built them. August 1 is less than four months away.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 121,
+    "section": "## What I'd actually prioritize as an SMB",
+    "text": "**Worth exploring in Q2:**",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 135,
+    "section": "### What is the new Breeze AI pricing model?",
+    "text": "HubSpot's Customer Agent dropped to $0.50 per resolved conversation (from $1.00), and the Prospecting Agent now charges $1 per qualified lead recommended for outreach. Both include a free 28-day trial for Professional and Enterprise plans. You only pay when the agent delivers a result ([HubSpot company-news](https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete), April 2026).",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 139,
+    "section": "### What is HubSpot Data Hub and how is it different from Operations Hub?",
+    "text": "Data Hub is the rebrand and expansion of Operations Hub, launched at INBOUND 2025. It adds external data sources (Snowflake, BigQuery, CSV files), a no-code Data Studio interface for combining and calculating across data sets, and automated data quality tools. All Operations Hub customers migrated automatically at no price change.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 143,
+    "section": "### What is the August 1, 2026 HubSpot developer deadline?",
+    "text": "Projects v2025.1 is being deprecated on August 1, 2026 due to AWS Lambda's end-of-life for Node.js v20. Teams with custom HubSpot apps on that platform version need to migrate to v2025.2 or v2026.03 before that date. The March 2026 release of v2026.03 restored serverless function hosting, removing the last major migration blocker.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 151,
+    "section": "### Do I need to do anything about classic CRM cards?",
+    "text": "If you have legacy sidebar customizations using the old classic CRM card format, the deprecation deadline is October 31, 2026. After that date, they stop working. You'll need to migrate them to React-based UI Extensions. Most teams with custom sidebar cards built in the last two years are already on the new format.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  },
+  {
+    "article": "hubspot-spring-2026-spotlight",
+    "line": 161,
+    "section": "## The bottom line",
+    "text": "And if you have custom apps: check the August 1 deadline today.",
+    "note": "Original source snapshot; dispositions and source-match scores are in factcheck.json."
+  }
+]

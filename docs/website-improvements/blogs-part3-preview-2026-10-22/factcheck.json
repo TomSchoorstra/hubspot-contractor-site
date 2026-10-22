@@ -1,0 +1,241 @@
+{
+  "review_date": "2026-10-22",
+  "method": "Source-match scoring follows blog-factcheck: 1.0 exact, 0.9 paraphrase, 0.5 weak exact example, null unverified. Score describes visible source match, not independent truth, universal applicability or causal proof. At most ten retained/cited source pages per article; linked original statistical sources checked separately within onboarding limit.",
+  "retained_primary_claims": [
+    {
+      "article": "onboarding",
+      "claim": "Technical/strategic onboarding guidance; delivery scope depends on plan",
+      "source": "https://www.hubspot.com/services/onboarding",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Corrected narrow turns-the-system-on definition. No universal price or minimum duration retained."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Identifiers and associations in imports",
+      "source": "https://knowledge.hubspot.com/import-and-export/set-up-your-import-file",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Record ID and contact/company identifiers retained; removes blanket lifecycle/company/email required-fields list."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Marketing contacts eligibility and account access",
+      "source": "https://knowledge.hubspot.com/records/marketing-contacts",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Article conditions billing advice on whether account uses marketing contacts."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Tier upgrades, update dates, renewal-only downgrades and maximum setting",
+      "source": "https://knowledge.hubspot.com/account/understand-marketing-contacts-billing",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Separates change of designation from purchased contact tier; no immediate savings promise."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Email eligibility checks marketing status and subscription preferences separately",
+      "source": "https://knowledge.hubspot.com/segments/review-segment-predicted-email-recipients-and-engagement",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Billing designation is not email subscription permission. Preserve subscription/suppression history; no legal compliance conclusion."
+    },
+    {
+      "article": "spotlight",
+      "claim": "April outcome-based pricing announcement paid through credits",
+      "source": "https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Retains historical billing mechanism; no old cash rate presented as current quote."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Usage/access/allowances/overage settings",
+      "source": "https://knowledge.hubspot.com/account-management/understand-hubspot-credits-and-billing",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Current account rules linked separately from April announcement."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Run Agent eligible accounts, installed agents and downstream outputs",
+      "source": "https://knowledge.hubspot.com/workflows/run-agents-using-workflows",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Corrects any-agent assumption; removes fixed ten workflow-credits claim. Does not add unsourced audit-trail guarantee."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Data Hub replaced Operations Hub in September 2025",
+      "source": "https://ir.hubspot.com/news-releases/news-release-details/hubspot-unveils-blueprint-building-hybrid-human-ai-teams-200",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "decision": "Historical month/year match; no implication Data Hub launched in April 2026."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Data Studio source blending and activation credits; Pro/Enterprise",
+      "source": "https://www.hubspot.com/products/data/data-studio",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Keeps concrete dataset evaluation; removes 80% analyst-work generalization and blanket pricing unchanged."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Closing Agent quote questions, current beta/Revenue Hub/seats/handover",
+      "source": "https://knowledge.hubspot.com/quotes/set-up-use-the-closing-agent",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Current guide distinguishes current requirements from older Commerce Hub naming."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Spring developer release: App Pages/npm workspaces/serverless/access and dates",
+      "source": "https://developers.hubspot.com/changelog/spring-2026-spotlight",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Explicit 2026.03 history, Enterprise hosted-function boundaries, August deadline elapsed, older 31 October card date attributed."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Current card removal and tooling dates",
+      "source": "https://developers.hubspot.com/docs/apps/developer-platform/build-apps/migrate-an-app/migrate-legacy-crm-cards-to-app-cards",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "decision": "2 November removal / 1 December tooling dates match. Conflicting 31 October spring source remains explicitly attributed. Finish-before-31-October is editorial planning advice."
+    }
+  ],
+  "removed_or_corrected_original_claims": [
+    {
+      "article": "onboarding",
+      "claim": "55% of CRM implementations fail to achieve planned objectives",
+      "value": "55%",
+      "source": "https://johnnygrow.com/crm/the-crm-failure-rate-is-55-percent/",
+      "score": 1.0,
+      "status": "VERIFIED source presence",
+      "decision": "Source defines failure by its own research and survey respondents. Removed as broad context; no universal HubSpot failure probability or causal people/process conclusion inferred."
+    },
+    {
+      "article": "onboarding",
+      "claim": "22,000 total / 7,000 marketing / 15,000 non-marketing; £1,500 vs £930 monthly, £6,900 annual savings",
+      "value": "22,000; 7,000; 15,000; £1,500; £930; £6,900",
+      "source": "https://www.avidlyagency.com/blog/hubspot-marketing-contacts-pricing-cost-reduction",
+      "score": 0.5,
+      "status": "WEAK for exact original cost example",
+      "decision": "Contact-count example present, but current source gives euro estimates with different amounts. Original GBP amounts not found in fetched version. Removed; source may have changed and this does not prove amounts never appeared."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Onboarding starts at $1,500; implementation takes 60–120 days minimum",
+      "value": "$1,500; 60–120 days",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "decision": "Removed universal price/minimum. Primary onboarding page supports guidance and scoped goals, not this blanket distinction."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Cleaning after import takes three to six times longer",
+      "value": "3–6x",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "decision": "Removed; recommends sample review without invented multiplier."
+    },
+    {
+      "article": "onboarding",
+      "claim": "20-step workflow most common; half team stops logging after two months; new hires need two weeks",
+      "value": "20; half; two months; two weeks",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "decision": "Removed unsupported typical-outcome and personal-experience claims; retains specific review actions."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Avison Young adoption rose from 23% to 90%+ because of change management",
+      "value": "23%; 90%+",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED in this article",
+      "decision": "No linked primary case supplied; omitted rather than asserting falsehood or inventing a causal attribution."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Most teams use fewer than one-third of native properties",
+      "value": "one-third",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "decision": "Removed; check native meaning and actual dependencies."
+    },
+    {
+      "article": "onboarding",
+      "claim": "Agencies profit from hiding contact billing, all teams import dirty data, attribution always lost permanently",
+      "value": null,
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED generalizations",
+      "decision": "Removed motives, universals and irreversible-loss guarantee."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Customer Agent $1.00 conversation → $0.50 resolved conversation; Prospecting $1 recommended lead; 28-day trial",
+      "value": "$1.00; $0.50; $1; 28 days",
+      "source": "https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete",
+      "score": 1.0,
+      "status": "VERIFIED historical announcement presence",
+      "decision": "Raw figures omitted for focus; outcome mechanism retained as April announcement. No current rate or trial entitlement promised."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Customer Agent 65% resolutions / 39% resolution-time reduction / 8,000+ activated customers; Prospecting activations +57% QoQ",
+      "value": "65%; 39%; 8,000+; 57%",
+      "source": "https://www.hubspot.com/company-news/hubspots-customer-agent-and-prospecting-agent-now-you-pay-when-the-task-is-complete",
+      "score": 1.0,
+      "status": "VERIFIED vendor announcement presence",
+      "decision": "Removed vendor performance figures for focus. No independent cohort, methodology or current performance validation claimed."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Each Run Agent execution uses ten workflow credits; any Breeze agent can run; audit card logs every before/after and explanation",
+      "value": "10",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED as written",
+      "decision": "Replaced with documented account-added agent selection and HubSpot Credits requirement. Broad audit-card guarantee removed."
+    },
+    {
+      "article": "spotlight",
+      "claim": "Data Studio replaces 80% of ad hoc analyst questions",
+      "value": "80%",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED",
+      "decision": "Removed; use one known dataset/question with source checks."
+    },
+    {
+      "article": "spotlight",
+      "claim": "512 MB File Ingestion API and 100,000-product library; March invoice/QuickBooks changes",
+      "value": "512 MB; 100,000; March 2026",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED in original article; not retained or revalidated here",
+      "decision": "Low relevance to selected small-team evaluation; omitted without claiming falsehood."
+    },
+    {
+      "article": "spotlight",
+      "claim": "August 1 is less than four months away; explore in Q2; finish before October 31 or all sidebar cards stop",
+      "value": "1 August 2026; Q2; 31 October 2026",
+      "source": null,
+      "score": null,
+      "status": "STALE or overbroad wording",
+      "decision": "Original historical date retained with primary source and past-tense context. Card technology identified; source conflict visible. No guarantee of survival through tooling window."
+    }
+  ],
+  "source_conflict": "Official spring release lists 31 October; current migration guide says 2 November with tooling to 1 December. Both visible. No invented reconciliation.",
+  "recommendations": "Sample imports, human review, small pilots, ownership and finish-before-31-October are editorial recommendations; no new measured outcome or customer anecdote.",
+  "limits": "No live account, billing change, import, agent execution or app migration tested. Documentation can change. Other two pending articles are not marked reviewed."
+}
