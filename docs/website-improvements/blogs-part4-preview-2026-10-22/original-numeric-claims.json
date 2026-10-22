@@ -1,0 +1,254 @@
+[
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 5,
+    "section": "Frontmatter / introduction",
+    "text": "description: \"What are HubSpot app cards? A plain-language guide to CRM sidebar cards across 2,000+ marketplace apps: default vs custom, and when to build your own.\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 7,
+    "section": "Frontmatter / introduction",
+    "text": "coverImage: \"https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 8,
+    "section": "Frontmatter / introduction",
+    "text": "ogImage: \"https://images.unsplash.com/photo-1551288049-bebda4e38f71?fm=jpg&q=80&w=1200&h=630&fit=crop\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 21,
+    "section": "Frontmatter / introduction",
+    "text": "> - There are three kinds: default cards built into HubSpot, marketplace cards from the 2,000+ apps in the [App Marketplace](https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474), and custom cards built for your business.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 35,
+    "section": "## What is a HubSpot app card, exactly?",
+    "text": "Modern app cards are interactive. The older generation, classic CRM cards, were static panels limited to the right sidebar, and HubSpot is retiring them on October 31, 2026. The replacement, interactive app cards built as UI extensions, can do far more: live data, buttons, actions. We cover the retirement and what it means for your portal in [what the classic CRM card sunset means for your portal](/blog/hubspot-classic-crm-cards-sunset).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 45,
+    "section": "## Default cards vs marketplace cards vs custom app cards",
+    "text": "**Marketplace cards** come from installed apps. The App Marketplace has 2,000+ apps with 2.5M+ active installs ([HubSpot Community](https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474)), and many of them add a card to your records when installed. Your accounting tool, your support platform, your e-signature app. You install the app, configure it, and its card appears. The vendor builds and maintains the card.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 64,
+    "section": "## What can a custom app card actually do? (real use cases)",
+    "text": "The common thread: anything your team currently leaves HubSpot to look up is a candidate for a card. App sprawl is real for smaller companies. Okta's 2024 SMB report found the smallest businesses, those with 50 or fewer employees, run about 36 apps on average ([Okta](https://www.okta.com/blog/industry-insights/smbs-at-work-2024-what-apps-make-the-smb-stack/)). Every one of those is a tab your team might be switching to mid-conversation. A card pulls the important parts back into one place.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 66,
+    "section": "## What can a custom app card actually do? (real use cases)",
+    "text": "> **Citation capsule:** A custom HubSpot app card brings data and actions from external systems directly onto a CRM record. With the smallest businesses running roughly 36 apps on average ([Okta SMBs at Work, 2024](https://www.okta.com/blog/industry-insights/smbs-at-work-2024-what-apps-make-the-smb-stack/)), custom cards reduce the constant context-switching that slows sales and service teams by surfacing the most-needed information without leaving HubSpot.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 86,
+    "section": "## How do app cards relate to the classic CRM card sunset?",
+    "text": "If you've heard that HubSpot is retiring something to do with CRM cards, this is the connection. The thing being retired is the old generation, classic CRM cards, which sunset on October 31, 2026. The thing replacing them is interactive app cards, the modern format this whole guide is about.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 102,
+    "section": "### What's the difference between a marketplace card and a custom card?",
+    "text": "A marketplace card comes from one of the 2,000+ apps in the [App Marketplace](https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474) and is built and maintained by that vendor. A custom card is built specifically for your business to show data or actions no marketplace app provides.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 112,
+    "section": "### Are app cards changing in 2026?",
+    "text": "### Are app cards changing in 2026?",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-app-cards-guide",
+    "line": 114,
+    "section": "### Are app cards changing in 2026?",
+    "text": "Yes. HubSpot is retiring the older static format, classic CRM cards, on October 31, 2026, in favor of interactive app cards. If you rely on cards built on the old format, they need migrating before the deadline. See [the migration checklist and deadline](/blog/hubspot-classic-crm-cards-sunset) for details.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 5,
+    "section": "Frontmatter / introduction",
+    "text": "description: \"HubSpot AEO helps you show up in ChatGPT and AI search. With organic clicks dropping from 15% to 8% under AI Overviews, here's whether SMBs should pay.\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 7,
+    "section": "Frontmatter / introduction",
+    "text": "coverImage: \"https://images.unsplash.com/photo-1677442136019-21780ecad995?fm=jpg&q=80&w=1200&h=630&fit=crop\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 8,
+    "section": "Frontmatter / introduction",
+    "text": "ogImage: \"https://images.unsplash.com/photo-1677442136019-21780ecad995?fm=jpg&q=80&w=1200&h=630&fit=crop\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 11,
+    "section": "Frontmatter / introduction",
+    "text": "AEO stands for Answer Engine Optimization. It's the practice of getting your business mentioned when someone asks an AI tool like ChatGPT a question, instead of (or as well as) ranking in a normal Google search. HubSpot launched a dedicated AEO tool as part of its Spring 2026 Spotlight, and the pitch is straightforward: AI is eating search traffic, so you need to show up inside the AI answers.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 13,
+    "section": "Frontmatter / introduction",
+    "text": "Should your SMB care? Short answer: the trend is real and worth understanding, but for most small teams the AEO tool is not the first thing to spend money on. AI search is genuinely changing how people find businesses, and HubSpot's own numbers back that up. But a $50-a-month tool won't save a site that hasn't nailed the basics first.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 20,
+    "section": "Frontmatter / introduction",
+    "text": "> - HubSpot says organic traffic for its customers is down **27% year-over-year**, which is the real reason AEO is suddenly a product ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 21,
+    "section": "Frontmatter / introduction",
+    "text": "> - When an AI Overview appears in Google, users click a result about **8% of the time** versus **15%** without one, and only about **1%** click a link inside the AI summary ([Pew Research](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 22,
+    "section": "Frontmatter / introduction",
+    "text": "> - HubSpot AEO costs **$50/month** standalone and is included in Marketing Hub Pro and Enterprise ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 29,
+    "section": "## What is HubSpot AEO?",
+    "text": "AEO, Answer Engine Optimization, is about getting your business surfaced when someone asks a question to an AI tool rather than typing a query into Google and scrolling results. When a buyer asks ChatGPT \"who's a good HubSpot consultant for a small B2B team,\" AEO is the work that makes your business one of the names that comes back.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 31,
+    "section": "## What is HubSpot AEO?",
+    "text": "HubSpot AEO is HubSpot's product for that. It launched as part of the [Spring 2026 Spotlight](/blog/hubspot-spring-2026-spotlight), and it's designed to help your content get picked up and cited by AI search engines. The mechanics are similar in spirit to SEO, structuring content so machines understand it, but the target is AI answers rather than the classic ten blue links.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 33,
+    "section": "## What is HubSpot AEO?",
+    "text": "The reason this became a product now is simple, and HubSpot is open about it: organic traffic for HubSpot customers is down 27% year-over-year ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)). When the traffic you used to get from Google starts going to AI answers instead, you need a way to show up in those answers. That's the gap AEO is meant to fill.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 41,
+    "section": "## Is AI search actually eating your traffic?",
+    "text": "The clearest evidence comes from Pew. When an AI Overview appears at the top of a Google results page, users click through to an actual website about 8% of the time, compared to 15% when there's no AI summary. Roughly half the clicks vanish. And only about 1% of users click a link inside the AI summary itself ([Pew Research](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)). People read the answer and move on without visiting anyone.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 71,
+    "section": "## Is AI search actually eating your traffic?",
+    "text": "So the trend is not hype. People increasingly get their answer from the AI and never reach your site. That's exactly why HubSpot's customers are seeing a 27% organic drop. If your business depends on inbound traffic from search, this is a genuine threat, not a vendor scare tactic.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 75,
+    "section": "## Is AI search actually eating your traffic?",
+    "text": "> **Citation capsule:** AI search is measurably reducing website clicks. When an AI Overview appears in Google results, click-through to websites drops to roughly 8% from 15% without one, and only about 1% of users click links inside the AI summary ([Pew Research, July 2025](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/)). For businesses that depend on inbound search traffic, optimizing for AI answers is becoming a real consideration rather than a speculative one.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 83,
+    "section": "## What does HubSpot AEO actually do?",
+    "text": "HubSpot reports that beta users saw AI referral traffic grow 20% compared to customers not using the tool, and shares a case study where the company Sandler drove 8,000 new visitors in a few weeks, 12 new account conversions, and a 10% year-over-year conversion increase ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 85,
+    "section": "## What does HubSpot AEO actually do?",
+    "text": "Worth being clear-eyed about those numbers: they come from HubSpot's own announcement and reflect its own beta program. A 20% lift on AI referral traffic is a percentage of what might still be a small base. That doesn't make it fake, beta results are a real signal, but it's marketing data, not independent research. Treat it as \"this is promising,\" not \"this is proven for your business.\"",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 87,
+    "section": "## What does HubSpot AEO actually do?",
+    "text": "On price, HubSpot AEO is $50/month standalone with no plan required, and it's included in Marketing Hub Professional and Enterprise ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)). If you're already on Marketing Hub Pro, you have it. If you're not, it's a low-cost add-on rather than a big commitment.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 95,
+    "section": "## Should your SMB pay for it? (honest take)",
+    "text": "Pay for it if all three of these are true: a meaningful chunk of your business comes from inbound search, your content is already decent, and you're either on Marketing Hub Pro (so it's free) or $50 a month is genuinely nothing to you. In that case it's an easy yes. You're adding AEO on top of a foundation that already works, and the cost is trivial relative to the upside.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 101,
+    "section": "## Should your SMB pay for it? (honest take)",
+    "text": "The $50 price makes this an easy experiment for the right business and a pointless distraction for the wrong one. The deciding factor isn't the tool, it's whether inbound content is actually a channel for you.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 119,
+    "section": "### Then layer AEO on top",
+    "text": "Once your content is solid and your CRM handles leads properly, AEO becomes a sensible amplifier. At that point the $50/month is a reasonable bet to extend a channel that's already working. If you want the broader honest take on HubSpot's AI features for small teams, that's in [HubSpot Breeze AI: what's actually useful for small teams](/blog/hubspot-breeze-ai-smb).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 127,
+    "section": "### What is HubSpot AEO?",
+    "text": "It's HubSpot's tool for Answer Engine Optimization, helping your content get found and cited by AI search engines like ChatGPT. It launched in the Spring 2026 Spotlight and costs $50/month standalone, or is included with Marketing Hub Pro and Enterprise ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 131,
+    "section": "### Is AI really reducing search traffic?",
+    "text": "Yes. Pew found that click-through to websites drops to about 8% from 15% when an AI Overview appears, and HubSpot reports its own customers' organic traffic is down 27% year-over-year ([Pew Research](https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/); [HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 135,
+    "section": "### How much does HubSpot AEO cost?",
+    "text": "$50/month as a standalone product with no plan required, and it's included in Marketing Hub Professional and Enterprise. If you're already on those tiers, you have access without paying extra ([HubSpot](https://www.hubspot.com/company-news/hubspot-aeo)).",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  },
+  {
+    "article": "hubspot-aeo-smb",
+    "line": 149,
+    "section": "## The bottom line",
+    "text": "AI search is genuinely changing how people find businesses, and the data isn't ambiguous. Clicks drop by roughly half when an AI Overview appears, and HubSpot's customers are seeing a 27% organic decline. If inbound search matters to you, this is a real shift, not a fad.",
+    "note": "Original snapshot; dispositions in factcheck.json. SVG coordinate-only lines excluded where recognizable."
+  }
+]

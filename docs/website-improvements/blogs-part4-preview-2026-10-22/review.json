@@ -1,0 +1,92 @@
+{
+  "date": "2026-10-22",
+  "status": "Checkpoint 6, pair 4 self-checked. All eight articles have completed their planned content review; checkpoint 7 site-wide QA remains.",
+  "scope": "App cards guide and AEO MDX only, plus progress documentation. Other six bodies/dates/schema objects and shared templates/fonts unchanged.",
+  "preview": [
+    "http://127.0.0.1:3102/blog/hubspot-app-cards-guide",
+    "http://127.0.0.1:3102/blog/hubspot-aeo-smb"
+  ],
+  "skills": [
+    "Corey Haines copy-editing, mode B, seven sweeps and final checklist",
+    "Existing product marketing context and Tom Voice compass",
+    "Blog-factcheck for technical claims, research scope, packaging and dates"
+  ],
+  "constraints": "Compact English personal portfolio, conversations welcome without project-capacity promises. No new marketing sections, stock imagery, invented experience or outcome guarantee.",
+  "copy_checks": {
+    "clarity": "Distinguishes native record cards from app-provided UI extensions. AEO describes tracked visibility, citations and site visits as different observations.",
+    "voice": "Practical first-person recommendations with concrete actions. Removes unverified client anecdote, we-language and automatic payback assertions.",
+    "so_what": "Starts from a record decision or buyer question. Explains access/maintenance and how tracking findings inform content work.",
+    "proof": "Official HubSpot documentation for cards and AEO; primary Pew study for dated numbers; Google guidance limited to Google AI features. Actual renewal case preserves read-only and hosting boundaries.",
+    "specificity": "Corrects app/native categories, layout versus installation, source freshness/matching, action failures, Sensitive Data restrictions, pricing/access differences and research denominators.",
+    "emotion": "Recognizable repeated lookups and uncertainty about spending time on another tool; no traffic panic or cheap/easy-yes claims.",
+    "risk_and_expectations": "Scope read-only view before write actions; test failures and name maintenance owner. AEO pilot has stable prompts, baseline and outcome/attribution limits; no citation or ranking guarantee.",
+    "final": "No em dashes, duplicate takeaway/FAQ/conclusion, exposed citation capsule or broad sales ending. One compare-notes link per article; charts removed where they repeated the same figures."
+  },
+  "retained_scope": {
+    "app_cards": [
+      "Native cards versus app cards; existing native/installed-app/custom options",
+      "Record, preview and help desk surfaces depend on app configuration",
+      "Example tasks distinguished from delivered capabilities",
+      "Actual read-only renewal-status case",
+      "Matching, freshness, permissions, external connection and Sensitive Data restrictions",
+      "Testing outages, missing associations and repeated clicks; maintenance ownership",
+      "Classic-card source conflict and focused migration link",
+      "Compare custom cost and upkeep with actual repeated task"
+    ],
+    "aeo": [
+      "AEO definition and monitoring across supported engines",
+      "Mentions, citations, visits and leads measured separately",
+      "Dated Pew sample, traditional-result versus summary-link rates and observational limits",
+      "Current USD price, tax qualifier, standalone versus Marketing Hub packaging and free Grader distinction",
+      "Readable factual content and Google-specific eligibility with no special AI markup/inclusion promise",
+      "Stable buyer-language prompts, baseline and multi-day review",
+      "Referral/enquiry review and limits of attribution",
+      "Continue only when findings are useful and the team can act"
+    ]
+  },
+  "validation": {
+    "build": "Passed production build, TypeScript and both mandatory training validators in clean temporary copy with unchanged lockfile.",
+    "lint": "No TSX/CSS changes; no additional ESLint run claimed.",
+    "browser_checks": 27,
+    "widths": [
+      320,
+      390,
+      1440
+    ],
+    "pages": "Eight blog details and blog index",
+    "overflow": false,
+    "page_errors": [],
+    "internal_links": "Eight distinct internal destinations from revised pages return 200.",
+    "actual_navigation": "App cards guide → renewal-status case passed; expected heading verified against existing caseStudies.ts. Initial checker had a guessed old heading; corrected assertion without site change.",
+    "metadata": "All nine routes checked for www canonical, descriptions, OG images, H1 and selected fonts. Semantic article retained.",
+    "dates": "Original dates 2026-06-25/2026-06-28 retained. Revised pair updated/dateModified = 2026-10-22. Six other bodies, visible dates and schemas equal baseline at every width.",
+    "schema": "BlogPosting and BreadcrumbList parse. No FAQPage on all eight articles after repetitive Q&A removal.",
+    "visual_review": "Both mobile hero crops and desktop full-page structures reviewed; full mobile screenshots retained. Mobile banner clipping is intermittent in captures and remains on final shared-component QA list.",
+    "requests": "POST requests aborted in isolated Playwright session; no submissions, live HubSpot changes, tool purchase or app execution.",
+    "diff_check": "Passed before staging; saved build log has terminal trailing whitespace normalized."
+  },
+  "measurement": {
+    "method": "Words in .prose-blog.innerText after fonts load at 390 × 844; same wrapper and body font sizes before/after. Main height excludes global navigation/footer. No speed, SEO, conversion or payback improvement inferred.",
+    "rows": [
+      {
+        "slug": "hubspot-app-cards-guide",
+        "before_article_words": 1799,
+        "after_article_words": 666,
+        "article_reduction_percent": 63,
+        "before_main_height": 12269,
+        "after_main_height": 5456
+      },
+      {
+        "slug": "hubspot-aeo-smb",
+        "before_article_words": 1794,
+        "after_article_words": 714,
+        "article_reduction_percent": 60,
+        "before_main_height": 12166,
+        "after_main_height": 5863
+      }
+    ]
+  },
+  "cross_article_consistency": "Classic cards, Spotlight and app cards guide all distinguish the older 31 October statement from current guide 2 November removal/1 December tooling. Finish-before-31-October is editorial planning advice. No pending body cross-reference fix remains from that issue.",
+  "next": "Checkpoint 7: site-wide compactness, voice, navigation, shared components, forms, metadata and publication dependencies. Eight completed editorial rounds do not imply this final QA has run.",
+  "publication": "Local commit only; no push/deploy."
+}

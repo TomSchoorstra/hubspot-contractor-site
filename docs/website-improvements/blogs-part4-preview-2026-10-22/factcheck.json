@@ -1,0 +1,171 @@
+{
+  "review_date": "2026-10-22",
+  "method": "Blog-factcheck source matching: 1 exact, 0.9 paraphrase, null unverified/not a numeric match. Scores describe presence and matching context, not independent truth or causal certainty. Retained claims checked against primary sources; original vendor figures separately checked. At most ten source pages per article.",
+  "retained_primary_claims": [
+    {
+      "article": "app_cards",
+      "claim": "Native record cards, configurable layout and permissions",
+      "source": "https://knowledge.hubspot.com/records/use-cards-on-records",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Separates native cards from app cards; existing options first."
+    },
+    {
+      "article": "app_cards",
+      "claim": "React UI extensions, CRM/external data and supported surfaces",
+      "source": "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/overview",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "App capabilities depend on configured objects/surfaces and data implementation; not every visible panel is an app card."
+    },
+    {
+      "article": "app_cards",
+      "claim": "External fetching and Sensitive Data restriction",
+      "source": "https://developers.hubspot.com/docs/apps/developer-platform/add-features/ui-extensions/fetching-data",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Configured backend/permitted URLs; apps using Sensitive Data scopes cannot use hubspot.fetch. Other technical limits are not reproduced."
+    },
+    {
+      "article": "app_cards",
+      "claim": "Older sunset date",
+      "source": "https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "decision": "31 October 2026 explicitly attributed to older announcement."
+    },
+    {
+      "article": "app_cards",
+      "claim": "Current removal and tooling dates",
+      "source": "https://developers.hubspot.com/docs/apps/developer-platform/build-apps/migrate-an-app/migrate-legacy-crm-cards-to-app-cards",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "decision": "2 November removal / 1 December tooling explicitly attributed. Planning target is editorial advice."
+    },
+    {
+      "article": "aeo",
+      "claim": "Tracked prompts, supported engines, metrics and access differences",
+      "source": "https://knowledge.hubspot.com/seo/set-up-and-analyze-ai-visibility",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Current beta setup guide: data collection starts after setup, tracked prompts run daily. Standalone and Marketing Hub limits/features differ."
+    },
+    {
+      "article": "aeo",
+      "claim": "Current price, USD/tax context and free Grader distinction",
+      "source": "https://www.hubspot.com/products/aeo",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "decision": "50 USD/month before applicable tax, checked 22 October. Grader one-time versus paid ongoing tracking. No universal cheap/easy-buy recommendation."
+    },
+    {
+      "article": "aeo",
+      "claim": "Pew sample, period, click rates and method",
+      "source": "https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/",
+      "score": 1.0,
+      "status": "VERIFIED",
+      "decision": "900 US adults, March 2025 browsing; traditional-result clicks 8% with summary / 15% without, summary links 1% of summary visits. Observational Google evidence, not site-specific loss or all-engine causality."
+    },
+    {
+      "article": "aeo",
+      "claim": "SEO fundamentals and eligibility for Google AI features",
+      "source": "https://developers.google.com/search/docs/appearance/ai-features",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Google requires indexing/snippet eligibility, no new AI file or special schema. No inclusion guarantee. Scoped to Google."
+    },
+    {
+      "article": "aeo",
+      "claim": "Tracked prompt review over time",
+      "source": "https://knowledge.hubspot.com/seo/review-and-manage-aeo-prompts",
+      "score": 0.9,
+      "status": "PARAPHRASE",
+      "decision": "Prompts reflect buyer language/location; responses vary, inspect multiple days/weeks."
+    }
+  ],
+  "removed_or_corrected_original_claims": [
+    {
+      "article": "app_cards",
+      "claim": "Marketplace has 2,000+ apps and 2.5M+ active installs",
+      "value": "2,000+; 2.5M+",
+      "source": "https://community.hubspot.com/t5/Releases-and-Updates/2-000-Apps-2-5M-Active-Installs/ba-p/1209474",
+      "score": 1.0,
+      "status": "VERIFIED historical source presence",
+      "decision": "Milestone posted 8 October 2025; counts do not prove every app supplies a card. Removed from current guide to focus on actual fit."
+    },
+    {
+      "article": "app_cards",
+      "claim": "Smallest businesses (50 or fewer staff) use around 36 apps",
+      "value": "50; 36",
+      "source": "https://www.okta.com/blog/industry-insights/smbs-at-work-2024-what-apps-make-the-smb-stack/",
+      "score": 1.0,
+      "status": "VERIFIED source presence",
+      "decision": "Historical Okta cohort; not proof every app is a tab used during a customer call or that custom card development pays back. Removed for focus."
+    },
+    {
+      "article": "app_cards",
+      "claim": "Cards always show live data; installed Marketplace card appears automatically; any daily lookup pays for custom build",
+      "value": null,
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED generalizations",
+      "decision": "Replaced with configuration, freshness, access, failure and upkeep checks. No automatic ROI claim."
+    },
+    {
+      "article": "app_cards",
+      "claim": "Clients I build cards for almost always have one specific daily friction",
+      "value": null,
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED personal experience",
+      "decision": "Removed and linked actual renewal case with known read-only/hosting boundaries."
+    },
+    {
+      "article": "app_cards",
+      "claim": "31 October is the only current card removal date; existing interactive cards require nothing",
+      "value": "31 October 2026",
+      "source": "https://developers.hubspot.com/changelog/deprecating-support-for-classic-crm-cards",
+      "score": 1.0,
+      "status": "VERIFIED older source; incomplete current context",
+      "decision": "Shows conflicting current guide dates; limits sunset to legacy technology and preserves normal maintenance checks."
+    },
+    {
+      "article": "aeo",
+      "claim": "HubSpot customer organic traffic -27% YoY; beta users AI referrals +20%",
+      "value": "27%; 20%",
+      "source": "https://www.hubspot.com/company-news/hubspot-aeo",
+      "score": 1.0,
+      "status": "VERIFIED vendor announcement presence",
+      "decision": "Removed performance figures and asserted causal link to AI Overviews. No independent methodology/cohort validation or site-specific forecast claimed."
+    },
+    {
+      "article": "aeo",
+      "claim": "Sandler 8,000 new visitors, 12 account conversions, 10% YoY increase",
+      "value": "8,000; 12; 10%",
+      "source": "https://www.hubspot.com/company-news/hubspot-aeo",
+      "score": 1.0,
+      "status": "VERIFIED vendor testimonial presence",
+      "decision": "Removed for focus; no evidence those results predict another small team or isolate AEO causal impact."
+    },
+    {
+      "article": "aeo",
+      "claim": "AI summaries make half the clicks vanish and explain HubSpot organic decline",
+      "value": "8%; 15%; 27%",
+      "source": "https://www.pewresearch.org/short-reads/2025/07/22/google-users-are-less-likely-to-click-on-links-when-an-ai-summary-appears-in-the-results/",
+      "score": null,
+      "status": "UNSUPPORTED causal extrapolation",
+      "decision": "Numbers retained with denominators, sample and period; inferred universal loss/causality removed."
+    },
+    {
+      "article": "aeo",
+      "claim": "AEO automatically structures/optimizes site content; 50 dollars is trivial/easy yes or free access means automatic value",
+      "value": "$50",
+      "source": null,
+      "score": null,
+      "status": "UNVERIFIED value and automation assumptions",
+      "decision": "Current capability/packaging docs linked. Treat monitoring, editorial actions, internal effort and outcomes separately."
+    }
+  ],
+  "recommendations": "Scope one card task and compare upkeep; AEO pilot uses baseline, stable prompts and useful actions. Recommendations are not delivered customer results.",
+  "limits": "No live card installation, external data call, AEO account setup, paid purchase, CRM update or ranking/citation experiment. Data and prices may change after review."
+}

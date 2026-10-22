@@ -1,0 +1,49 @@
+{
+  "scope": "All eight blog article bodies; template changes are excluded from word count. Final site-wide checks remain.",
+  "method": "Same .prose-blog.innerText counting at 390px, first-pair baseline versus current final-pair browser capture.",
+  "original_words": 15668,
+  "reviewed_words": 6288,
+  "reduction_percent": 60,
+  "rows": [
+    {
+      "slug": "hubspot-app-cards-guide",
+      "original_article_words": 1799,
+      "reviewed_article_words": 666
+    },
+    {
+      "slug": "hubspot-aeo-smb",
+      "original_article_words": 1794,
+      "reviewed_article_words": 714
+    },
+    {
+      "slug": "hubspot-lifecycle-stages-setup-guide",
+      "original_article_words": 2089,
+      "reviewed_article_words": 999
+    },
+    {
+      "slug": "hubspot-classic-crm-cards-sunset",
+      "original_article_words": 1601,
+      "reviewed_article_words": 640
+    },
+    {
+      "slug": "hubspot-breeze-ai-smb",
+      "original_article_words": 2648,
+      "reviewed_article_words": 864
+    },
+    {
+      "slug": "hubspot-contractor-vs-agency",
+      "original_article_words": 2217,
+      "reviewed_article_words": 745
+    },
+    {
+      "slug": "hubspot-onboarding-mistakes",
+      "original_article_words": 1475,
+      "reviewed_article_words": 860
+    },
+    {
+      "slug": "hubspot-spring-2026-spotlight",
+      "original_article_words": 2045,
+      "reviewed_article_words": 800
+    }
+  ]
+}
