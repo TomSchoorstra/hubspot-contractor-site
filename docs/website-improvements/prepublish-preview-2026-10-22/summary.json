@@ -1,0 +1,121 @@
+{
+  "routes": 25,
+  "responsiveChecks": 100,
+  "widths": [
+    320,
+    390,
+    768,
+    1440
+  ],
+  "internalDestinations": 25,
+  "pageErrors": [],
+  "overflow": false,
+  "headingHierarchy": "pass",
+  "imagesAndAlt": "pass",
+  "metadataAndSchemas": "pass",
+  "copyConsistentAcrossWidths": true,
+  "retiredRoutes": [
+    {
+      "path": "/services/not-a-service",
+      "status": 404
+    },
+    {
+      "path": "/case-studies/not-a-case",
+      "status": 404
+    },
+    {
+      "path": "/blog/not-a-post",
+      "status": 404
+    },
+    {
+      "path": "/app-catalog",
+      "status": 404
+    },
+    {
+      "path": "/hubspot-enablement",
+      "status": 404
+    },
+    {
+      "path": "/api/slack/oauth",
+      "status": 404
+    },
+    {
+      "path": "/api/slack/callback",
+      "status": 404
+    },
+    {
+      "path": "/api/cron/send-tips",
+      "status": 404
+    }
+  ],
+  "menuAndJourneys": "pass",
+  "mockedForm": "pass",
+  "realMessagesSent": 0,
+  "portraitDimensionsStable": true,
+  "blogFrontmatterRegression": [
+    {
+      "file": "hubspot-aeo-smb.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "886222e67f360c3449db6b78f96c4186bb74b24e2b1f6a5b981fa5d1105d88b3"
+    },
+    {
+      "file": "hubspot-app-cards-guide.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "8bf667194646471e512874d9df08276c980a8e856c6a9fcb398264ce4d41548c"
+    },
+    {
+      "file": "hubspot-breeze-ai-smb.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "26faa8a2649b5b65ff8c9bd49246c63955005ddce8961029cb0b70b2be1ed5e6"
+    },
+    {
+      "file": "hubspot-classic-crm-cards-sunset.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "8e93e588e2d1eeaac7ff8c71fd969045ed0fedc42cacbc6de3aeb90c50bd6e91"
+    },
+    {
+      "file": "hubspot-contractor-vs-agency.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "45755888db882f5db10e9e37af7b5ee9b01e4b68231f0e603689f15d8b69b90c"
+    },
+    {
+      "file": "hubspot-lifecycle-stages-setup-guide.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "a3432bc09e8c057f8e038af2e000f2a0e36d32951b8d07c41dc107d259ad9f17"
+    },
+    {
+      "file": "hubspot-onboarding-mistakes.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "eca303da31ac96a73324112e05fa3739aada459e162e5db12fb05de952f0e9e8"
+    },
+    {
+      "file": "hubspot-spring-2026-spotlight.mdx",
+      "metadataEqual": true,
+      "bodyEqual": true,
+      "bodySha256": "71a50e7deb7ad41bf267394976627bca1081bd6ea5455e30167c3455fe697544"
+    }
+  ],
+  "productionDependencies": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 0,
+    "critical": 0,
+    "total": 0
+  },
+  "developmentDependencies": {
+    "info": 0,
+    "low": 0,
+    "moderate": 0,
+    "high": 5,
+    "critical": 0,
+    "total": 5
+  }
+}

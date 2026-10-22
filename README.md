@@ -35,6 +35,10 @@ The easiest way to deploy your Next.js app is to use the [Vercel Platform](https
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
 
+## Contact form
+
+Set `NEXT_PUBLIC_FORMSPREE_ENDPOINT` to the form URL from the Formspree dashboard in the hosting environment before building. If it is empty, the form shows its unavailable state and disables sending. Public environment values are included at build time, so changing this value requires a new build. Local QA intercepts form requests; it does not send test messages.
+
 ## Google Tag Manager and GA4
 
 This project supports Google Tag Manager in production only.

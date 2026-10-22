@@ -112,7 +112,7 @@ function MobileMenuPortal({
                         href={item.href}
                         onClick={onClose}
                         aria-current={pathname === item.href ? "page" : pathname.startsWith(item.href + "/") ? "true" : undefined}
-                        className={`group flex items-center justify-between rounded-xl px-4 py-4 text-xl font-semibold transition-colors hover:bg-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-accent" : "text-text"}`}
+                        className={`group flex items-center justify-between rounded-xl px-4 py-4 text-xl font-semibold transition-colors hover:bg-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-accent-text" : "text-text"}`}
                       >
                         {item.label}
                         <svg aria-hidden="true" className="h-4 w-4 text-text-muted transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
@@ -184,9 +184,9 @@ export default function Header() {
       }`}
     >
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="flex flex-col leading-none transition-colors hover:text-accent group">
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted group-hover:text-accent/70 transition-colors">RevOps by</span>
-          <span className="font-display text-base font-bold text-text group-hover:text-accent transition-colors">
+        <Link href="/" className="flex flex-col leading-none transition-colors hover:text-accent-text group">
+          <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted group-hover:text-accent-text transition-colors">RevOps by</span>
+          <span className="font-display text-base font-bold text-text group-hover:text-accent-text transition-colors">
             {site.name}<span className="text-accent">.</span>
           </span>
         </Link>
@@ -201,7 +201,7 @@ export default function Header() {
                 href={item.href}
                 aria-current={pathname === item.href ? "page" : isActive ? "true" : undefined}
                 className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group ${
-                  isActive ? "text-accent" : "text-text-secondary hover:text-text hover:bg-surface-2"
+                  isActive ? "text-accent-text" : "text-text-secondary hover:text-text hover:bg-surface-2"
                 }`}
               >
                 {item.label}

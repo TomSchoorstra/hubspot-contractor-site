@@ -27,7 +27,7 @@ export default function AnnouncementBanner() {
 
   return (
     <div data-announcement-banner>
-      <div className="relative bg-accent px-4 py-2.5">
+      <div className="relative bg-accent-action px-4 py-2.5">
         {/* Subtle shimmer line */}
         <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/10 to-transparent pointer-events-none" />
 

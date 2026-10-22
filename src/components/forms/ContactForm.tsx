@@ -156,7 +156,7 @@ export default function ContactForm() {
             <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
-        <h3 className="font-display text-2xl font-bold text-text">Message sent!</h3>
+        <h2 className="font-display text-2xl font-bold text-text">Message sent!</h2>
         <p className="mt-3 text-base leading-relaxed text-text-secondary">
           Thanks for reaching out. I&apos;ll read your message and get back to you soon.
         </p>
@@ -185,7 +185,7 @@ export default function ContactForm() {
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
             <label htmlFor="name" className={labelClasses}>
-              Name <span className="text-accent">*</span>
+              Name <span className="text-accent-text">*</span>
             </label>
             <input
               type="text"
@@ -202,7 +202,7 @@ export default function ContactForm() {
               className={`${inputClasses} ${errors.name ? "border-accent ring-2 ring-accent/15" : ""}`}
             />
             {errors.name && (
-              <p id="name-error" className="mt-1.5 text-sm text-accent" role="alert">
+              <p id="name-error" className="mt-1.5 text-sm text-accent-text" role="alert">
                 {errors.name}
               </p>
             )}
@@ -210,7 +210,7 @@ export default function ContactForm() {
 
           <div>
             <label htmlFor="email" className={labelClasses}>
-              Email <span className="text-accent">*</span>
+              Email <span className="text-accent-text">*</span>
             </label>
             <input
               type="email"
@@ -227,7 +227,7 @@ export default function ContactForm() {
               className={`${inputClasses} ${errors.email ? "border-accent ring-2 ring-accent/15" : ""}`}
             />
             {errors.email && (
-              <p id="email-error" className="mt-1.5 text-sm text-accent" role="alert">
+              <p id="email-error" className="mt-1.5 text-sm text-accent-text" role="alert">
                 {errors.email}
               </p>
             )}
@@ -252,7 +252,7 @@ export default function ContactForm() {
 
         <div>
           <label htmlFor="message" className={labelClasses}>
-            Message <span className="text-accent">*</span>
+            Message <span className="text-accent-text">*</span>
           </label>
           <textarea
             id="message"
@@ -270,7 +270,7 @@ export default function ContactForm() {
           />
           <p id="message-hint" className="mt-1.5 text-xs text-text-secondary">A little context helps. Please use at least 20 characters.</p>
           {errors.message && (
-            <p id="message-error" className="mt-1.5 text-sm text-accent" role="alert">
+            <p id="message-error" className="mt-1.5 text-sm text-accent-text" role="alert">
               {errors.message}
             </p>
           )}
@@ -286,7 +286,7 @@ export default function ContactForm() {
 
         <div className="flex items-center justify-between pt-2">
           <p className="text-xs text-text-muted">
-            <span className="text-accent">*</span> Required fields
+            <span className="text-accent-text">*</span> Required fields
           </p>
           <Button
             type="submit"

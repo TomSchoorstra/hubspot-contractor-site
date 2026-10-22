@@ -36,7 +36,7 @@ export default function HomeClient() {
             </div>
             <div className="relative mx-auto w-full max-w-sm">
               <div className="absolute -top-2 -left-2 h-full w-full rounded-2xl border border-accent/30" aria-hidden="true" />
-              <Image src="/about-photo.jpeg" alt="Tom Schoorstra, HubSpot and RevOps specialist" width={480} height={640} sizes="(max-width: 640px) calc(100vw - 48px), 384px" priority className="relative h-auto w-full rounded-2xl object-cover" />
+              <Image src="/about-photo.jpeg" alt="Tom Schoorstra, HubSpot and RevOps specialist" width={512} height={512} sizes="(max-width: 640px) calc(100vw - 48px), 384px" priority className="relative h-auto w-full rounded-2xl object-cover" />
             </div>
           </div>
         </Container>

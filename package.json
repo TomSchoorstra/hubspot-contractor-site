@@ -14,12 +14,12 @@
     "@supabase/supabase-js": "^2.100.0",
     "canvas-confetti": "1.9.3",
     "framer-motion": "^12.35.0",
-    "gray-matter": "^4.0.3",
-    "next": "16.1.6",
+    "next": "16.4.2",
     "next-mdx-remote": "^6.0.0",
     "react": "19.2.3",
     "react-dom": "19.2.3",
-    "remark-gfm": "^4.0.1"
+    "remark-gfm": "^4.0.1",
+    "yaml": "^2.8.3"
   },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
@@ -27,7 +27,7 @@
     "@types/react": "^19",
     "@types/react-dom": "^19",
     "eslint": "^9",
-    "eslint-config-next": "16.1.6",
+    "eslint-config-next": "16.4.2",
     "tailwindcss": "^4",
     "typescript": "^5"
   }

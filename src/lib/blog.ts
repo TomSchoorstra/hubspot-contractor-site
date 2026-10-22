@@ -1,8 +1,23 @@
 import fs from "fs";
 import path from "path";
-import matter from "gray-matter";
+import { parse } from "yaml";
 
 const BLOG_DIR = path.join(process.cwd(), "src/content/blog");
+
+function parseFrontmatter(raw: string) {
+  const match = /^---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/.exec(raw);
+  if (!match) throw new Error("Blog post is missing YAML frontmatter");
+
+  const data: unknown = parse(match[1]);
+  if (!data || typeof data !== "object" || Array.isArray(data)) {
+    throw new Error("Blog frontmatter must be a YAML mapping");
+  }
+
+  return {
+    data: data as Record<string, unknown>,
+    content: raw.slice(match[0].length),
+  };
+}
 
 export type PostMeta = {
   slug: string;
@@ -28,7 +43,7 @@ export function getAllPosts(): PostMeta[] {
   const posts = files.map((file) => {
     const slug = file.replace(/\.mdx$/, "");
     const raw = fs.readFileSync(path.join(BLOG_DIR, file), "utf-8");
-    const { data } = matter(raw);
+    const { data } = parseFrontmatter(raw);
     return {
       slug,
       title: data.title as string,
@@ -50,7 +65,7 @@ export function getPost(slug: string): Post | null {
   if (!fs.existsSync(filePath)) return null;
 
   const raw = fs.readFileSync(filePath, "utf-8");
-  const { data, content } = matter(raw);
+  const { data, content } = parseFrontmatter(raw);
 
   return {
     slug,

@@ -74,7 +74,7 @@ export default function About() {
               <p className="max-w-2xl text-lg leading-relaxed text-text-secondary">I get a real kick out of turning a string of manual steps into a working automation. That&apos;s the part of the work I enjoy most.</p>
             </div>
             <div className="mx-auto w-full max-w-xs">
-              <Image src="/about-photo.jpeg" alt="Tom Schoorstra" width={480} height={640} sizes="(max-width: 768px) 256px, 320px" priority className="mx-auto h-auto w-full max-w-64 rounded-2xl md:max-w-xs" />
+              <Image src="/about-photo.jpeg" alt="Tom Schoorstra" width={512} height={512} sizes="(max-width: 768px) 256px, 320px" priority className="mx-auto h-auto w-full max-w-64 rounded-2xl md:max-w-xs" />
               <ToolOrnaments />
             </div>
           </div>

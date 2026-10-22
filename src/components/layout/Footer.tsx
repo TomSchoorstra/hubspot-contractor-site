@@ -13,7 +13,6 @@ export default function Footer() {
           </div>
           <nav aria-label="Footer" className="flex flex-wrap gap-x-5 gap-y-3 text-sm text-text-secondary">
             {site.nav.map((item) => <Link key={item.href} href={item.href} className="hover:text-accent-text">{item.label}</Link>)}
-            <Link href="/app-catalog" className="hover:text-accent-text">App Catalog</Link>
             <TrackedAnchor href="https://www.linkedin.com/in/tom-schoorstra-807899113/" target="_blank" rel="noopener noreferrer" analyticsLabel="LinkedIn" analyticsLocation="footer" className="hover:text-accent-text">LinkedIn</TrackedAnchor>
           </nav>
         </div>
