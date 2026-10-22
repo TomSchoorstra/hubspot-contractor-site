@@ -251,19 +251,19 @@ export const caseStudies: CaseStudy[] = [
         {
           "src": "/case-studies/renewal-status-card/auto-renewal-active.png",
           "alt": "Subscription Status card: Auto-renewal active. The subscription will renew automatically; no action is needed.",
-          "width": 367,
+          "width": 370,
           "height": 216
         },
         {
           "src": "/case-studies/renewal-status-card/manual-renewal-required.png",
           "alt": "Subscription Status card: Manual renewal required. No active subscription was found; a Growth AE needs to handle the renewal manually.",
-          "width": 371,
+          "width": 370,
           "height": 216
         },
         {
           "src": "/case-studies/renewal-status-card/subscription-cancelled.png",
           "alt": "Subscription Status card: Subscription cancelled. The customer has cancelled; the renewal deal should be Closed Lost.",
-          "width": 368,
+          "width": 370,
           "height": 216
         }
       ]
