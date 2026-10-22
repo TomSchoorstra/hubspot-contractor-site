@@ -82,11 +82,12 @@ export default function About() {
             </div>
             <div className="mx-auto w-full max-w-xs">
               <Image src="/about-photo.jpeg" alt="Tom Schoorstra" width={480} height={640} sizes="(max-width: 768px) 256px, 320px" priority className="mx-auto h-auto w-full max-w-64 rounded-2xl md:max-w-xs" />
-              <ul aria-label="Tools I work with" className="mt-5 flex flex-wrap justify-center gap-x-2 gap-y-3 pt-2">
+              <ul aria-label="Tools I work with" className="about-tool-mobile">
                 {featuredTools.map(tool => (
-                  <li key={tool.name} className="about-tool-tag relative flex h-12 w-[92px] items-center justify-center gap-1.5 rounded-xl border border-border bg-white px-2 shadow-sm before:absolute before:-top-2 before:left-1/2 before:h-2 before:w-px before:bg-border">
-                    <Image src={tool.src} alt={tool.name} width={tool.width} height={tool.height} className={tool.name === "Chili Piper" ? "h-6 w-5 object-contain" : tool.name === "WooCommerce" ? "h-8 w-[72px] object-contain" : "h-6 w-[72px] object-contain"} />
-                    {tool.name === "Chili Piper" && <span aria-hidden="true" className="text-xs font-semibold leading-tight text-text">Chili<br />Piper</span>}
+                  <li key={tool.name} className="about-tool-ornament">
+                    <span className="about-tool-ball">
+                      <Image src={tool.src} alt={tool.name} width={tool.width} height={tool.height} className={tool.name === "Chili Piper" ? "relative z-10 h-8 w-7 object-contain" : tool.name === "WooCommerce" ? "relative z-10 h-8 w-12 object-contain" : "relative z-10 h-5 w-12 object-contain"} />
+                    </span>
                   </li>
                 ))}
               </ul>

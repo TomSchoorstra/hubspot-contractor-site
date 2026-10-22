@@ -234,27 +234,94 @@ a:focus-visible {
   outline-offset: 4px;
 }
 
-/* A short settling motion for the tooling tags beside the About portrait. */
-@keyframes about-tool-sway {
-  0%, 100% { transform: rotate(0); }
-  25% { transform: rotate(-2deg); }
-  75% { transform: rotate(2deg); }
+/* Tool logos hang from the portrait as small glass ornaments. */
+.about-tool-mobile {
+  display: flex;
+  height: 154px;
+  margin: 0 auto;
+  max-width: 320px;
+  padding: 0 2px;
 }
 
-.about-tool-tag {
-  transform-origin: 50% -8px;
+.about-tool-ornament {
+  --cord-length: 24px;
+  --ball-tint: #fff0e7;
+  position: relative;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  justify-content: center;
+  align-items: flex-start;
+  padding: var(--cord-length) 3px 0;
+  transform-origin: 50% 0;
   animation: about-tool-sway 2.1s ease-in-out 2;
 }
 
-.about-tool-tag:nth-child(2n) { animation-direction: reverse; }
-.about-tool-tag:nth-child(2) { animation-delay: 0.1s; }
-.about-tool-tag:nth-child(3) { animation-delay: 0.2s; }
-.about-tool-tag:nth-child(4) { animation-delay: 0.3s; }
-.about-tool-tag:nth-child(5) { animation-delay: 0.4s; }
+.about-tool-ornament::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 50%;
+  width: 1px;
+  height: calc(var(--cord-length) - 4px);
+  background: linear-gradient(#c5cbd0, #9ca7ae);
+}
+
+.about-tool-ball {
+  position: relative;
+  display: flex;
+  width: 100%;
+  max-width: 58px;
+  aspect-ratio: 1;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #d9dfe3;
+  border-radius: 50%;
+  background: radial-gradient(circle at 32% 24%, #fff 0%, #ffffffed 26%, var(--ball-tint) 68%, #e0e5e9 100%);
+  box-shadow: inset 2px 3px 5px #fff, inset -2px -3px 5px #68758212, 0 5px 8px -5px #22303e40;
+}
+
+.about-tool-ball::before {
+  content: "";
+  position: absolute;
+  top: -7px;
+  left: calc(50% - 7px);
+  width: 14px;
+  height: 7px;
+  border: 1px solid #aeb8bf;
+  border-radius: 3px 3px 1px 1px;
+  background: repeating-linear-gradient(90deg, #c5ced4 0 2px, #edf1f3 2px 4px);
+}
+
+.about-tool-ball img { max-width: 82%; }
+
+.about-tool-ball::after {
+  content: "";
+  position: absolute;
+  top: 8px;
+  left: 10px;
+  width: 17px;
+  height: 8px;
+  border-radius: 50%;
+  background: #ffffffd9;
+  transform: rotate(-35deg);
+}
+
+@keyframes about-tool-sway {
+  0%, 100% { transform: rotate(0); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+.about-tool-ornament:nth-child(2n) { animation-direction: reverse; }
+.about-tool-ornament:nth-child(2) { --cord-length: 48px; animation-delay: 0.1s; }
+.about-tool-ornament:nth-child(3) { --cord-length: 70px; --ball-tint: #ffeded; animation-delay: 0.2s; }
+.about-tool-ornament:nth-child(4) { --cord-length: 44px; --ball-tint: #f2ecff; animation-delay: 0.3s; }
+.about-tool-ornament:nth-child(5) { --cord-length: 22px; animation-delay: 0.4s; }
 
 /* The preference applies before hydration as well as in the motion hook. */
 @media (prefers-reduced-motion: reduce) {
-  .about-tool-tag {
+  .about-tool-ornament {
     animation: none;
   }
 
