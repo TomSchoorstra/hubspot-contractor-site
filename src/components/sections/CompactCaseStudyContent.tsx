@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import Container from "@/components/ui/Container";
 import type { CaseStudy } from "@/content/caseStudies";
 import { services } from "@/content/services";
@@ -34,6 +35,28 @@ export default function CompactCaseStudyContent({
           </div>
         </Container>
       </header>
+
+      {caseStudy.screenshots && (
+        <figure className="border-b border-border-subtle py-8 lg:py-10">
+          <Container>
+            <div className="grid items-start justify-items-center gap-5 lg:grid-cols-3 lg:gap-6">
+              {caseStudy.screenshots.images.map(screenshot => (
+                <Image
+                  key={screenshot.src}
+                  src={screenshot.src}
+                  alt={screenshot.alt}
+                  width={screenshot.width}
+                  height={screenshot.height}
+                  className="h-auto w-full"
+                  style={{ maxWidth: screenshot.width }}
+                  unoptimized
+                />
+              ))}
+            </div>
+            <figcaption className="mx-auto mt-5 max-w-3xl text-center text-sm leading-relaxed text-text-secondary">{caseStudy.screenshots.caption}</figcaption>
+          </Container>
+        </figure>
+      )}
 
       <section className="py-12 lg:py-16">
         <Container size="narrow">

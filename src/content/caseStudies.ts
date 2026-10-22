@@ -5,6 +5,10 @@ export type CaseStudy = {
   companySize: string;
   summary: string;
   statusNote?: string;
+  screenshots?: {
+    caption: string;
+    images: Array<{ src: string; alt: string; width: number; height: number }>;
+  };
   narrative: {
     eyebrow: string;
     intro: string[];
@@ -241,6 +245,29 @@ export const caseStudies: CaseStudy[] = [
     "industry": "HR Software",
     "companySize": "50–200 employees",
     "summary": "I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, so reps can check it where they're already working.",
+    "screenshots": {
+      "caption": "Three states of the card, each with a written status and the next step for the rep.",
+      "images": [
+        {
+          "src": "/case-studies/renewal-status-card/auto-renewal-active.png",
+          "alt": "Subscription Status card: Auto-renewal active. The subscription will renew automatically; no action is needed.",
+          "width": 367,
+          "height": 216
+        },
+        {
+          "src": "/case-studies/renewal-status-card/manual-renewal-required.png",
+          "alt": "Subscription Status card: Manual renewal required. No active subscription was found; a Growth AE needs to handle the renewal manually.",
+          "width": 371,
+          "height": 216
+        },
+        {
+          "src": "/case-studies/renewal-status-card/subscription-cancelled.png",
+          "alt": "Subscription Status card: Subscription cancelled. The customer has cancelled; the renewal deal should be Closed Lost.",
+          "width": 368,
+          "height": 216
+        }
+      ]
+    },
     "narrative": {
       "eyebrow": "Renewal status card",
       "intro": [
@@ -256,7 +283,6 @@ export const caseStudies: CaseStudy[] = [
       "Reps had to open the associated License to check whether a renewal needed manual follow-up. Skipping that lookup could mean missing the information needed to choose the next step."
     ],
     "approach": [
-      "I mapped the subscription information to three states: auto-renewal active, manual renewal required and subscription cancelled. Each has a written label alongside its colour.",
       "The initial approach did not reliably find the linked License. I moved the lookup into a serverless function that retrieves the association and reads the subscription data.",
       "I built the card as a React UI Extension, visible in the relevant deal pipeline. It reads License data when it loads, without copying those properties onto the deal."
     ],
