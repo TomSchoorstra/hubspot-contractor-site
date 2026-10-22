@@ -1,0 +1,256 @@
+{
+  "base": "https://www.tomschoorstra.com",
+  "release": "243c958d55e6864900e0f256fe287701dfe965c6",
+  "rows": [
+    {
+      "path": "/",
+      "status": 200,
+      "h1": "I work on the complicated bits of HubSpot.",
+      "canonical": "https://www.tomschoorstra.com",
+      "description": "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues. Explore my projects and approach.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/about",
+      "status": 200,
+      "h1": "Tom Schoorstra.",
+      "canonical": "https://www.tomschoorstra.com/about",
+      "description": "I'm Tom, a HubSpot & RevOps specialist in the Netherlands. I enjoy fixing processes from start to finish and turning manual steps into automation.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/services",
+      "status": 200,
+      "h1": "HubSpot expertise",
+      "canonical": "https://www.tomschoorstra.com/services",
+      "description": "Explore my HubSpot work in automation, consultancy, integrations, custom objects, pipeline reviews and app cards, with practical examples and scope.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/case-studies",
+      "status": 200,
+      "h1": "The work behind the expertise",
+      "canonical": "https://www.tomschoorstra.com/case-studies",
+      "description": "Explore my HubSpot and RevOps work in CRM architecture, data quality monitoring, finance automation and custom record interfaces.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/contact",
+      "status": 200,
+      "h1": "Get in touch",
+      "canonical": "https://www.tomschoorstra.com/contact",
+      "description": "Questions or ideas about HubSpot? Get in touch with Tom Schoorstra. Personal portfolio; not currently taking on client projects.",
+      "banner": false,
+      "formEnabled": true
+    },
+    {
+      "path": "/services/automation",
+      "status": 200,
+      "h1": "HubSpot automation",
+      "canonical": "https://www.tomschoorstra.com/services/automation",
+      "description": "Explore my HubSpot automation work: workflow logic, review points, testing and exception checks, with a Finance-led order flow as a practical example.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/services/consultancy",
+      "status": 200,
+      "h1": "HubSpot consultancy",
+      "canonical": "https://www.tomschoorstra.com/services/consultancy",
+      "description": "My approach to HubSpot consultancy: reviewing CRM structure, data quality and workflows, then prioritizing changes. See the scope and a practical example.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/services/integrations",
+      "status": 200,
+      "h1": "HubSpot integrations",
+      "canonical": "https://www.tomschoorstra.com/services/integrations",
+      "description": "My approach to HubSpot integrations with Zapier, native connectors and APIs: field mapping, source ownership, testing and a documented way to handle failures.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/services/custom-objects",
+      "status": 200,
+      "h1": "HubSpot custom objects",
+      "canonical": "https://www.tomschoorstra.com/services/custom-objects",
+      "description": "Explore my HubSpot custom object work: customer models, associations, migration, reporting and recurring checks, with Enterprise requirements made explicit.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/services/pipeline-optimization",
+      "status": 200,
+      "h1": "HubSpot pipeline reviews",
+      "canonical": "https://www.tomschoorstra.com/services/pipeline-optimization",
+      "description": "My approach to HubSpot pipeline reviews: stage definitions, field use, deal migration and reporting, with a practical pipeline consolidation example.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/services/custom-app-cards",
+      "status": 200,
+      "h1": "HubSpot custom app cards",
+      "canonical": "https://www.tomschoorstra.com/services/custom-app-cards",
+      "description": "Explore my HubSpot app card work: React interfaces, associated data and status logic, with explicit hosting, access and maintenance requirements.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/case-studies/customer-lifecycle",
+      "status": 200,
+      "h1": "Connecting the full customer relationship in HubSpot",
+      "canonical": "https://www.tomschoorstra.com/case-studies/customer-lifecycle",
+      "description": "I connected AIHR's customer records through a custom Account object in HubSpot, with workflows and weekly checks to keep the data linked.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/case-studies/crm-data-quality",
+      "status": 200,
+      "h1": "Finding data mismatches before fixing the wrong record",
+      "canonical": "https://www.tomschoorstra.com/case-studies/crm-data-quality",
+      "description": "At AIHR, I built a detection layer that compares HubSpot with learning-platform data through Snowflake, bringing missing links and conflicting statuses into one data quality dashboard.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/case-studies/finance-automation",
+      "status": 200,
+      "h1": "From manual order entry to one-click invoicing",
+      "canonical": "https://www.tomschoorstra.com/case-studies/finance-automation",
+      "description": "I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/case-studies/renewal-status-card",
+      "status": 200,
+      "h1": "Seeing the renewal status directly on the deal",
+      "canonical": "https://www.tomschoorstra.com/case-studies/renewal-status-card",
+      "description": "I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, so reps can check it where they're already working.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/case-studies/pipeline-consolidation",
+      "status": 200,
+      "h1": "Following the sales process from MQL to Closed Won",
+      "canonical": "https://www.tomschoorstra.com/case-studies/pipeline-consolidation",
+      "description": "I consolidated several HubSpot pipelines into one, making it easier to measure conversion from MQL to Closed Won and manage internal handovers.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-aeo-smb",
+      "status": 200,
+      "h1": "HubSpot AEO: when it is worth testing for a small team",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-aeo-smb",
+      "description": "Evaluate HubSpot AEO for a small team: what it tracks, current access and pricing, the limits of AI-search research, and how to judge a useful pilot.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-app-cards-guide",
+      "status": 200,
+      "h1": "What are HubSpot app cards? A business guide",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-app-cards-guide",
+      "description": "Understand HubSpot app cards, native record cards and custom UI extensions. Compare options, data access, maintenance and legacy-card migration.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-classic-crm-cards-sunset",
+      "status": 200,
+      "h1": "HubSpot classic CRM cards sunset: a migration checklist",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-classic-crm-cards-sunset",
+      "description": "Check HubSpot classic CRM cards, compare the published sunset dates, and plan a tested migration to React app cards with the right owner and tools.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-contractor-vs-agency",
+      "status": 200,
+      "h1": "HubSpot contractor vs agency: how to choose",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-contractor-vs-agency",
+      "description": "Compare a HubSpot contractor and agency by project scope, delivery team, total cost, availability and handover. Practical questions for choosing either option.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-breeze-ai-smb",
+      "status": 200,
+      "h1": "HubSpot Breeze AI: a practical guide for small teams",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-breeze-ai-smb",
+      "description": "Evaluate HubSpot Breeze Assistant, customer support, content, prospecting and enrichment using practical checks for data quality, review, access and cost.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-lifecycle-stages-setup-guide",
+      "status": 200,
+      "h1": "HubSpot lifecycle stages: a practical setup guide",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-lifecycle-stages-setup-guide",
+      "description": "A practical guide to HubSpot lifecycle stages: clear MQL and SQL criteria, native automation, workflow examples and checks before changing existing records.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-spring-2026-spotlight",
+      "status": 200,
+      "h1": "HubSpot Spring 2026 Spotlight: what I would review now",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-spring-2026-spotlight",
+      "description": "Review HubSpot Spring 2026 Spotlight with current context for Breeze pricing, Data Studio, Closing Agent, app pages and developer migration dates.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog/hubspot-onboarding-mistakes",
+      "status": 200,
+      "h1": "Nine HubSpot onboarding mistakes to check before launch",
+      "canonical": "https://www.tomschoorstra.com/blog/hubspot-onboarding-mistakes",
+      "description": "Check nine HubSpot onboarding risks, from scope and imports to lifecycle stages, integrations, adoption and marketing contact billing.",
+      "banner": false,
+      "formEnabled": null
+    },
+    {
+      "path": "/blog",
+      "status": 200,
+      "h1": "Blog",
+      "canonical": "https://www.tomschoorstra.com/blog",
+      "description": "Notes on HubSpot, CRM structure, automation and data quality, with practical checks and clear limits.",
+      "banner": false,
+      "formEnabled": null
+    }
+  ],
+  "retired": [
+    {
+      "path": "/app-catalog",
+      "status": 404
+    },
+    {
+      "path": "/hubspot-enablement",
+      "status": 404
+    },
+    {
+      "path": "/api/slack/oauth",
+      "status": 404
+    },
+    {
+      "path": "/api/slack/callback",
+      "status": 404
+    },
+    {
+      "path": "/api/cron/send-tips",
+      "status": 404
+    }
+  ],
+  "sitemapUrls": 25,
+  "socialImagePng": true,
+  "method": "Read-only HTTP; no browser JavaScript, form submissions or analytics events."
+}

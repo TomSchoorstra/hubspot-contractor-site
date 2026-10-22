@@ -396,3 +396,7 @@ Build inclusief TypeScript en beide validators, bronlint en diffcontrole slagen.
 ### Laatste drie voorstellen geaccepteerd
 
 Tom accepteerde alle drie de voorstellen en gaf opdracht ze uit te voeren. De beschikbaarheidsbanner is verwijderd, de renewal-card vervangt de tweede uitgelichte homepagecase en de AI-review-alinea op About is ingekort. De actuele beschikbaarheid blijft op About en Contact staan. Build, TypeScript, validators, gerichte lint en 100 responsive controles slagen; de overige 23 pagina’s en alle metadata zijn inhoudelijk gelijk gebleven. De vertraagde-laadtest meet geen layout shifts meer op Home/About. De bestaande Vercel-publicatie wordt nu uitgevoerd binnen de al gegeven toestemming. [Releaselog](release-2026-10-22.md).
+
+### Publicatie afgerond
+
+Release `243c958d55e6864900e0f256fe287701dfe965c6` staat op GitHub main en de bestaande featurebranch. Vercel Production `7257435718` is succesvol met dezelfde SHA. Alle 25 live pagina’s, de drie definitieve wijzigingen, footer, sitemap, sociale afbeelding en ingeschakeld formulier zijn via read-only HTTP gecontroleerd. De verwijderde catalogus-/Slack-pagina’s en endpoints geven 404. Geen echte formulierinzendingen of analytics-events gestart. Hostingredirect geeft 307 naar het juiste www-domein; de rootcanonical zonder slash is gelijkwaardig aan de lokaal geverifieerde URL. [Volledige releasegegevens en grenzen](release-2026-10-22.md). Alleen de nacontrolelog wordt aanvullend lokaal gecommit; geen nieuwe productiebuild nodig.
