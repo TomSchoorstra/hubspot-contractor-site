@@ -40,6 +40,9 @@ yarn-error.log*
 *.tsbuildinfo
 next-env.d.ts
 
+# Private training imports and local logs (never publish health data in Git).
+/.local/training/
+
 # Claude Code tooling
 .agents/
 .claude/

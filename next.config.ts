@@ -9,6 +9,9 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  outputFileTracingExcludes: {
+    "/*": ["./.local/training/**/*"],
+  },
   async redirects() {
     return [{
       source: "/:path*",
