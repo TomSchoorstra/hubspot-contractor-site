@@ -1,5 +1,6 @@
 import { WORKOUT_TEMPLATES } from "@/lib/workout-planner";
 import { profileForKey } from "@/lib/loopschema";
+import { TRAINING_PROGRAMME } from "@/lib/training-programme";
 import { TRAINING_HTML } from "./training-html";
 
 export const runtime = "nodejs";
@@ -21,6 +22,7 @@ export async function GET(
     calendarOnly: true,
     resetId: "clean-2026-11-04",
     workoutTemplates: WORKOUT_TEMPLATES,
+    programme: TRAINING_PROGRAMME,
     preview: new URL(request.url).searchParams.get("voorbeeld") === "1",
   }).replace(/</g, "\\u003c");
 

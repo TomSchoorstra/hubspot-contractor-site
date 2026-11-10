@@ -12,11 +12,27 @@ export type ExerciseLog = {
   id: string; name: string; sets: WorkoutSet[];
   legacySummary?: { sets: number | null; reps: number | null; weightKg: number | null };
 };
+// A workout can be linked to a programme week. The link never changes what was logged.
+// "five-k-12-v1" is the earlier run-only plan; its entries stay valid and keep their meaning.
+export const PROGRAMME_LINKS = {
+  "five-k-12-v1": { testWeeks: [2, 12], gym: false },
+  "kracht-5k-12-v2": { testWeeks: [2, 12], gym: true },
+} as const;
+export type ProgrammeId = keyof typeof PROGRAMME_LINKS;
+export type RunPlanLog = {
+  programId: ProgrammeId; week: number; logged: boolean;
+  effort: number | null; asPlanned: boolean | null; testSeconds: number | null;
+};
+export type GymPlanLog = {
+  programId: "kracht-5k-12-v2"; week: number; session: "A" | "B" | "C"; logged: boolean; effort: number | null;
+};
 export type WorkoutEntry = {
   id: string; templateId: WorkoutTemplateId; date: string; deleted: boolean; updatedAt: number;
   exercises: ExerciseLog[];
   distanceKm: number | null; durationSeconds: number | null; averageHeartRate: number | null;
   hamstring: "goed" | "licht" | "erger" | null; note: string;
+  runPlan?: RunPlanLog;
+  gymPlan?: GymPlanLog;
 };
 export function validWorkoutId(id: unknown): id is string {
   return typeof id === "string" && /^[0-9a-f]{8}-[0-9a-f]{4}-4[0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$/i.test(id);
@@ -74,7 +90,26 @@ export function normalizeWorkout(value: unknown): WorkoutEntry | null {
   if (!metric(v.distanceKm, 1000, false, true) || v.distanceKm === 0 || !metric(v.durationSeconds, 86400, true) || !metric(v.averageHeartRate, 300, true)) return null;
   if (template.kind === "gym" && (v.distanceKm !== null || v.durationSeconds !== null || v.averageHeartRate !== null)) return null;
   if (![null, "goed", "licht", "erger"].includes(v.hamstring as string | null) || typeof v.note !== "string" || v.note.length > 1000) return null;
-  return {id:v.id, templateId:template.id, date:v.date, deleted:v.deleted, updatedAt:v.updatedAt, exercises,
+  let runPlan: RunPlanLog | undefined;
+  if(v.runPlan!==undefined){
+    if(template.kind!=="run"||!v.runPlan||typeof v.runPlan!=="object"||Array.isArray(v.runPlan))return null;
+    const m=v.runPlan as Record<string,unknown>;
+    const link=typeof m.programId==="string"&&Object.hasOwn(PROGRAMME_LINKS,m.programId)?PROGRAMME_LINKS[m.programId as ProgrammeId]:null;
+    if(!link||!Number.isInteger(m.week)||Number(m.week)<1||Number(m.week)>12||typeof m.logged!=="boolean"||!metric(m.effort,10,true)||![null,true,false].includes(m.asPlanned as boolean|null)||!metric(m.testSeconds,86400,true))return null;
+    const test=(link.testWeeks as readonly number[]).includes(Number(m.week));
+    if(m.logged&&(!v.distanceKm||!v.durationSeconds||m.asPlanned===null||(test&&(!m.testSeconds||Number(v.distanceKm)<5||Number(m.testSeconds)>Number(v.durationSeconds)))))return null;
+    runPlan={programId:m.programId as ProgrammeId,week:Number(m.week),logged:m.logged,effort:m.effort as number|null,asPlanned:m.asPlanned as boolean|null,testSeconds:m.testSeconds as number|null};
+  }
+  let gymPlan: GymPlanLog | undefined;
+  if(v.gymPlan!==undefined){
+    if(template.id!=="full"||!v.gymPlan||typeof v.gymPlan!=="object"||Array.isArray(v.gymPlan))return null;
+    const m=v.gymPlan as Record<string,unknown>;
+    if(m.programId!=="kracht-5k-12-v2"||!Number.isInteger(m.week)||Number(m.week)<1||Number(m.week)>12||!["A","B","C"].includes(m.session as string)||typeof m.logged!=="boolean"||!metric(m.effort,10,true))return null;
+    // A gym session only counts as logged when at least one set has recorded repetitions.
+    if(m.logged&&!exercises.some(row=>row.sets.some(set=>set.reps!==null)))return null;
+    gymPlan={programId:"kracht-5k-12-v2",week:Number(m.week),session:m.session as GymPlanLog["session"],logged:m.logged,effort:m.effort as number|null};
+  }
+  return {...(runPlan?{runPlan}:{}),...(gymPlan?{gymPlan}:{}),id:v.id, templateId:template.id, date:v.date, deleted:v.deleted, updatedAt:v.updatedAt, exercises,
     distanceKm:v.distanceKm, durationSeconds:v.durationSeconds, averageHeartRate:v.averageHeartRate,
     hamstring:v.hamstring as WorkoutEntry["hamstring"], note:v.note};
 }

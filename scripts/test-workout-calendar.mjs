@@ -31,11 +31,12 @@ function loadModule(file, dependencies = {}, globals = {}) {
 }
 
 const workoutPlan=loadModule("src/lib/workout-planner.ts");
+const programme=loadModule("src/lib/training-programme.ts");
 function browserClient(cacheStore, transport, configOverrides = {}) {
   const { TRAINING_HTML } = loadModule("src/app/l/[slug]/kracht-5km/training-html.ts");
   const config = {
     rowId: "test-user",
-    workoutTemplates:workoutPlan.WORKOUT_TEMPLATES,plannerApi:"/test-workout-api",
+    workoutTemplates:workoutPlan.WORKOUT_TEMPLATES,programme:programme.TRAINING_PROGRAMME,plannerApi:"/test-workout-api",
     name: "Test", api: "/test-api", apiKey: "test-key", backUrl: "/", preview: false, ...configOverrides,
   };
   const elements = new Map();
@@ -207,7 +208,7 @@ test('private page serves only the existing owner and contains no historical dat
  const html=loadModule('src/app/l/[slug]/kracht-5km/training-html.ts');
  const page=loadModule('src/app/l/[slug]/kracht-5km/route.ts',{
   '@/lib/loopschema':{profileForKey:key=>key==='test-tom'?{rowId:'tom',name:'Example'}:null},
-  '@/lib/workout-planner':workoutPlan,'./training-html':html,
+  '@/lib/workout-planner':workoutPlan,'@/lib/training-programme':programme,'./training-html':html,
  });
  const request=new Request('http://localhost/test?voorbeeld=1');
  assert.equal((await page.GET(request,{params:Promise.resolve({slug:'unknown'})})).status,404);
@@ -241,4 +242,148 @@ test('old hashes return to the calendar and workout deep links remain available'
  assert.equal(client.run('activeView'),'workout');assert.equal(client.element('view-kalender').hidden,true);
  assert.equal(client.run('parseTime("27:30")'),1650);assert.equal(client.run('parseTime("27,30")'),1650);
  assert.equal(client.run('parseTime("27:99")'),null);
+});
+
+test('run-plan API round-trips the linked week and separates 5 km time from total session time',async()=>{
+ const {api,request}=flexibleApi();
+ const entry={...workoutFixture(),templateId:'run',exercises:[],distanceKm:8,durationSeconds:3000,runPlan:{programId:'five-k-12-v1',week:2,logged:true,effort:8,asPlanned:true,testSeconds:1740}};
+ assert.equal((await api.POST(request('POST',entry))).status,200);
+ const result=await (await api.GET(request('GET'))).json();
+ assert.equal(result.data.entries[entry.id].runPlan.testSeconds,1740);
+ assert.equal(result.data.entries[entry.id].durationSeconds,3000);
+ for(const runPlan of [{...entry.runPlan,week:13},{...entry.runPlan,effort:11},{...entry.runPlan,testSeconds:4000},{...entry.runPlan,asPlanned:null}])assert.equal((await api.POST(request('POST',{...entry,runPlan}))).status,400);
+ assert.equal(workoutPlan.normalizeWorkout({...workoutFixture(),runPlan:entry.runPlan}),null);
+});
+
+test('run-plan pace uses only a confirmed baseline and past dates never complete linked runs',()=>{
+ const client=browserClient(new Map(),()=>{} ,{preview:true});
+ const id=client.run(`(()=>{const e=Planner.create('run','2020-01-01',false);Planner.update(e.id,{runPlan:{programId:'kracht-5k-12-v2',week:2,logged:false,effort:null,asPlanned:true,testSeconds:1740},distanceKm:8,durationSeconds:3000});return e.id;})()`);
+ assert.equal(client.run('RunPlan.baseline()'),null);
+ assert.equal(client.run('RunPlan.pace(RunPlan.weeks[4])'),'Tempo na nulmeting');
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${id}').done`),false);
+ client.run(`Planner.update('${id}',{runPlan:{...Planner.entries()['${id}'].runPlan,logged:true}})`);
+ assert.equal(client.run('RunPlan.baseline()'),348);
+ assert.equal(client.run('RunPlan.pace(RunPlan.weeks[4])'),'5:38–5:43/km');
+ client.run(`Planner.update('${id}',{date:'2099-01-01'})`);
+ assert.equal(client.run('RunPlan.baseline()'),null);
+});
+
+test('the programme validates: 12 weeks, three gym sessions within an hour, one run, no invented loads or paces',()=>{
+ assert.equal(programme.validateProgramme().join('; '),'');
+ const weeks=programme.TRAINING_PROGRAMME.weeks;
+ assert.equal(weeks.length,12);
+ for(const week of weeks){
+  assert.equal(week.sessions.map(s=>s.key).join(''),'ABC');
+  for(const session of week.sessions)assert.ok(session.minutes<=60,`week ${week.week} ${session.key} takes ${session.minutes} min`);
+  assert.ok(week.run.steps.length>=3);
+ }
+ assert.equal(weeks.filter(w=>w.run.kind==='test').map(w=>w.week).join(),'2,12');
+ assert.equal(weeks.filter(w=>w.light).map(w=>w.week).join(),'4,8,12');
+ assert.ok(!/\d\s?kg/.test(JSON.stringify(weeks)));
+ // A broken programme is reported, not silently accepted.
+ const broken=structuredClone(programme.TRAINING_PROGRAMME);broken.weeks[0].sessions.pop();broken.weeks[4].run.kind='test';
+ assert.ok(programme.validateProgramme(broken).length>=2);
+});
+
+test('earlier run-plan entries stay valid, keep their own title and never feed the new programme',async()=>{
+ const {api,request}=flexibleApi();
+ const old={...workoutFixture(),templateId:'run',date:'2020-01-01',exercises:[],distanceKm:8,durationSeconds:3000,runPlan:{programId:'five-k-12-v1',week:2,logged:true,effort:8,asPlanned:true,testSeconds:1740}};
+ assert.equal((await api.POST(request('POST',old))).status,200);
+ const stored=(await (await api.GET(request('GET'))).json()).data.entries[old.id];
+ assert.deepEqual(stored.runPlan,old.runPlan);
+ const cache=new Map([['workout-planner-v1-test-user-voorbeeld',JSON.stringify({version:1,resetId:null,entries:{[old.id]:stored},pending:[],drafts:{}})]]);
+ const client=browserClient(cache,()=>{},{preview:true});
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${old.id}').title`),'W2 · Nulmeting');
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${old.id}').done`),true);
+ assert.equal(client.run('RunPlan.baseline()'),null);
+ assert.equal(client.run('RunPlan.entry(2)'),undefined);
+ assert.equal(JSON.stringify(client.run(`Planner.entries()['${old.id}'].runPlan`)),JSON.stringify(old.runPlan));
+});
+
+test('gym programme links are validated and a session only counts as logged with recorded repetitions',async()=>{
+ const {api,request}=flexibleApi();
+ const row={id:nodeCrypto.randomUUID(),name:'Leg press',sets:[{id:nodeCrypto.randomUUID(),reps:null,weightKg:null}]};
+ const entry={...workoutFixture(),templateId:'full',exercises:[row],gymPlan:{programId:'kracht-5k-12-v2',week:1,session:'A',logged:false,effort:null}};
+ assert.equal((await api.POST(request('POST',entry))).status,200);
+ assert.equal((await api.POST(request('POST',{...entry,gymPlan:{...entry.gymPlan,logged:true}}))).status,400);
+ const done={...entry,exercises:[{...row,sets:[{...row.sets[0],reps:10,weightKg:80}]}],gymPlan:{...entry.gymPlan,logged:true,effort:7}};
+ assert.equal((await api.POST(request('POST',done))).status,200);
+ const result=await (await api.GET(request('GET'))).json();
+ assert.deepEqual(result.data.entries[entry.id].gymPlan,done.gymPlan);
+ for(const gymPlan of [{...entry.gymPlan,week:13},{...entry.gymPlan,session:'D'},{...entry.gymPlan,programId:'five-k-12-v1'},{...entry.gymPlan,effort:11}])assert.equal((await api.POST(request('POST',{...entry,gymPlan}))).status,400);
+ assert.equal(workoutPlan.normalizeWorkout({...entry,templateId:'upper'}),null);
+});
+
+test('scheduling the programme is explicit, never duplicates and leaves existing and logged workouts alone',()=>{
+ const client=browserClient(new Map(),async()=>{throw Error('Preview must not fetch')},{preview:true});
+ assert.equal(client.run('Object.keys(Planner.entries()).length'),0);
+ const own=client.run('Planner.create("upper","2099-01-07",false)');
+ client.run('RunPlan.setPlan("2099-01-05",{A:1,B:3,C:5,run:7})');
+ assert.equal(client.run('RunPlan.planSummary().fresh.length'),48);
+ assert.equal(client.run('RunPlan.planSummary().others'),1);
+ client.run('RunPlan.applyPlan()');
+ assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length'),49);
+ assert.equal(client.run('RunPlan.planSummary().fresh.length'),0);
+ client.run('RunPlan.applyPlan()');
+ assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length'),49);
+ const first=client.run('RunPlan.gymEntry(1,"A")');
+ assert.equal(first.date,'2099-01-05');assert.equal(first.templateId,'full');
+ assert.equal(first.exercises[0].name,'Leg press');assert.equal(first.exercises[0].sets.length,2);
+ assert.ok(first.exercises.every(r=>r.sets.every(s=>s.reps===null&&s.weightKg===null)));
+ assert.equal(client.run('RunPlan.entry(12)').date,'2099-03-29');
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').done`),false);
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').title`),'W1 · Full body A');
+ // Scheduling the same session again moves it instead of adding a second one.
+ client.run('RunPlan.scheduleGym(1,"A","2099-01-06",false)');
+ assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted&&e.gymPlan?.week===1&&e.gymPlan.session==="A").length'),1);
+ // A logged session survives clearing the plan; so does the unrelated workout.
+ client.run(`(()=>{const e=Planner.entries()['${first.id}'];Planner.update(e.id,{date:'2020-01-01',exercises:e.exercises.map((r,i)=>i?r:{...r,sets:r.sets.map(s=>({...s,reps:10,weightKg:80}))})});Planner.update(e.id,{gymPlan:{...Planner.entries()[e.id].gymPlan,logged:true}});})()`);
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').done`),true);
+ assert.equal(client.run('RunPlan.clearTargets().length'),47);
+ client.run('RunPlan.clearPlan();RunPlan.clearPlan()');
+ const left=client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).map(e=>e.id)');
+ assert.deepEqual([...left].sort(),[own.id,first.id].sort());
+ assert.equal(client.run(`Planner.entries()['${first.id}'].exercises[0].sets[0].weightKg`),80);
+ // Removing the repetitions or moving the date forward withdraws the logged state, never the data.
+ client.run(`Planner.update('${first.id}',{date:'2099-01-05'})`);
+ assert.equal(client.run(`Planner.entries()['${first.id}'].gymPlan.logged`),false);
+ assert.equal(client.run(`Planner.entries()['${first.id}'].exercises[0].sets[0].reps`),10);
+});
+
+test('the pace check in week 7 only speeds up later paces after a controlled, as-planned log',()=>{
+ const client=browserClient(new Map(),()=>{},{preview:true});
+ const log=(week,extra)=>client.run(`(()=>{const e=RunPlan.schedule(${week},'2020-01-0${week}',false);Planner.update(e.id,{distanceKm:8,durationSeconds:3000,runPlan:{...Planner.entries()[e.id].runPlan,asPlanned:true,logged:true,...${JSON.stringify(extra)}}});return e.id;})()`);
+ log(2,{testSeconds:1740});
+ assert.equal(client.run('RunPlan.pace(RunPlan.weeks[8])'),'5:43–5:48/km');
+ const check=log(7,{effort:9});
+ assert.equal(client.run('RunPlan.paceBonus()'),0);
+ client.run(`Planner.update('${check}',{runPlan:{...Planner.entries()['${check}'].runPlan,effort:8}})`);
+ assert.equal(client.run('RunPlan.paceBonus()'),5);
+ assert.equal(client.run('RunPlan.pace(RunPlan.weeks[8])'),'5:38–5:43/km');
+ assert.equal(client.run('RunPlan.pace(RunPlan.weeks[4])'),'5:38–5:43/km');
+});
+
+test('calendar workout types match the programme sessions and link to a free programme week without duplicates',()=>{
+ const client=browserClient(new Map(),async()=>{throw Error('Preview must not fetch')},{preview:true});
+ assert.equal(client.run('Planner.types().map(t=>t.name).join("|")'),'Full body A|Full body B|Full body C|Upper body|Lower body|Run');
+ assert.equal(client.run('Planner.types()[0].exercises.join("|")'),programme.TRAINING_PROGRAMME.weeks[0].sessions[0].exercises.map(x=>x.name).join('|'));
+ // Nothing scheduled yet: the first Full body A becomes week 1, the next one week 2.
+ const first=client.run('Planner.add("prog:A","2099-01-05",false)');
+ assert.equal(first.templateId,'full');assert.equal(first.gymPlan.week,1);assert.equal(first.gymPlan.session,'A');assert.equal(first.gymPlan.logged,false);
+ assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').title`),'W1 · Full body A');
+ assert.equal(client.run('Planner.add("prog:A","2099-01-06",false)').gymPlan.week,2);
+ // With the programme in the calendar, a date in week 5 takes week 5 when that session is free.
+ assert.equal(client.run('RunPlan.weekFor("B","2099-02-04")'),5);
+ assert.equal(client.run('Planner.add("prog:B","2099-02-04",false)').gymPlan.week,5);
+ assert.equal(client.run('RunPlan.weekFor("B","2099-02-05")'),1);
+ // Free workouts stay unlinked.
+ const upper=client.run('Planner.add("upper","2099-01-07",false)');
+ assert.equal(upper.gymPlan,undefined);assert.equal(upper.templateId,'upper');
+ // Once all twelve are in the calendar, nothing more is added.
+ client.run('RunPlan.setPlan("2099-01-05");RunPlan.applyPlan()');
+ const count=client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length');
+ assert.equal(client.run('RunPlan.weekFor("A","2099-01-12")'),null);
+ assert.equal(client.run('Planner.add("prog:A","2099-01-12",false)'),null);
+ assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length'),count);
+ assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted&&e.gymPlan?.session==="A").length'),12);
 });
