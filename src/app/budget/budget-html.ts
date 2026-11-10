@@ -55,6 +55,10 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
 .row-amount{font-family:var(--display);font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .row-amount small{display:block;font-family:var(--body);font-size:13px;font-weight:500;color:var(--mut)}
 .empty{font-size:15px;color:var(--mut);padding:8px 0}
+.mini-bar{display:block;height:6px;border-radius:999px;background:rgba(255,255,255,.12);margin-top:8px;overflow:hidden}
+.mini-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--iris),var(--tide))}
+.row.static.settled{background:rgba(116,236,208,.12);border-color:transparent}
+.row.static.settled .row-amount small{color:var(--tide)}
 .spend{padding:14px;border-radius:var(--r-sm)}
 .spend-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
 .spend .bar{margin:12px 0}
@@ -126,8 +130,8 @@ const APP_BODY = String.raw`<a class="skip" href="#mainContent">Naar inhoud</a><
 
 <section class="view" id="view-huis" hidden aria-labelledby="houseTitle">
 <header class="page-heading"><div><div class="micro">Spaartracker</div><h1 id="houseTitle">Huis</h1></div></header>
-<section class="hero glass" aria-label="Stand van het huisbudget"><div class="hero-label" id="hLabel">Verwacht</div><div class="hero-number" id="hDiff">€ 0</div><p class="hero-note" id="hNote"></p><div class="bar" role="img" id="hBar" aria-label=""><i class="bar-plan" id="hBarPlan"></i><i class="bar-now" id="hBarNow"></i></div><div class="legend"><span><i class="l-now"></i>Nu gespaard</span><span><i class="l-plan"></i>Verwacht op de einddatum</span></div><div class="stats"><div><span>Nu gespaard</span><strong id="hNow">€ 0</strong></div><div><span>Huisbudget</span><strong id="hBudget">€ 0</strong></div><div><span>Maanden te gaan</span><strong id="hMonths">0</strong></div></div><p class="hero-note" id="hAll" style="margin-top:14px"></p><label class="target" for="hTarget">Einddatum<input class="field" type="month" id="hTarget" required></label></section>
-<div class="two"><section class="section pane" aria-labelledby="itemsTitle"><div class="section-head"><h2 id="itemsTitle">Huisbudget</h2><button type="button" class="text-button" id="itemsEdit">Aanpassen</button></div><div id="itemsHost"></div></section>
+<section class="hero glass" aria-label="Stand van het huisbudget"><div class="hero-label" id="hLabel">Verwacht</div><div class="hero-number" id="hDiff">€ 0</div><p class="hero-note" id="hNote"></p><div class="bar" role="img" id="hBar" aria-label=""><i class="bar-plan" id="hBarPlan"></i><i class="bar-now" id="hBarNow"></i></div><div class="legend"><span><i class="l-now"></i>Nu gespaard</span><span><i class="l-plan"></i>Verwacht op de einddatum</span></div><div class="stats"><div><span>Nu gespaard</span><strong id="hNow">€ 0</strong></div><div><span>Nog te betalen</span><strong id="hBudget">€ 0</strong></div><div><span>Maanden te gaan</span><strong id="hMonths">0</strong></div></div><p class="hero-note" id="hAll" style="margin-top:14px"></p><label class="target" for="hTarget">Einddatum<input class="field" type="month" id="hTarget" required></label></section>
+<div class="two"><section class="section pane" aria-labelledby="itemsTitle"><div class="section-head"><h2 id="itemsTitle">Huisbudget</h2><button type="button" class="text-button" id="itemsEdit">Aanpassen</button></div><p class="hero-note" id="itemsPaid" style="margin-bottom:10px"></p><div id="itemsHost"></div></section>
 <div><section class="section pane" aria-labelledby="potsTitle"><div class="section-head"><h2 id="potsTitle">Potten</h2><button type="button" class="text-button" id="potsEdit">Aanpassen</button></div><div id="potsHost"></div></section>
 <section class="section pane" aria-labelledby="extrasTitle" style="margin-top:16px"><div class="section-head"><h2 id="extrasTitle">Eenmalig</h2><button type="button" class="text-button" id="extrasEdit">Aanpassen</button></div><p class="hero-note" style="margin-bottom:10px">Bedragen die nog binnenkomen voor het huis. Vink af wat binnen is en tel het bij het saldo van je pot op.</p><div id="extrasHost"></div></section></div></div>
 </section>
@@ -182,11 +186,12 @@ const Budget = (() => {
   function summary(d,date=today()){
     const total=sum(d.costs,c=>c.amount),paid=sum(d.costs,paidPart),open=sum(d.costs,openPart),income=sum(d.income,i=>i.amount);
     const fixed=sum(d.costs.filter(c=>!c.saving),c=>c.amount),savings=round(total-fixed);
-    const months=monthsUntil(d.house.target,date),budget=sum(d.house.items,i=>i.amount),extras=sum(d.house.extras.filter(e=>!e.received),e=>e.amount);
+    // Payments already made for the house have left the pots, so savings are compared with what is still to pay.
+    const months=monthsUntil(d.house.target,date),budget=sum(d.house.items,i=>i.amount),housePaid=sum(d.house.items,i=>i.paid||0),remaining=sum(d.house.items,i=>Math.max(0,round(i.amount-(i.paid||0)))),extras=sum(d.house.extras.filter(e=>!e.received),e=>e.amount);
     const projected=p=>round(p.balance+p.monthly*months),counted=d.house.pots.filter(p=>p.counts);
     const now=sum(counted,p=>p.balance),expected=round(sum(counted,projected)+extras),everything=round(sum(d.house.pots,projected)+extras);
     return {month:{total,paid,open,income,fixed,savings,left:round(income-total),count:d.costs.length,paidCount:d.costs.filter(settled).length},
-      house:{months,budget,extras,now,expected,everything,diff:round(expected-budget),diffAll:round(everything-budget)}};
+      house:{months,budget,paid:housePaid,remaining,extras,now,expected,everything,diff:round(expected-remaining),diffAll:round(everything-remaining)}};
   }
 
   function status(){const el=$('saveState');
@@ -227,6 +232,9 @@ const Budget = (() => {
   // A variable cost shows what went out, what is left and a field to add an expense.
   function variableRow(c){const spent=spentOf(c),left=round(c.amount-spent),setting=settingTotal===c.id,share=c.amount?Math.min(100,spent/c.amount*100):spent?100:0;
     return '<div class="spend pane'+(left<0?' over':'')+'"><div class="spend-top"><span class="row-name">'+escapeHtml(c.name||'Naamloos')+'<small>'+euro(spent)+' van '+euro(c.amount)+' uitgegeven</small></span><span class="row-amount">'+euro(Math.abs(left))+'<small>'+(left<0?'over budget':'nog over')+'</small></span></div><div class="bar" role="img" aria-label="'+escapeHtml(euro(spent)+' van '+euro(c.amount)+' uitgegeven')+'"><i class="bar-now" style="width:'+share+'%"></i></div><form class="spend-form" data-spend="'+c.id+'" novalidate><label for="spend-'+c.id+'">'+(setting?'Totaal uitgegeven':'Uitgave toevoegen')+'<input class="field" id="spend-'+c.id+'" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="'+(setting?moneyText(spent):'')+'"></label><button type="submit" class="primary">'+(setting?'Opslaan':'Toevoegen')+'</button></form><button type="button" class="text-button" data-set-total="'+c.id+'">'+(setting?'Annuleren':'Totaal aanpassen')+'</button></div>';}
+  // A house item shows what is still to pay; a deposit shows as a thin bar and the paid amount.
+  function houseRow(i){const paid=i.paid||0,left=Math.max(0,round(i.amount-paid)),done=i.amount>0&&paid>=i.amount,share=i.amount?Math.min(100,paid/i.amount*100):0;
+    return '<div class="row static'+(done?' settled':'')+'"><span class="row-name">'+escapeHtml(i.name||'Naamloos')+(paid?'<small>'+euro(paid)+' van '+euro(i.amount)+' betaald'+(i.amount&&!done?' · '+Math.round(share)+'%':'')+'</small><span class="mini-bar" aria-hidden="true"><i style="width:'+share+'%"></i></span>':'')+'</span><span class="row-amount">'+euro(done?i.amount:left)+'<small>'+(done?'Betaald':paid?'nog te betalen':'')+'</small></span></div>';}
   function costRow(c){return '<button type="button" class="row" role="checkbox" aria-checked="'+c.paid+'" data-cost="'+c.id+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(c.name||'Naamloos')+(c.saving?'<small>Sparen</small>':'')+'</span><span class="row-amount">'+euro(c.amount)+'<small>'+(c.paid?'Betaald':'Nog te betalen')+'</small></span></button>';}
   function renderMonth(s){
     $('monthTitle').textContent=monthName(today()).replace(/^./,c=>c.toUpperCase());
@@ -252,8 +260,8 @@ const Budget = (() => {
     const months=summary(doc).house.months;
     $('hTarget').value=doc.house.target;
     const items=$('itemsHost');
-    if(editing.items)editor(items,doc.house.items,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0}));
-    else items.innerHTML=doc.house.items.length?'<div class="rows">'+doc.house.items.map(i=>'<div class="row static"><span class="row-name">'+escapeHtml(i.name||'Naamloos')+'</span><span class="row-amount">'+euro(i.amount)+'</span></div>').join('')+'</div>':'<p class="empty">Nog geen posten.</p>';
+    if(editing.items)editor(items,doc.house.items,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'paid',label:'Al betaald',type:'money'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0,paid:0}));
+    else items.innerHTML=doc.house.items.length?'<div class="rows">'+doc.house.items.map(houseRow).join('')+'</div>':'<p class="empty">Nog geen posten.</p>';
     const pots=$('potsHost');
     if(editing.pots)editor(pots,doc.house.pots,[{key:'name',label:'Naam',type:'text'},{key:'balance',label:'Saldo nu',type:'money'},{key:'monthly',label:'Inleg per maand',type:'money'},{key:'counts',label:'Telt mee voor het huis',type:'check'}],'Pot toevoegen',()=>({id:newId(),name:'',balance:0,monthly:0,counts:true}));
     else pots.innerHTML=doc.house.pots.length?'<div class="rows">'+doc.house.pots.map(p=>'<div class="row static"><span class="row-name">'+escapeHtml(p.name||'Naamloos')+'<small>'+(p.counts?'Telt mee':'Telt niet mee')+(p.monthly?' · '+euro(p.monthly)+' per maand':'')+'</small></span><span class="row-amount">'+euro(p.balance)+'<small>wordt '+euro(round(p.balance+p.monthly*months))+'</small></span></div>').join('')+'</div>':'<p class="empty">Nog geen potten.</p>';
@@ -272,10 +280,10 @@ const Budget = (() => {
     const when=monthName(doc.house.target);
     $('hLabel').textContent='Verwacht in '+when;
     $('hDiff').innerHTML=euro(Math.abs(h.diff))+'<small>'+(h.diff<0?'tekort':'over')+'</small>';$('hDiff').className='hero-number '+(h.diff<0?'short':'good');
-    $('hNote').innerHTML='Verwacht gespaard: <b>'+euro(h.expected)+'</b> van <b>'+euro(h.budget)+'</b>';
-    $('hBarNow').style.width=(h.budget?Math.min(100,h.now/h.budget*100):0)+'%';$('hBarPlan').style.width=(h.budget?Math.min(100,h.expected/h.budget*100):0)+'%';
-    $('hBar').setAttribute('aria-label','Nu gespaard '+euro(h.now)+', verwacht '+euro(h.expected)+' van '+euro(h.budget));
-    $('hNow').textContent=euro(h.now);$('hBudget').textContent=euro(h.budget);$('hMonths').textContent=h.months;
+    $('hNote').innerHTML='Verwacht gespaard: <b>'+euro(h.expected)+'</b> van <b>'+euro(h.remaining)+'</b> nog te betalen';
+    $('hBarNow').style.width=(h.remaining?Math.min(100,h.now/h.remaining*100):h.budget?100:0)+'%';$('hBarPlan').style.width=(h.remaining?Math.min(100,h.expected/h.remaining*100):h.budget?100:0)+'%';
+    $('hBar').setAttribute('aria-label','Nu gespaard '+euro(h.now)+', verwacht '+euro(h.expected)+', nog te betalen '+euro(h.remaining));
+    $('hNow').textContent=euro(h.now);$('hBudget').textContent=euro(h.remaining);$('itemsPaid').textContent=h.paid?euro(h.paid)+' van '+euro(h.budget)+' al betaald':'Totaal '+euro(h.budget);$('hMonths').textContent=h.months;
     $('hAll').textContent='Met alle potten erbij: '+euro(Math.abs(h.diffAll))+(h.diffAll<0?' tekort.':' over.');
   }
   function render(){

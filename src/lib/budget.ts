@@ -4,6 +4,8 @@
 export type BudgetLine = { id: string; name: string; amount: number };
 // A variable cost is spent bit by bit through the month (groceries); `spent` is what has gone out so far.
 export type BudgetCost = BudgetLine & { paid: boolean; saving: boolean; variable: boolean; spent: number };
+// A house item can be partly paid already (a deposit); `paid` is what has gone out for it so far.
+export type HouseItem = BudgetLine & { paid: number };
 export type BudgetExtra = BudgetLine & { received: boolean };
 export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean };
 export type BudgetDoc = {
@@ -11,7 +13,7 @@ export type BudgetDoc = {
   updatedAt: number;
   income: BudgetLine[];
   costs: BudgetCost[];
-  house: { target: string; items: BudgetLine[]; extras: BudgetExtra[]; pots: BudgetPot[] };
+  house: { target: string; items: HouseItem[]; extras: BudgetExtra[]; pots: BudgetPot[] };
 };
 
 export const BUDGET_ROW_ID = "budget:tom";
@@ -63,7 +65,9 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
       ? { ...base, amount: row.amount, paid: row.paid, saving: row.saving, variable: row.variable === true, spent: (row.spent as number | undefined) ?? 0 }
       : null);
   if (!income || !costs || !isRecord(value.house) || !validTargetMonth(value.house.target)) return null;
-  const items = list<BudgetLine>(value.house.items, (row, base) => (amount(row.amount) ? { ...base, amount: row.amount } : null));
+  // `paid` was added later; items saved before that count as nothing paid yet.
+  const items = list<HouseItem>(value.house.items, (row, base) =>
+    amount(row.amount) && (row.paid === undefined || amount(row.paid)) ? { ...base, amount: row.amount, paid: (row.paid as number | undefined) ?? 0 } : null);
   const extras = list<BudgetExtra>(value.house.extras, (row, base) =>
     amount(row.amount) && typeof row.received === "boolean" ? { ...base, amount: row.amount, received: row.received } : null);
   const pots = list<BudgetPot>(value.house.pots, (row, base) =>

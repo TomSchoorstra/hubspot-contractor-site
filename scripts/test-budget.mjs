@@ -81,6 +81,12 @@ test("budget documents validate amounts, ids, the target month and drop unknown 
   const spending = fixture(); spending.costs[1].variable = true; spending.costs[1].spent = 120.5;
   assert.equal(normalizeBudget(spending).costs[1].spent, 120.5); assert.equal(normalizeBudget(spending).costs[1].variable, true);
   assert.equal(broken(d => { d.costs[1].spent = -1; }), null);
+  // House items saved before deposits existed count as nothing paid; a given deposit is kept and checked.
+  assert.equal(clean.house.items[0].paid, 0);
+  const deposit = fixture(); deposit.house.items[0].paid = 2250.5;
+  assert.equal(normalizeBudget(deposit).house.items[0].paid, 2250.5);
+  assert.equal(broken(d => { d.house.items[0].paid = -1; }), null);
+  assert.equal(broken(d => { d.house.items[0].paid = "25%"; }), null);
   assert.equal(broken(d => { d.costs[1].variable = "yes"; }), null);
   assert.equal(normalizeBudget(null), null);
 });
@@ -182,7 +188,16 @@ test("the month and house totals follow the document", async () => {
   const s = run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10"))'), { month, house } = JSON.parse(s);
   assert.deepEqual(month, { total: 1920.5, paid: 1500, open: 420.5, income: 3200, fixed: 1420.5, savings: 500, left: 1279.5, count: 4, paidCount: 2 });
   // 23 months remain. Counted pots: (400 + 23 x 500) + (1000 + 23 x 100) = 15200, plus the cheque that is still expected.
-  assert.deepEqual(house, { months: 23, budget: 15000, extras: 1000, now: 1400, expected: 16200, everything: 18550, diff: 1200, diffAll: 3550 });
+  assert.deepEqual(house, { months: 23, budget: 15000, paid: 0, remaining: 15000, extras: 1000, now: 1400, expected: 16200, everything: 18550, diff: 1200, diffAll: 3550 });
+  // A 25% deposit on the kitchen has already left the pots, so only the rest still has to be covered.
+  run('Budget.doc().house.items.find(x=>x.id==="kitchen").paid=2250');
+  const deposit = JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)'));
+  assert.equal(deposit.paid, 2250); assert.equal(deposit.remaining, 12750); assert.equal(deposit.budget, 15000);
+  assert.equal(deposit.diff, 3450); assert.equal(deposit.diffAll, 5800);
+  // Paying more than an item's amount never lowers what the other items still need.
+  run('Budget.doc().house.items.find(x=>x.id==="kitchen").paid=9500');
+  assert.equal(JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)')).remaining, 6000);
+  run('Budget.doc().house.items.find(x=>x.id==="kitchen").paid=0');
   assert.equal(run('Budget.monthsUntil("2028-10","2028-11-01")'), 0);
   assert.equal(run('Budget.monthsUntil("2028-10","2028-10-31")'), 0);
   assert.equal(run('Budget.monthsUntil("2028-10","2027-12-31")'), 10);
