@@ -77,7 +77,13 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
 .split .is-short b{color:var(--amber)}
 
 /* Editing */
-.edit-row{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:8px 8px;padding:12px 0;border-bottom:1px solid var(--edge-soft)}
+.edit-row{display:grid;grid-template-columns:36px minmax(0,1fr) 44px;gap:8px 6px;padding:12px 0;border-bottom:1px solid var(--edge-soft);transition:background .15s}
+.drag-handle{align-self:start;margin-top:22px;display:grid;place-items:center;width:36px;height:52px;border-radius:12px;color:var(--mut);cursor:grab;touch-action:none}
+.drag-handle .icon{fill:currentColor;stroke:none}
+.drag-handle:hover{color:var(--ink);background:rgba(255,255,255,.08)}
+.edit-row.dragging{position:relative;z-index:2;background:rgba(185,168,255,.14);border-radius:var(--r-sm);box-shadow:0 14px 34px -14px rgba(0,0,0,.7)}
+.edit-row.dragging .drag-handle{cursor:grabbing;color:var(--ink)}
+body.is-sorting{cursor:grabbing;-webkit-user-select:none;user-select:none}
 .edit-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px}
 .edit-fields .field{padding:10px 12px;font-size:17px}
 .edit-fields label{display:grid;gap:4px;min-width:0}
@@ -150,7 +156,8 @@ const ICONS = {
   calendar:'<rect x="3" y="5" width="18" height="16" rx="3"/><path d="M7 3v4m10-4v4M3 11h18m-13 4h2m4 0h2"/>',
   home:'<path d="M3 11 12 3l9 8M5 9.5V21h14V9.5M10 21v-6h4v6"/>',
   check:'<path d="m5 12 4 4L19 6"/>', plus:'<path d="M12 5v14M5 12h14"/>',
-  trash:'<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/>'
+  trash:'<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/>',
+  grip:'<circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/>'
 };
 function icon(name){ return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + '</svg>'; }
 let toastTimer;
@@ -220,7 +227,7 @@ const Budget = (() => {
 
   // A generic list editor: text, money and checkbox columns, plus add and remove.
   function editor(host,rows,columns,addLabel,create){
-    host.innerHTML=(rows.length?'':'<p class="empty">Nog niets toegevoegd.</p>')+rows.map((row,index)=>'<div class="edit-row"><div class="edit-fields">'+columns.map(col=>{
+    host.innerHTML=(rows.length?'':'<p class="empty">Nog niets toegevoegd.</p>')+rows.map((row,index)=>'<div class="edit-row" data-row-id="'+row.id+'"><button type="button" class="drag-handle" data-move="'+row.id+'" aria-label="'+escapeHtml('Verplaats '+(row.name||'regel '+(index+1))+'. Gebruik de pijltjestoetsen.')+'">'+icon('grip')+'</button><div class="edit-fields">'+columns.map(col=>{
       const id='e-'+host.id+'-'+row.id+'-'+col.key;
       if(col.type==='select')return '<label for="'+id+'">'+col.label+'<select class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'">'+col.options(row).map(o=>'<option value="'+escapeHtml(o.value)+'" '+(row[col.key]===o.value?'selected':'')+'>'+escapeHtml(o.label)+'</option>').join('')+'</select></label>';
       if(col.type==='check')return '<label class="check" for="'+id+'"><input type="checkbox" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" '+(row[col.key]?'checked':'')+'>'+col.label+'</label>';
@@ -237,6 +244,35 @@ const Budget = (() => {
       const index=rows.findIndex(r=>r.id===button.dataset.remove);if(index<0)return;const [removed]=rows.splice(index,1);commit();
       toastAction('Regel verwijderd','Ongedaan maken',()=>{rows.splice(Math.min(index,rows.length),0,removed);commit();});
     }));
+    // Reordering: drag the grip with a mouse or finger, or focus it and use the arrow keys.
+    // The array itself is reordered, so the new order is saved and used everywhere the list appears.
+    host.querySelectorAll('[data-move]').forEach(handle=>{
+      handle.addEventListener('keydown',event=>{
+        if(event.key!=='ArrowUp'&&event.key!=='ArrowDown')return;event.preventDefault();
+        const index=rows.findIndex(r=>r.id===handle.dataset.move),to=index+(event.key==='ArrowUp'?-1:1);
+        if(index<0||to<0||to>=rows.length)return;const [row]=rows.splice(index,1);rows.splice(to,0,row);commit();
+        host.querySelector('[data-move="'+row.id+'"]')?.focus();
+      });
+      handle.addEventListener('pointerdown',event=>{
+        if(event.button!==0)return;event.preventDefault();
+        // Listen on the window: moving the row in the DOM releases pointer capture, so the handle itself can miss the release.
+        const item=handle.closest('.edit-row'),pointer=event.pointerId;item.classList.add('dragging');document.body.classList.add('is-sorting');
+        const move=e=>{if(e.pointerId!==pointer)return;e.preventDefault();
+          const others=[...host.querySelectorAll('.edit-row')].filter(el=>el!==item);
+          const before=others.find(el=>{const box=el.getBoundingClientRect();return e.clientY<box.top+box.height/2;});
+          if(before){if(item.nextElementSibling!==before)host.insertBefore(item,before);}else{const last=others.at(-1);if(last&&last.nextElementSibling!==item)last.after(item);}
+          if(e.clientY<80)window.scrollBy(0,-14);else if(e.clientY>window.innerHeight-120)window.scrollBy(0,14);
+        };
+        const end=e=>{if(e.pointerId!==pointer)return;
+          window.removeEventListener('pointermove',move);window.removeEventListener('pointerup',end);window.removeEventListener('pointercancel',end);
+          item.classList.remove('dragging');document.body.classList.remove('is-sorting');
+          const order=[...host.querySelectorAll('.edit-row')].map(el=>el.dataset.rowId);
+          if(order.join()===rows.map(r=>r.id).join())return;
+          rows.sort((a,b)=>order.indexOf(a.id)-order.indexOf(b.id));commit();toast('Volgorde aangepast');
+        };
+        window.addEventListener('pointermove',move,{passive:false});window.addEventListener('pointerup',end);window.addEventListener('pointercancel',end);
+      });
+    });
     host.querySelector('.edit-add').addEventListener('click',()=>{if(rows.length>=100){toast('Maximaal 100 regels');return;}const row=create();rows.push(row);commit();host.querySelector('[data-row="'+row.id+'"]')?.focus();});
   }
   function toggleEdit(key,button,label){editing[key]=!editing[key];button.textContent=editing[key]?'Klaar':label;render();}
