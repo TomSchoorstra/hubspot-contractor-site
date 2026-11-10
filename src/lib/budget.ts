@@ -8,7 +8,8 @@ export type BudgetCost = BudgetLine & { paid: boolean; saving: boolean; variable
 export type HouseItem = BudgetLine & { paid: number };
 // An expected one-off amount can arrive in parts (an allowance settled per invoice); `got` is what has arrived so far.
 export type BudgetExtra = BudgetLine & { received: boolean; got: number };
-export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean };
+// A pot can stop at a maximum (`cap`, 0 = none). From then on its monthly deposit goes to another pot (`overflowTo`, "" = nowhere).
+export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean; cap: number; overflowTo: string };
 export type BudgetDoc = {
   version: 1;
   updatedAt: number;
@@ -74,9 +75,15 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
     amount(row.amount) && typeof row.received === "boolean" && (row.got === undefined || amount(row.got))
       ? { ...base, amount: row.amount, received: row.received, got: (row.got as number | undefined) ?? 0 } : null);
   const pots = list<BudgetPot>(value.house.pots, (row, base) =>
+    // `cap` and `overflowTo` were added later; pots saved before that have no maximum.
     amount(row.balance) && amount(row.monthly) && typeof row.counts === "boolean"
-      ? { id: base.id, name: base.name, balance: row.balance, monthly: row.monthly, counts: row.counts }
+      && (row.cap === undefined || amount(row.cap))
+      && (row.overflowTo === undefined || (typeof row.overflowTo === "string" && /^([a-z0-9-]{1,40})?$/.test(row.overflowTo)))
+      ? { id: base.id, name: base.name, balance: row.balance, monthly: row.monthly, counts: row.counts, cap: (row.cap as number | undefined) ?? 0, overflowTo: (row.overflowTo as string | undefined) ?? "" }
       : null);
   if (!items || !extras || !pots) return null;
+  // A pot that overflows into itself or into a pot that no longer exists overflows nowhere.
+  const potIds = new Set(pots.map(pot => pot.id));
+  for (const pot of pots) if (pot.overflowTo && (pot.overflowTo === pot.id || !potIds.has(pot.overflowTo))) pot.overflowTo = "";
   return { version: 1, updatedAt: value.updatedAt, income, costs, house: { target: value.house.target, items, extras, pots } };
 }

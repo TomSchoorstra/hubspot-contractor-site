@@ -92,6 +92,14 @@ test("budget documents validate amounts, ids, the target month and drop unknown 
   const part = fixture(); part.house.extras[0].got = 250;
   assert.equal(normalizeBudget(part).house.extras[0].got, 250);
   assert.equal(broken(d => { d.house.extras[0].got = -5; }), null);
+  // Pots saved before maximums existed have none; an overflow to itself or to a missing pot goes nowhere.
+  assert.equal(clean.house.pots[0].cap, 0); assert.equal(clean.house.pots[0].overflowTo, "");
+  const capped = fixture(); capped.house.pots[1].cap = 2000; capped.house.pots[1].overflowTo = "house"; capped.house.pots[2].overflowTo = "holiday"; capped.house.pots[0].overflowTo = "gone";
+  const cappedClean = normalizeBudget(capped);
+  assert.equal(cappedClean.house.pots[1].cap, 2000); assert.equal(cappedClean.house.pots[1].overflowTo, "house");
+  assert.equal(cappedClean.house.pots[2].overflowTo, ""); assert.equal(cappedClean.house.pots[0].overflowTo, "");
+  assert.equal(broken(d => { d.house.pots[1].cap = -1; }), null);
+  assert.equal(broken(d => { d.house.pots[1].overflowTo = "Bad Id!"; }), null);
   assert.equal(broken(d => { d.costs[1].variable = "yes"; }), null);
   assert.equal(normalizeBudget(null), null);
 });
@@ -219,6 +227,19 @@ test("the month and house totals follow the document", async () => {
   run('(()=>{const c=Budget.doc().costs.find(x=>x.id==="food");c.variable=false;c.spent=0;})()');
   assert.equal(elements.get("mOpen").textContent.replace(/\s/g, " "), "€ 420,50");
   assert.equal(elements.get("hDiff").innerHTML.replace(/\s/g, " "), "€ 1.200<small>over</small>");
+  // A buffer that stops at its maximum: the rest of its deposits go to the house pot and count from there.
+  // Buffer 1000 + 23 x 100 = 3300 would be saved; it stops at 2000, so 1300 moves to the house pot (400 + 23 x 500 + 1300 = 13200).
+  run('(()=>{const p=Budget.doc().house.pots.find(x=>x.id==="savings");p.counts=false;p.cap=2000;p.overflowTo="house";})()');
+  const capped = JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)'));
+  assert.equal(capped.now, 400); assert.equal(capped.expected, 14200); assert.equal(capped.diff, -800);
+  assert.equal(capped.everything, 18550);
+  // A balance already above the maximum stays as it is and every deposit moves on.
+  run('Budget.doc().house.pots.find(x=>x.id==="savings").cap=500');
+  assert.equal(JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)')).expected, 400 + 11500 + 2300 + 1000);
+  // Without a target the deposits simply stop counting anywhere.
+  run('Budget.doc().house.pots.find(x=>x.id==="savings").overflowTo=""');
+  assert.equal(JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)')).everything, 11900 + 1000 + 2350 + 1000);
+  run('(()=>{const p=Budget.doc().house.pots.find(x=>x.id==="savings");p.counts=true;p.cap=0;p.overflowTo="";})()');
   // Part of an expected one-off amount can already be in; only the rest is still expected.
   run('Budget.doc().house.extras.find(x=>x.id==="cheque").got=250');
   assert.equal(JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)')).extras, 750);

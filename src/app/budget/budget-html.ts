@@ -55,6 +55,8 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
 .row-amount{font-family:var(--display);font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .row-amount small{display:block;font-family:var(--body);font-size:13px;font-weight:500;color:var(--mut)}
 .empty{font-size:15px;color:var(--mut);padding:8px 0}
+.row-name small.flow{color:var(--tide)}
+.edit-fields select.field{font-size:16px;font-weight:600}
 .mini-bar{display:block;height:6px;border-radius:999px;background:rgba(255,255,255,.12);margin-top:8px;overflow:hidden}
 .mini-bar i{display:block;height:100%;border-radius:999px;background:linear-gradient(90deg,var(--iris),var(--tide))}
 .row.static.settled{background:rgba(116,236,208,.12);border-color:transparent}
@@ -180,13 +182,24 @@ const Budget = (() => {
   const paidPart=c=>c.variable?spentOf(c):c.paid?c.amount:0;
   const openPart=c=>c.variable?Math.max(0,round(c.amount-spentOf(c))):c.paid?0:c.amount;
   const settled=c=>c.variable?spentOf(c)>=c.amount:c.paid;
+  // Where every pot ends up after the remaining months. A pot with a maximum stops there; what it would have
+  // saved beyond that goes to the pot it overflows into. Overflow is not passed on a second time.
+  function projectPots(pots,months){
+    const flow=new Map(pots.map(p=>[p.id,{own:0,spill:0,incoming:0,total:0,from:[]}]));
+    for(const p of pots){const f=flow.get(p.id),natural=round(p.balance+p.monthly*months);
+      f.own=p.cap>0?Math.max(p.balance,Math.min(natural,p.cap)):natural;f.spill=round(natural-f.own);
+      const target=p.overflowTo&&p.overflowTo!==p.id?flow.get(p.overflowTo):null;
+      if(target&&f.spill>0){target.incoming=round(target.incoming+f.spill);target.from.push(p.name||'Naamloos');}}
+    for(const f of flow.values())f.total=round(f.own+f.incoming);
+    return flow;
+  }
   // Every number on the page comes from here.
   function summary(d,date=today()){
     const total=sum(d.costs,c=>c.amount),paid=sum(d.costs,paidPart),open=sum(d.costs,openPart),income=sum(d.income,i=>i.amount);
     const fixed=sum(d.costs.filter(c=>!c.saving),c=>c.amount),savings=round(total-fixed);
     // Payments already made for the house have left the pots, so savings are compared with what is still to pay.
     const months=monthsUntil(d.house.target,date),budget=sum(d.house.items,i=>i.amount),housePaid=sum(d.house.items,i=>i.paid||0),remaining=sum(d.house.items,i=>Math.max(0,round(i.amount-(i.paid||0)))),extras=sum(d.house.extras,e=>e.received?0:Math.max(0,round(e.amount-(e.got||0))));
-    const projected=p=>round(p.balance+p.monthly*months),counted=d.house.pots.filter(p=>p.counts);
+    const flow=projectPots(d.house.pots,months),projected=p=>flow.get(p.id).total,counted=d.house.pots.filter(p=>p.counts);
     const now=sum(counted,p=>p.balance),expected=round(sum(counted,projected)+extras),everything=round(sum(d.house.pots,projected)+extras);
     return {month:{total,paid,open,income,fixed,savings,left:round(income-total),count:d.costs.length,paidCount:d.costs.filter(settled).length},
       house:{months,budget,paid:housePaid,remaining,extras,now,expected,everything,diff:round(expected-remaining),diffAll:round(everything-remaining)}};
@@ -209,10 +222,11 @@ const Budget = (() => {
   function editor(host,rows,columns,addLabel,create){
     host.innerHTML=(rows.length?'':'<p class="empty">Nog niets toegevoegd.</p>')+rows.map((row,index)=>'<div class="edit-row"><div class="edit-fields">'+columns.map(col=>{
       const id='e-'+host.id+'-'+row.id+'-'+col.key;
+      if(col.type==='select')return '<label for="'+id+'">'+col.label+'<select class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'">'+col.options(row).map(o=>'<option value="'+escapeHtml(o.value)+'" '+(row[col.key]===o.value?'selected':'')+'>'+escapeHtml(o.label)+'</option>').join('')+'</select></label>';
       if(col.type==='check')return '<label class="check" for="'+id+'"><input type="checkbox" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" '+(row[col.key]?'checked':'')+'>'+col.label+'</label>';
-      return '<label for="'+id+'" class="'+(col.type==='text'?'wide':'')+'">'+col.label+'<input class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" data-type="'+col.type+'" type="text" '+(col.type==='money'?'inputmode="decimal"':'maxlength="80"')+' autocomplete="off" value="'+escapeHtml(col.type==='money'?moneyText(row[col.key]):row[col.key])+'"></label>';
+      return '<label for="'+id+'" class="'+(col.type==='text'?'wide':'')+'">'+col.label+'<input class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" data-type="'+col.type+'" type="text" '+(col.type==='money'?'inputmode="decimal"':'maxlength="80"')+' autocomplete="off" value="'+escapeHtml(col.type==='money'?moneyText(row[col.key]??0):row[col.key]??'')+'"></label>';
     }).join('')+'</div><button type="button" class="edit-remove" data-remove="'+row.id+'" aria-label="'+escapeHtml((row.name||'Regel '+(index+1))+' verwijderen')+'">'+icon('trash')+'</button></div>').join('')+'<button type="button" class="ghost edit-add">'+icon('plus')+escapeHtml(addLabel)+'</button>';
-    host.querySelectorAll('input').forEach(input=>input.addEventListener(input.type==='checkbox'?'change':'input',()=>{
+    host.querySelectorAll('input,select').forEach(input=>input.addEventListener(input.type==='checkbox'||input.tagName==='SELECT'?'change':'input',()=>{
       const row=rows.find(r=>r.id===input.dataset.row);if(!row)return;
       if(input.type==='checkbox')row[input.dataset.key]=input.checked;
       else if(input.dataset.type==='money'){const value=parseMoney(input.value);input.setAttribute('aria-invalid',String(value===undefined));if(value===undefined)return;row[input.dataset.key]=value;}
@@ -264,8 +278,10 @@ const Budget = (() => {
     if(editing.items)editor(items,doc.house.items,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'paid',label:'Al betaald',type:'money'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0,paid:0}));
     else items.innerHTML=doc.house.items.length?'<div class="rows">'+doc.house.items.map(houseRow).join('')+'</div>':'<p class="empty">Nog geen posten.</p>';
     const pots=$('potsHost');
-    if(editing.pots)editor(pots,doc.house.pots,[{key:'name',label:'Naam',type:'text'},{key:'balance',label:'Saldo nu',type:'money'},{key:'monthly',label:'Inleg per maand',type:'money'},{key:'counts',label:'Telt mee voor het huis',type:'check'}],'Pot toevoegen',()=>({id:newId(),name:'',balance:0,monthly:0,counts:true}));
-    else pots.innerHTML=doc.house.pots.length?'<div class="rows">'+doc.house.pots.map(p=>'<div class="row static"><span class="row-name">'+escapeHtml(p.name||'Naamloos')+'<small>'+(p.counts?'Telt mee':'Telt niet mee')+(p.monthly?' · '+euro(p.monthly)+' per maand':'')+'</small></span><span class="row-amount">'+euro(p.balance)+'<small>wordt '+euro(round(p.balance+p.monthly*months))+'</small></span></div>').join('')+'</div>':'<p class="empty">Nog geen potten.</p>';
+    if(editing.pots)editor(pots,doc.house.pots,[{key:'name',label:'Naam',type:'text'},{key:'balance',label:'Saldo nu',type:'money'},{key:'monthly',label:'Inleg per maand',type:'money'},{key:'cap',label:'Maximum (0 = geen)',type:'money'},{key:'overflowTo',label:'Daarna inleg naar',type:'select',options:row=>[{value:'',label:'Nergens, inleg stopt'},...doc.house.pots.filter(o=>o.id!==row.id).map(o=>({value:o.id,label:o.name||'Naamloos'}))]},{key:'counts',label:'Telt mee voor het huis',type:'check'}],'Pot toevoegen',()=>({id:newId(),name:'',balance:0,monthly:0,counts:true,cap:0,overflowTo:''}));
+    else{const flow=projectPots(doc.house.pots,months),nameOf=id=>doc.house.pots.find(o=>o.id===id)?.name||'Naamloos';
+      pots.innerHTML=doc.house.pots.length?'<div class="rows">'+doc.house.pots.map(p=>{const f=flow.get(p.id),target=p.overflowTo&&p.overflowTo!==p.id&&flow.has(p.overflowTo);
+        return '<div class="row static"><span class="row-name">'+escapeHtml(p.name||'Naamloos')+'<small>'+(p.counts?'Telt mee':'Telt niet mee')+(p.monthly?' · '+euro(p.monthly)+' per maand':'')+(p.cap>0?' · max '+euro(p.cap):'')+'</small>'+(f.spill>0?'<small class="flow">Daarna '+euro(f.spill)+(target?' naar '+escapeHtml(nameOf(p.overflowTo)):' niet meer ingelegd')+'</small>':'')+(f.incoming>0?'<small class="flow">Inclusief '+euro(f.incoming)+' uit '+escapeHtml(f.from.join(', '))+'</small>':'')+'</span><span class="row-amount">'+euro(p.balance)+'<small>wordt '+euro(f.total)+'</small></span></div>';}).join('')+'</div>':'<p class="empty">Nog geen potten.</p>';}
     const extras=$('extrasHost');
     if(editing.extras)editor(extras,doc.house.extras,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'got',label:'Al ontvangen',type:'money'}],'Bedrag toevoegen',()=>({id:newId(),name:'',amount:0,received:false,got:0}));
     else{extras.innerHTML=doc.house.extras.length?'<div class="rows">'+doc.house.extras.map(extraRow).join('')+'</div>':'<p class="empty">Geen eenmalige bedragen.</p>';
