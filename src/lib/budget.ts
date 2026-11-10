@@ -6,7 +6,8 @@ export type BudgetLine = { id: string; name: string; amount: number };
 export type BudgetCost = BudgetLine & { paid: boolean; saving: boolean; variable: boolean; spent: number };
 // A house item can be partly paid already (a deposit); `paid` is what has gone out for it so far.
 export type HouseItem = BudgetLine & { paid: number };
-export type BudgetExtra = BudgetLine & { received: boolean };
+// An expected one-off amount can arrive in parts (an allowance settled per invoice); `got` is what has arrived so far.
+export type BudgetExtra = BudgetLine & { received: boolean; got: number };
 export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean };
 export type BudgetDoc = {
   version: 1;
@@ -69,7 +70,9 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
   const items = list<HouseItem>(value.house.items, (row, base) =>
     amount(row.amount) && (row.paid === undefined || amount(row.paid)) ? { ...base, amount: row.amount, paid: (row.paid as number | undefined) ?? 0 } : null);
   const extras = list<BudgetExtra>(value.house.extras, (row, base) =>
-    amount(row.amount) && typeof row.received === "boolean" ? { ...base, amount: row.amount, received: row.received } : null);
+    // `got` was added later; amounts saved before that count as nothing received yet.
+    amount(row.amount) && typeof row.received === "boolean" && (row.got === undefined || amount(row.got))
+      ? { ...base, amount: row.amount, received: row.received, got: (row.got as number | undefined) ?? 0 } : null);
   const pots = list<BudgetPot>(value.house.pots, (row, base) =>
     amount(row.balance) && amount(row.monthly) && typeof row.counts === "boolean"
       ? { id: base.id, name: base.name, balance: row.balance, monthly: row.monthly, counts: row.counts }

@@ -76,7 +76,8 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
 
 /* Editing */
 .edit-row{display:grid;grid-template-columns:minmax(0,1fr) 44px;gap:8px 8px;padding:12px 0;border-bottom:1px solid var(--edge-soft)}
-.edit-fields{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.edit-fields{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:8px 10px}
+.edit-fields .field{padding:10px 12px;font-size:17px}
 .edit-fields label{display:grid;gap:4px;min-width:0}
 .edit-fields label.wide{grid-column:1/-1}
 .edit-fields label.check{grid-column:1/-1;display:flex;align-items:center;gap:10px;min-height:44px;font-size:15px;color:var(--ink)}
@@ -97,9 +98,6 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
  .section{padding:24px}
  .two{display:grid;grid-template-columns:1.25fr 1fr;gap:18px;align-items:start}
  .two>.section{margin-bottom:0}
- .edit-fields{grid-template-columns:2fr 1fr 1fr}
- .edit-fields label.wide{grid-column:auto}
- .edit-fields label.check{grid-column:auto;align-self:end;min-height:52px}
 }
 `;
 
@@ -133,11 +131,11 @@ const APP_BODY = String.raw`<a class="skip" href="#mainContent">Naar inhoud</a><
 <section class="hero glass" aria-label="Stand van het huisbudget"><div class="hero-label" id="hLabel">Verwacht</div><div class="hero-number" id="hDiff">€ 0</div><p class="hero-note" id="hNote"></p><div class="bar" role="img" id="hBar" aria-label=""><i class="bar-plan" id="hBarPlan"></i><i class="bar-now" id="hBarNow"></i></div><div class="legend"><span><i class="l-now"></i>Nu gespaard</span><span><i class="l-plan"></i>Verwacht op de einddatum</span></div><div class="stats"><div><span>Nu gespaard</span><strong id="hNow">€ 0</strong></div><div><span>Nog te betalen</span><strong id="hBudget">€ 0</strong></div><div><span>Maanden te gaan</span><strong id="hMonths">0</strong></div></div><p class="hero-note" id="hAll" style="margin-top:14px"></p><label class="target" for="hTarget">Einddatum<input class="field" type="month" id="hTarget" required></label></section>
 <div class="two"><section class="section pane" aria-labelledby="itemsTitle"><div class="section-head"><h2 id="itemsTitle">Huisbudget</h2><button type="button" class="text-button" id="itemsEdit">Aanpassen</button></div><p class="hero-note" id="itemsPaid" style="margin-bottom:10px"></p><div id="itemsHost"></div></section>
 <div><section class="section pane" aria-labelledby="potsTitle"><div class="section-head"><h2 id="potsTitle">Potten</h2><button type="button" class="text-button" id="potsEdit">Aanpassen</button></div><div id="potsHost"></div></section>
-<section class="section pane" aria-labelledby="extrasTitle" style="margin-top:16px"><div class="section-head"><h2 id="extrasTitle">Eenmalig</h2><button type="button" class="text-button" id="extrasEdit">Aanpassen</button></div><p class="hero-note" style="margin-bottom:10px">Bedragen die nog binnenkomen voor het huis. Vink af wat binnen is en tel het bij het saldo van je pot op.</p><div id="extrasHost"></div></section></div></div>
+<section class="section pane" aria-labelledby="extrasTitle" style="margin-top:16px"><div class="section-head"><h2 id="extrasTitle">Eenmalig</h2><button type="button" class="text-button" id="extrasEdit">Aanpassen</button></div><p class="hero-note" style="margin-bottom:10px">Bedragen die nog binnenkomen of worden verrekend. Vul bij Aanpassen in wat al binnen is, of vink af als alles binnen is.</p><div id="extrasHost"></div></section></div></div>
 </section>
 
 <footer class="page-footer planner-footer"><div class="planner-save" id="saveState" data-status="saving" role="status">Laden…</div><div class="foot-actions"><button class="text-button" id="exportData" type="button">Exporteren</button><form class="footer-form" method="post" action="/budget/logout"><button class="text-button" type="submit">Uitloggen</button></form></div></footer>
-<details class="import section pane" id="importPanel" style="margin-top:16px" hidden><summary>Importeren</summary><label for="laterImport" class="sr-only">Importbestand</label><textarea id="laterImport" spellcheck="false" autocomplete="off"></textarea><p class="notice" id="laterImportError" role="status"></p><button type="button" class="ghost" id="laterImportApply">Huidig budget vervangen</button></details>
+<details class="import section pane" id="importPanel" style="margin-top:16px" hidden><summary>Importeren</summary><p class="hero-note">Een volledig bestand vervangt je hele budget. Een bestand met één onderdeel, zoals je huisposten, vervangt alleen dat onderdeel.</p><label for="laterImport" class="sr-only">Importbestand</label><textarea id="laterImport" spellcheck="false" autocomplete="off"></textarea><p class="notice" id="laterImportError" role="status"></p><button type="button" class="ghost" id="laterImportApply">Importeren</button></details>
 </main></div><div class="toast" id="toast" role="status"></div><noscript><p style="padding:24px">Zet JavaScript aan om je budget te gebruiken.</p></noscript><script>
 /*__BUDGET_CONFIG__*/
 /*__BUDGET_SCRIPT__*/
@@ -187,7 +185,7 @@ const Budget = (() => {
     const total=sum(d.costs,c=>c.amount),paid=sum(d.costs,paidPart),open=sum(d.costs,openPart),income=sum(d.income,i=>i.amount);
     const fixed=sum(d.costs.filter(c=>!c.saving),c=>c.amount),savings=round(total-fixed);
     // Payments already made for the house have left the pots, so savings are compared with what is still to pay.
-    const months=monthsUntil(d.house.target,date),budget=sum(d.house.items,i=>i.amount),housePaid=sum(d.house.items,i=>i.paid||0),remaining=sum(d.house.items,i=>Math.max(0,round(i.amount-(i.paid||0)))),extras=sum(d.house.extras.filter(e=>!e.received),e=>e.amount);
+    const months=monthsUntil(d.house.target,date),budget=sum(d.house.items,i=>i.amount),housePaid=sum(d.house.items,i=>i.paid||0),remaining=sum(d.house.items,i=>Math.max(0,round(i.amount-(i.paid||0)))),extras=sum(d.house.extras,e=>e.received?0:Math.max(0,round(e.amount-(e.got||0))));
     const projected=p=>round(p.balance+p.monthly*months),counted=d.house.pots.filter(p=>p.counts);
     const now=sum(counted,p=>p.balance),expected=round(sum(counted,projected)+extras),everything=round(sum(d.house.pots,projected)+extras);
     return {month:{total,paid,open,income,fixed,savings,left:round(income-total),count:d.costs.length,paidCount:d.costs.filter(settled).length},
@@ -235,6 +233,9 @@ const Budget = (() => {
   // A house item shows what is still to pay; a deposit shows as a thin bar and the paid amount.
   function houseRow(i){const paid=i.paid||0,left=Math.max(0,round(i.amount-paid)),done=i.amount>0&&paid>=i.amount,share=i.amount?Math.min(100,paid/i.amount*100):0;
     return '<div class="row static'+(done?' settled':'')+'"><span class="row-name">'+escapeHtml(i.name||'Naamloos')+(paid?'<small>'+euro(paid)+' van '+euro(i.amount)+' betaald'+(i.amount&&!done?' · '+Math.round(share)+'%':'')+'</small><span class="mini-bar" aria-hidden="true"><i style="width:'+share+'%"></i></span>':'')+'</span><span class="row-amount">'+euro(done?i.amount:left)+'<small>'+(done?'Betaald':paid?'nog te betalen':'')+'</small></span></div>';}
+  // An expected one-off amount: tick it when all of it is in; a part that already arrived shows as a thin bar.
+  function extraRow(e){const got=e.received?e.amount:Math.min(e.got||0,e.amount),left=Math.max(0,round(e.amount-got)),share=e.amount?got/e.amount*100:0;
+    return '<button type="button" class="row" role="checkbox" aria-checked="'+e.received+'" data-extra="'+e.id+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(e.name||'Naamloos')+(!e.received&&got?'<small>'+euro(got)+' van '+euro(e.amount)+' ontvangen</small><span class="mini-bar" aria-hidden="true"><i style="width:'+share+'%"></i></span>':'')+'</span><span class="row-amount">'+euro(e.received?e.amount:left)+'<small>'+(e.received?'Binnen':got?'nog te ontvangen':'Verwacht')+'</small></span></button>';}
   function costRow(c){return '<button type="button" class="row" role="checkbox" aria-checked="'+c.paid+'" data-cost="'+c.id+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(c.name||'Naamloos')+(c.saving?'<small>Sparen</small>':'')+'</span><span class="row-amount">'+euro(c.amount)+'<small>'+(c.paid?'Betaald':'Nog te betalen')+'</small></span></button>';}
   function renderMonth(s){
     $('monthTitle').textContent=monthName(today()).replace(/^./,c=>c.toUpperCase());
@@ -266,8 +267,8 @@ const Budget = (() => {
     if(editing.pots)editor(pots,doc.house.pots,[{key:'name',label:'Naam',type:'text'},{key:'balance',label:'Saldo nu',type:'money'},{key:'monthly',label:'Inleg per maand',type:'money'},{key:'counts',label:'Telt mee voor het huis',type:'check'}],'Pot toevoegen',()=>({id:newId(),name:'',balance:0,monthly:0,counts:true}));
     else pots.innerHTML=doc.house.pots.length?'<div class="rows">'+doc.house.pots.map(p=>'<div class="row static"><span class="row-name">'+escapeHtml(p.name||'Naamloos')+'<small>'+(p.counts?'Telt mee':'Telt niet mee')+(p.monthly?' · '+euro(p.monthly)+' per maand':'')+'</small></span><span class="row-amount">'+euro(p.balance)+'<small>wordt '+euro(round(p.balance+p.monthly*months))+'</small></span></div>').join('')+'</div>':'<p class="empty">Nog geen potten.</p>';
     const extras=$('extrasHost');
-    if(editing.extras)editor(extras,doc.house.extras,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'}],'Bedrag toevoegen',()=>({id:newId(),name:'',amount:0,received:false}));
-    else{extras.innerHTML=doc.house.extras.length?'<div class="rows">'+doc.house.extras.map(e=>'<button type="button" class="row" role="checkbox" aria-checked="'+e.received+'" data-extra="'+e.id+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(e.name||'Naamloos')+'</span><span class="row-amount">'+euro(e.amount)+'<small>'+(e.received?'Binnen':'Verwacht')+'</small></span></button>').join('')+'</div>':'<p class="empty">Geen eenmalige bedragen.</p>';
+    if(editing.extras)editor(extras,doc.house.extras,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'got',label:'Al ontvangen',type:'money'}],'Bedrag toevoegen',()=>({id:newId(),name:'',amount:0,received:false,got:0}));
+    else{extras.innerHTML=doc.house.extras.length?'<div class="rows">'+doc.house.extras.map(extraRow).join('')+'</div>':'<p class="empty">Geen eenmalige bedragen.</p>';
       extras.querySelectorAll('[data-extra]').forEach(button=>button.addEventListener('click',()=>{const e=doc.house.extras.find(x=>x.id===button.dataset.extra);e.received=!e.received;commit();}));}
   }
   // Totals only: called while typing, so open inputs keep their focus.
@@ -289,7 +290,7 @@ const Budget = (() => {
   function render(){
     for(const name of ['laden','leeg','maand','huis'])$('view-'+name).hidden=name!==(doc?view:CONFIG.loaded?'leeg':'laden');
     document.querySelectorAll('[data-nav]').forEach(a=>{if(doc&&a.dataset.nav===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
-    $('importPanel').hidden=!doc||CONFIG.preview;
+    $('importPanel').hidden=!doc;
     if(!doc)return;
     renderMonth();renderHouse();renderNumbers();status();
   }
@@ -304,13 +305,28 @@ const Budget = (() => {
   }
   async function importText(text,errorEl){
     let parsed;try{parsed=JSON.parse(text);}catch{errorEl.textContent='Dit is geen geldig importbestand.';return;}
-    if(!parsed||typeof parsed!=='object'){errorEl.textContent='Dit is geen geldig importbestand.';return;}
-    parsed.version=1;parsed.updatedAt=Date.now();
-    if(CONFIG.preview){doc=parsed;render();return;}
-    try{const response=await fetch('/budget/data',{method:'PUT',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({doc:parsed})});
+    if(!parsed||typeof parsed!=='object'||Array.isArray(parsed)){errorEl.textContent='Dit is geen geldig importbestand.';return;}
+    // A file with a version replaces the whole budget. A file without one replaces only the parts it contains,
+    // so this month's ticks and spending stay as they are.
+    const partial=parsed.version===undefined&&Boolean(doc),previous=doc?JSON.parse(JSON.stringify(doc)):null;let next=parsed,label='Budget geïmporteerd';
+    if(partial){
+      const names={costs:'posten',income:'inkomen',items:'huisposten',extras:'eenmalige bedragen',pots:'potten',target:'einddatum'},parts=[];
+      next=JSON.parse(JSON.stringify(doc));
+      for(const key of ['income','costs'])if(Array.isArray(parsed[key])){next[key]=parsed[key];parts.push(names[key]);}
+      if(parsed.house&&typeof parsed.house==='object'){
+        for(const key of ['items','extras','pots'])if(Array.isArray(parsed.house[key])){next.house[key]=parsed.house[key];parts.push(names[key]);}
+        if(typeof parsed.house.target==='string'){next.house.target=parsed.house.target;parts.push(names.target);}
+      }
+      if(!parts.length){errorEl.textContent='Dit bestand bevat niets om te importeren.';return;}
+      label='Bijgewerkt: '+parts.join(', ');
+    }
+    next.version=1;next.updatedAt=Date.now();
+    const finish=()=>{errorEl.textContent='';render();if(previous)toastAction(label,'Ongedaan maken',()=>{doc=previous;commit();});else toast(label);};
+    if(CONFIG.preview){doc=next;finish();return true;}
+    try{const response=await fetch('/budget/data',{method:'PUT',cache:'no-store',headers:{'Content-Type':'application/json'},body:JSON.stringify({doc:next})});
       if(response.status===400){errorEl.textContent='Dit bestand klopt niet. Er is niets gewijzigd.';return;}
       if(!response.ok)throw Error('HTTP '+response.status);
-      doc=(await response.json()).data;errorEl.textContent='';render();toast('Budget geïmporteerd');
+      doc=(await response.json()).data;finish();return true;
     }catch{errorEl.textContent='Importeren is niet gelukt. Probeer het opnieuw.';}
   }
   function emptyDoc(){const d=new Date();return {version:1,updatedAt:Date.now(),income:[],costs:[],house:{target:(d.getFullYear()+2)+'-'+String(d.getMonth()+1).padStart(2,'0'),items:[],extras:[],pots:[]}};}
@@ -333,14 +349,14 @@ const Budget = (() => {
     $('monthReset').addEventListener('click',resetMonth);
     $('hTarget').addEventListener('change',event=>{if(!/^\d{4}-(0[1-9]|1[0-2])$/.test(event.target.value)){event.target.value=doc.house.target;return;}doc.house.target=event.target.value;commit();});
     $('firstImportApply').addEventListener('click',()=>importText($('firstImport').value,$('firstImportError')));
-    $('laterImportApply').addEventListener('click',()=>importText($('laterImport').value,$('laterImportError')));
+    $('laterImportApply').addEventListener('click',async()=>{if(await importText($('laterImport').value,$('laterImportError')))$('laterImport').value='';});
     $('startEmpty').addEventListener('click',()=>{doc=emptyDoc();commit();});
     $('exportData').addEventListener('click',()=>{if(!doc)return;const url=URL.createObjectURL(new Blob([JSON.stringify(doc,null,2)],{type:'application/json'}));const a=document.createElement('a');a.href=url;a.download='budget-'+today()+'.json';a.click();URL.revokeObjectURL(url);});
     window.addEventListener('hashchange',()=>{readView();render();window.scrollTo?.({top:0,behavior:'instant'});});
     window.addEventListener('beforeunload',event=>{if(dirty||saving)event.preventDefault();});
     readView();render();load();
   }
-  return {initialize,summary,parseMoney,monthsUntil,doc:()=>doc,setDoc:value=>{doc=value;}};
+  return {initialize,summary,parseMoney,monthsUntil,importText,doc:()=>doc,setDoc:value=>{doc=value;}};
 })();
 Budget.initialize();
 `;

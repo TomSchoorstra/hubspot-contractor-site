@@ -87,6 +87,11 @@ test("budget documents validate amounts, ids, the target month and drop unknown 
   assert.equal(normalizeBudget(deposit).house.items[0].paid, 2250.5);
   assert.equal(broken(d => { d.house.items[0].paid = -1; }), null);
   assert.equal(broken(d => { d.house.items[0].paid = "25%"; }), null);
+  // One-off amounts saved before partial receipts existed count as nothing received; a given part is kept and checked.
+  assert.equal(clean.house.extras[0].got, 0);
+  const part = fixture(); part.house.extras[0].got = 250;
+  assert.equal(normalizeBudget(part).house.extras[0].got, 250);
+  assert.equal(broken(d => { d.house.extras[0].got = -5; }), null);
   assert.equal(broken(d => { d.costs[1].variable = "yes"; }), null);
   assert.equal(normalizeBudget(null), null);
 });
@@ -214,6 +219,26 @@ test("the month and house totals follow the document", async () => {
   run('(()=>{const c=Budget.doc().costs.find(x=>x.id==="food");c.variable=false;c.spent=0;})()');
   assert.equal(elements.get("mOpen").textContent.replace(/\s/g, " "), "€ 420,50");
   assert.equal(elements.get("hDiff").innerHTML.replace(/\s/g, " "), "€ 1.200<small>over</small>");
+  // Part of an expected one-off amount can already be in; only the rest is still expected.
+  run('Budget.doc().house.extras.find(x=>x.id==="cheque").got=250');
+  assert.equal(JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)')).extras, 750);
+  run('Budget.doc().house.extras.find(x=>x.id==="cheque").got=5000');
+  assert.equal(JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").house)')).extras, 0);
+  run('Budget.doc().house.extras.find(x=>x.id==="cheque").got=0');
+  // A file without a version replaces only the parts it contains; this month's ticks and spending stay.
+  run('globalThis.importError={textContent:""}');
+  const items = JSON.stringify({ house: { items: [{ id: "h-new", name: "Nieuw", amount: 500, paid: 100 }] } });
+  assert.equal(await run("Budget.importText(" + JSON.stringify(items) + ", importError)"), true);
+  assert.equal(run('Budget.doc().house.items.map(i=>i.id+":"+i.paid).join()'), "h-new:100");
+  assert.equal(run('Budget.doc().costs.filter(c=>c.paid).length'), 2);
+  assert.equal(run('Budget.doc().house.pots.length'), 3);
+  assert.equal(await run('Budget.importText("{}", importError)'), undefined);
+  assert.equal(run("importError.textContent"), "Dit bestand bevat niets om te importeren.");
+  assert.equal(await run('Budget.importText("[1]", importError)'), undefined);
+  assert.equal(run('Budget.doc().house.items.length'), 1);
+  // A file with a version still replaces everything.
+  assert.equal(await run("Budget.importText(" + JSON.stringify(JSON.stringify(fixture())) + ", importError)"), true);
+  assert.equal(run('Budget.doc().house.items.length'), 2);
 });
 
 test("a real browser on this page sends Origin: null; same-site requests pass and cross-site requests are refused", async () => {
