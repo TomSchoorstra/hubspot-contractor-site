@@ -50,9 +50,13 @@ export function sessionCookie(token: string | null): string {
 }
 
 // A request that changes something must come from this site itself.
+// The page sends no referrer, so browsers report the origin as "null" even for same-site requests.
+// Sec-Fetch-Site is set by the browser and cannot be set by a page, so it decides when it is present.
 export function sameOrigin(request: Request): boolean {
+  const site = request.headers.get("sec-fetch-site");
+  if (site) return site === "same-origin" || site === "none";
   const origin = request.headers.get("origin");
-  if (!origin) return request.headers.get("sec-fetch-site") !== "cross-site";
+  if (!origin || origin === "null") return true;
   try { return new URL(origin).host === (request.headers.get("x-forwarded-host") ?? request.headers.get("host") ?? new URL(request.url).host); }
   catch { return false; }
 }

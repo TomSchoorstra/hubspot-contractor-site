@@ -57,9 +57,9 @@ const fixture = () => ({
     ],
   },
 });
-const request = (url, { method = "GET", cookie, origin, body, form, address = "203.0.113.5" } = {}) => new Request("https://site.test" + url, {
+const request = (url, { method = "GET", cookie, origin, site, body, form, address = "203.0.113.5" } = {}) => new Request("https://site.test" + url, {
   method,
-  headers: { host: "site.test", "x-forwarded-for": address, ...(cookie ? { cookie } : {}), ...(origin ? { origin } : {}), ...(form ? { "Content-Type": "application/x-www-form-urlencoded" } : body ? { "Content-Type": "application/json" } : {}) },
+  headers: { host: "site.test", "x-forwarded-for": address, ...(cookie ? { cookie } : {}), ...(origin ? { origin } : {}), ...(site ? { "sec-fetch-site": site } : {}), ...(form ? { "Content-Type": "application/x-www-form-urlencoded" } : body ? { "Content-Type": "application/json" } : {}) },
   ...(form ? { body: new URLSearchParams(form).toString() } : body !== undefined ? { body: typeof body === "string" ? body : JSON.stringify(body) } : {}),
 });
 
@@ -184,4 +184,17 @@ test("the month and house totals follow the document", async () => {
   for (const text of ["abc", "-5", "1,234,5", "1.2345", "99999999"]) assert.equal(run("Budget.parseMoney(" + JSON.stringify(text) + ")"), undefined, text);
   assert.equal(elements.get("mOpen").textContent.replace(/\s/g, " "), "€ 420,50");
   assert.equal(elements.get("hDiff").innerHTML.replace(/\s/g, " "), "€ 1.200<small>over</small>");
+});
+
+test("a real browser on this page sends Origin: null; same-site requests pass and cross-site requests are refused", async () => {
+  const w = world({ BUDGET_PASSWORD: PASSWORD });
+  const login = w.load("src/app/budget/login/route.ts"), data = w.load("src/app/budget/data/route.ts");
+  // The page uses no-referrer, so the browser reports the origin as "null" for its own form and fetch requests.
+  const right = await login.POST(request("/budget/login", { method: "POST", origin: "null", site: "same-origin", form: { password: PASSWORD } }));
+  assert.equal(right.status, 303); assert.equal(right.headers.get("location"), "/budget");
+  const cookie = right.headers.get("set-cookie").split(";")[0];
+  assert.equal((await data.PUT(request("/budget/data", { method: "PUT", cookie, origin: "null", site: "same-origin", body: { doc: fixture() } }))).status, 200);
+  assert.equal((await login.POST(request("/budget/login", { method: "POST", origin: "null", site: "cross-site", form: { password: PASSWORD } }))).status, 403);
+  assert.equal((await login.POST(request("/budget/login", { method: "POST", origin: "https://site.test", site: "cross-site", form: { password: PASSWORD } }))).status, 403);
+  assert.equal((await data.PUT(request("/budget/data", { method: "PUT", cookie, origin: "null", site: "same-site", body: { doc: fixture() } }))).status, 403);
 });
