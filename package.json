@@ -8,6 +8,7 @@
     "validate:denise-plan": "node scripts/validate-denise-plan.mjs",
     "validate:programme": "node scripts/validate-training-programme.mjs",
     "test:training": "node --test scripts/test-workout-calendar.mjs",
+    "test:budget": "node --test scripts/test-budget.mjs",
     "build": "npm run validate:tom-plan && npm run validate:denise-plan && npm run validate:programme && next build",
     "start": "next start",
     "lint": "eslint"

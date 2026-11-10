@@ -3,7 +3,7 @@ import { PLANNER_MARKUP } from "./planner-markup";
 import { PLANNER_SCRIPT } from "./planner-script";
 import { RUNPLAN_CSS, RUNPLAN_MARKUP, RUNPLAN_VIEWS, RUNPLAN_SCRIPT } from "./planner-runplan";
 
-const BASE_CSS = String.raw`
+export const BASE_CSS = String.raw`
 /* Nachtglas: a deep atmosphere with layered glass. Strength is iris, running is tide.
    Planned sessions are hollow and dashed; completed sessions are filled. */
 :root{

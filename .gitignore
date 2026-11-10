@@ -47,3 +47,6 @@ next-env.d.ts
 .agents/
 .claude/
 skills-lock.json
+
+# Local-only private data (budget import, training preview storage)
+/.local/
