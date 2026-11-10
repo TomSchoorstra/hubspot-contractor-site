@@ -1,35 +1,56 @@
 @import "tailwindcss";
 
+/*
+ * Design system: "The Network Map".
+ * Six colour-coded lines (one per expertise area) run through the site the way
+ * routes run through a transit map. Tokens first, then primitives, then page parts.
+ */
+
 :root {
-  /* Background & Surface */
-  --bg: #ffffff;
-  --surface: #ffffff;
-  --surface-2: #f9fafb;
-  --surface-dark: #0f172a;
+  /* Ink and paper */
+  --ink: #17163f;
+  --ink-2: #3b3a66;
+  --ink-3: #5f5e88;
+  --paper: #ffffff;
+  --paper-2: #f1f2f9;
+  --rule: #d5d7e8;
+  --rule-soft: #e7e8f3;
+  --night: #17163f;
+  --night-2: #23215a;
+  --on-night-2: #d2d2ec;
 
-  /* Borders */
-  --border: #e5e7eb;
-  --border-subtle: #f3f4f6;
+  /* The six lines. Each expertise area owns one (see src/lib/lines.ts). */
+  --line-orange: #ff5c35;
+  --line-blue: #5b8dff;
+  --line-green: #1db877;
+  --line-pink: #f0489f;
+  --line-yellow: #ffc531;
+  --line-cyan: #22c3e6;
+  --line: var(--line-orange);
+  --line-w: 10px;
 
-  /* Text */
-  --text: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-
-  /* Accent Colors - HubSpot orange primary */
-  --accent: #ff5c35;
+  /* Legacy token names, still used by a few shared components. */
+  --bg: var(--paper);
+  --surface: var(--paper);
+  --surface-2: var(--paper-2);
+  --surface-dark: var(--night);
+  --border: var(--rule);
+  --border-subtle: var(--rule-soft);
+  --text: var(--ink);
+  --text-secondary: var(--ink-2);
+  --text-muted: var(--ink-3);
+  --accent: var(--line-orange);
   --accent-hover: #e84d28;
-  /* Darker variants for readable text and white button labels. */
   --accent-text: #b83a1b;
   --accent-action: #c83c1b;
   --accent-action-hover: #ad3217;
-  --accent-2-text: #006d7e;
-  --accent-light: #fff5f2;
-  --accent-2: #00a4bd;
-  --accent-2-hover: #0091a8;
-  --accent-2-light: #f0fafb;
-  --accent-3: #f5c26b;
-  --accent-3-hover: #f0b654;
+  --accent-light: #fff1ec;
+  --accent-2: var(--line-blue);
+  --accent-2-hover: #3f73ea;
+  --accent-2-text: #2450c4;
+  --accent-2-light: #eef3ff;
+  --accent-3: var(--line-yellow);
+  --accent-3-hover: #f0b21a;
 
   /* Radius */
   --radius-sm: 0.375rem;
@@ -38,19 +59,41 @@
   --radius-xl: 1rem;
   --radius-2xl: 1.5rem;
 
-  /* Shadows */
-  --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.07), 0 2px 4px -2px rgb(0 0 0 / 0.05);
-  --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.08), 0 4px 6px -4px rgb(0 0 0 / 0.05);
-  --shadow-card-hover: 0 20px 40px -8px rgb(0 0 0 / 0.12), 0 8px 16px -4px rgb(0 0 0 / 0.06);
-  --shadow-glow-orange: 0 0 40px 0 rgb(255 92 53 / 0.15);
+  /* Motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-in-out: cubic-bezier(0.6, 0, 0.3, 1);
+  --dur-fast: 160ms;
+  --dur-base: 320ms;
+  --dur-slow: 700ms;
 
-  /* Spacing rhythm */
-  --section-spacing: 6rem;
-  --section-spacing-sm: 4rem;
+  /* Journey rail geometry: the ring centres on the track when pad is set here. */
+  --rail-pad: 2.5rem;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --rail-pad: 3.5rem;
+  }
 }
 
 @theme inline {
+  --color-ink: var(--ink);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-paper: var(--paper);
+  --color-paper-2: var(--paper-2);
+  --color-rule: var(--rule);
+  --color-rule-soft: var(--rule-soft);
+  --color-night: var(--night);
+  --color-night-2: var(--night-2);
+  --color-on-night-2: var(--on-night-2);
+  --color-line: var(--line);
+  --color-line-orange: var(--line-orange);
+  --color-line-blue: var(--line-blue);
+  --color-line-green: var(--line-green);
+  --color-line-pink: var(--line-pink);
+  --color-line-yellow: var(--line-yellow);
+  --color-line-cyan: var(--line-cyan);
   --color-bg: var(--bg);
   --color-surface: var(--surface);
   --color-surface-2: var(--surface-2);
@@ -72,80 +115,455 @@
   --color-accent-2-light: var(--accent-2-light);
   --color-accent-3: var(--accent-3);
   --color-accent-3-hover: var(--accent-3-hover);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-  --font-display: var(--font-space-grotesk);
+  --font-sans: var(--font-sofia), system-ui, -apple-system, sans-serif;
+  --font-display: var(--font-sofia-xc), "Arial Narrow", system-ui, sans-serif;
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
   --radius-sm: var(--radius-sm);
   --radius-md: var(--radius-md);
   --radius-lg: var(--radius-lg);
   --radius-xl: var(--radius-xl);
   --radius-2xl: var(--radius-2xl);
-  --shadow-sm: var(--shadow-sm);
-  --shadow-md: var(--shadow-md);
-  --shadow-lg: var(--shadow-lg);
-  --shadow-card-hover: var(--shadow-card-hover);
+}
+
+html {
+  scroll-padding-top: 6rem;
 }
 
 body {
-  background: var(--bg);
-  color: var(--text);
-  font-family: var(--font-geist-sans), system-ui, -apple-system, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--font-sofia), system-ui, -apple-system, sans-serif;
+  font-size: 1.0625rem;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
 
-/* Characterful headings paired with Geist for readable body text. */
+::selection {
+  background: var(--line-yellow);
+  color: var(--ink);
+}
+
+/* Two-tone focus ring, so it shows on paper, night and colour floods alike. */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--ink);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 7px #fff;
+  border-radius: 4px;
+}
+
+/* ---------- Line colour assignment ---------- */
+
+[data-line="custom-objects"] { --line: var(--line-orange); }
+[data-line="integrations"] { --line: var(--line-blue); }
+[data-line="consultancy"] { --line: var(--line-green); }
+[data-line="custom-app-cards"] { --line: var(--line-pink); }
+[data-line="automation"] { --line: var(--line-yellow); }
+[data-line="pipeline-optimization"] { --line: var(--line-cyan); }
+[data-line="ink"] { --line: var(--ink); }
+
+/* Primitives live in the components layer so utilities can still override them. */
+@layer components {
+/* ---------- Type ---------- */
+
 .font-display {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
+  font-family: var(--font-sofia-xc), "Arial Narrow", system-ui, sans-serif;
 }
 
-/* Gradient text utility */
-.text-gradient-orange {
-  background: linear-gradient(135deg, var(--accent-text) 0%, #a64224 100%);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
+.t-mega,
+.t-h1,
+.t-h2,
+.t-h3,
+.t-h4 {
+  font-family: var(--font-sofia-xc), "Arial Narrow", system-ui, sans-serif;
+  font-weight: 800;
+  text-wrap-style: balance;
 }
 
-.gradient-mesh {
-  background:
-    radial-gradient(at 20% 30%, rgba(255, 92, 53, 0.06) 0%, transparent 50%),
-    radial-gradient(at 80% 70%, rgba(0, 164, 189, 0.05) 0%, transparent 50%);
+.t-mega {
+  font-size: clamp(3.75rem, 1.4rem + 7.4vw, 7.5rem);
+  line-height: 0.86;
 }
 
-/* Dot grid background pattern */
-.dot-grid {
-  background-image: radial-gradient(circle, rgba(15, 23, 42, 0.08) 1px, transparent 1px);
-  background-size: 24px 24px;
+.t-h1 {
+  font-size: clamp(3.25rem, 1.9rem + 5.6vw, 6.5rem);
+  line-height: 0.9;
 }
 
-/* Orange glow effect */
-.glow-orange {
-  box-shadow: var(--shadow-glow-orange);
+.t-h2 {
+  font-size: clamp(2.5rem, 1.7rem + 2.8vw, 4rem);
+  line-height: 0.95;
 }
 
-/* Blog prose styles */
+.t-h3 {
+  font-size: clamp(1.875rem, 1.55rem + 1.2vw, 2.5rem);
+  font-weight: 700;
+  line-height: 1;
+}
+
+.t-h4 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  line-height: 1.1;
+}
+
+/* Text link: the underline is a short piece of line. */
+.tlink {
+  --ul: var(--line-orange);
+  font-weight: 600;
+  text-decoration: underline;
+  text-decoration-color: var(--ul);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+  border-radius: 2px;
+  transition: background-color var(--dur-fast) ease, box-shadow var(--dur-fast) ease;
+}
+
+.tlink:hover {
+  background-color: color-mix(in srgb, var(--ul) 26%, transparent);
+  box-shadow: 0 0 0 3px color-mix(in srgb, var(--ul) 26%, transparent);
+}
+
+/* On a colour flood the underline switches to ink so it stays visible. */
+.on-flood .tlink {
+  --ul: var(--ink);
+}
+
+/* ---------- Line primitives ---------- */
+
+/* A line bullet: the coloured disc that names a line on a map. */
+.bullet {
+  --size: 3rem;
+  position: relative;
+  display: grid;
+  flex: none;
+  width: var(--size);
+  height: var(--size);
+  place-items: center;
+  border-radius: 999px;
+  background: var(--line);
+  color: var(--ink);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.bullet > svg {
+  position: relative;
+  width: 52%;
+  height: 52%;
+}
+
+.bullet--lg {
+  --size: 3.75rem;
+}
+
+/* The tail runs in from the left edge of the screen and ends at the bullet. */
+.bullet--tail::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: calc(100% - 4px);
+  width: 100vw;
+  height: var(--line-w);
+  background: var(--line);
+  transform: translateY(-50%);
+  transition: height var(--dur-base) var(--ease-out);
+}
+
+.group:hover .bullet,
+.group:focus-visible .bullet {
+  transform: scale(1.08);
+}
+
+.group:hover .bullet--tail::before,
+.group:focus-visible .bullet--tail::before {
+  height: calc(var(--line-w) + 8px);
+}
+
+/* An interchange: several lines meeting at one station. */
+.interchange {
+  position: relative;
+  display: grid;
+  flex: none;
+  width: 3.75rem;
+  height: 3.75rem;
+  place-items: center;
+}
+
+.interchange__lines {
+  position: absolute;
+  top: 50%;
+  right: 50%;
+  display: grid;
+  width: 100vw;
+  gap: 3px;
+  transform: translateY(-50%);
+  transition: gap var(--dur-base) var(--ease-out);
+}
+
+.interchange__lines i {
+  display: block;
+  height: 8px;
+  background: var(--line);
+}
+
+.interchange__node {
+  position: relative;
+  display: grid;
+  width: 100%;
+  height: 100%;
+  place-items: center;
+  border: 5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  color: var(--ink);
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.interchange__node > svg {
+  width: 50%;
+  height: 50%;
+}
+
+.group:hover .interchange__lines,
+.group:focus-visible .interchange__lines {
+  gap: 6px;
+}
+
+.group:hover .interchange__node,
+.group:focus-visible .interchange__node {
+  transform: scale(1.08);
+}
+
+/* Round arrow used at the end of list rows. */
+.row-arrow {
+  display: grid;
+  width: 3rem;
+  height: 3rem;
+  place-items: center;
+  border: 2px solid var(--ink);
+  border-radius: 999px;
+  color: var(--ink);
+  transition: background-color var(--dur-fast) ease, transform var(--dur-base) var(--ease-out);
+}
+
+.group:hover .row-arrow,
+.group:focus-visible .row-arrow {
+  background: var(--line);
+  transform: translateX(6px);
+}
+
+.row-title {
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+@media (min-width: 768px) {
+  .group:hover .row-title,
+  .group:focus-visible .row-title {
+    transform: translateX(8px);
+  }
+}
+
+/* A stretch of line with a train that travels it on hover. */
+.track {
+  position: relative;
+  display: block;
+  height: var(--line-w);
+  background: var(--line);
+}
+
+.track::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: 5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  transform: translateY(-50%);
+  transition: left var(--dur-slow) var(--ease-in-out), background-color var(--dur-base) ease;
+}
+
+.group:hover .track::after,
+.group:focus-visible .track::after {
+  left: calc(100% - 1.75rem);
+  background: var(--line);
+}
+
+/* The bundle: all six lines side by side. */
+.bundle {
+  display: grid;
+  gap: 4px;
+}
+
+.bundle i {
+  display: block;
+  height: 6px;
+  background: var(--line);
+}
+
+/* ---------- Journey: a vertical route with stops ---------- */
+
+.journey {
+  position: relative;
+  padding-left: var(--rail-pad);
+}
+
+.journey__track {
+  position: absolute;
+  top: 0.75rem;
+  bottom: 0;
+  left: 8px;
+  width: 8px;
+  overflow: hidden;
+  border-radius: 999px;
+  background: color-mix(in srgb, var(--line) 24%, var(--paper));
+}
+
+.journey__fill {
+  position: absolute;
+  inset: 0;
+  background: var(--line);
+  transform-origin: top;
+}
+
+.journey--static .journey__track {
+  background: var(--line);
+}
+
+/* Put on the element that marks a stop (usually the heading). */
+.ring-stop {
+  position: relative;
+}
+
+.ring-stop::before {
+  content: "";
+  position: absolute;
+  top: var(--ring-top, 0.3em);
+  left: calc(var(--rail-pad) * -1);
+  width: 24px;
+  height: 24px;
+  border: 5px solid var(--ink);
+  border-radius: 999px;
+  background: var(--paper);
+  transition: background-color var(--dur-base) ease;
+}
+
+.group:hover .ring-stop::before,
+.group:focus-visible .ring-stop::before {
+  background: var(--line-orange);
+}
+
+/* ---------- Homepage hero ---------- */
+
+.hero-map path {
+  fill: none;
+  stroke-width: 14;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dasharray: 1;
+  stroke-dashoffset: 0;
+}
+
+.hero-map circle {
+  fill: var(--paper);
+  stroke: var(--night);
+  stroke-width: 5;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .hero-map path {
+    animation: line-draw 1.5s var(--ease-in-out) both;
+    animation-delay: var(--d, 0s);
+  }
+
+  .hero-map circle {
+    transform-box: fill-box;
+    transform-origin: center;
+    animation: station-pop 0.45s var(--ease-out) both;
+    animation-delay: var(--d, 0.9s);
+  }
+
+  .hero-station {
+    animation: portrait-settle 0.7s var(--ease-out) both;
+  }
+
+  .hero-rise > * {
+    animation: hero-rise 0.7s var(--ease-out) both;
+    animation-delay: calc(var(--i, 0) * 80ms + 120ms);
+  }
+}
+
+@keyframes line-draw {
+  from { stroke-dashoffset: 1; }
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes station-pop {
+  from { transform: scale(0); }
+  to { transform: scale(1); }
+}
+
+/* Text and portrait only move, they never start hidden: if no frame ever runs, everything is still readable. */
+@keyframes portrait-settle {
+  from { transform: scale(0.86); }
+  to { transform: scale(1); }
+}
+
+@keyframes hero-rise {
+  from { transform: translateY(26px); }
+  to { transform: translateY(0); }
+}
+
+/* ---------- Reveal: only arms once JavaScript confirms the element is off screen ---------- */
+
+.diagram-line {
+  transform-origin: top;
+  transition: transform var(--dur-slow) var(--ease-in-out);
+}
+
+.diagram-bus {
+  transform-origin: center;
+  transition: transform var(--dur-slow) var(--ease-in-out) 0.25s;
+}
+
+.diagram-node {
+  transition: opacity var(--dur-base) ease, transform var(--dur-base) var(--ease-out);
+  transition-delay: calc(var(--i, 0) * 70ms + 0.55s);
+}
+
+[data-reveal="pending"] .diagram-line { transform: scaleY(0); }
+[data-reveal="pending"] .diagram-bus { transform: scaleX(0); }
+[data-reveal="pending"] .diagram-node { opacity: 0; transform: translateY(10px); }
+
+}
+
+/* ---------- Blog prose ---------- */
+
 .prose-blog {
-  color: var(--text-secondary);
-  font-size: 1.125rem;
-  line-height: 1.8;
+  color: var(--ink-2);
+  font-size: 1.1875rem;
+  line-height: 1.7;
 }
 .prose-blog h2 {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
-  font-size: 1.75rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-top: 3rem;
-  margin-bottom: 1rem;
-  letter-spacing: -0.01em;
+  font-family: var(--font-sofia-xc), "Arial Narrow", system-ui, sans-serif;
+  font-size: clamp(2rem, 1.7rem + 1.2vw, 2.625rem);
+  font-weight: 800;
+  line-height: 1;
+  color: var(--ink);
+  margin-top: 3.5rem;
+  margin-bottom: 1.125rem;
+  padding-top: 1.25rem;
+  border-top: 6px solid var(--ink);
+  text-wrap: balance;
 }
 .prose-blog h3 {
-  font-family: var(--font-space-grotesk), system-ui, sans-serif;
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: var(--text);
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
+  font-size: 1.3125rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--ink);
+  margin-top: 2.25rem;
+  margin-bottom: 0.625rem;
 }
 .prose-blog p {
   margin-bottom: 1.5rem;
@@ -163,58 +581,68 @@ body {
 }
 .prose-blog li {
   margin-bottom: 0.5rem;
+  padding-left: 0.25rem;
+}
+.prose-blog li::marker {
+  color: var(--accent-text);
+  font-weight: 700;
 }
 .prose-blog strong {
-  font-weight: 600;
-  color: var(--text);
+  font-weight: 700;
+  color: var(--ink);
 }
 .prose-blog a {
   overflow-wrap: anywhere;
-  color: var(--accent);
+  color: var(--ink);
+  font-weight: 600;
   text-decoration: underline;
-  text-underline-offset: 3px;
+  text-decoration-color: var(--line-orange);
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
 }
 .prose-blog a:hover {
-  color: var(--accent-hover);
+  background-color: color-mix(in srgb, var(--line-orange) 26%, transparent);
 }
 .prose-blog hr {
   border: none;
-  border-top: 1px solid var(--border-subtle);
+  border-top: 2px solid var(--rule);
   margin: 2.5rem 0;
 }
 .prose-blog code {
-  font-family: var(--font-geist-mono), monospace;
-  font-size: 0.9em;
-  background: var(--surface-2);
-  border: 1px solid var(--border);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--paper-2);
+  border: 1px solid var(--rule);
   border-radius: 0.25rem;
   padding: 0.1em 0.4em;
 }
 .prose-blog blockquote {
-  border-left: 3px solid var(--accent);
+  border-left: var(--line-w) solid var(--line-yellow);
   padding-left: 1.25rem;
-  margin-left: 0;
-  color: var(--text-muted);
-  font-style: italic;
+  margin: 0 0 1.5rem;
+  color: var(--ink);
 }
 .prose-blog table {
+  display: block;
   width: 100%;
+  overflow-x: auto;
   border-collapse: collapse;
-  margin-bottom: 1.5rem;
-  font-size: 0.95rem;
+  margin-bottom: 1.75rem;
+  font-size: 1rem;
+  line-height: 1.5;
 }
 .prose-blog thead tr {
-  border-bottom: 2px solid var(--border);
+  border-bottom: 3px solid var(--ink);
 }
 .prose-blog th {
   text-align: left;
-  font-weight: 600;
-  color: var(--text);
-  padding: 0.6rem 1rem 0.6rem 0;
+  font-weight: 700;
+  color: var(--ink);
+  padding: 0.7rem 1rem 0.7rem 0;
 }
 .prose-blog td {
-  padding: 0.6rem 1rem 0.6rem 0;
-  border-bottom: 1px solid var(--border-subtle);
+  padding: 0.7rem 1rem 0.7rem 0;
+  border-bottom: 1px solid var(--rule);
   vertical-align: top;
 }
 .prose-blog tr:last-child td {
@@ -222,19 +650,28 @@ body {
 }
 /* Keep source labels readable in the two-column migration date comparison. */
 .prose-blog .source-dates {
+  display: table;
   table-layout: fixed;
 }
 .prose-blog .source-dates th:first-child {
   width: 40%;
 }
 
-/* Keep keyboard focus visible on plain text and card links too. */
-a:focus-visible {
-  outline: 2px solid var(--accent-text);
-  outline-offset: 4px;
+/* ---------- Legacy helpers still used by the design-preview pages ---------- */
+
+.dot-grid {
+  background-image: radial-gradient(circle, rgba(23, 22, 63, 0.1) 1px, transparent 1px);
+  background-size: 24px 24px;
 }
 
-/* Tool logos hang from the portrait as small glass ornaments. */
+.gradient-mesh {
+  background:
+    radial-gradient(at 20% 30%, rgba(255, 92, 53, 0.06) 0%, transparent 50%),
+    radial-gradient(at 80% 70%, rgba(91, 141, 255, 0.06) 0%, transparent 50%);
+}
+
+/* ---------- About: tool logos hang from the portrait as small glass ornaments ---------- */
+
 .about-tool-mobile {
   display: flex;
   height: 154px;
@@ -262,9 +699,10 @@ a:focus-visible {
   position: absolute;
   top: 0;
   left: 50%;
-  width: 1px;
+  width: 2px;
   height: calc(var(--cord-length) - 4px);
-  background: linear-gradient(#c5cbd0, #9ca7ae);
+  margin-left: -1px;
+  background: var(--ink);
 }
 
 .about-tool-ball {
@@ -319,7 +757,7 @@ a:focus-visible {
 .about-tool-ornament:nth-child(4) { --cord-length: 44px; --ball-tint: #f2ecff; animation-delay: 0.3s; }
 .about-tool-ornament:nth-child(5) { --cord-length: 22px; animation-delay: 0.4s; }
 
-/* The preference applies before hydration as well as in the motion hook. */
+/* The preference applies before hydration as well as in the motion hooks. */
 @media (prefers-reduced-motion: reduce) {
   .about-tool-ornament {
     animation: none;
@@ -328,5 +766,25 @@ a:focus-visible {
   .scroll-reveal {
     opacity: 1 !important;
     transform: none !important;
+  }
+
+  .bullet,
+  .bullet--tail::before,
+  .interchange__lines,
+  .interchange__node,
+  .row-arrow,
+  .row-title,
+  .track::after,
+  .diagram-line,
+  .diagram-bus,
+  .diagram-node {
+    transition: none;
+  }
+
+  [data-reveal="pending"] .diagram-line,
+  [data-reveal="pending"] .diagram-bus,
+  [data-reveal="pending"] .diagram-node {
+    opacity: 1;
+    transform: none;
   }
 }

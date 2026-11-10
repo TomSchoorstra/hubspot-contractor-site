@@ -4,6 +4,7 @@ import Link from "next/link";
 import { MDXRemote } from "next-mdx-remote/rsc";
 import remarkGfm from "remark-gfm";
 import Container from "@/components/ui/Container";
+import ReadingProgress from "@/components/ui/ReadingProgress";
 import { getAllPosts, getPost } from "@/lib/blog";
 import { SITE_URL, SITE_SOCIAL_IMAGE } from "@/lib/site";
 
@@ -183,26 +184,24 @@ export default async function BlogPost({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(faqSchema) }}
         />
       )}
-      <header className="relative overflow-hidden border-b border-border-subtle py-12 lg:py-16">
-        <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
-        <Container size="narrow" className="relative">
-          <div className="max-w-2xl">
-            <Link href="/blog" className="text-sm font-semibold text-text underline underline-offset-4 hover:text-accent-text">← All posts</Link>
-            <p className="mt-5 flex flex-wrap gap-x-3 gap-y-1 text-sm leading-relaxed text-text-secondary">
-              <span>By <Link href="/about" className="underline underline-offset-4 hover:text-text">{post.author ?? "Tom Schoorstra"}</Link></span>
-              <span>Published <time dateTime={post.date}>{formatDate(post.date)}</time></span>
-              {post.updated && <span>Updated <time dateTime={post.updated}>{formatDate(post.updated)}</time></span>}
-            </p>
-            <h1 className="mt-3 font-display text-4xl font-semibold leading-[1.12] tracking-tight text-balance text-text lg:text-5xl">{post.title}</h1>
-            <p className="mt-5 text-xl leading-relaxed text-text-secondary">{post.excerpt}</p>
-          </div>
+      <ReadingProgress />
+      <header className="pt-10 lg:pt-14">
+        <Container size="narrow">
+          <Link href="/blog" className="tlink text-sm">← All posts</Link>
+          <h1 className="t-h1 mt-8" style={{ fontSize: "clamp(2.75rem, 1.9rem + 3.6vw, 4.75rem)" }}>{post.title}</h1>
+          <p className="mt-6 max-w-[40rem] text-xl leading-relaxed text-ink-2 lg:text-2xl lg:leading-snug">{post.excerpt}</p>
+          <p className="mt-8 flex flex-wrap gap-x-6 gap-y-1 border-y-2 border-ink py-3 text-sm font-semibold leading-relaxed text-ink-2">
+            <span>By <Link href="/about" className="tlink text-ink">{post.author ?? "Tom Schoorstra"}</Link></span>
+            <span>Published <time dateTime={post.date}>{formatDate(post.date)}</time></span>
+            {post.updated && <span>Updated <time dateTime={post.updated}>{formatDate(post.updated)}</time></span>}
+          </p>
         </Container>
       </header>
 
       {/* Content */}
-      <section className="py-12 lg:py-16">
+      <section className="pt-10 pb-16 lg:pt-12 lg:pb-24">
         <Container size="narrow">
-          <article className="prose-blog max-w-2xl">
+          <article className="prose-blog max-w-[40rem]">
             <MDXRemote source={post.content} options={{ mdxOptions: { remarkPlugins: [remarkGfm] } }} />
           </article>
         </Container>

@@ -1,0 +1,59 @@
+---
+title: "One session with Claude Fable 5: what it built and what that means for HubSpot work"
+date: "2026-11-10"
+excerpt: "I gave Claude Fable 5 one brief per task and reviewed what came back: a full redesign of this site and a content audit. Here is what worked and how I would apply it to HubSpot."
+description: "One Claude Code session with Claude Fable 5: a site redesign and a content audit from single briefs, and what it means for HubSpot work."
+author: "Tom Schoorstra"
+---
+
+The design of this site came out of one working session with Claude Fable 5 in Claude Code. So did a content audit, a small personal side project and the first draft of this post. I ran version 5.2 of the model.
+
+I use AI-assisted work at AIHR too, so I wanted to write down what the session produced and where I still made the decisions. [Anthropic's announcement](https://www.anthropic.com/news/claude-fable-5-mythos-5) covers the model itself. This is one person's account of using it.
+
+## What I asked for
+
+Each task started as a single written brief. The brief said what I wanted, what had to stay untouched and how I wanted the result reported. After that, most of my messages were a sentence or two.
+
+- **A redesign of this site.** New visual direction for every page, with all copy, URLs, metadata, analytics and form behaviour locked.
+- **A content audit.** The highest-value improvements across the site, as advice only.
+- **A small personal side project.** A private app, rebuilt in the same session.
+
+## What came back
+
+The redesign arrived as a working site, with a style guide. Because the copy was locked, the model compared the new pages with the previous version. It reported identical text, links, headings and metadata on 25 pages.
+
+The audit came back as a short list, ordered by priority. It separated what it could observe in the copy from what was a hypothesis. Where a case study lacked numbers, it told me it would add nothing without my data.
+
+The side project showed the same habit. It needed starting values from my own history, and that history did not contain them. The model said so and built around the gap instead of inventing numbers.
+
+## How the work was checked
+
+I didn't have to ask for testing. The model wrote automated tests and ran them, along with lint, a type check and a build. It opened the pages in a browser at phone and desktop sizes and looked at its own screenshots. One label was cut off on mobile. It caught that itself and fixed it.
+
+The reports also listed what had not been tested. That list was more useful to me than a claim that everything worked.
+
+The boundaries held as well. The side project was only tested with preview data, so my real records stayed untouched. Nothing was committed or published. When I was asked whether to commit, I said not yet, and that was the end of it.
+
+## Where I still decided
+
+The model got a lot right the first time. It did not replace the review.
+
+I thought a counter on the About page was too easy to miss. I chose which audit points to apply and which to skip. I asked for this post to say less about the side project. Each of those took one short message to fix, but someone had to look.
+
+The session also stopped once when I reached my usage limit. It picked up where it left off afterwards.
+
+## What this means for HubSpot work
+
+Part of my HubSpot work is code. App cards are React interfaces. Custom code actions and API scripts are JavaScript. That part looks a lot like what this session handled well: a clear brief, a build and a set of checks.
+
+The brief is where the HubSpot knowledge goes. I would tell the model which objects it may read, which properties it must never write and which records count as test data. That is the same as locking the copy and URLs on this site.
+
+Live CRM data needs a stricter rule than a website does. I would start read-only and test in a sandbox or developer test account. Changes to live records wait for a person. My [weekly account review](/case-studies/customer-lifecycle) already works this way: Codex and Claude Code help assess candidate matches, and I review the findings before changing HubSpot.
+
+Some decisions don't move. What counts as one customer, which system owns a field and when two records should be merged are still questions for the people who know the business. A faster build makes those decisions more visible, because they are what is left.
+
+## Start with a small, checkable task
+
+If you want to try this on HubSpot work, I would pick something read-only with a clear answer, such as a report of records missing an association. Write down what must not change. Ask for a list of what was not tested.
+
+My [renewal status card](/case-studies/renewal-status-card) is the kind of contained build where this fits, and the [custom app cards page](/services/custom-app-cards) covers the access questions to settle first. If you're working through something similar, you're welcome to [compare notes](/contact).

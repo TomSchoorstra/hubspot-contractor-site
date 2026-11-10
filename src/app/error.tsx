@@ -18,7 +18,7 @@ export default function Error({
       <Container size="narrow">
         <Card className="text-center">
           <div className="mb-6 text-5xl">⚠️</div>
-          <h1 className="mb-4 text-3xl font-bold text-text">
+          <h1 className="t-h2 mb-4">
             Something went wrong
           </h1>
           <p className="mb-8 text-lg leading-relaxed text-text-secondary">

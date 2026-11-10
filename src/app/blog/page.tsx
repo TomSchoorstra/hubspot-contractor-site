@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import Container from "@/components/ui/Container";
-import SoftContentCard from "@/components/ui/SoftContentCard";
+import Link from "next/link";
 import { getAllPosts } from "@/lib/blog";
 import { SITE_SOCIAL_IMAGE } from "@/lib/site";
 
@@ -38,24 +38,33 @@ export default function BlogPage() {
 
   return (
     <main>
-      <header className="relative overflow-hidden py-12 lg:py-16">
-        <div className="pointer-events-none absolute inset-0 dot-grid opacity-40" aria-hidden="true" />
-        <Container size="narrow" className="relative">
-          <h1 className="font-display text-4xl font-semibold leading-[1.12] tracking-tight text-text sm:text-5xl lg:text-6xl">Blog</h1>
+      <header className="pt-12 pb-8 lg:pt-20 lg:pb-12">
+        <Container>
+          <h1 className="t-h1">Blog</h1>
         </Container>
       </header>
-      <section className="pb-12 lg:pb-16">
+      <section className="pb-16 lg:pb-24">
         <Container>
           {posts.length === 0 ? (
             <p className="text-text-muted">More posts coming soon.</p>
           ) : (
-            <ul className="grid gap-5 md:grid-cols-2" data-content-cards>
-              {posts.map(post => (
-                <li key={post.slug}>
-                  <SoftContentCard href={`/blog/${post.slug}`} title={post.title} description={post.excerpt} icon="article" date={{ value: post.date, label: formatDate(post.date) }} />
-                </li>
-              ))}
-            </ul>
+            // Posts are stops on one line, newest first.
+            <div className="journey journey--static" data-line="ink">
+              <div aria-hidden="true" className="journey__track" />
+              <ul className="space-y-2" data-content-cards>
+                {posts.map(post => (
+                  <li key={post.slug}>
+                    <Link href={`/blog/${post.slug}`} className="group grid gap-x-10 gap-y-2 py-5 lg:grid-cols-[11rem_minmax(0,1fr)] lg:py-7">
+                      <time dateTime={post.date} className="ring-stop font-semibold text-ink-3 lg:pt-2" style={{ "--ring-top": "0.05em" } as React.CSSProperties}>{formatDate(post.date)}</time>
+                      <div className="row-title max-w-3xl">
+                        <h2 className="t-h3">{post.title}</h2>
+                        <p className="mt-3 text-lg leading-relaxed text-ink-2">{post.excerpt}</p>
+                      </div>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
           )}
         </Container>
       </section>

@@ -4,9 +4,10 @@ import Link from "next/link";
 import { useState, useEffect, useRef } from "react";
 import { createPortal } from "react-dom";
 import { usePathname } from "next/navigation";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion, AnimatePresence, useReducedMotion } from "framer-motion";
 import { site } from "@/content/site";
 import Button from "@/components/ui/Button";
+import { allLines } from "@/lib/lines";
 
 function MobileMenuPortal({
   open,
@@ -16,6 +17,7 @@ function MobileMenuPortal({
   onClose: () => void;
 }) {
   const pathname = usePathname();
+  const reducedMotion = useReducedMotion();
   const menuRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -68,19 +70,19 @@ function MobileMenuPortal({
           aria-modal="true"
           aria-label="Main navigation"
           key="mobile-menu"
-          initial={{ opacity: 0, x: "100%" }}
+          initial={reducedMotion ? { opacity: 0 } : { opacity: 0, x: "100%" }}
           animate={{ opacity: 1, x: 0 }}
-          exit={{ opacity: 0, x: "100%" }}
-          transition={{ type: "spring", damping: 30, stiffness: 300 }}
-          className="fixed inset-0 z-[9999] h-[100dvh] w-[100vw] bg-white md:hidden"
+          exit={reducedMotion ? { opacity: 0 } : { opacity: 0, x: "100%" }}
+          transition={{ type: "spring", damping: 32, stiffness: 320 }}
+          className="fixed inset-0 z-[9999] h-[100dvh] w-[100vw] bg-night text-white md:hidden"
         >
           <div className="flex h-full flex-col">
             {/* Top Bar */}
-            <div className="shrink-0 border-b border-border-subtle">
-              <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-5">
+            <div className="shrink-0">
+              <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4">
                 <Link href="/" onClick={onClose} className="flex flex-col leading-none">
-                  <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted">RevOps by</span>
-                  <span className="font-display text-base font-bold text-text">
+                  <span className="text-xs font-semibold text-on-night-2">RevOps by</span>
+                  <span className="font-display text-2xl font-extrabold leading-none">
                     {site.name}<span className="text-accent">.</span>
                   </span>
                 </Link>
@@ -88,41 +90,42 @@ function MobileMenuPortal({
                   type="button"
                   aria-label="Close menu"
                   onClick={onClose}
-                  className="rounded-md p-2 text-text transition-colors hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+                  className="grid h-12 w-12 place-items-center rounded-full border-2 border-white transition-colors hover:bg-white hover:text-ink"
                 >
-                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
+                  <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true">
                     <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
                   </svg>
                 </button>
+              </div>
+              <div aria-hidden="true" className="bundle">
+                {allLines.map(line => <i key={line} data-line={line} />)}
               </div>
             </div>
 
             {/* Nav Panel */}
             <nav className="flex-1 overflow-y-auto px-6 py-8">
               <div className="mx-auto max-w-6xl">
-                <div className="space-y-1">
-                  {navItems.map((item, i) => (
+                {navItems.map((item, i) => {
+                  const isActive = pathname === item.href || pathname.startsWith(item.href + "/");
+                  return (
                     <motion.div
                       key={item.href}
-                      initial={{ opacity: 0, x: 20 }}
+                      initial={reducedMotion ? false : { opacity: 0, x: 28 }}
                       animate={{ opacity: 1, x: 0 }}
                       transition={{ delay: 0.05 * i + 0.1 }}
                     >
                       <Link
                         href={item.href}
                         onClick={onClose}
-                        aria-current={pathname === item.href ? "page" : pathname.startsWith(item.href + "/") ? "true" : undefined}
-                        className={`group flex items-center justify-between rounded-xl px-4 py-4 text-xl font-semibold transition-colors hover:bg-accent-light focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 ${pathname === item.href || pathname.startsWith(item.href + "/") ? "text-accent-text" : "text-text"}`}
+                        aria-current={pathname === item.href ? "page" : isActive ? "true" : undefined}
+                        className="group flex items-center gap-4 border-b border-white/20 py-4 font-display text-6xl font-extrabold leading-none"
                       >
+                        <span aria-hidden="true" className={`h-5 w-5 shrink-0 rounded-full border-4 border-white transition-colors group-hover:bg-accent ${isActive ? "bg-accent" : ""}`} />
                         {item.label}
-                        <svg aria-hidden="true" className="h-4 w-4 text-text-muted transition-transform group-hover:translate-x-1" fill="none" viewBox="0 0 16 16">
-                          <path d="M6 3l5 5-5 5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                        </svg>
                       </Link>
                     </motion.div>
-                  ))}
-                </div>
-
+                  );
+                })}
               </div>
             </nav>
           </div>
@@ -177,17 +180,15 @@ export default function Header() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-300 ${
-        scrolled
-          ? "border-b border-border bg-white/95 backdrop-blur-sm shadow-sm"
-          : "border-b border-transparent bg-white/80 backdrop-blur-sm"
+      className={`sticky top-0 z-50 w-full border-b-2 bg-white/95 backdrop-blur-sm transition-colors duration-300 ${
+        scrolled ? "border-ink" : "border-transparent"
       }`}
     >
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
-        <Link href="/" className="flex flex-col leading-none transition-colors hover:text-accent-text group">
-          <span className="text-[10px] font-semibold uppercase tracking-widest text-text-muted group-hover:text-accent-text transition-colors">RevOps by</span>
-          <span className="font-display text-base font-bold text-text group-hover:text-accent-text transition-colors">
-            {site.name}<span className="text-accent">.</span>
+      <div className="mx-auto flex max-w-[78rem] items-center justify-between px-6 py-3 lg:px-10">
+        <Link href="/" className="group flex flex-col leading-none">
+          <span className="text-xs font-semibold text-text-muted">RevOps by</span>
+          <span className="font-display text-2xl font-extrabold leading-none text-text">
+            {site.name}<span className="text-accent transition-colors group-hover:text-accent-2">.</span>
           </span>
         </Link>
 
@@ -200,17 +201,21 @@ export default function Header() {
                 key={item.href}
                 href={item.href}
                 aria-current={pathname === item.href ? "page" : isActive ? "true" : undefined}
-                className={`relative px-4 py-2 text-sm font-medium rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 group ${
-                  isActive ? "text-accent-text" : "text-text-secondary hover:text-text hover:bg-surface-2"
+                className={`group relative px-3 py-3 text-[0.9375rem] font-semibold transition-colors lg:px-4 ${
+                  isActive ? "text-text" : "text-text-secondary hover:text-text"
                 }`}
               >
                 {item.label}
-                {isActive && (
+                {/* The active page is the station the line has stopped at. */}
+                {isActive ? (
                   <motion.span
                     layoutId="nav-active"
-                    className="absolute inset-x-4 -bottom-1 h-0.5 rounded-full bg-accent"
+                    aria-hidden="true"
+                    className="absolute inset-x-0 bottom-0 mx-auto h-3 w-3 rounded-full border-[3px] border-ink bg-accent"
                     transition={{ type: "spring", stiffness: 400, damping: 40 }}
                   />
+                ) : (
+                  <span aria-hidden="true" className="absolute inset-x-0 bottom-0 mx-auto h-3 w-3 scale-0 rounded-full border-[3px] border-ink bg-white transition-transform duration-200 group-hover:scale-100" />
                 )}
               </Link>
             );
@@ -235,10 +240,10 @@ export default function Header() {
           onClick={() => setOpen(true)}
           aria-expanded={open}
           aria-label="Open menu"
-          className="md:hidden rounded-xl p-2.5 text-text transition-colors hover:bg-surface-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2"
+          className="grid h-12 w-12 place-items-center rounded-full border-2 border-ink text-text transition-colors hover:bg-ink hover:text-white md:hidden"
         >
-          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
-            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+          <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 7.5h16.5M3.75 16.5h16.5" />
           </svg>
         </button>
       </div>

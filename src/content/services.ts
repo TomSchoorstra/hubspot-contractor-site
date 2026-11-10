@@ -43,7 +43,7 @@ export const services: Service[] = [
       "proofLabel": "See the Finance automation case",
       "scopeIntro": "Automation starts with the process people follow and the points where work gets stuck. The scope can include:",
       "approach": [
-        "I agree the logic with the team before building, then test the paths and exceptions in stages. Timing depends on the process and systems involved.",
+        "In the order flow at AIHR, Finance starts the automation with one click after reviewing the billing details. The automation then creates the WooCommerce order and passes the information on to Exact for invoicing.",
         "After rollout, I check how the flow behaves with real records and adjust the agreed rules when the process changes."
       ],
       "boundaries": [
@@ -75,7 +75,7 @@ export const services: Service[] = [
       "proofLabel": "See the data quality case",
       "scopeIntro": "Missing links, inconsistent data and manual workarounds are useful starting points. A review covers:",
       "boundaries": [
-        "I define scope and timing first. A review produces recommendations; implementation and ongoing support need their own scope, permissions and responsibilities. Available features and subscription limits shape what is practical."
+        "A review produces recommendations; implementation and ongoing support need their own scope, permissions and responsibilities. Available features and subscription limits shape what is practical."
       ],
       "headings": {
         "scope": "What I look at",
@@ -84,7 +84,7 @@ export const services: Service[] = [
       },
       "approach": [
         "A prioritized list of findings, with effort and impact considered together. I separate individual record corrections from structural changes and document the decisions.",
-        "I work through the options with the team and map out what to address first. The roadmap covers the next few months, with recurring checks and clear follow-up ownership."
+        "The data quality dashboard at AIHR works this way. It brings missing contacts, missing associations and inconsistent statuses into one view, and each finding starts an investigation before anyone changes a record."
       ]
     },
     "relatedCaseStudy": "crm-data-quality",
@@ -113,7 +113,7 @@ export const services: Service[] = [
       "scopeIntro": "A native connector may cover the need. I use Zapier or a custom API connection when the required flow calls for it.",
       "approach": [
         "I test the mapping with representative records and edge cases before rollout. That includes missing identifiers and updates arriving in an unexpected order.",
-        "The handover records the mappings and operating instructions, so the team knows where to look when systems disagree."
+        "In the order-to-invoice flow at AIHR, I mapped which details HubSpot, WooCommerce and Exact each needed and when they should be passed on. Finance reviews the billing details in HubSpot before anything is sent."
       ],
       "boundaries": [
         "A connector or API does not guarantee that a tool supports the needed operation. I check permissions, API limits and subscription requirements before choosing the route.",
@@ -144,7 +144,7 @@ export const services: Service[] = [
       "proofLabel": "See the Account-based CRM case",
       "scopeIntro": "I start by checking whether standard objects and associations already describe the relationship. When a custom object is justified, the work covers:",
       "approach": [
-        "I configure and test the model with sample data before migrating existing records. I document the structure and work through how the team will use and maintain it.",
+        "At AIHR, I defined the Account model and association rules, reviewed duplicates and parent-child relationships, then backfilled active and historical B2B customer records.",
         "For the Account project, recurring reviews help investigate potential duplicates and missing links. The review supports decisions; it does not automatically repair records."
       ],
       "boundaries": [
@@ -182,7 +182,7 @@ export const services: Service[] = [
       "proofLabel": "See the pipeline consolidation case",
       "scopeIntro": "The starting point is how the team works today and where deals stop moving. A review covers:",
       "approach": [
-        "I work through the stage definitions with the team, then test the new structure and field requirements before rollout. The handover includes process guidelines and reporting definitions.",
+        "At AIHR, I reviewed the stages, fields and workflows across the existing pipelines, then designed a single pipeline with consistent stages and required fields. I planned the migration to preserve existing deal history.",
         "After rollout, I check how stages and required fields are used. A process change or a growing queue of stuck deals is a reason to review the setup."
       ],
       "boundaries": [
@@ -220,7 +220,7 @@ export const services: Service[] = [
       "proofLabel": "See the renewal-status card case",
       "scopeIntro": "I start with the question someone needs to answer on a record. The work includes:",
       "approach": [
-        "I test the status logic and the paths for missing or unavailable data. Written labels explain each status alongside its colour.",
+        "For the renewal card at AIHR, the first approach did not reliably find the linked License, so I moved the lookup into a serverless function. The card shows three states, each with a written status and the next step for the rep.",
         "Documentation covers the sources, permissions and maintenance owner, including how changes to fields or associations affect the card."
       ],
       "boundaries": [

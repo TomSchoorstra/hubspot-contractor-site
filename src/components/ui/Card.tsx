@@ -7,11 +7,8 @@ export default function Card({
   className?: string;
   interactive?: boolean;
 }) {
-  const baseStyles =
-    "rounded-2xl border border-border bg-surface p-6 transition-all duration-300";
-  const interactiveStyles = interactive
-    ? "hover:border-accent/40 hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)] hover:-translate-y-1 cursor-pointer"
-    : "shadow-sm";
+  const baseStyles = "border-t-[10px] border-ink bg-paper-2 p-6 sm:p-10";
+  const interactiveStyles = interactive ? "cursor-pointer transition-colors hover:bg-accent-light" : "";
 
   return (
     <div className={`${baseStyles} ${interactiveStyles} ${className ?? ""}`}>

@@ -62,21 +62,22 @@ export default function Button({
 }: ButtonProps) {
   const pathname = usePathname();
   const baseStyles =
-    "inline-flex items-center justify-center gap-2 font-semibold transition-all duration-200 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent focus-visible:ring-offset-2 border-2 group";
+    "inline-flex items-center justify-center gap-2.5 rounded-full border-2 font-bold transition-colors duration-200 group";
 
   const sizeStyles = {
-    sm: "px-4 py-2 text-sm rounded-xl",
-    md: "px-6 py-3 text-base rounded-xl",
-    lg: "px-8 py-4 text-base rounded-xl",
+    sm: "px-4 py-2 text-sm",
+    md: "px-6 py-3 text-base",
+    lg: "px-8 py-4 text-lg",
   };
 
+  // Primary keeps ink on a line colour, so it reads on paper, night and floods alike.
   const variantStyles = {
     primary:
-      "bg-accent-action border-accent-action text-white shadow-sm hover:bg-accent-action-hover hover:border-accent-action-hover hover:shadow-md hover:-translate-y-px",
+      "bg-accent border-accent text-ink hover:bg-accent-3 hover:border-accent-3",
     secondary:
-      "border-border bg-surface text-text hover:border-accent hover:shadow-md hover:-translate-y-px",
+      "border-ink bg-transparent text-ink hover:bg-ink hover:text-white",
     ghost:
-      "border-transparent text-text hover:border-accent/30 hover:bg-surface-2",
+      "border-transparent text-ink hover:border-ink",
   };
 
   const disabledStyles = disabled
@@ -86,7 +87,7 @@ export default function Button({
   const arrow = showArrow ? (
     <svg
       aria-hidden="true"
-      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-0.5"
+      className="h-3.5 w-3.5 transition-transform duration-200 group-hover:translate-x-1"
       fill="none"
       viewBox="0 0 14 14"
     >

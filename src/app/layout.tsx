@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Sofia_Sans, Sofia_Sans_Extra_Condensed } from "next/font/google";
 import { Suspense } from "react";
 import "./globals.css";
 import Header from "@/components/layout/Header";
@@ -8,18 +8,15 @@ import GoogleTagManager from "@/components/analytics/GoogleTagManager";
 import PageViewTracker from "@/components/analytics/PageViewTracker";
 import { SITE_URL, SITE_SOCIAL_IMAGE } from "@/lib/site";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Sofia Sans was drawn for a city transport identity, which suits a site built on lines and stops.
+const sofia = Sofia_Sans({
+  variable: "--font-sofia",
   subsets: ["latin"],
+  display: "swap",
 });
 
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-});
-
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const sofiaExtraCondensed = Sofia_Sans_Extra_Condensed({
+  variable: "--font-sofia-xc",
   subsets: ["latin"],
   display: "swap",
 });
@@ -41,7 +38,7 @@ export const metadata: Metadata = {
     apple: "/favicon.svg",
   },
   description:
-    "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.",
+    "HubSpot & RevOps specialist working in-house at AIHR. I connect customer records, automate handovers and investigate data quality issues.",
   metadataBase: new URL(siteUrl),
   openGraph: {
     images: [SITE_SOCIAL_IMAGE],
@@ -50,14 +47,14 @@ export const metadata: Metadata = {
     siteName: "Tom Schoorstra",
     title: "Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
-      "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.",
+      "HubSpot & RevOps specialist working in-house at AIHR. I connect customer records, automate handovers and investigate data quality issues.",
   },
   twitter: {
     card: "summary_large_image",
     images: [SITE_SOCIAL_IMAGE.url],
     title: "Tom Schoorstra — HubSpot & RevOps Specialist",
     description:
-      "HubSpot & RevOps specialist helping B2B teams connect customer records, automate handovers and investigate data quality issues.",
+      "HubSpot & RevOps specialist working in-house at AIHR. I connect customer records, automate handovers and investigate data quality issues.",
   },
 };
 
@@ -96,7 +93,7 @@ export default function RootLayout({
   return (
     <html lang="en" data-site-env={siteEnv}>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable} min-h-screen bg-bg text-text antialiased`}
+        className={`${sofia.variable} ${sofiaExtraCondensed.variable} min-h-screen bg-bg text-text antialiased`}
       >
         {analyticsEnabled && gtmId ? <GoogleTagManager gtmId={gtmId} /> : null}
         <script

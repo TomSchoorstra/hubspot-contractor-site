@@ -9,11 +9,12 @@ export default function Badge({
   size?: "sm" | "md";
   className?: string;
 }) {
-  const variantStyles = {
-    orange: "bg-accent-light text-accent-text border border-accent/20",
-    "orange-solid": "bg-accent-action text-white",
-    teal: "bg-accent-2-light text-accent-2-text border border-accent-2/20",
-    neutral: "bg-surface-2 text-text-muted border border-border",
+  // The badge reads as a small station sign: outlined in the current text colour, with a line-coloured dot.
+  const dotStyles = {
+    orange: "bg-accent",
+    "orange-solid": "bg-accent",
+    teal: "bg-accent",
+    neutral: "bg-current",
   };
 
   const sizeStyles = {
@@ -23,8 +24,9 @@ export default function Badge({
 
   return (
     <span
-      className={`inline-flex items-center rounded-full font-semibold ${variantStyles[variant]} ${sizeStyles[size]} ${className ?? ""}`}
+      className={`inline-flex items-center gap-2 rounded-full border-2 border-current font-semibold ${sizeStyles[size]} ${className ?? ""}`}
     >
+      <span aria-hidden="true" className={`h-2.5 w-2.5 rounded-full ${dotStyles[variant]}`} />
       {children}
     </span>
   );

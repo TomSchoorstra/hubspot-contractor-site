@@ -23,9 +23,9 @@ type FormErrors = {
 type FormState = "idle" | "submitting" | "success" | "error";
 
 const inputClasses =
-  "w-full rounded-xl border border-border bg-surface-2 px-4 py-3 text-text placeholder:text-text-muted transition-all focus:border-accent focus:bg-surface focus:outline-none focus:ring-2 focus:ring-accent/15";
+  "w-full rounded-none border-0 border-b-[3px] border-ink bg-paper px-4 py-3.5 text-lg text-text placeholder:text-text-muted transition-colors hover:border-accent-action focus:border-accent";
 
-const labelClasses = "mb-2 block text-sm font-semibold text-text";
+const labelClasses = "mb-2 block font-bold text-text";
 
 export default function ContactForm() {
   const [formData, setFormData] = useState<FormData>({
@@ -150,14 +150,14 @@ export default function ContactForm() {
 
   if (formState === "success") {
     return (
-      <div className="rounded-2xl border-2 border-accent/20 bg-accent-light p-8 text-center lg:p-12">
-        <div className="mx-auto mb-5 flex h-14 w-14 items-center justify-center rounded-full bg-accent text-white">
+      <div className="py-4 text-center lg:py-8" role="status">
+        <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-full border-[5px] border-ink bg-line-green text-ink">
           <svg aria-hidden="true" className="h-7 w-7" fill="none" viewBox="0 0 24 24">
             <path d="M5 13l4 4L19 7" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
           </svg>
         </div>
-        <h2 className="font-display text-2xl font-bold text-text">Message sent!</h2>
-        <p className="mt-3 text-base leading-relaxed text-text-secondary">
+        <h2 className="t-h2">Message sent!</h2>
+        <p className="mt-3 text-lg leading-relaxed text-text-secondary">
           Thanks for reaching out. I&apos;ll read your message and get back to you soon.
         </p>
         <div className="mt-6">
@@ -172,15 +172,7 @@ export default function ContactForm() {
   return (
     <form onSubmit={handleSubmit} onFocus={handleFocus} noValidate>
       <div className="space-y-5">
-        <h2 className="font-display text-xl font-bold text-text">Send a message</h2>
-
-        {!FORMSPREE_ENDPOINT && (
-          <div className="rounded-xl border border-accent/20 bg-accent-light p-4" role="alert">
-            <p className="text-sm font-medium text-text">
-              The form is currently unavailable. Please contact me on LinkedIn instead.
-            </p>
-          </div>
-        )}
+        <h2 className="t-h3">Send a message</h2>
 
         <div className="grid gap-5 sm:grid-cols-2">
           <div>
@@ -199,10 +191,10 @@ export default function ContactForm() {
               placeholder="Your name"
               aria-invalid={errors.name ? "true" : "false"}
               aria-describedby={errors.name ? "name-error" : undefined}
-              className={`${inputClasses} ${errors.name ? "border-accent ring-2 ring-accent/15" : ""}`}
+              className={`${inputClasses} ${errors.name ? "border-accent-action! bg-accent-light!" : ""}`}
             />
             {errors.name && (
-              <p id="name-error" className="mt-1.5 text-sm text-accent-text" role="alert">
+              <p id="name-error" className="mt-1.5 text-sm font-semibold text-accent-text" role="alert">
                 {errors.name}
               </p>
             )}
@@ -224,10 +216,10 @@ export default function ContactForm() {
               placeholder="you@company.com"
               aria-invalid={errors.email ? "true" : "false"}
               aria-describedby={errors.email ? "email-error" : undefined}
-              className={`${inputClasses} ${errors.email ? "border-accent ring-2 ring-accent/15" : ""}`}
+              className={`${inputClasses} ${errors.email ? "border-accent-action! bg-accent-light!" : ""}`}
             />
             {errors.email && (
-              <p id="email-error" className="mt-1.5 text-sm text-accent-text" role="alert">
+              <p id="email-error" className="mt-1.5 text-sm font-semibold text-accent-text" role="alert">
                 {errors.email}
               </p>
             )}
@@ -266,26 +258,26 @@ export default function ContactForm() {
             placeholder="Your question or idea..."
             aria-invalid={errors.message ? "true" : "false"}
             aria-describedby={errors.message ? "message-hint message-error" : "message-hint"}
-            className={`${inputClasses} resize-none ${errors.message ? "border-accent ring-2 ring-accent/15" : ""}`}
+            className={`${inputClasses} resize-none ${errors.message ? "border-accent-action! bg-accent-light!" : ""}`}
           />
-          <p id="message-hint" className="mt-1.5 text-xs text-text-secondary">A little context helps. Please use at least 20 characters.</p>
+          <p id="message-hint" className="mt-1.5 text-sm text-text-secondary">A little context helps. Please use at least 20 characters.</p>
           {errors.message && (
-            <p id="message-error" className="mt-1.5 text-sm text-accent-text" role="alert">
+            <p id="message-error" className="mt-1.5 text-sm font-semibold text-accent-text" role="alert">
               {errors.message}
             </p>
           )}
         </div>
 
         {formState === "error" && (
-          <div className="rounded-xl border border-accent/20 bg-accent-light p-4" role="alert">
-            <p className="text-sm font-medium text-text">
+          <div className="border-l-[6px] border-accent bg-accent-light p-4" role="alert">
+            <p className="font-semibold text-text">
               Something went wrong. Please try again or reach out directly on LinkedIn.
             </p>
           </div>
         )}
 
-        <div className="flex items-center justify-between pt-2">
-          <p className="text-xs text-text-muted">
+        <div className="flex flex-wrap items-center justify-between gap-4 pt-2">
+          <p className="text-sm text-text-muted">
             <span className="text-accent-text">*</span> Required fields
           </p>
           <Button

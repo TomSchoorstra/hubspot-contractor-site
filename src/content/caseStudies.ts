@@ -189,13 +189,13 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "finance-automation",
     "title": "From manual order entry to one-click invoicing",
-    "industry": "HR Software",
+    "industry": "HR Technology",
     "companySize": "50–200 employees",
-    "summary": "I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information.",
+    "summary": "At AIHR, I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information.",
     "narrative": {
       "eyebrow": "Finance automation",
       "intro": [
-        "I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information."
+        "At AIHR, I connected HubSpot, WooCommerce and Exact through Zapier so order details pass between systems after Finance reviews the billing information."
       ],
       "headings": {
         "challenge": "Keep the billing decision with Finance",
@@ -242,9 +242,9 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "renewal-status-card",
     "title": "Seeing the renewal status directly on the deal",
-    "industry": "HR Software",
+    "industry": "HR Technology",
     "companySize": "50–200 employees",
-    "summary": "I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, so reps can check it where they're already working.",
+    "summary": "At AIHR, I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, so reps can check it where they're already working.",
     "screenshots": {
       "caption": "Three states of the card, each with a written status and the next step for the rep.",
       "images": [
@@ -271,7 +271,7 @@ export const caseStudies: CaseStudy[] = [
     "narrative": {
       "eyebrow": "Renewal status card",
       "intro": [
-        "I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, where reps are already working."
+        "At AIHR, I built a HubSpot sidebar card that reads the linked License and shows the renewal status on the deal, where reps are already working."
       ],
       "headings": {
         "challenge": "The answer was on another record",
@@ -317,13 +317,13 @@ export const caseStudies: CaseStudy[] = [
   {
     "slug": "pipeline-consolidation",
     "title": "Following the sales process from MQL to Closed Won",
-    "industry": "HR Software",
+    "industry": "HR Technology",
     "companySize": "50–200 employees",
-    "summary": "I consolidated several HubSpot pipelines into one, making it easier to measure conversion from MQL to Closed Won and manage internal handovers.",
+    "summary": "At AIHR, I consolidated several HubSpot pipelines into one, making it easier to measure conversion from MQL to Closed Won and manage internal handovers.",
     "narrative": {
       "eyebrow": "Pipeline consolidation",
       "intro": [
-        "I consolidated several HubSpot pipelines into one, so the team can follow the sales process and measure conversion from MQL to Closed Won."
+        "At AIHR, I consolidated several HubSpot pipelines into one, so the team can follow the sales process and measure conversion from MQL to Closed Won."
       ],
       "headings": {
         "challenge": "The sales process was split across pipelines",

@@ -17,381 +17,127 @@ Complete reference for design decisions, components, and conventions used in thi
 
 ---
 
-## Colour Palette
 
-Defined as CSS custom properties in `src/app/globals.css` and mapped to Tailwind via `@theme inline`.
+## Art direction: the network map
 
-### Primary colours
+The site is drawn like a transit map. Tom's work is connecting systems, so the visual language is lines, stops and interchanges.
 
-| Token | Tailwind class | Hex | Usage |
-|-------|---------------|-----|-------|
-| `--accent` | `bg-accent` / `text-accent` | `#ff5c35` | HubSpot orange — primary CTA, highlights, active states |
-| `--accent-hover` | `hover:bg-accent-hover` | `#e84d28` | Orange hover state |
-| `--accent-light` | `bg-accent-light` | `#fff5f2` | Orange tinted backgrounds (CTA sections, active cert cards) |
-| `--accent-2` | `bg-accent-2` / `text-accent-2` | `#00a4bd` | Teal — secondary accent, results sections, teal badges |
-| `--accent-2-hover` | `hover:bg-accent-2-hover` | `#0091a8` | Teal hover state |
-| `--accent-2-light` | `bg-accent-2-light` | `#f0fafb` | Teal tinted backgrounds |
-| `--accent-3` | `bg-accent-3` / `text-accent-3` | `#f5c26b` | Gold — use sparingly for tertiary highlights |
+- Each expertise area owns one **line colour**. Anything belonging to that area (service page, related case study, proof link) inherits it.
+- A **bullet** (coloured disc with the area's icon) names a line. Its tail runs in from the left edge of the screen.
+- An **interchange** (ink-outlined station with several coloured lines running into it) marks a case study that touches more than one area. The lines come from `relatedServices`.
+- A **journey** is a vertical line with ring-shaped stops. Detail pages use it for the narrative, the blog index and certifications use it for chronology.
+- The **bundle** (all six lines side by side) closes the page in the footer and opens the mobile menu.
 
-### Backgrounds & surfaces
+Lines are decoration that encodes real relationships. Never add a line, stop or label that the content does not back up.
 
-| Token | Tailwind class | Hex | Usage |
-|-------|---------------|-----|-------|
-| `--bg` | `bg-bg` | `#ffffff` | Page background |
-| `--surface` | `bg-surface` | `#ffffff` | Card backgrounds |
-| `--surface-2` | `bg-surface-2` | `#f9fafb` | Subtle section backgrounds, zebra striping |
-| `--surface-dark` | `bg-surface-dark` | `#0f172a` | Dark sections (not currently used) |
+---
 
-### Text
+## Colour
 
-| Token | Tailwind class | Hex | Usage |
-|-------|---------------|-----|-------|
-| `--text` | `text-text` | `#0f172a` | Primary text, headings |
-| `--text-secondary` | `text-text-secondary` | `#475569` | Body copy, descriptions |
-| `--text-muted` | `text-text-muted` | `#64748b` | Labels, metadata, eyebrows |
+Defined in `src/app/globals.css` and mapped to Tailwind via `@theme inline`.
 
-### Borders
+| Token | Tailwind | Hex | Usage |
+|-------|----------|-----|-------|
+| `--ink` | `text-ink`, `bg-ink`, `border-ink` | `#17163f` | Text, rules, station outlines. Deep indigo, used instead of black |
+| `--ink-2` | `text-ink-2` | `#3b3a66` | Body text |
+| `--ink-3` | `text-ink-3` | `#5f5e88` | Meta text (dates, eyebrows) |
+| `--paper` | `bg-paper` | `#ffffff` | Page background |
+| `--paper-2` | `bg-paper-2` | `#f1f2f9` | Tinted sections and panels |
+| `--rule` | `border-rule` | `#d5d7e8` | Hairlines between rows |
+| `--night` | `bg-night` | `#17163f` | Home hero, case study headers, footer, mobile menu |
+| `--on-night-2` | `text-on-night-2` | `#d2d2ec` | Secondary text on night |
 
-| Token | Tailwind class | Hex | Usage |
-|-------|---------------|-----|-------|
-| `--border` | `border-border` | `#e5e7eb` | Default borders on cards and dividers |
-| `--border-subtle` | `border-border-subtle` | `#f3f4f6` | Very light borders, section separators |
+### Line colours
+
+| Line | Token | Hex | Area (`data-line` value) |
+|------|-------|-----|--------------------------|
+| Orange | `--line-orange` | `#ff5c35` | `custom-objects` (also the primary accent, HubSpot orange) |
+| Blue | `--line-blue` | `#5b8dff` | `integrations` |
+| Green | `--line-green` | `#1db877` | `consultancy` |
+| Pink | `--line-pink` | `#f0489f` | `custom-app-cards` |
+| Yellow | `--line-yellow` | `#ffc531` | `automation` |
+| Cyan | `--line-cyan` | `#22c3e6` | `pipeline-optimization` |
+
+Set `data-line="<service slug>"` on any element and `--line` (Tailwind: `bg-line`, `border-line`) resolves to that area's colour for everything inside it. Case studies map to their main area in `src/lib/lines.ts`.
+
+All six colours pass AA with ink text on top, so a header can be flooded with its line colour (`bg-line text-ink`, plus the `on-flood` class so link underlines switch to ink). Never put white text on a line colour.
+
+The legacy names (`accent`, `accent-text`, `accent-action`, `surface-2`, `text-secondary`, `border`, ...) still exist as aliases. Use `accent-text` (`#b83a1b`) for orange text on paper, such as form errors.
 
 ---
 
 ## Typography
 
-### Fonts
+| Role | Font | CSS variable | Usage |
+|------|------|--------------|-------|
+| Display | Sofia Sans Extra Condensed | `--font-sofia-xc` | All headings, navigation in the mobile menu |
+| Body | Sofia Sans | `--font-sofia` | Everything else |
 
-| Font | Variable | Usage |
-|------|----------|-------|
-| **Syne** | `--font-syne` → `font-display` class | All headings (H1–H3), large numbers, display text |
-| **Geist Sans** | `--font-geist-sans` → `font-sans` | Body copy, UI text, descriptions |
-| **Geist Mono** | `--font-geist-mono` → `font-mono` | Code blocks (if used) |
+Sofia Sans was designed for a city transport identity, which is why it fits. Headings are set in sentence case, weight 800, with tight leading. Do not use uppercase tracked labels.
 
-### Using the display font
+| Class | Size | Used for |
+|-------|------|----------|
+| `t-mega` | `clamp(3.75rem, 1.4rem + 7.4vw, 7.5rem)` | Home, About and Contact h1 |
+| `t-h1` | `clamp(3.25rem, 1.9rem + 5.6vw, 6.5rem)` | Other page titles |
+| `t-h2` | `clamp(2.5rem, 1.7rem + 2.8vw, 4rem)` | Section headings, journey stops |
+| `t-h3` | `clamp(1.875rem, 1.55rem + 1.2vw, 2.5rem)` | Row titles |
+| `t-h4` | `1.5rem` | Small headings inside panels |
 
-Always use the `font-display` Tailwind class for headings — never `font-syne` directly:
+Body text is 17px. Lead paragraphs use `text-xl` or `text-2xl`. Long-form articles use `.prose-blog` (19px, 1.7 line height, 40rem measure).
 
-```tsx
-<h1 className="font-display text-5xl font-extrabold">Heading</h1>
-```
-
-### Type scale (common patterns)
-
-| Element | Classes |
-|---------|---------|
-| Hero H1 | `font-display text-4xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl xl:text-7xl` |
-| Page H1 | `font-display text-4xl font-extrabold tracking-tight lg:text-5xl xl:text-6xl` |
-| Section H2 | `font-display text-3xl font-bold lg:text-4xl` |
-| Subsection H2 | `font-display text-2xl font-bold lg:text-3xl` |
-| Card H3 | `font-display text-xl font-bold` or `text-lg font-semibold` |
-| Eyebrow label | `text-xs font-semibold uppercase tracking-widest text-accent` |
-| Body large | `text-xl leading-relaxed text-text-secondary` |
-| Body default | `text-base leading-relaxed text-text-secondary` |
-| Body small | `text-sm text-text-secondary` |
-| Metadata / label | `text-xs font-medium text-text-muted` |
-
-### Gradient text
-
-```tsx
-<span className="text-gradient-orange">text here</span>
-```
-
-Produces an orange-to-peach gradient. Use on H1 accents only — not body text.
+Text links use the `tlink` class: bold, with a 2px underline in the line colour that fills in on hover. Override the underline colour with `style={{ "--ul": "var(--line)" }}`.
 
 ---
 
-## Spacing & Layout
+## Layout
 
-### Container
-
-Always wrap page content in `<Container>`. Three sizes:
-
-```tsx
-<Container>                  // max-w-6xl — default for most pages
-<Container size="narrow">    // max-w-4xl — forms, focused content
-<Container size="wide">      // max-w-7xl — dashboards, wide layouts
-```
-
-Padding: `px-6 lg:px-8` applied automatically.
-
-### Section spacing
-
-| Context | Classes |
-|---------|---------|
-| Full page section | `py-24 lg:py-32` |
-| Smaller section | `py-16 lg:py-20` |
-| Page header / hero | `py-20 lg:py-28` |
-| Internal section spacing | `space-y-20 lg:space-y-28` |
-
-### Border radius
-
-| Value | Usage |
-|-------|-------|
-| `rounded-xl` | Buttons, small interactive elements |
-| `rounded-2xl` | Cards, most containers |
-| `rounded-3xl` | CTA sections, large feature blocks |
-| `rounded-full` | Pills, avatar circles, dot indicators |
+- `Container` (`src/components/ui/Container.tsx`): `default` 78rem, `narrow` 56rem (articles), `wide` 88rem.
+- Overview pages are lists of full-width rows separated by hairlines, opened by a 2px ink rule. No card grids.
+- Detail pages put each section in a two-column stop: heading left, body right, on a journey rail.
+- Section padding: `py-14 lg:py-20` to `py-16 lg:py-24`.
+- Corners are square. Only pills, bullets and stations are round.
 
 ---
 
-## Components
+## Primitives
 
-### Button — `src/components/ui/Button.tsx`
+| Primitive | Where | Notes |
+|-----------|-------|-------|
+| `LineBullet` | `src/components/ui/LineBullet.tsx` | Coloured disc with a `ContentIcon`. `tail` draws the line in from the screen edge. Wrap rows in `overflow-x-clip` |
+| `.interchange` | `globals.css` | Station with several lines. See `src/app/case-studies/page.tsx` |
+| `.journey`, `.ring-stop`, `JourneyTrack` | `globals.css`, `src/components/ui/JourneyTrack.tsx` | Vertical route. `JourneyTrack` fills on scroll. `journey--static` gives a solid line. Put `ring-stop` on the element that marks a stop |
+| `.track` | `globals.css` | Horizontal stretch of line with a train that travels it on hover (`WorkTile`) |
+| `.bundle` | `globals.css` | All lines side by side: `<div class="bundle">{allLines.map(l => <i data-line={l} />)}</div>` |
+| `RowArrow` | `src/components/ui/RowArrow.tsx` | Round arrow at the end of a link row |
+| `Button` | `src/components/ui/Button.tsx` | Pill. `primary` is orange with ink text and turns yellow on hover. `secondary` is an ink outline. Analytics props are unchanged |
+| `Badge` | `src/components/ui/Badge.tsx` | Outlined pill with a line-coloured dot |
+| `Reveal` | `src/components/ui/Reveal.tsx` | Sets `data-reveal="pending"` only when JavaScript confirms the element starts off screen |
+| `HeroMap` | `src/components/sections/HeroMap.tsx` | Home hero diagram. Decorative SVG, the portrait keeps its alt text |
+| `ArchitectureDiagram` | `src/components/sections/ArchitectureDiagram.tsx` | Account tree. A bus with drops on wide screens, a vertical bus with stubs on narrow ones |
 
-```tsx
-<Button href="/contact" variant="primary" size="lg" showArrow>
-  Plan a call
-</Button>
-```
+Primitives live in `@layer components`, so Tailwind utilities can override them.
 
-| Prop | Options | Default |
-|------|---------|---------|
-| `variant` | `primary` / `secondary` / `ghost` | `primary` |
-| `size` | `sm` / `md` / `lg` | `md` |
-| `showArrow` | boolean | `false` |
-| `href` | string | renders as `<Link>` |
-| `onClick` | function | renders as `<button>` |
+Interaction states hang off Tailwind's `group` class: put `group` on the link, and bullets, tails, arrows, trains and rings inside it respond to hover and keyboard focus.
 
-- **primary** — orange fill, white text. Main CTAs.
-- **secondary** — white bg, border, dark text. Secondary actions.
-- **ghost** — transparent, subtle hover. Tertiary or nav actions.
-
----
-
-### Badge — `src/components/ui/Badge.tsx`
-
-```tsx
-<Badge variant="orange">10-15 hrs/week</Badge>
-<Badge variant="teal" size="sm">HubSpot</Badge>
-<Badge variant="neutral">Operations Hub</Badge>
-```
-
-| Variant | Appearance | Usage |
-|---------|-----------|-------|
-| `orange` | Light orange bg, orange text | Results / metric highlights |
-| `orange-solid` | Solid orange bg, white text | Status indicators |
-| `teal` | Light teal bg, teal text | Tech stack tags |
-| `neutral` | Light grey bg, muted text | Industry / category labels |
+`SoftContentCard`, `Card` and the `dot-grid` helper remain for the design-preview pages and the error page. Do not use them on public pages.
 
 ---
 
-### ScrollReveal — `src/components/ui/ScrollReveal.tsx`
+## Motion
 
-Wraps content in a fade+slide-up animation triggered on scroll entry.
+- One orchestrated moment: the home hero. Lines draw outward from the portrait, stations pop in, the text rises. It is pure CSS (`.hero-map`, `.hero-rise`).
+- Hover and focus feedback on rows: the tail thickens, the bullet grows, the arrow fills and moves.
+- Scroll: the journey rail fills as the reader moves down a detail page, and the article page shows a reading progress line.
+- Tokens: `--dur-fast` 160ms, `--dur-base` 320ms, `--dur-slow` 700ms, `--ease-out`, `--ease-in-out`.
 
-```tsx
-<ScrollReveal>
-  <div>Content fades in on scroll</div>
-</ScrollReveal>
+Rules:
 
-// Stagger delay for grids
-{items.map((item, i) => (
-  <ScrollReveal key={item.id} delay={i * 0.08}>
-    <Card />
-  </ScrollReveal>
-))}
-```
+1. Text never starts invisible. Entrance animations on text only move it, so the page reads correctly even if no animation frame runs.
+2. Everything respects `prefers-reduced-motion` (CSS media query plus `useReducedMotion` in client components).
+3. Nothing is hover-only. Hover adds emphasis, never information.
+4. Keep animation in small client components. Pages stay server components.
 
-- Animates once, fires 80px before viewport entry
-- Default: `opacity: 0, y: 24` → `opacity: 1, y: 0` over 0.6s easeOut
-
----
-
-### AnimatedNumber — `src/components/ui/AnimatedNumber.tsx`
-
-Counts up from 0 when it enters the viewport.
-
-```tsx
-<AnimatedNumber value={15} suffix=" hrs/wk" />
-<AnimatedNumber value={90} prefix="~" suffix="%" />
-```
-
-| Prop | Type | Default |
-|------|------|---------|
-| `value` | number | required |
-| `prefix` | string | `""` |
-| `suffix` | string | `""` |
-| `duration` | number (seconds) | `1.5` |
-
----
-
-### Container — `src/components/ui/Container.tsx`
-
-See Layout section above.
-
----
-
-### Accordion — `src/components/ui/Accordion.tsx`
-
-FAQ sections on service detail pages. Animated with Framer Motion AnimatePresence.
-
-```tsx
-<Accordion items={service.faq} />
-// items: Array<{ q: string; a: string }>
-```
-
----
-
-### ProcessTimeline — `src/components/sections/ProcessTimeline.tsx`
-
-Numbered vertical timeline for process steps.
-
-```tsx
-<ProcessTimeline steps={service.process} />
-// steps: Array<{ title: string; description: string }>
-```
-
-Orange numbered bubbles (01, 02...) with vertical connector line on desktop. Each step animates in from the left on scroll.
-
----
-
-### PageHeader — `src/components/sections/PageHeader.tsx`
-
-Standard hero for inner pages.
-
-```tsx
-<PageHeader
-  eyebrow="Services"
-  title="Building HubSpot that works for your team"
-  subtitle="Five focused services..."
-  primaryCta={{ label: "Talk about your project", href: "/contact" }}
-  secondaryCta={{ label: "See case studies", href: "/case-studies" }}
-/>
-```
-
-Includes dot grid background and orange glow blob automatically.
-
----
-
-### CTASection — `src/components/sections/CTASection.tsx`
-
-Bottom-of-page CTA block. Used on every page.
-
-```tsx
-<CTASection
-  title="Ready to get started?"
-  description="Tell me what you're working on..."
-  cta={{ label: "Talk about your project", href: "/contact" }}
-  secondaryCta={{ label: "See case studies", href: "/case-studies" }}
-/>
-```
-
----
-
-### StatBar — `src/components/sections/StatBar.tsx`
-
-Row of animated metric stats.
-
-```tsx
-<StatBar
-  background="teal"
-  stats={[
-    { value: 15, suffix: " hrs/wk", label: "Saved per project" },
-    { value: 50, suffix: "%", label: "Faster reporting" },
-  ]}
-/>
-```
-
-| `background` | Appearance |
-|---|---|
-| `teal` | Teal bg, white text |
-| `orange` | Orange bg, white text |
-| `light` | Light grey bg, orange numbers |
-
----
-
-## Background Utilities
-
-### Dot grid
-
-```tsx
-<div className="absolute inset-0 dot-grid opacity-40 pointer-events-none" />
-```
-
-Subtle 24px repeating dot pattern. Used on page headers and homepage hero. Typical opacity: 40–50%.
-
-### Orange glow blob
-
-```tsx
-<div className="absolute -top-24 -right-24 h-[400px] w-[400px] rounded-full bg-accent/6 blur-[80px] pointer-events-none" />
-```
-
-Soft radial glow. Used top-right on most page headers. Teal variant: `bg-accent-2/6`.
-
-### Gradient mesh
-
-```tsx
-<div className="gradient-mesh" />
-```
-
-Combined orange + teal radial gradient background utility class.
-
----
-
-## Card Patterns
-
-### Interactive card (hover lift)
-
-```tsx
-<div className="rounded-2xl border border-border bg-surface p-7 transition-all duration-300 hover:border-accent/40 hover:-translate-y-1 hover:shadow-[0_20px_40px_-8px_rgb(0_0_0/0.10)]">
-```
-
-### Static card (no hover)
-
-```tsx
-<div className="rounded-2xl border border-border bg-surface-2 p-6">
-```
-
-### CTA / accent card
-
-```tsx
-<div className="rounded-3xl bg-accent-light border-2 border-accent/15 px-8 py-14">
-```
-
----
-
-## Animations (Framer Motion)
-
-### Rules
-
-- Always use string eases: `ease: "easeOut"` — never raw arrays (TypeScript error)
-- Use `<ScrollReveal>` for scroll animations instead of writing inline Framer Motion
-- Use `<AnimatedNumber>` for all metric counters
-
-### Common patterns
-
-```tsx
-// Standard scroll reveal
-initial={{ opacity: 0, y: 24 }}
-animate={{ opacity: 1, y: 0 }}
-transition={{ duration: 0.6, ease: "easeOut" }}
-
-// Timeline slide from left
-initial={{ opacity: 0, x: -16 }}
-animate={{ opacity: 1, x: 0 }}
-transition={{ duration: 0.5, ease: "easeOut" }}
-
-// Stagger container + item
-const staggerContainer = {
-  hidden: {},
-  show: { transition: { staggerChildren: 0.1 } },
-};
-const staggerItem = {
-  hidden: { opacity: 0, y: 28 },
-  show: { opacity: 1, y: 0, transition: { duration: 0.65, ease: "easeOut" } },
-};
-
-// Floating loop (hero stat cards)
-animate={{ y: [0, -7, 0] }}
-transition={{ duration: 3.5, repeat: Infinity, ease: "easeInOut" }}
-```
-
-### Stagger delays
-
-- 3-column grids: `delay={i * 0.08}`
-- 2-column grids: `delay={i * 0.1}`
+Focus is a two-tone ring (ink outline, white halo) defined once in `globals.css`, so it shows on paper, night and colour floods. Do not add per-component focus rings.
 
 ---
 
@@ -456,38 +202,31 @@ Not yet added. Implement via `src/app/sitemap.ts` (Next.js built-in feature).
 
 ---
 
-## Page Structure Convention
-
-Every inner page follows this order:
-
-1. `<header>` / `<PageHeader>` with H1
-2. Main `<section>` with content
-3. `<CTASection>` at the bottom — always
-
-### Eyebrow + heading pattern
-
-Every major section uses this pattern:
-
-```tsx
-<p className="text-xs font-semibold uppercase tracking-widest text-accent mb-3">
-  Eyebrow label
-</p>
-<h2 className="font-display text-3xl font-bold text-text lg:text-4xl">
-  Section heading
-</h2>
-```
 
 ---
 
-## Do's and Don'ts
+## Page structure
 
-| Do | Don't |
-|----|-------|
-| Use `font-display` for all headings | Use `font-syne` directly in className |
-| Use `text-text-secondary` for body copy | Use raw Tailwind greys like `text-gray-500` |
-| Use `<Container>` for all page content | Use raw `max-w-*` + `mx-auto` directly |
-| Use `<ScrollReveal>` for scroll animations | Write Framer Motion inline unnecessarily |
-| Use string eases: `"easeOut"` | Use array eases like `[0.4, 0, 0.2, 1]` |
-| Keep content in `/src/content/` files | Hardcode content in page components |
-| Use `rounded-2xl` or `rounded-3xl` for cards | Mix arbitrary border radius values |
-| Add `pointer-events-none` to decorative elements | Leave decorative divs blocking clicks |
+| Page type | Header | Body |
+|-----------|--------|------|
+| Home | Night hero with `HeroMap` | Work tiles, area rows with bullets, closing statement |
+| Overview (expertise, case studies) | White, `t-h1` left, intro right | Link rows with bullets or interchanges |
+| Service detail | Flooded in the line colour | Journey with three stops |
+| Case study detail | Night, closed by the bundle of related lines | Journey with narrative stops, previous and next |
+| Blog index | White | Chronological journey |
+| Article | White, narrow, meta bar | `.prose-blog` |
+| About | Tinted hero with portrait and tool ornaments | Sections, toolkit list, certifications journey |
+| Contact | White, `t-mega` | Form panel |
+
+Heading order: one `h1` per page, `h2` for sections and row titles, `h3` below that.
+
+---
+
+## Do's and don'ts
+
+- Do keep all copy in the content files and page components verbatim. Presentation changes must not change wording.
+- Do give every new expertise area a line colour in `globals.css` (`[data-line="<slug>"]`) and add it to `allLines`.
+- Do mark decorative lines, bullets and stations with `aria-hidden="true"`.
+- Don't use rounded card grids, gradient washes, drop shadows or uppercase eyebrow labels.
+- Don't put white text on a line colour, or a line colour as text on paper.
+- Don't add diagram labels, numbers or stops that are not in the content.

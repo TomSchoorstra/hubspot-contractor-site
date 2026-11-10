@@ -1,56 +1,70 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
+import { useSyncExternalStore } from "react";
 
-const START = new Date('2017-08-01T00:00:00');
+// First day working with HubSpot: 23 August 2017 (local time).
+const START = { year: 2017, month: 7, day: 23 };
 
-function pad(n: number) {
-  return String(n).padStart(2, '0');
+function subscribe(onTick: () => void) {
+  const id = setInterval(onTick, 1000);
+  return () => clearInterval(id);
 }
 
-function getElapsed() {
-  const now = new Date();
-  let years = now.getFullYear() - START.getFullYear();
-  let months = now.getMonth() - START.getMonth();
-  let days = now.getDate() - START.getDate();
+const currentSecond = () => Math.floor(Date.now() / 1000);
+// The server cannot know the visitor's clock, so the count appears after hydration.
+const noSecond = () => null;
 
+function elapsed(seconds: number) {
+  const now = new Date(seconds * 1000);
+  let years = now.getFullYear() - START.year;
+  let months = now.getMonth() - START.month;
+  let days = now.getDate() - START.day;
   if (days < 0) {
-    months--;
+    months -= 1;
+    // Borrow the length of the previous month.
     days += new Date(now.getFullYear(), now.getMonth(), 0).getDate();
   }
   if (months < 0) {
-    years--;
+    years -= 1;
     months += 12;
   }
-
+  const pad = (value: number) => String(value).padStart(2, "0");
   return {
-    years,
-    months,
-    days,
-    hours: now.getHours(),
-    minutes: now.getMinutes(),
-    seconds: now.getSeconds(),
+    parts: [
+      { value: years, unit: years === 1 ? "year" : "years" },
+      { value: months, unit: months === 1 ? "month" : "months" },
+      { value: days, unit: days === 1 ? "day" : "days" },
+    ],
+    clock: `${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`,
   };
 }
 
 export default function ExperienceTimer() {
-  const [elapsed, setElapsed] = useState(getElapsed);
-
-  useEffect(() => {
-    const id = setInterval(() => setElapsed(getElapsed()), 1000);
-    return () => clearInterval(id);
-  }, []);
-
-  const { years, months, days, hours, minutes, seconds } = elapsed;
+  const second = useSyncExternalStore(subscribe, currentSecond, noSecond);
+  const time = second === null ? null : elapsed(second);
+  const parts = time?.parts ?? [
+    { value: null, unit: "years" },
+    { value: null, unit: "months" },
+    { value: null, unit: "days" },
+  ];
 
   return (
-    <div className="text-center sm:text-left">
-      <div className="font-display text-2xl font-bold text-accent sm:text-3xl lg:text-4xl">
-        {years} yrs
-      </div>
-      <div className="mt-1 text-sm font-medium text-text-secondary tabular-nums">
-        {months} mo · {days} d · {pad(hours)}:{pad(minutes)}:{pad(seconds)}
-      </div>
+    <div className="border-t-[10px] border-accent bg-paper-2 p-6 sm:p-8">
+      <p className="text-base font-bold leading-snug text-ink">Working with HubSpot since 23 August 2017</p>
+      <p
+        className="mt-5 grid grid-cols-3 gap-4 text-ink"
+        aria-label={time ? time.parts.map((part) => `${part.value} ${part.unit}`).join(", ") : undefined}
+      >
+        {parts.map((part) => (
+          <span key={part.unit.slice(0, 3)} className="block" aria-hidden={time ? "true" : undefined}>
+            <span className="t-h1 block tabular-nums" style={{ fontSize: "clamp(3.25rem, 2.4rem + 2.2vw, 4.5rem)" }}>{part.value ?? "–"}</span>
+            <span className="mt-1 block text-sm font-bold text-ink-2">{part.unit}</span>
+          </span>
+        ))}
+      </p>
+      <p className="mt-5 border-t-2 border-ink pt-3 text-sm font-bold leading-relaxed text-accent-text tabular-nums" aria-hidden="true">
+        {time ? `${time.clock} and counting` : "\u00a0"}
+      </p>
     </div>
   );
 }
