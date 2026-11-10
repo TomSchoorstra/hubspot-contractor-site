@@ -2,7 +2,8 @@
 // No amounts live in this repository. The document is stored server-side only.
 
 export type BudgetLine = { id: string; name: string; amount: number };
-export type BudgetCost = BudgetLine & { paid: boolean; saving: boolean };
+// A variable cost is spent bit by bit through the month (groceries); `spent` is what has gone out so far.
+export type BudgetCost = BudgetLine & { paid: boolean; saving: boolean; variable: boolean; spent: number };
 export type BudgetExtra = BudgetLine & { received: boolean };
 export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean };
 export type BudgetDoc = {
@@ -56,8 +57,10 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
   if (typeof value.updatedAt !== "number" || !Number.isSafeInteger(value.updatedAt) || value.updatedAt <= 0) return null;
   const income = list<BudgetLine>(value.income, (row, base) => (amount(row.amount) ? { ...base, amount: row.amount } : null));
   const costs = list<BudgetCost>(value.costs, (row, base) =>
+    // `variable` and `spent` were added later; documents saved before that simply lack them.
     amount(row.amount) && typeof row.paid === "boolean" && typeof row.saving === "boolean"
-      ? { ...base, amount: row.amount, paid: row.paid, saving: row.saving }
+      && (row.variable === undefined || typeof row.variable === "boolean") && (row.spent === undefined || amount(row.spent))
+      ? { ...base, amount: row.amount, paid: row.paid, saving: row.saving, variable: row.variable === true, spent: (row.spent as number | undefined) ?? 0 }
       : null);
   if (!income || !costs || !isRecord(value.house) || !validTargetMonth(value.house.target)) return null;
   const items = list<BudgetLine>(value.house.items, (row, base) => (amount(row.amount) ? { ...base, amount: row.amount } : null));

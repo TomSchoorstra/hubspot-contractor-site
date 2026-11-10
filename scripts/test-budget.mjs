@@ -76,6 +76,12 @@ test("budget documents validate amounts, ids, the target month and drop unknown 
   assert.equal(broken(d => { d.version = 2; }), null);
   assert.equal(broken(d => { d.income = Array.from({ length: 101 }, (_, i) => ({ id: "i" + i, name: "", amount: 1 })); }), null);
   assert.equal(broken(d => { d.house.pots[0].counts = 1; }), null);
+  // Documents saved before gradual spending existed get the defaults; given values are kept and checked.
+  assert.equal(clean.costs[0].variable, false); assert.equal(clean.costs[0].spent, 0);
+  const spending = fixture(); spending.costs[1].variable = true; spending.costs[1].spent = 120.5;
+  assert.equal(normalizeBudget(spending).costs[1].spent, 120.5); assert.equal(normalizeBudget(spending).costs[1].variable, true);
+  assert.equal(broken(d => { d.costs[1].spent = -1; }), null);
+  assert.equal(broken(d => { d.costs[1].variable = "yes"; }), null);
   assert.equal(normalizeBudget(null), null);
 });
 
@@ -182,6 +188,15 @@ test("the month and house totals follow the document", async () => {
   assert.equal(run('Budget.monthsUntil("2028-10","2027-12-31")'), 10);
   for (const [text, value] of [["1.091", 1091], ["1.091,50", 1091.5], ["€ 600", 600], ["64,5", 64.5], ["64.5", 64.5], ["", 0], ["12.50", 12.5]]) assert.equal(run("Budget.parseMoney(" + JSON.stringify(text) + ")"), value, text);
   for (const text of ["abc", "-5", "1,234,5", "1.2345", "99999999"]) assert.equal(run("Budget.parseMoney(" + JSON.stringify(text) + ")"), undefined, text);
+  // Groceries fill up through the month: what is spent counts as paid, the rest of its budget is still needed.
+  run('(()=>{const c=Budget.doc().costs.find(x=>x.id==="food");c.variable=true;c.spent=150.25;})()');
+  const spending = JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").month)'));
+  assert.equal(spending.paid, 1650.25); assert.equal(spending.open, 270.25); assert.equal(spending.total, 1920.5); assert.equal(spending.paidCount, 2);
+  // Spending more than the budget never makes the amount still needed negative.
+  run('Budget.doc().costs.find(x=>x.id==="food").spent=500');
+  const over = JSON.parse(run('JSON.stringify(Budget.summary(Budget.doc(),"2026-11-10").month)'));
+  assert.equal(over.open, 20); assert.equal(over.paid, 2000); assert.equal(over.paidCount, 3);
+  run('(()=>{const c=Budget.doc().costs.find(x=>x.id==="food");c.variable=false;c.spent=0;})()');
   assert.equal(elements.get("mOpen").textContent.replace(/\s/g, " "), "€ 420,50");
   assert.equal(elements.get("hDiff").innerHTML.replace(/\s/g, " "), "€ 1.200<small>over</small>");
 });

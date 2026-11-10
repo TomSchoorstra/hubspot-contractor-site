@@ -55,6 +55,12 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
 .row-amount{font-family:var(--display);font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .row-amount small{display:block;font-family:var(--body);font-size:13px;font-weight:500;color:var(--mut)}
 .empty{font-size:15px;color:var(--mut);padding:8px 0}
+.spend{padding:14px;border-radius:var(--r-sm)}
+.spend-top{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:12px;align-items:start}
+.spend .bar{margin:12px 0}
+.spend.over .row-amount{color:var(--amber)}.spend.over .bar-now{background:var(--amber)}
+.spend-form{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end}
+.spend-form label{display:grid;gap:6px;min-width:0}
 
 .split{display:grid;gap:0}
 .split div{display:flex;align-items:baseline;justify-content:space-between;gap:12px;padding:12px 0;border-bottom:1px solid var(--edge-soft);font-size:16px}
@@ -114,7 +120,7 @@ const APP_BODY = String.raw`<a class="skip" href="#mainContent">Naar inhoud</a><
 <section class="view" id="view-maand" hidden aria-labelledby="monthTitle">
 <header class="page-heading"><div><div class="micro">Maandbudget</div><h1 id="monthTitle">Deze maand</h1></div></header>
 <section class="hero glass" aria-label="Stand van deze maand"><div class="hero-label">Nog nodig deze maand</div><div class="hero-number" id="mOpen">€ 0</div><p class="hero-note" id="mCount"></p><div class="bar" role="img" id="mBar" aria-label=""><i class="bar-now" id="mBarFill"></i></div><div class="stats"><div><span>Al betaald</span><strong id="mPaid">€ 0</strong></div><div><span>Totaal budget</span><strong id="mTotal">€ 0</strong></div></div></section>
-<div class="two"><section class="section pane" aria-labelledby="costsTitle"><div class="section-head"><h2 id="costsTitle">Posten</h2><button type="button" class="text-button" id="costsEdit">Aanpassen</button></div><div id="costsHost"></div><div class="section-foot"><button type="button" class="ghost" id="monthReset">Nieuwe maand</button><span class="hero-note">Zet alle vinkjes uit.</span></div></section>
+<div class="two"><section class="section pane" aria-labelledby="costsTitle"><div class="section-head"><h2 id="costsTitle">Posten</h2><button type="button" class="text-button" id="costsEdit">Aanpassen</button></div><div id="costsHost"></div><div class="section-foot"><button type="button" class="ghost" id="monthReset">Nieuwe maand</button><span class="hero-note">Zet alle vinkjes uit en uitgaven op nul.</span></div></section>
 <section class="section pane" aria-labelledby="splitTitle"><div class="section-head"><h2 id="splitTitle">Verdeling</h2><button type="button" class="text-button" id="incomeEdit">Inkomen aanpassen</button></div><div id="incomeHost"></div><div class="split" id="splitHost"></div></section></div>
 </section>
 
@@ -148,7 +154,7 @@ function toast(message){$('toast').textContent=message;$('toast').classList.add(
 function toastAction(message,label,action){toast(message);const button=document.createElement('button');button.type='button';button.className='planner-undo';button.textContent=label;button.addEventListener('click',()=>{button.disabled=true;action();});$('toast').appendChild(button);clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('on'),8000);}
 
 const Budget = (() => {
-  let doc=null,view='maand',saving=false,dirty=false,failed=false,saveTimer=null,resetArmed=false;
+  let doc=null,view='maand',saving=false,dirty=false,failed=false,saveTimer=null,resetArmed=false,settingTotal=null;
   const editing={costs:false,income:false,items:false,pots:false,extras:false};
   const round=n=>Math.round(n*100)/100;
   const sum=(rows,pick)=>round(rows.reduce((total,row)=>total+pick(row),0));
@@ -166,14 +172,20 @@ const Budget = (() => {
   function monthsUntil(target,date){const y=Number(date.slice(0,4)),m=Number(date.slice(5,7));return Math.max(0,(Number(target.slice(0,4))-y)*12+Number(target.slice(5,7))-m);}
   const monthName=value=>new Date(value.slice(0,7)+'-15T12:00:00Z').toLocaleDateString('nl-NL',{month:'long',year:'numeric',timeZone:'UTC'});
 
+  // A fixed cost is paid or not. A variable cost (groceries) fills up through the month:
+  // what is spent counts as paid, and what is left of its budget is still needed.
+  const spentOf=c=>c.spent||0;
+  const paidPart=c=>c.variable?spentOf(c):c.paid?c.amount:0;
+  const openPart=c=>c.variable?Math.max(0,round(c.amount-spentOf(c))):c.paid?0:c.amount;
+  const settled=c=>c.variable?spentOf(c)>=c.amount:c.paid;
   // Every number on the page comes from here.
   function summary(d,date=today()){
-    const total=sum(d.costs,c=>c.amount),paid=sum(d.costs.filter(c=>c.paid),c=>c.amount),income=sum(d.income,i=>i.amount);
+    const total=sum(d.costs,c=>c.amount),paid=sum(d.costs,paidPart),open=sum(d.costs,openPart),income=sum(d.income,i=>i.amount);
     const fixed=sum(d.costs.filter(c=>!c.saving),c=>c.amount),savings=round(total-fixed);
     const months=monthsUntil(d.house.target,date),budget=sum(d.house.items,i=>i.amount),extras=sum(d.house.extras.filter(e=>!e.received),e=>e.amount);
     const projected=p=>round(p.balance+p.monthly*months),counted=d.house.pots.filter(p=>p.counts);
     const now=sum(counted,p=>p.balance),expected=round(sum(counted,projected)+extras),everything=round(sum(d.house.pots,projected)+extras);
-    return {month:{total,paid,open:round(total-paid),income,fixed,savings,left:round(income-total),count:d.costs.length,paidCount:d.costs.filter(c=>c.paid).length},
+    return {month:{total,paid,open,income,fixed,savings,left:round(income-total),count:d.costs.length,paidCount:d.costs.filter(settled).length},
       house:{months,budget,extras,now,expected,everything,diff:round(expected-budget),diffAll:round(everything-budget)}};
   }
 
@@ -212,14 +224,26 @@ const Budget = (() => {
   }
   function toggleEdit(key,button,label){editing[key]=!editing[key];button.textContent=editing[key]?'Klaar':label;render();}
 
+  // A variable cost shows what went out, what is left and a field to add an expense.
+  function variableRow(c){const spent=spentOf(c),left=round(c.amount-spent),setting=settingTotal===c.id,share=c.amount?Math.min(100,spent/c.amount*100):spent?100:0;
+    return '<div class="spend pane'+(left<0?' over':'')+'"><div class="spend-top"><span class="row-name">'+escapeHtml(c.name||'Naamloos')+'<small>'+euro(spent)+' van '+euro(c.amount)+' uitgegeven</small></span><span class="row-amount">'+euro(Math.abs(left))+'<small>'+(left<0?'over budget':'nog over')+'</small></span></div><div class="bar" role="img" aria-label="'+escapeHtml(euro(spent)+' van '+euro(c.amount)+' uitgegeven')+'"><i class="bar-now" style="width:'+share+'%"></i></div><form class="spend-form" data-spend="'+c.id+'" novalidate><label for="spend-'+c.id+'">'+(setting?'Totaal uitgegeven':'Uitgave toevoegen')+'<input class="field" id="spend-'+c.id+'" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="'+(setting?moneyText(spent):'')+'"></label><button type="submit" class="primary">'+(setting?'Opslaan':'Toevoegen')+'</button></form><button type="button" class="text-button" data-set-total="'+c.id+'">'+(setting?'Annuleren':'Totaal aanpassen')+'</button></div>';}
   function costRow(c){return '<button type="button" class="row" role="checkbox" aria-checked="'+c.paid+'" data-cost="'+c.id+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(c.name||'Naamloos')+(c.saving?'<small>Sparen</small>':'')+'</span><span class="row-amount">'+euro(c.amount)+'<small>'+(c.paid?'Betaald':'Nog te betalen')+'</small></span></button>';}
   function renderMonth(s){
     $('monthTitle').textContent=monthName(today()).replace(/^./,c=>c.toUpperCase());
     const host=$('costsHost');
-    if(editing.costs)editor(host,doc.costs,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'},{key:'saving',label:'Dit is sparen',type:'check'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0,paid:false,saving:false}));
-    else{const open=doc.costs.filter(c=>!c.paid),paid=doc.costs.filter(c=>c.paid);
-      host.innerHTML=doc.costs.length?(open.length?'<p class="group-label">Nog te betalen · '+open.length+'</p><div class="rows">'+open.map(costRow).join('')+'</div>':'<p class="empty">Alles is betaald deze maand.</p>')+(paid.length?'<p class="group-label">Betaald · '+paid.length+'</p><div class="rows">'+paid.map(costRow).join('')+'</div>':''):'<p class="empty">Nog geen posten. Kies Aanpassen om ze toe te voegen.</p>';
-      host.querySelectorAll('[data-cost]').forEach(button=>button.addEventListener('click',()=>{const c=doc.costs.find(x=>x.id===button.dataset.cost);c.paid=!c.paid;commit();}));}
+    if(editing.costs)editor(host,doc.costs,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'},{key:'variable',label:'Geef ik geleidelijk uit',type:'check'},{key:'saving',label:'Dit is sparen',type:'check'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0,paid:false,saving:false,variable:false,spent:0}));
+    else{const variable=doc.costs.filter(c=>c.variable),fixedCosts=doc.costs.filter(c=>!c.variable),open=fixedCosts.filter(c=>!c.paid),paid=fixedCosts.filter(c=>c.paid);
+      host.innerHTML=doc.costs.length?(variable.length?'<p class="group-label">Loopt door de maand</p><div class="rows">'+variable.map(variableRow).join('')+'</div>':'')+(open.length?'<p class="group-label">Nog te betalen · '+open.length+'</p><div class="rows">'+open.map(costRow).join('')+'</div>':fixedCosts.length?'<p class="empty">Alle vaste posten zijn betaald.</p>':'')+(paid.length?'<p class="group-label">Betaald · '+paid.length+'</p><div class="rows">'+paid.map(costRow).join('')+'</div>':''):'<p class="empty">Nog geen posten. Kies Aanpassen om ze toe te voegen.</p>';
+      host.querySelectorAll('[data-cost]').forEach(button=>button.addEventListener('click',()=>{const c=doc.costs.find(x=>x.id===button.dataset.cost);c.paid=!c.paid;commit();}));
+      host.querySelectorAll('[data-spend]').forEach(form=>form.addEventListener('submit',event=>{event.preventDefault();
+        const c=doc.costs.find(x=>x.id===form.dataset.spend),input=form.querySelector('input'),setting=settingTotal===c.id,value=parseMoney(input.value);
+        if(value===undefined||(!setting&&value===0)){input.setAttribute('aria-invalid','true');input.focus();return;}
+        const before=spentOf(c);c.spent=setting?value:round(before+value);
+        if(c.spent>10000000){c.spent=before;input.setAttribute('aria-invalid','true');return;}
+        settingTotal=null;commit();
+        toastAction(setting?'Uitgegeven bedrag aangepast':euro(value)+' toegevoegd','Ongedaan maken',()=>{c.spent=before;commit();});
+      }));
+      host.querySelectorAll('[data-set-total]').forEach(button=>button.addEventListener('click',()=>{settingTotal=settingTotal===button.dataset.setTotal?null:button.dataset.setTotal;render();if(settingTotal)$('spend-'+settingTotal)?.focus();}));}
     const income=$('incomeHost');
     if(editing.income)editor(income,doc.income,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'}],'Inkomen toevoegen',()=>({id:newId(),name:'',amount:0}));else income.innerHTML='';
     $('monthReset').hidden=editing.costs;
@@ -266,9 +290,9 @@ const Budget = (() => {
   function resetMonth(){
     const button=$('monthReset');
     if(!resetArmed){resetArmed=true;button.textContent='Tik nogmaals om alles uit te vinken';setTimeout(()=>{resetArmed=false;button.textContent='Nieuwe maand';},5000);return;}
-    resetArmed=false;button.textContent='Nieuwe maand';const before=doc.costs.filter(c=>c.paid).map(c=>c.id);
-    for(const c of doc.costs)c.paid=false;commit();
-    toastAction('Nieuwe maand gestart','Ongedaan maken',()=>{for(const c of doc.costs)if(before.includes(c.id))c.paid=true;commit();});
+    resetArmed=false;button.textContent='Nieuwe maand';const before=doc.costs.map(c=>({id:c.id,paid:c.paid,spent:spentOf(c)}));
+    for(const c of doc.costs){c.paid=false;c.spent=0;}commit();
+    toastAction('Nieuwe maand gestart','Ongedaan maken',()=>{for(const old of before){const c=doc.costs.find(x=>x.id===old.id);if(c){c.paid=old.paid;c.spent=old.spent;}}commit();});
   }
   async function importText(text,errorEl){
     let parsed;try{parsed=JSON.parse(text);}catch{errorEl.textContent='Dit is geen geldig importbestand.';return;}

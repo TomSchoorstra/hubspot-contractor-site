@@ -17,7 +17,7 @@ const DEMO = {
   income: [{ id: "salary", name: "Netto salaris", amount: 3000 }],
   costs: [
     { id: "rent", name: "Huur", amount: 900, paid: true, saving: false },
-    { id: "food", name: "Boodschappen", amount: 400, paid: false, saving: false },
+    { id: "food", name: "Boodschappen", amount: 400, paid: false, saving: false, variable: true, spent: 150 },
     { id: "house", name: "Spaarrekening huis", amount: 500, paid: true, saving: true },
     { id: "health", name: "Zorgverzekering", amount: 150, paid: true, saving: false },
     { id: "internet", name: "Internet", amount: 49.95, paid: false, saving: false },
