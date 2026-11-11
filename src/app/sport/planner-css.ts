@@ -158,6 +158,7 @@ export const PLANNER_CSS = String.raw`
 /* Workout editor: one exercise per card, sets confirmed one by one */
 .ex-block{display:grid;gap:8px}
 .ex-block.is-pair{padding:8px;margin:0 -8px;border-radius:calc(var(--r-md) + 8px);border:1px dashed var(--edge)}
+.pair-label{font-size:13px;font-weight:700;color:var(--iris);padding:2px 6px 0}
 .ex-block.dragging{position:relative;z-index:2;opacity:.92;box-shadow:0 18px 40px -16px rgba(0,0,0,.8);border-radius:var(--r-md)}
 .ex-block.dragging .planner-exercise{border-color:var(--iris)}
 body.is-sorting{cursor:grabbing;-webkit-user-select:none;user-select:none}

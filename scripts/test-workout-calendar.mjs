@@ -294,6 +294,21 @@ test("the order can be changed during a workout; supersets move as one block and
   assert.equal(client.get(w.id).exercises.length, 6);
   assert.deepEqual(client.run(`App.tpl("full-body-a").slots.map(s=>s.exerciseId)`).slice(0, 2), ["leg-press", "bench-press"]);
   assert.equal(client.run(`App.add("tpl:full-body-a", ${json(today)}, false).exercises[0].name`), "Leg press");
+
+  // A superset can be made and undone inside the workout itself.
+  const pairs = () => client.run(`App.blocks(App.workout(${json(w.id)})).map(b=>b.map(r=>r.name).join("+"))`);
+  const idOf = name => client.get(w.id).exercises.find(r => r.name === name).id;
+  assert.equal(client.run(`App.togglePair(${json(w.id)}, ${json(idOf("Bench press"))})`), true);
+  assert.deepEqual(pairs(), ["Lateral raise+Triceps pushdown", "Bench press+Leg press", "Seated row", "Leg curl"]);
+  assert.equal(client.run(`App.togglePair(${json(w.id)}, ${json(idOf("Triceps pushdown"))})`), true, "either exercise of a pair can undo it");
+  assert.deepEqual(pairs(), ["Lateral raise", "Triceps pushdown", "Bench press+Leg press", "Seated row", "Leg curl"]);
+  assert.equal(client.run(`App.togglePair(${json(w.id)}, ${json(idOf("Triceps pushdown"))})`), false, "the next exercise is already in a superset");
+  assert.equal(client.run(`App.togglePair(${json(w.id)}, ${json(idOf("Leg curl"))})`), false, "nothing below the last exercise");
+  assert.equal(client.get(w.id).exercises.length, 6);
+  assert.deepEqual(client.run(`App.tpl("full-body-a").slots.map(s=>s.superset)`), [false, false, false, false, true, false], "the template is untouched");
+  const html = client.run(`App.open(${json(w.id)}); activeView="workout"; App.render(); document.getElementById("plannerEditor").innerHTML`);
+  assert.match(html, /Superset · doe deze om en om/); assert.match(html, /Superset opheffen/); assert.match(html, /Superset met volgende/);
+  assert.ok(library.normalizeDoc(client.get(w.id)));
 });
 
 test("swapping, removing and finishing protect what was already confirmed", () => {

@@ -178,6 +178,12 @@ export const PLANNER_SCRIPT = String.raw`const App = (() => {
     put({...w,exercises:list});return true;}
   function moveBlock(id,blockId,delta){const w=workout(id);if(!w)return false;const order=blocks(w).map(b=>b[0].id),index=order.indexOf(blockId),to=index+delta;
     if(index<0||to<0||to>=order.length)return false;order.splice(to,0,...order.splice(index,1));return reorder(id,order);}
+  // Linking or unlinking a superset only changes this workout; the template keeps its own setting.
+  function togglePair(id,rowId){const w=workout(id),index=w?w.exercises.findIndex(r=>r.id===rowId):-1;if(index<0)return false;const row=w.exercises[index];
+    if(row.pair){put({...w,exercises:w.exercises.map(r=>r.pair===row.pair?{...r,pair:null}:r)});return true;}
+    const next=w.exercises[index+1];if(!next){toast('Zet er eerst een oefening onder');return false;}
+    if(next.pair){toast('De volgende oefening zit al in een superset');return false;}
+    const pair=uuid();put({...w,exercises:w.exercises.map(r=>r.id===row.id||r.id===next.id?{...r,pair}:r)});return true;}
   function finish(id){const w=workout(id);if(!w)return 'Deze workout is niet beschikbaar.';
     if(invalid.size)return 'Controleer de gemarkeerde velden.';
     if(w.date>localToday())return 'Deze training staat in de toekomst. Pas de datum aan om hem te loggen.';
@@ -246,12 +252,13 @@ export const PLANNER_SCRIPT = String.raw`const App = (() => {
       +'<input data-row="'+row.id+'" data-set-id="'+set.id+'" data-field="reps" type="text" inputmode="numeric" autocomplete="off" placeholder="'+(p?p.reps:'–')+'" value="'+(set.reps===null?'':set.reps)+'" aria-label="Herhalingen, set '+n+' van '+name+'">'
       +'<button type="button" class="set-tick" data-tick="'+set.id+'" data-row="'+row.id+'" aria-pressed="'+set.done+'" aria-label="Set '+n+' van '+name+(set.done?' is bevestigd. Tik om terug te zetten.':' bevestigen')+'">'+icon('check')+'</button></div>';
   }
-  function card(w,row){const prev=previous(w,row),mate=row.pair?w.exercises.find(r=>r.pair===row.pair&&r.id!==row.id):null,name=escapeHtml(row.name),none=row.load==='none';
+  function card(w,row){const prev=previous(w,row),mate=row.pair?w.exercises.find(r=>r.pair===row.pair&&r.id!==row.id):null,name=escapeHtml(row.name),none=row.load==='none',after=w.exercises[w.exercises.indexOf(row)+1];
+    const pairButton=mate?'<button type="button" class="planner-add-set minus" data-pair="'+row.id+'" aria-label="Superset van '+name+' en '+escapeHtml(mate.name)+' opheffen">Superset opheffen</button>':after&&!after.pair?'<button type="button" class="planner-add-set minus" data-pair="'+row.id+'" aria-label="Superset maken van '+name+' en '+escapeHtml(after.name)+'">Superset met volgende</button>':'';
     const target=row.repMin?row.targetSets+' × '+(row.repMin===row.repMax?row.repMin:row.repMin+'–'+row.repMax):'';
     return '<article class="planner-exercise pane" data-exercise="'+row.id+'"><div class="ex-head"><button type="button" class="drag-handle" data-move="'+row.id+'" aria-label="Verplaats '+name+'. Sleep, of gebruik de pijltjestoetsen omhoog en omlaag.">'+icon('grip')+'</button><div class="ex-title"><h2>'+name+'</h2>'+(target?'<p class="ex-target">'+target+'</p>':'')+'<p>'+[LOAD_NOTE[row.load],mate?'superset met '+escapeHtml(mate.name):''].filter(Boolean).join(' · ')+'</p></div><button type="button" class="ex-action" data-swap="'+row.id+'" aria-label="'+name+' wisselen voor een andere oefening">Wissel</button><button type="button" class="ex-action icon-only" data-remove-exercise="'+row.id+'" aria-label="'+name+' verwijderen">'+icon('trash')+'</button></div>'
       +'<p class="exercise-previous">'+(prev?'Vorige keer ('+escapeHtml(dayShort(prev.date))+(prev.same?'':' · '+escapeHtml(prev.title))+'): <b>'+escapeHtml(prevText(prev))+'</b>':'Nog geen eerdere sets')+'</p>'
       +'<div class="set-head'+(none?' no-weight':'')+'" aria-hidden="true"><span>Set</span>'+(none?'':'<span>kg</span>')+'<span>Reps</span><span></span></div><div class="planner-set-list">'+row.sets.map((s,i)=>setRow(row,s,i,prev)).join('')+'</div>'
-      +'<div class="set-actions"><button type="button" class="planner-add-set" data-add-set="'+row.id+'" aria-label="Set toevoegen aan '+name+'">'+icon('plus')+'Set</button>'+(row.sets.length>1?'<button type="button" class="planner-add-set minus" data-remove-set="'+row.id+'" aria-label="Laatste set van '+name+' verwijderen">Laatste set weg</button>':'')+'</div></article>';
+      +'<div class="set-actions"><button type="button" class="planner-add-set" data-add-set="'+row.id+'" aria-label="Set toevoegen aan '+name+'">'+icon('plus')+'Set</button>'+(row.sets.length>1?'<button type="button" class="planner-add-set minus" data-remove-set="'+row.id+'" aria-label="Laatste set van '+name+' verwijderen">Laatste set weg</button>':'')+pairButton+'</div></article>';
   }
   function finishMarkup(w){return '<button type="button" id="finishBtn" class="primary run-log-confirm '+(w.logged?'logged':'')+'">'+(w.logged?'Gelogd · wijzigingen bewaren automatisch':'Training afronden')+'</button>'+(w.logged?'<button type="button" class="text-button run-log-edit" id="unfinishBtn">Terugzetten naar gepland</button>':'');}
   function formMetric(w,field,title,placeholder,mode='decimal'){const time=field==='durationSeconds'||field==='testSeconds',value=w[field]===null?'':time?timeText(w[field]):kg(w[field]);
@@ -268,7 +275,7 @@ export const PLANNER_SCRIPT = String.raw`const App = (() => {
     const gym=w.kind==='gym',r=w.runStep?RUN.runs[w.runStep-1]:null;
     const head='<header class="planner-editor-head"><div><div class="micro"><span class="session-symbol '+(gym?'gym':'run')+'" style="width:28px;height:28px;border-radius:'+(gym?'9px':'50%')+'">'+icon(gym?'dumbbell':'run')+'</span><span id="plannerWorkoutState">'+escapeHtml(label(w))+'</span></div><h1 id="plannerWorkoutTitle">'+escapeHtml(w.title)+'</h1></div><label class="planner-date-label" for="plannerWorkoutDate">Datum<input id="plannerWorkoutDate" type="date" value="'+w.date+'" required></label></header>';
     const body=gym
-      ?'<div class="planner-exercises" id="plannerExercises">'+blocks(w).map(b=>'<div class="ex-block'+(b.length>1?' is-pair':'')+'" data-block="'+b[0].id+'">'+b.map(row=>card(w,row)).join('')+'</div>').join('')+'</div><button type="button" class="planner-add-exercise" id="addExercise">'+icon('plus')+'Oefening toevoegen</button>'
+      ?'<div class="planner-exercises" id="plannerExercises">'+blocks(w).map(b=>'<div class="ex-block'+(b.length>1?' is-pair':'')+'" data-block="'+b[0].id+'">'+(b.length>1?'<p class="pair-label">Superset · doe deze om en om</p>':'')+b.map(row=>card(w,row)).join('')+'</div>').join('')+'</div><button type="button" class="planner-add-exercise" id="addExercise">'+icon('plus')+'Oefening toevoegen</button>'
       :(r?'<section class="run-inline-plan pane" aria-label="Geplande training"><h2>'+escapeHtml(r.main)+' · '+escapeHtml(r.totalKm)+' km totaal</h2>'+stepMarkup(r)+'</section>':'')
         +'<div class="planner-run-form pane"><div class="planner-run-columns">'+formMetric(w,'distanceKm','Afstand (km)','5,0')+formMetric(w,'durationSeconds','Totale tijd (mm:ss)','27:30')+'</div><div class="planner-pace" id="plannerRunPace">'+(paceText(w.distanceKm,w.durationSeconds)||'')+'</div>'
         +(w.runStep===RUN.testStep?formMetric(w,'testSeconds','Tijd over de 5 km (mm:ss)','27:30')+'<p class="panel-sub">Alleen de 5 km-test, zonder in- en uitlopen.</p>':'')
@@ -411,6 +418,7 @@ export const PLANNER_SCRIPT = String.raw`const App = (() => {
       if((b=hit(event,'[data-tick]'))){if(tick(activeId,b.dataset.row,b.dataset.tick))refreshCard(b.dataset.row);}
       else if((b=hit(event,'[data-add-set]'))){if(addSet(activeId,b.dataset.addSet))refreshCard(b.dataset.addSet);}
       else if((b=hit(event,'[data-remove-set]'))){if(removeLastSet(activeId,b.dataset.removeSet))refreshCard(b.dataset.removeSet);}
+      else if((b=hit(event,'[data-pair]'))){if(togglePair(activeId,b.dataset.pair))renderEditor(true);}
       else if((b=hit(event,'[data-swap]'))){const rowId=b.dataset.swap;pickExercise('Wissel voor',x=>{if(swapExercise(activeId,rowId,x)){renderEditor(true);toast('Oefening gewisseld');}});}
       else if((b=hit(event,'[data-remove-exercise]'))){removeExercise(activeId,b.dataset.removeExercise);renderEditor(true);}
       else if(hit(event,'#addExercise'))pickExercise('Oefening toevoegen',x=>{if(addExercise(activeId,x))renderEditor(true);});
@@ -471,7 +479,7 @@ export const PLANNER_SCRIPT = String.raw`const App = (() => {
     setInterval(checkDay,60000);document.addEventListener?.('visibilitychange',()=>{if(!document.hidden){checkDay();if(pending.size)flush();}});
   }
   return {initialize,load,flush,render,refresh,route,open,openAdd,add,remove,types,put,docs:()=>docs,pending:()=>pending,cacheKey:key,
-    exercises,exercise,templates,tpl,workouts,workout,previous,prevText,tick,setValue,addSet,removeLastSet,addExercise,swapExercise,removeExercise,blocks,reorder,moveBlock,finish,
+    exercises,exercise,templates,tpl,workouts,workout,previous,prevText,tick,setValue,addSet,removeLastSet,addExercise,swapExercise,removeExercise,blocks,reorder,moveBlock,togglePair,finish,
     saveExercise,saveTemplate,newTemplate,weekStats,weekText,nextStep,nextOpen,runWorkout,paceLabel,numberField,status,exportData:()=>({docs})};
 })();
 App.initialize();
