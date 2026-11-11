@@ -139,7 +139,8 @@ const Scenario = (() => {
   // Everything is measured against the monthly budget as it is today: what changes is extra or less money for the house.
   function simulate(d,sc,date){
     const start=date.slice(0,7),months=monthsFrom(start,sc.delivery),n=months.length,sum=T.sum;
-    const cost=p=>sum(p.lines,l=>l.amount),home=sc.places[0],homeCost=cost(home),byId=new Map(sc.places.map(p=>[p.id,p]));
+    // A line that rises goes up once a year. The budget is built on today's amounts, so a rise is a cost in every month it is still paid.
+    const riseMonth=sc.riseMonth||7,cost=(p,rises=0)=>sum(p.lines,l=>l.amount*Math.pow(1+(l.rise||0)/100,rises)),home=sc.places[0],homeCost=cost(home),byId=new Map(sc.places.map(p=>[p.id,p]));
     // While the building depot is full the bank pays interest on it, so the monthly payment is lower. Every amount
     // that leaves the depot raises the payment by one month of depot interest, until the full payment is reached.
     const rate=sc.depotRate/1200,gap=Math.max(0,sc.mortgageFull-sc.mortgageNow),depot=rate>0?gap/rate:0;
@@ -148,12 +149,13 @@ const Scenario = (() => {
     const potsAt=k=>{const f=T.projectPots(d.house.pots,k);return {own:sum(d.house.pots.filter(p=>p.counts),p=>f.get(p.id).total),extra:sum(extraPots,p=>f.get(p.id).total)};};
     const oneOffs=sum(sc.oneOffs,o=>o.on?(o.income?o.amount:-o.amount):0);
     const parts={living:0,salary:0,mortgage:0,tax:0},rows=[],raises=[],series=[];
-    let gross=sc.salary,drawn=0,cum=0;
+    let gross=sc.salary,drawn=0,cum=0,rises=0;
     months.forEach((m,k)=>{
       const p=potsAt(k);series.push(p.own+p.extra+cum);
       if(Number(m.slice(5,7))===sc.raiseMonth&&m>start){const before=gross,share=sc.raises[m.slice(0,4)]||0;gross*=1+share/100;raises.push({year:m.slice(0,4),month:m,pct:share,net:(gross-before)*sc.netShare/1200});}
       for(const draw of sc.draws)if(draw.month===m)drawn+=draw.amount;
-      const place=byId.get(sc.stay[m])||home,living=homeCost-cost(place),salary=(gross-sc.salary)*sc.netShare/1200;
+      if(Number(m.slice(5,7))===riseMonth&&m>start)rises++;
+      const place=byId.get(sc.stay[m])||home,living=homeCost-cost(place,rises),salary=(gross-sc.salary)*sc.netShare/1200;
       const extra=sc.depotStopOn&&m>=sc.depotStop?gap:Math.min(gap,drawn*rate);
       // The tax refund in the budget is a fixed amount. From the month the provisional assessment is right, the real refund follows the interest.
       const benefit=sc.taxRate/100*(sc.interestNow+extra),tax=m>=sc.taxFrom?benefit-sc.taxInBudget:0,total=living+salary-extra+tax;
@@ -168,7 +170,7 @@ const Scenario = (() => {
   }
 
   function emptyScenario(d){const year=Number(T.today().slice(0,4));
-    return {delivery:d.house.target,places:[{id:'nu',name:'Zoals nu',lines:[]}],stay:{},salary:0,netShare:50,raiseMonth:4,raises:{},mortgageNow:0,mortgageFull:0,depotRate:0,depotStop:d.house.target,depotStopOn:false,draws:[],interestNow:0,taxRate:0,taxInBudget:0,taxFrom:ym(year+1,1),oneOffs:[],pots:[]};}
+    return {delivery:d.house.target,places:[{id:'nu',name:'Zoals nu',lines:[]}],stay:{},riseMonth:7,salary:0,netShare:50,raiseMonth:4,raises:{},mortgageNow:0,mortgageFull:0,depotRate:0,depotStop:d.house.target,depotStopOn:false,draws:[],interestNow:0,taxRate:0,taxInBudget:0,taxFrom:ym(year+1,1),oneOffs:[],pots:[]};}
   function sync(){const d=Budget.doc(),stamp=d&&d.scenario?canon(d.scenario):'';
     if(stamp!==seen){seen=stamp;draft=stamp?clone(d.scenario):null;}
     if(draft&&!draft.places.some(p=>p.id===brush))brush=(draft.places[1]||draft.places[0]).id;}
@@ -183,7 +185,7 @@ const Scenario = (() => {
     if(type==='check')return '<label class="check"><input type="checkbox"'+attr({...data,type})+(value?' checked':'')+'>'+label+'</label>';
     if(type==='month')return '<label>'+label+'<input class="field" type="month"'+attr({...data,type})+' value="'+escapeHtml(value)+'" required></label>';
     if(type==='text')return '<label>'+label+'<input class="field" type="text" maxlength="80" autocomplete="off"'+attr({...data,type})+' value="'+escapeHtml(value)+'"></label>';
-    const input='<input class="field" type="text" inputmode="decimal" autocomplete="off"'+attr({...data,type:type==='step'?'money':type})+' value="'+escapeHtml(T.moneyText(value))+'">';
+    const input='<input class="field" type="text" inputmode="decimal" autocomplete="off"'+attr({...data,type:type==='step'?'money':type})+' value="'+escapeHtml(T.moneyText(value??0))+'">';
     if(type!=='step')return '<label>'+label+input+'</label>';
     return '<label>'+label+'<span class="stepper"><button type="button" class="icon-button"'+attr({...data,act:'step',step:-25})+' aria-label="25 euro minder">−</button>'+input+'<button type="button" class="icon-button"'+attr({...data,act:'step',step:25})+' aria-label="25 euro meer">+</button></span></label>';
   }
@@ -206,7 +208,7 @@ const Scenario = (() => {
   function renderControls(){
     const d=Budget.doc(),s=draft;
     const chips=s.places.map(p=>'<button type="button" class="chip" role="radio" aria-checked="'+(p.id===brush)+'"'+attr({act:'brush',id:p.id})+'><i class="'+tone(p.id)+'"></i><span>'+escapeHtml(p.name||'Naamloos')+'<small data-out="pc:'+p.id+'"></small></span></button>').join('');
-    const places=s.places.map((p,index)=>'<details class="place" data-place="'+p.id+'"'+(open.has(p.id)?' open':'')+'><summary><i class="'+tone(p.id)+'"></i><span>'+escapeHtml(p.name||'Naamloos')+(index?'':' · je situatie nu')+'</span><b data-out="pt:'+p.id+'"></b></summary><div class="place-body">'+fieldHtml('Naam',{sc:'cell',list:'places',id:p.id,key:'name'},p.name,'text')+linesHtml('place:'+p.id,p.lines,[{key:'name',label:'Kostenpost',type:'text'},{key:'amount',label:'Per maand',type:'step'}],'Kostenpost toevoegen')+(index?'<button type="button" class="text-button"'+attr({act:'del-place',id:p.id})+'>Deze woonsituatie verwijderen</button>':'')+'</div></details>').join('');
+    const places=s.places.map((p,index)=>'<details class="place" data-place="'+p.id+'"'+(open.has(p.id)?' open':'')+'><summary><i class="'+tone(p.id)+'"></i><span>'+escapeHtml(p.name||'Naamloos')+(index?'':' · je situatie nu')+'</span><b data-out="pt:'+p.id+'"></b></summary><div class="place-body">'+fieldHtml('Naam',{sc:'cell',list:'places',id:p.id,key:'name'},p.name,'text')+linesHtml('place:'+p.id,p.lines,[{key:'name',label:'Kostenpost',type:'text'},{key:'amount',label:'Per maand',type:'step'},{key:'rise',label:'Stijgt per jaar (%)',type:'pct'}],'Kostenpost toevoegen')+(index?'<button type="button" class="text-button"'+attr({act:'del-place',id:p.id})+'>Deze woonsituatie verwijderen</button>':'')+'</div></details>').join('');
     const raiseYears=simulate(d,s,T.today()).raises;
     const sliders=raiseYears.length?raiseYears.map(r=>'<div class="slider"><div class="slider-top"><label for="raise-'+r.year+'">Verhoging '+T.monthName(r.month)+'</label><output for="raise-'+r.year+'" data-out="rp:'+r.year+'"></output></div><input type="range" id="raise-'+r.year+'" min="0" max="10" step="0.5" value="'+r.pct+'"'+attr({sc:'raise',year:r.year})+'><p class="hero-note" data-out="rn:'+r.year+'"></p></div>').join(''):'<p class="empty">Er valt geen verhoging meer voor de oplevering.</p>';
     const offs=s.oneOffs.map(o=>'<button type="button" class="row" role="checkbox" aria-checked="'+o.on+'"'+attr({act:'oneoff',id:o.id})+'><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(o.name||'Naamloos')+'<small>'+(o.income?'Komt binnen':'Kost geld')+'</small></span><span class="row-amount">'+(o.income?'+ ':'− ')+T.euro(o.amount)+'</span></button>').join('');
@@ -218,6 +220,7 @@ const Scenario = (() => {
       '<section class="section pane" aria-labelledby="scSwitchTitle"><div class="section-head"><h2 id="scSwitchTitle">Aan of uit</h2></div>'+(offs?'<p class="group-label">Eenmalig</p><div class="rows">'+offs+'</div>':'')+(pots?'<p class="group-label">Potten</p><div class="rows">'+pots+'</div>':'')+'<p class="group-label">Hypotheek</p><div class="rows"><button type="button" class="row" role="checkbox" aria-checked="'+s.depotStopOn+'" data-act="depot"><span class="tick">'+icon('check')+'</span><span class="row-name">Depotvergoeding stopt in '+T.monthName(s.depotStop)+'<small>Vanaf dan betaal je het volle maandbedrag</small></span><span class="row-amount"></span></button></div></section>';
     $('scAssume').innerHTML='<details class="section pane sc-assume" data-place="assume"'+(open.has('assume')?' open':'')+'><summary>Aannames</summary><p class="hero-note">Alle bedragen waar het scenario mee rekent. Pas ze aan als je iets beter weet.</p>'+
       '<h3>Oplevering</h3><div class="sc-grid">'+scalar('Maand van oplevering','delivery','month')+'</div>'+
+      '<h3>Wonen</h3><div class="sc-grid"><label>Maand waarin stijgende kosten omhoog gaan<select class="field"'+attr({sc:'num',key:'riseMonth',type:'int'})+'>'+MONTHS.map((m,i)=>'<option value="'+(i+1)+'"'+((s.riseMonth||7)===i+1?' selected':'')+'>'+m+'</option>').join('')+'</select></label></div>'+
       '<h3>Salaris</h3><div class="sc-grid">'+scalar('Bruto per jaar','salary','money')+scalar('Netto van elke extra euro (%)','netShare','pct')+'<label>Maand van de verhoging<select class="field"'+attr({sc:'num',key:'raiseMonth',type:'int'})+'>'+MONTHS.map((m,i)=>'<option value="'+(i+1)+'"'+(s.raiseMonth===i+1?' selected':'')+'>'+m+'</option>').join('')+'</select></label></div>'+
       '<h3>Hypotheek</h3><div class="sc-grid">'+scalar('Bruto per maand nu','mortgageNow','money')+scalar('Bruto per maand na oplevering','mortgageFull','money')+scalar('Depotvergoeding (%)','depotRate','pct')+scalar('Depotvergoeding stopt in','depotStop','month')+'</div><p class="hero-note" data-out="depot"></p>'+
       '<h3>Renteaftrek</h3><div class="sc-grid">'+scalar('Aftrekbare rente per maand nu','interestNow','money')+scalar('Voordeel per euro aftrek (%)','taxRate','pct')+scalar('Teruggaaf per maand in je budget','taxInBudget','money')+scalar('Echte teruggaaf vanaf','taxFrom','month')+'</div>'+
@@ -340,7 +343,7 @@ const Scenario = (() => {
     else if(d.act==='brush')brush=d.id;
     else if(d.act==='step'){const row=rowOf(d.list,d.id);if(row)row[d.key]=Math.max(0,T.round(row[d.key]+Number(d.step)));}
     else if(d.act==='add'){const rows=listOf(d.list);if(!rows||rows.length>=20){toast('Maximaal 20 regels');return;}
-      rows.push(d.list==='draws'?{id:T.newId(),name:'',amount:0,month:draft.delivery}:d.list==='oneOffs'?{id:T.newId(),name:'',amount:0,on:true,income:false}:{id:T.newId(),name:'',amount:0});}
+      rows.push(d.list==='draws'?{id:T.newId(),name:'',amount:0,month:draft.delivery}:d.list==='oneOffs'?{id:T.newId(),name:'',amount:0,on:true,income:false}:{id:T.newId(),name:'',amount:0,rise:0});}
     else if(d.act==='del'){const rows=listOf(d.list),index=rows?rows.findIndex(r=>r.id===d.id):-1;if(index>=0)rows.splice(index,1);}
     else if(d.act==='add-place'){if(draft.places.length>=6)return;const place={id:T.newId(),name:'Nieuwe woonsituatie',lines:draft.places[0].lines.map(l=>({...l,id:T.newId()}))};draft.places.push(place);open.add(place.id);brush=place.id;}
     else if(d.act==='del-place'){const index=draft.places.findIndex(p=>p.id===d.id);if(index>0){draft.places.splice(index,1);for(const month of Object.keys(draft.stay))if(draft.stay[month]===d.id)delete draft.stay[month];}}

@@ -12,7 +12,9 @@ export type BudgetExtra = BudgetLine & { received: boolean; got: number };
 export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean; cap: number; overflowTo: string };
 // The what-if plan for the months until the house is delivered. Every amount and rate in it is the owner's own
 // assumption and is stored with the budget; this repository only holds the rules that calculate with them.
-export type ScenarioPlace = { id: string; name: string; lines: BudgetLine[] };
+// A cost line of a place can rise once a year (rent): `rise` is that percentage, 0 = it stays the same.
+export type ScenarioLine = BudgetLine & { rise: number };
+export type ScenarioPlace = { id: string; name: string; lines: ScenarioLine[] };
 export type ScenarioDraw = BudgetLine & { month: string };
 export type ScenarioOneOff = BudgetLine & { on: boolean; income: boolean };
 export type BudgetScenario = {
@@ -21,6 +23,8 @@ export type BudgetScenario = {
   places: ScenarioPlace[];
   // Month -> place id. A month that is not listed is spent in the first place.
   stay: Record<string, string>;
+  // The month of the year in which rising cost lines go up.
+  riseMonth: number;
   salary: number; netShare: number; raiseMonth: number; raises: Record<string, number>;
   mortgageNow: number; mortgageFull: number; depotRate: number; depotStop: string; depotStopOn: boolean;
   draws: ScenarioDraw[];
@@ -85,9 +89,14 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
   if (!validTargetMonth(delivery) || !monthKey(depotStop) || !monthKey(taxFrom) || typeof depotStopOn !== "boolean") return null;
   if (!amount(salary) || !amount(mortgageNow) || !amount(mortgageFull) || !amount(interestNow) || !amount(taxInBudget)) return null;
   if (!percentage(netShare) || !percentage(depotRate) || !percentage(taxRate)) return null;
+  // `riseMonth` was added later; plans saved before that use July, when rents usually go up.
+  const riseMonth = value.riseMonth === undefined ? 7 : value.riseMonth;
+  if (typeof riseMonth !== "number" || !Number.isInteger(riseMonth) || riseMonth < 1 || riseMonth > 12) return null;
   if (typeof raiseMonth !== "number" || !Number.isInteger(raiseMonth) || raiseMonth < 1 || raiseMonth > 12) return null;
   const places = list<ScenarioPlace>(value.places, (row, base) => {
-    const lines = list<BudgetLine>(row.lines, (line, lineBase) => (amount(line.amount) ? { ...lineBase, amount: line.amount } : null));
+    // `rise` was added later; lines saved before that do not rise.
+    const lines = list<ScenarioLine>(row.lines, (line, lineBase) =>
+      amount(line.amount) && (line.rise === undefined || percentage(line.rise)) ? { ...lineBase, amount: line.amount, rise: (line.rise as number | undefined) ?? 0 } : null);
     return lines && lines.length <= 30 ? { id: base.id, name: base.name, lines } : null;
   });
   const draws = list<ScenarioDraw>(value.draws, (row, base) => (amount(row.amount) && monthKey(row.month) ? { ...base, amount: row.amount, month: row.month } : null));
@@ -116,7 +125,7 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
     if (typeof id !== "string") return null;
     if (potIds.has(id) && !pots.includes(id)) pots.push(id);
   }
-  return { delivery, places, stay, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, draws, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots };
+  return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, draws, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots };
 }
 
 // Returns a clean copy, or null when anything is off. Unknown fields are dropped.

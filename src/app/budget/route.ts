@@ -39,10 +39,11 @@ const DEMO = {
   scenario: {
     delivery: "2028-10",
     places: [
-      { id: "home", name: "Eigen huurhuis", lines: [{ id: "rent", name: "Huur", amount: 900 }, { id: "food", name: "Boodschappen", amount: 400 }, { id: "power", name: "Energie", amount: 100 }] },
+      { id: "home", name: "Eigen huurhuis", lines: [{ id: "rent", name: "Huur", amount: 900, rise: 4 }, { id: "food", name: "Boodschappen", amount: 400 }, { id: "power", name: "Energie", amount: 100 }] },
       { id: "abroad", name: "Buitenland", lines: [{ id: "rent", name: "Huur", amount: 600 }, { id: "food", name: "Boodschappen", amount: 300 }, { id: "flights", name: "Vluchten", amount: 60 }] },
       { id: "partner", name: "Bij partner", lines: [{ id: "share", name: "Bijdrage", amount: 500 }, { id: "food", name: "Boodschappen", amount: 300 }] },
     ],
+    riseMonth: 7,
     stay: { "2027-09": "abroad", "2027-10": "abroad", "2027-11": "abroad", "2027-12": "abroad", "2028-01": "abroad", "2028-02": "abroad", "2028-06": "partner", "2028-07": "partner", "2028-08": "partner", "2028-09": "partner" },
     salary: 50000, netShare: 55, raiseMonth: 4, raises: { "2027": 3, "2028": 3 },
     mortgageNow: 700, mortgageFull: 1200, depotRate: 3, depotStop: "2028-07", depotStopOn: false,
