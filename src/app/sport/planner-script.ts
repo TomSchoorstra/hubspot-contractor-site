@@ -51,7 +51,9 @@ export const PLANNER_SCRIPT = String.raw`const App = (() => {
     $('syncText').textContent=s.text;$('syncLine').dataset.status=s.status==='error'?'offline':s.status;$('retrySync').hidden=CONFIG.preview||ok;
   }
   async function transport(method,body){const control=new AbortController(),timer=setTimeout(()=>control.abort(),8000);try{
-    const response=await fetch(CONFIG.api,{method,cache:'no-store',headers:{'Content-Type':'application/json','x-loop-key':CONFIG.apiKey},...(body?{body:JSON.stringify(body)}:{}),signal:control.signal});
+    const response=await fetch(CONFIG.api,{method,cache:'no-store',headers:{'Content-Type':'application/json'},...(body?{body:JSON.stringify(body)}:{}),signal:control.signal});
+    // The session has ended: reload, so the login page appears. Unsaved changes stay in the local cache.
+    if(response.status===401){window.location?.reload?.();throw Error('Signed out');}
     if(!response.ok)throw Error('HTTP '+response.status);return await response.json();
   }finally{clearTimeout(timer);}}
   function retry(){clearTimeout(retryTimer);retryTimer=setTimeout(()=>{if(!ready||!ok)load();else flush();},retryDelay);retryDelay=Math.min(retryDelay*2,30000);}

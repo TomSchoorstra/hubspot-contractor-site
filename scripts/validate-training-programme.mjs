@@ -15,7 +15,7 @@ const library = load("src/lib/training-library.ts");
 const errors = library.validateSetup();
 
 // The client script is plain text inside a template literal: make sure it still parses.
-const script = load("src/app/l/[slug]/kracht-5km/planner-script.ts").PLANNER_SCRIPT;
+const script = load("src/app/sport/planner-script.ts").PLANNER_SCRIPT;
 try { new vm.Script(script, { filename: "planner-script (client)" }); }
 catch (error) { errors.push("Client script does not parse: " + error.message); }
 

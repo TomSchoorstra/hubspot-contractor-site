@@ -4,6 +4,9 @@ import { createHash, createHmac, timingSafeEqual } from "node:crypto";
 import { readTrainingRows, writeTrainingRow } from "./workout-storage";
 
 export const SESSION_COOKIE = "budget_session";
+// The training app at /sport uses the same password with its own cookie, scoped to its own path.
+export const SPORT_COOKIE = "sport_session";
+export const SPORT_PATH = "/sport";
 const SESSION_SECONDS = 60 * 60 * 24 * 30;
 const MIN_PASSWORD_LENGTH = 10;
 const MAX_FAILURES = 5;
@@ -39,14 +42,14 @@ export function sessionValid(token: unknown, now = Date.now()): boolean {
   const given = Buffer.from(match[2]), expected = Buffer.from(sign(Number(match[1])));
   return given.length === expected.length && timingSafeEqual(given, expected);
 }
-export function sessionFromRequest(request: Request): boolean {
+export function sessionFromRequest(request: Request, name: string = SESSION_COOKIE): boolean {
   const cookie = request.headers.get("cookie") ?? "";
-  const found = cookie.split(";").map(part => part.trim()).find(part => part.startsWith(SESSION_COOKIE + "="));
-  return sessionValid(found?.slice(SESSION_COOKIE.length + 1));
+  const found = cookie.split(";").map(part => part.trim()).find(part => part.startsWith(name + "="));
+  return sessionValid(found?.slice(name.length + 1));
 }
-export function sessionCookie(token: string | null): string {
+export function sessionCookie(token: string | null, name: string = SESSION_COOKIE, path = "/budget"): string {
   const secure = process.env.NODE_ENV === "production" ? "; Secure" : "";
-  return `${SESSION_COOKIE}=${token ?? ""}; Path=/budget; HttpOnly; SameSite=Strict${secure}; Max-Age=${token ? SESSION_SECONDS : 0}`;
+  return `${name}=${token ?? ""}; Path=${path}; HttpOnly; SameSite=Strict${secure}; Max-Age=${token ? SESSION_SECONDS : 0}`;
 }
 
 // A request that changes something must come from this site itself.

@@ -7,7 +7,7 @@ import ts from "typescript";
 
 // Execute the production TypeScript with an in-memory database. No real training
 // data or Supabase credentials are read or written by these tests.
-function loadModule(file, dependencies = {}) {
+function loadModule(file, dependencies = {}, globals = {}) {
   const output = ts.transpileModule(fs.readFileSync(file, "utf8"), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true },
     reportDiagnostics: true,
@@ -16,10 +16,10 @@ function loadModule(file, dependencies = {}) {
   assert.equal(errors.length, 0, errors.map((d) => ts.flattenDiagnosticMessageText(d.messageText, "\n")).join("\n"));
   const compiledModule = { exports: {} };
   vm.runInNewContext(output.outputText, {
-    module: compiledModule, exports: compiledModule.exports, Request, Response, URL,
+    module: compiledModule, exports: compiledModule.exports, Request, Response, URL, ...globals,
     console: { error() {} },
     require(name) {
-      if (file.endsWith("training-html.ts") && name.startsWith("./planner-")) return loadModule("src/app/l/[slug]/kracht-5km/" + name.slice(2) + ".ts");
+      if (file.endsWith("training-html.ts") && name.startsWith("./planner-")) return loadModule("src/app/sport/" + name.slice(2) + ".ts");
       assert.ok(Object.hasOwn(dependencies, name), `Unexpected dependency ${name}`);
       return dependencies[name];
     },
@@ -28,12 +28,12 @@ function loadModule(file, dependencies = {}) {
 }
 
 const library = loadModule("src/lib/training-library.ts");
-const { TRAINING_HTML } = loadModule("src/app/l/[slug]/kracht-5km/training-html.ts");
+const { TRAINING_HTML } = loadModule("src/app/sport/training-html.ts");
 const json = value => JSON.stringify(value);
 
 function browserClient(cacheStore = new Map(), options = {}) {
   const config = {
-    rowId: "test-user", apiKey: "test-key", name: "Test", api: "/test-api", preview: true,
+    rowId: "test-user", api: "/test-api", preview: true,
     seeds: { exercises: library.SEED_EXERCISES, templates: library.SEED_TEMPLATES }, run: library.RUN_PROGRAMME,
     muscles: library.MUSCLES, loads: library.LOADS, weekTarget: library.WEEK_TARGET, ...options.config,
   };
@@ -64,10 +64,14 @@ function browserClient(cacheStore = new Map(), options = {}) {
 const shift = (date, days) => { const d = new Date(date + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
 
+// The data route with an in-memory database. A request is signed in when it carries the test session cookie.
 function trainingApi(store = new Map()) {
-  const api = loadModule("src/app/api/training/route.ts", {
-    "next/server": { NextResponse: { json: (body, init) => Response.json(body, init) } },
-    "@/lib/loopschema": { profileForKey: key => key === "test-tom" ? { rowId: "tom" } : key === "test-other" ? { rowId: "denise" } : null },
+  const api = loadModule("src/app/sport/data/route.ts", {
+    "@/lib/budget-auth": {
+      PRIVATE_HEADERS: { "Cache-Control": "no-store" }, SPORT_COOKIE: "sport_session",
+      sessionFromRequest: (request, name) => name === "sport_session" && (request.headers.get("cookie") ?? "").includes("sport_session=valid"),
+      sameOrigin: request => request.headers.get("sec-fetch-site") !== "cross-site",
+    },
     "@/lib/training-library": library,
     "@/lib/workout-storage": {
       localTrainingStorage: () => false,
@@ -75,7 +79,7 @@ function trainingApi(store = new Map()) {
       writeTrainingRow: async (id, data) => { store.set(id, structuredClone(data)); },
     },
   });
-  const request = (method, doc, key = "test-tom") => new Request("http://localhost/api/training", { method, headers: { "Content-Type": "application/json", "x-loop-key": key }, ...(method === "POST" ? { body: typeof doc === "string" ? doc : json({ doc }) } : {}) });
+  const request = (method, doc, cookie = "sport_session=valid", extra = {}) => new Request("http://localhost/sport/data", { method, headers: { "Content-Type": "application/json", ...(cookie ? { cookie } : {}), ...extra }, ...(method === "POST" ? { body: typeof doc === "string" ? doc : json({ doc }) } : {}) });
   return { api, request, store };
 }
 const set = (patch = {}) => ({ id: nodeCrypto.randomUUID(), weightKg: null, reps: null, done: false, ...patch });
@@ -135,13 +139,17 @@ test("the storage contract keeps proposals, confirmed sets and logged workouts a
   assert.equal(library.normalizeDoc({ type: "note", id: "x" }), null);
 });
 
-test("the API keeps every document in its own row and leaves earlier data and other users alone", async () => {
+test("the data route needs a session, keeps every document in its own row and leaves earlier data alone", async () => {
   const history = { original: true }, oldWorkout = { templateId: "upper" };
   const store = new Map([["tom", history], ["denise", { private: true }], ["tom:workout-sessions-v1:abc", oldWorkout]]), { api, request } = trainingApi(store);
-  for (const key of ["", "bad", "test-other"]) {
-    assert.equal((await api.GET(request("GET", null, key))).status, 403);
-    assert.equal((await api.POST(request("POST", gymFixture(), key))).status, 403);
+  // Without a session nothing is readable or writable; the budget cookie and an old page key do not count.
+  for (const cookie of ["", "sport_session=forged", "budget_session=valid"]) {
+    assert.equal((await api.GET(request("GET", null, cookie))).status, 401);
+    assert.equal((await api.POST(request("POST", gymFixture(), cookie))).status, 401);
   }
+  assert.equal((await api.GET(request("GET", null, "", { "x-loop-key": "test-tom" }))).status, 401);
+  assert.equal((await api.POST(request("POST", gymFixture(), "sport_session=valid", { "sec-fetch-site": "cross-site" }))).status, 403, "another site cannot write with your session");
+  assert.equal(store.size, 3);
   const a = gymFixture(), b = runFixture({ date: "2026-11-08" }), exercise = { type: "exercise", id: nodeCrypto.randomUUID(), name: "Cable fly", muscle: "borst", load: "total", archived: false, updatedAt: 9 };
   for (const doc of [a, b, exercise, { ...library.SEED_TEMPLATES[2], name: "Full body C kort", updatedAt: 10 }]) assert.equal((await api.POST(request("POST", doc))).status, 200);
   const result = await (await api.GET(request("GET"))).json();
@@ -372,4 +380,65 @@ test("offline changes survive a reload, sync later and never reach the earlier c
   second.run(`App.remove(${json(w.id)})`); await second.run("App.flush()"); await settle();
   assert.equal(server["workout:" + w.id].deleted, true); assert.equal(second.run("App.workouts().length"), 0);
   assert.equal(server["workout:" + w.id].exercises[0].sets[0].reps, 9, "a removed workout keeps its record");
+});
+
+test("the app lives at /sport behind the site password; the old key in the address opens nothing", async () => {
+  const PASSWORD = "een-lang-testwachtwoord", rows = new Map();
+  const world = (env) => {
+    const globals = { process: { env }, Buffer, setTimeout: callback => { callback(); return 1; } };
+    const auth = loadModule("src/lib/budget-auth.ts", { "node:crypto": nodeCrypto, "./workout-storage": {
+      readTrainingRows: async ids => ids.filter(id => rows.has(id)).map(id => ({ id, data: rows.get(id) })),
+      writeTrainingRow: async (id, data) => { rows.set(id, structuredClone(data)); },
+    } }, globals);
+    const html = loadModule("src/app/sport/training-html.ts");
+    const deps = { "@/lib/budget-auth": auth, "@/lib/training-library": library, "./training-html": html };
+    return { auth, page: loadModule("src/app/sport/route.ts", deps, globals), login: loadModule("src/app/sport/login/route.ts", deps, globals), logout: loadModule("src/app/sport/logout/route.ts", deps, globals) };
+  };
+  const get = (page, url = "http://localhost/sport", cookie = "") => page.GET(new Request(url, { headers: cookie ? { cookie } : {} }));
+  const post = (route, password, headers = {}) => route.POST(new Request("http://localhost/sport/login", { method: "POST", headers: { "Content-Type": "application/x-www-form-urlencoded", ...headers }, body: "password=" + encodeURIComponent(password) }));
+  const live = world({ BUDGET_PASSWORD: PASSWORD, NODE_ENV: "production" });
+
+  // Without a session: only a login form. No training data, no script, no preview in production.
+  for (const url of ["http://localhost/sport", "http://localhost/sport?voorbeeld=1"]) {
+    const response = await get(live.page, url), body = await response.text();
+    assert.equal(response.status, 200); assert.match(body, /action="\/sport\/login"/); assert.match(body, /type="password"/);
+    for (const secret of ["__TRAINING__", "Leg press", "<script", "29:23"]) assert.ok(!body.includes(secret), secret + " leaks into the login page");
+    assert.match(response.headers.get("cache-control"), /no-store/); assert.match(response.headers.get("x-robots-tag"), /noindex/);
+    assert.match(response.headers.get("content-security-policy"), /frame-ancestors 'none'/);
+  }
+  // A wrong password returns to the form; the right one sets a cookie that only travels to /sport.
+  const wrong = await post(live.login, "fout-wachtwoord");
+  assert.equal(wrong.status, 303); assert.equal(wrong.headers.get("location"), "/sport?fout=1"); assert.equal(wrong.headers.get("set-cookie"), null);
+  assert.match(await (await get(live.page, "http://localhost/sport?fout=1")).text(), /Dat wachtwoord klopt niet/);
+  assert.equal((await post(live.login, PASSWORD, { "sec-fetch-site": "cross-site" })).status, 403);
+  const ok = await post(live.login, PASSWORD), cookie = ok.headers.get("set-cookie");
+  assert.equal(ok.headers.get("location"), "/sport");
+  assert.match(cookie, /^sport_session=\d+\.[A-Za-z0-9_-]{43}; Path=\/sport; HttpOnly; SameSite=Strict; Secure; Max-Age=2592000$/);
+  const token = cookie.split(";")[0];
+  const app = await (await get(live.page, "http://localhost/sport", token)).text();
+  assert.match(app, /window\.__TRAINING__=/); assert.match(app, /"api":"\/sport\/data"/); assert.match(app, /action="\/sport\/logout"/);
+  assert.ok(!/apiKey|x-loop-key/.test(app), "the page no longer carries a key");
+  // The budget session cookie does not open the training app, and a tampered token does not either.
+  assert.match(await (await get(live.page, "http://localhost/sport", token.replace("sport_session", "budget_session"))).text(), /type="password"/);
+  assert.match(await (await get(live.page, "http://localhost/sport", token.slice(0, -2) + "xx")).text(), /type="password"/);
+  // The budget's own cookie is unchanged by this.
+  assert.match(live.auth.sessionCookie("abc"), /^budget_session=abc; Path=\/budget; /);
+  const out = await live.logout.POST(new Request("http://localhost/sport/logout", { method: "POST" }));
+  assert.equal(out.headers.get("location"), "/sport"); assert.match(out.headers.get("set-cookie"), /^sport_session=; Path=\/sport; .*Max-Age=0$/);
+  // Five misses lock the address, also for the right password.
+  for (let i = 0; i < 5; i++) await post(live.login, "fout-" + i);
+  assert.equal((await post(live.login, PASSWORD)).headers.get("location"), "/sport?fout=2");
+
+  // Without a configured password the page explains the setup and never shows the app.
+  const unset = world({ NODE_ENV: "production" }), setup = await get(unset.page, "http://localhost/sport", token);
+  assert.equal(setup.status, 503); assert.ok(!(await setup.text()).includes("__TRAINING__"));
+  // Outside production the preview works without a login and stays on the device.
+  const preview = await (await get(world({ BUDGET_PASSWORD: PASSWORD, NODE_ENV: "development" }).page, "http://localhost/sport?voorbeeld=1")).text();
+  assert.match(preview, /"preview":true/);
+
+  // The old address only forwards the owner's key to /sport and reveals nothing itself.
+  const old = loadModule("src/app/l/[slug]/kracht-5km/route.ts", { "@/lib/loopschema": { profileForKey: key => key === "test-tom" ? { rowId: "tom" } : key === "test-other" ? { rowId: "denise" } : null } });
+  const moved = await old.GET(new Request("http://localhost/l/test-tom/kracht-5km"), { params: Promise.resolve({ slug: "test-tom" }) });
+  assert.equal(moved.status, 308); assert.equal(moved.headers.get("location"), "/sport"); assert.equal(await moved.text(), "");
+  for (const slug of ["test-other", "nope"]) assert.equal((await old.GET(new Request("http://localhost/l/x/kracht-5km"), { params: Promise.resolve({ slug }) })).status, 404);
 });

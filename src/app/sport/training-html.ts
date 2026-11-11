@@ -112,7 +112,13 @@ label{font-size:14px;font-weight:600;color:var(--mut)}
 .planner-save[data-status=error]{color:var(--rose)}.planner-save[data-status=error]:before{background:var(--rose)}
 @keyframes pulse{50%{opacity:.35}}
 .planner-footer{display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:28px;padding-top:16px;border-top:1px solid var(--edge-soft)}
-.foot-actions{display:flex;gap:18px}
+.foot-actions{display:flex;flex-wrap:wrap;gap:4px 18px}
+.login{display:grid;gap:14px;max-width:420px;margin:10vh auto 0;padding:28px 24px;border-radius:var(--r-lg)}
+.login h1{font-size:34px;font-weight:800;letter-spacing:-.8px;line-height:1.1}
+.login p{font-size:16px;color:var(--mut)}
+.login form,.login label{display:grid;gap:8px}
+.login form{gap:16px}
+.login-error{color:var(--rose)!important;font-weight:600}
 .planner-editing .planner-footer{display:none}
 
 .toast{visibility:hidden;opacity:0;position:fixed;left:50%;bottom:calc(92px + env(safe-area-inset-bottom));transform:translate(-50%,20px);z-index:40;display:flex;align-items:center;gap:6px;width:max-content;max-width:calc(100% - 32px);padding:12px 20px;border-radius:28px;border:1px solid var(--edge);background:rgba(24,31,62,.94);color:#fff;-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);box-shadow:0 18px 50px -18px #000;font-size:15px;font-weight:600;transition:transform .25s var(--ease),opacity .2s}
@@ -170,7 +176,7 @@ const BASE_HTML = String.raw`<!DOCTYPE html>
 <html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#070B1D"><title>Kracht &amp; 5 km | Trainingslogboek</title><style>/*__BASE_CSS__*/
 /*__PLANNER_CSS__*/</style></head><body><div class="atmo" aria-hidden="true"></div><a class="skip" href="#mainContent">Naar inhoud</a><div class="app"><!--__NAV__--><main class="workspace" id="mainContent" tabindex="-1"><div class="preview-banner" id="previewNotice" hidden><span>Voorvertoning</span></div>
 <!--__PLANNER_MARKUP__-->
-<footer class="page-footer planner-footer"><div class="sync-line" id="syncLine" data-status="loading"><span class="sync-dot" aria-hidden="true"></span><span id="syncText" role="status">Laden…</span></div><div class="foot-actions"><button class="text-button" id="retrySync" type="button" hidden>Opnieuw proberen</button><button class="text-button" id="exportData" type="button">Exporteren</button></div></footer></main></div><div class="toast" id="toast" role="status"></div><noscript><p style="padding:24px">Zet JavaScript aan om je kalender te gebruiken.</p></noscript><script>
+<footer class="page-footer planner-footer"><div class="sync-line" id="syncLine" data-status="loading"><span class="sync-dot" aria-hidden="true"></span><span id="syncText" role="status">Laden…</span></div><div class="foot-actions"><button class="text-button" id="retrySync" type="button" hidden>Opnieuw proberen</button><button class="text-button" id="exportData" type="button">Exporteren</button><form method="post" action="/sport/logout" id="logoutForm"><button class="text-button" type="submit">Uitloggen</button></form></div></footer></main></div><div class="toast" id="toast" role="status"></div><noscript><p style="padding:24px">Zet JavaScript aan om je kalender te gebruiken.</p></noscript><script>
 /*__TRAINING_CONFIG__*/
 const CONFIG = window.__TRAINING__;
 const $ = id => document.getElementById(id);
@@ -236,7 +242,7 @@ function toast(message){$('toast').textContent=message;$('toast').classList.add(
 // A toast with one action (undo). It stays long enough to reach with a thumb.
 function toastAction(message,label,action){toast(message);const button=document.createElement('button');button.type='button';button.className='planner-undo';button.textContent=label;button.addEventListener('click',()=>{button.disabled=true;action();});$('toast').appendChild(button);clearTimeout(toastTimer);toastTimer=setTimeout(()=>$('toast').classList.remove('on'),8000);}
 /*__PLANNER_SCRIPT__*/
-$('previewNotice').hidden=!CONFIG.preview;
+$('previewNotice').hidden=!CONFIG.preview;$('logoutForm').hidden=CONFIG.preview;
 document.querySelectorAll('[data-icon]').forEach(el=>{el.innerHTML=icon(el.dataset.icon)});
 $('exportData').addEventListener('click',()=>{
  const blob=new Blob([JSON.stringify({version:2,training:App.exportData()},null,2)],{type:'application/json'}),url=URL.createObjectURL(blob),link=document.createElement('a');
@@ -252,3 +258,16 @@ export const TRAINING_HTML = BASE_HTML
  .replace("<!--__NAV__-->",()=>NAV_MARKUP)
  .replace("<!--__PLANNER_MARKUP__-->",()=>PLANNER_MARKUP)
  .replace("/*__PLANNER_SCRIPT__*/",()=>PLANNER_SCRIPT);
+
+// Login and setup pages: the same atmosphere, no script and no training data.
+const shell = (title: string, body: string) => `<!DOCTYPE html>
+<html lang="nl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover"><meta name="robots" content="noindex, nofollow"><meta name="referrer" content="no-referrer"><meta name="theme-color" content="#070B1D"><title>${title} | Kracht &amp; 5 km</title><style>${BASE_CSS}</style></head><body><div class="atmo" aria-hidden="true"></div><div class="app"><main>${body}</main></div></body></html>`;
+const LOGIN_ERRORS: Record<string, string> = {
+  "1": "Dat wachtwoord klopt niet.",
+  "2": "Te veel pogingen. Probeer het over een kwartier opnieuw.",
+};
+export function sportLoginHtml(error: string | null): string {
+  const message = error ? LOGIN_ERRORS[error] : undefined;
+  return shell("Inloggen", `<section class="login glass" aria-labelledby="loginTitle"><h1 id="loginTitle">Kracht &amp; 5 km</h1><p>Deze pagina is privé. Vul je wachtwoord in om verder te gaan.</p>${message ? `<p class="login-error" role="alert">${message}</p>` : ""}<form method="post" action="/sport/login"><label for="password">Wachtwoord<input class="field" id="password" name="password" type="password" autocomplete="current-password" required autofocus></label><button class="primary" type="submit">Inloggen</button></form></section>`);
+}
+export const SPORT_SETUP_HTML = shell("Nog niet ingesteld", `<section class="login glass" aria-labelledby="setupTitle"><h1 id="setupTitle">Kracht &amp; 5 km</h1><p>Er is nog geen wachtwoord ingesteld. Zet de instelling BUDGET_PASSWORD (minimaal 10 tekens) in de omgeving van de site en open deze pagina opnieuw.</p></section>`);

@@ -1,6 +1,6 @@
 // The private budget page, in the same Nachtglas style as the training app.
 // Like that app, the page is one HTML string. Inside the String.raw blocks: no backticks and no template placeholders.
-import { BASE_CSS } from "../l/[slug]/kracht-5km/training-html";
+import { BASE_CSS } from "../sport/training-html";
 
 const BUDGET_CSS = String.raw`
 .app{max-width:960px}

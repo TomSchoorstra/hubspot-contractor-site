@@ -11,3 +11,7 @@ Production publication uses the existing GitHub main branch and Vercel integrati
 ## Library and templates, 11 November 2026
 
 The page now uses `/api/training`. Exercises, workout templates and workouts are separate rows named `tom:training-v2:<type>:<id>` in the same `training_state` table. Rows written by the earlier calendar (`tom:workout-sessions-v1:<uuid>`) and the running-plan document are not read, changed or removed; the earlier `/api/workout-sessions` route is gone. The seed library, the three templates and the twelve-run sequence live in `src/lib/training-library.ts` and are checked by `npm run validate:programme` before every build.
+
+## Moved to /sport behind the site password, 11 November 2026
+
+The training app is served at `/sport` and its data route at `/sport/data`. Both need a session: the page shows a login form that checks the site password (the `BUDGET_PASSWORD` setting, shared with the budget page) with the same lockout after five failed attempts. The session cookie is `sport_session`, scoped to `/sport`; the budget keeps its own cookie. The key in the old address no longer opens anything: `/l/<key>/kracht-5km` only redirects to `/sport`, and `/api/training` is gone. The local preview (`/sport?voorbeeld=1`) exists outside production only. Stored rows are unchanged.
