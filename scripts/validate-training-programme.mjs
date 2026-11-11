@@ -1,5 +1,5 @@
-// Blocking check for the Kracht & 5 km programme. Runs before every build:
-// a programme that breaks its own rules must not be deployable.
+// Blocking check for Kracht & 5 km. Runs before every build: a seed library,
+// template set or run sequence that breaks its own rules must not be deployable.
 import fs from "node:fs";
 import vm from "node:vm";
 import ts from "typescript";
@@ -7,26 +7,22 @@ import ts from "typescript";
 function load(file) {
   const output = ts.transpileModule(fs.readFileSync(file, "utf8"), { compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022 } });
   const compiled = { exports: {} };
-  vm.runInNewContext(output.outputText, { module: compiled, exports: compiled.exports, require() { throw Error("Programme files must stay dependency-free"); } }, { filename: file });
+  vm.runInNewContext(output.outputText, { module: compiled, exports: compiled.exports, require() { throw Error("The training library must stay dependency-free"); } }, { filename: file });
   return compiled.exports;
 }
 
-const programme = load("src/lib/training-programme.ts");
-const planner = load("src/lib/workout-planner.ts");
-const errors = programme.validateProgramme();
+const library = load("src/lib/training-library.ts");
+const errors = library.validateSetup();
 
-// The storage contract and the programme must agree on IDs and test weeks.
-const link = planner.PROGRAMME_LINKS?.[programme.PROGRAMME_ID];
-if (!link) errors.push("workout-planner.ts does not accept programme " + programme.PROGRAMME_ID);
-else if (JSON.stringify(link.testWeeks) !== JSON.stringify(programme.RUN_TEST_WEEKS)) errors.push("Run test weeks differ between programme and storage validation");
-if (!planner.PROGRAMME_LINKS?.["five-k-12-v1"]) errors.push("Earlier run-plan entries must stay valid (five-k-12-v1)");
-for (const id of ["full", "run"]) if (!planner.WORKOUT_TEMPLATES.some(template => template.id === id)) errors.push("Missing workout template " + id);
+// The client script is plain text inside a template literal: make sure it still parses.
+const script = load("src/app/l/[slug]/kracht-5km/planner-script.ts").PLANNER_SCRIPT;
+try { new vm.Script(script, { filename: "planner-script (client)" }); }
+catch (error) { errors.push("Client script does not parse: " + error.message); }
 
 if (errors.length) {
-  console.error("Programme validation failed:\n- " + errors.join("\n- "));
+  console.error("Training validation failed:\n- " + errors.join("\n- "));
   process.exit(1);
 }
-const weeks = programme.TRAINING_PROGRAMME.weeks;
-const minutes = weeks.flatMap(week => week.sessions.map(session => session.minutes));
-console.log(`Programme ${programme.PROGRAMME_ID}: ${weeks.length} weeks, ${weeks.length * 3} gym sessions (${Math.min(...minutes)}–${Math.max(...minutes)} min estimated), ${weeks.length} runs. OK`);
-if (process.argv.includes("--table")) for (const week of weeks) console.log(week.week, week.phase, week.sessions.map(session => session.key + ":" + session.minutes + "m/" + session.exercises.reduce((sum, exercise) => sum + exercise.sets, 0) + "sets").join(" "), "| run:", week.run.title, week.run.block);
+const time = seconds => Math.floor(seconds / 60) + ":" + String(Math.round(seconds % 60)).padStart(2, "0");
+const run = library.RUN_PROGRAMME;
+console.log(`Library: ${library.SEED_EXERCISES.length} exercises. Templates: ${library.SEED_TEMPLATES.map(t => `${t.name} ${t.slots.reduce((sum, s) => sum + s.sets, 0)} sets/${library.estimateMinutes(t)} min`).join(", ")}. Runs: ${run.runs.length}, ${time(run.baselineSeconds)} -> ${time(run.goalSeconds)}. OK`);

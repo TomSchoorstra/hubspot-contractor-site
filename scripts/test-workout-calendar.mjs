@@ -1,16 +1,13 @@
 import assert from "node:assert/strict";
 import fs from "node:fs";
 import vm from "node:vm";
-import os from "node:os";
-import path from "node:path";
-import * as filePromises from "node:fs/promises";
 import * as nodeCrypto from "node:crypto";
 import test from "node:test";
 import ts from "typescript";
 
-// Execute the production TypeScript with an in-memory database. No real health
+// Execute the production TypeScript with an in-memory database. No real training
 // data or Supabase credentials are read or written by these tests.
-function loadModule(file, dependencies = {}, globals = {}) {
+function loadModule(file, dependencies = {}) {
   const output = ts.transpileModule(fs.readFileSync(file, "utf8"), {
     compilerOptions: { module: ts.ModuleKind.CommonJS, target: ts.ScriptTarget.ES2022, esModuleInterop: true },
     reportDiagnostics: true,
@@ -19,10 +16,10 @@ function loadModule(file, dependencies = {}, globals = {}) {
   assert.equal(errors.length, 0, errors.map((d) => ts.flattenDiagnosticMessageText(d.messageText, "\n")).join("\n"));
   const compiledModule = { exports: {} };
   vm.runInNewContext(output.outputText, {
-    module: compiledModule, exports: compiledModule.exports, Request, Response, URL, ...globals,
+    module: compiledModule, exports: compiledModule.exports, Request, Response, URL,
     console: { error() {} },
     require(name) {
-      if(file.endsWith("training-html.ts") && name.startsWith("./planner-")) return loadModule("src/app/l/[slug]/kracht-5km/"+name.slice(2)+".ts");
+      if (file.endsWith("training-html.ts") && name.startsWith("./planner-")) return loadModule("src/app/l/[slug]/kracht-5km/" + name.slice(2) + ".ts");
       assert.ok(Object.hasOwn(dependencies, name), `Unexpected dependency ${name}`);
       return dependencies[name];
     },
@@ -30,360 +27,349 @@ function loadModule(file, dependencies = {}, globals = {}) {
   return compiledModule.exports;
 }
 
-const workoutPlan=loadModule("src/lib/workout-planner.ts");
-const programme=loadModule("src/lib/training-programme.ts");
-function browserClient(cacheStore, transport, configOverrides = {}) {
-  const { TRAINING_HTML } = loadModule("src/app/l/[slug]/kracht-5km/training-html.ts");
+const library = loadModule("src/lib/training-library.ts");
+const { TRAINING_HTML } = loadModule("src/app/l/[slug]/kracht-5km/training-html.ts");
+const json = value => JSON.stringify(value);
+
+function browserClient(cacheStore = new Map(), options = {}) {
   const config = {
-    rowId: "test-user",
-    workoutTemplates:workoutPlan.WORKOUT_TEMPLATES,programme:programme.TRAINING_PROGRAMME,plannerApi:"/test-workout-api",
-    name: "Test", api: "/test-api", apiKey: "test-key", backUrl: "/", preview: false, ...configOverrides,
+    rowId: "test-user", apiKey: "test-key", name: "Test", api: "/test-api", preview: true,
+    seeds: { exercises: library.SEED_EXERCISES, templates: library.SEED_TEMPLATES }, run: library.RUN_PROGRAMME,
+    muscles: library.MUSCLES, loads: library.LOADS, weekTarget: library.WEEK_TARGET, ...options.config,
   };
   const elements = new Map();
   const element = (id) => {
     if (!elements.has(id)) elements.set(id, {
-      textContent: "", innerHTML: "", hidden: false, dataset: {}, style: {},
+      textContent: "", innerHTML: "", hidden: false, value: "", dataset: {}, style: {},
       classList: { add() {}, remove() {}, toggle() {} },
-      setAttribute() {}, addEventListener() {}, appendChild() {}, contains() { return false; }, querySelectorAll() { return []; },
+      setAttribute() {}, removeAttribute() {}, addEventListener() {}, appendChild() {}, focus() {}, contains() { return false; },
+      querySelectorAll() { return []; }, querySelector() { return null; },
     });
     return elements.get(id);
   };
   const script = TRAINING_HTML.match(/<script>([\s\S]*?)<\/script>/)[1]
-    .replace("/*__TRAINING_CONFIG__*/", `window.__TRAINING__=${JSON.stringify(config)};`);
+    .replace("/*__TRAINING_CONFIG__*/", `window.__TRAINING__=${json(config)};`);
   const context = vm.createContext({
     window: { addEventListener() {} },
-    document: { getElementById: element, querySelectorAll: () => [], addEventListener(){}, createElement:()=>element("created"), body: { style: {},classList:{toggle(){}} } },
+    document: { getElementById: element, querySelectorAll: () => [], addEventListener() {}, createElement: () => element("created"), body: { style: {}, classList: { add() {}, remove() {}, toggle() {} } } },
     localStorage: { getItem: (key) => cacheStore.get(key) ?? null, setItem: (key, value) => cacheStore.set(key, value) },
-    fetch: (url,options)=>url==="/test-workout-api"?(configOverrides.plannerTransport?configOverrides.plannerTransport(url,options):Promise.resolve({ok:true,json:async()=>({data:{version:1,entries:{},storage:"local"}})})):transport(url,options), AbortController, Blob, URL,crypto:nodeCrypto,
-    setTimeout: () => 1, clearTimeout() {}, setInterval:()=>1,
+    fetch: options.fetch ?? (async () => { throw Error("Preview must not fetch"); }),
+    AbortController, Blob, URL, crypto: nodeCrypto, setTimeout: () => 1, clearTimeout() {}, setInterval: () => 1,
   });
   vm.runInContext(script, context);
-  return { run: (code) => vm.runInContext(code, context), element };
+  // Values cross from the page context into the test: copy them so deep comparisons use this realm's prototypes.
+  const run = (code) => { const value = vm.runInContext(code, context); return value && typeof value === "object" && typeof value.then !== "function" ? JSON.parse(JSON.stringify(value)) : value; };
+  return { run, element, today: run("localToday()"), get: id => run("App.workout(" + json(id) + ")") };
 }
+const shift = (date, days) => { const d = new Date(date + "T12:00:00Z"); d.setUTCDate(d.getUTCDate() + days); return d.toISOString().slice(0, 10); };
 const settle = () => new Promise((resolve) => setImmediate(resolve));
-function flexibleApi(store=new Map()){
-  const api=loadModule('src/app/api/workout-sessions/route.ts',{
-    'next/server':{NextResponse:{json:(body,init)=>Response.json(body,init)}},
-    '@/lib/loopschema':{profileForKey:key=>key==='test-tom'?{rowId:'tom'}:key==='test-other'?{rowId:'denise'}:null},
-    '@/lib/workout-planner':workoutPlan,
-    '@/lib/workout-storage':{
-      localTrainingStorage:()=>false,
-      readTrainingPrefix:async prefix=>[...store].filter(([id])=>id.startsWith(prefix)).map(([id,data])=>({id,data})),
-      writeTrainingRow:async(id,data)=>{store.set(id,structuredClone(data));},
+
+function trainingApi(store = new Map()) {
+  const api = loadModule("src/app/api/training/route.ts", {
+    "next/server": { NextResponse: { json: (body, init) => Response.json(body, init) } },
+    "@/lib/loopschema": { profileForKey: key => key === "test-tom" ? { rowId: "tom" } : key === "test-other" ? { rowId: "denise" } : null },
+    "@/lib/training-library": library,
+    "@/lib/workout-storage": {
+      localTrainingStorage: () => false,
+      readTrainingPrefix: async prefix => [...store].filter(([id]) => id.startsWith(prefix)).map(([id, data]) => ({ id, data })),
+      writeTrainingRow: async (id, data) => { store.set(id, structuredClone(data)); },
     },
   });
-  const request=(method,entry,key='test-tom')=>new Request('http://localhost/api/workout-sessions',{method,headers:{'Content-Type':'application/json','x-loop-key':key},...(method==='POST'?{body:typeof entry==='string'?entry:JSON.stringify({entry})}:{})});
-  return {api,request,store};
+  const request = (method, doc, key = "test-tom") => new Request("http://localhost/api/training", { method, headers: { "Content-Type": "application/json", "x-loop-key": key }, ...(method === "POST" ? { body: typeof doc === "string" ? doc : json({ doc }) } : {}) });
+  return { api, request, store };
 }
-const workoutFixture=()=>({id:nodeCrypto.randomUUID(),templateId:'upper',date:'2026-11-03',deleted:false,updatedAt:1793707200000,
-  exercises:[{id:nodeCrypto.randomUUID(),name:'Bench press',sets:3,reps:10,weightKg:42.5}],distanceKm:null,durationSeconds:null,averageHeartRate:null,hamstring:null,note:''});
+const set = (patch = {}) => ({ id: nodeCrypto.randomUUID(), weightKg: null, reps: null, done: false, ...patch });
+const gymFixture = (patch = {}) => ({
+  type: "workout", id: nodeCrypto.randomUUID(), kind: "gym", date: "2026-11-03", deleted: false, updatedAt: 1793707200000, logged: false, note: "", title: "Full body A",
+  templateId: "full-body-a", exercises: [{ id: nodeCrypto.randomUUID(), exerciseId: "bench-press", name: "Bench press", load: "total", targetSets: 3, repMin: 6, repMax: 10, pair: null, sets: [set({ weightKg: 42.5, reps: 10, done: true }), set()] }],
+  runStep: null, distanceKm: null, durationSeconds: null, averageHeartRate: null, testSeconds: null, hamstring: null, ...patch,
+});
+const runFixture = (patch = {}) => gymFixture({ kind: "run", title: "Run", templateId: null, exercises: [], ...patch });
 
-test('workout snapshots validate partial input, zero weight, real dates and unique exercise IDs',()=>{
-  const entry=workoutFixture();assert.ok(workoutPlan.normalizeWorkout(entry));
-  assert.ok(workoutPlan.normalizeWorkout({...entry,exercises:[{...entry.exercises[0],sets:null,reps:null,weightKg:0}]}));
-  for(const patch of [{id:'tom'},{date:'2026-02-30'},{templateId:'unknown'},{deleted:'false'},{updatedAt:1e20},{distanceKm:5},{exercises:[...entry.exercises,...entry.exercises]},{exercises:[{...entry.exercises[0],weightKg:-5}]},{exercises:[{...entry.exercises[0],sets:1.5}]}])assert.equal(workoutPlan.normalizeWorkout({...entry,...patch}),null);
-  const run={...entry,templateId:'run',exercises:[],distanceKm:.8,durationSeconds:300,averageHeartRate:150};assert.ok(workoutPlan.normalizeWorkout(run));
+test("the seed library, the three templates and the run sequence pass the blocking validation", () => {
+  assert.equal(library.validateSetup().join("; "), "");
+  assert.equal(library.SEED_EXERCISES.length, 16);
+  assert.equal(library.SEED_TEMPLATES.map(t => t.name).join(), "Full body A,Full body B,Full body C");
+  for (const template of library.SEED_TEMPLATES) assert.ok(library.estimateMinutes(template) <= 60);
+  const run = library.RUN_PROGRAMME;
+  assert.equal(run.baselineSeconds, 29 * 60 + 23); assert.equal(run.goalSeconds, 27 * 60 + 30); assert.equal(run.runs.length, 12);
+  assert.equal(run.runs.filter(r => r.kind === "interval" || r.kind === "tempo").length, 9);
+  // The page no longer shows effort targets, rest times or the old programme.
+  for (const gone of ["RIR", "Programma", "renschema", "Inspanning", "RunPlan", "__RUNPLAN", "Upper body"]) assert.ok(!TRAINING_HTML.includes(gone), gone + " is still on the page");
+  assert.ok(!/__[A-Z_]+__\*\/|<!--__/.test(TRAINING_HTML.replace("/*__TRAINING_CONFIG__*/", "")), "an unfilled placeholder is left in the page");
 });
 
-test('calendar API preserves history, other users, independent sessions and deletion tombstones',async()=>{
-  const history={original:true},store=new Map([['tom',history],['denise',{private:true}]]),{api,request}=flexibleApi(store);
-  for(const key of ['', 'bad','test-other']){
-    assert.equal((await api.GET(request('GET',null,key))).status,403);
-    assert.equal((await api.POST(request('POST',workoutFixture(),key))).status,403);
+test("the storage contract keeps proposals, confirmed sets and logged workouts apart", () => {
+  const gym = gymFixture();
+  assert.ok(library.normalizeDoc(gym));
+  assert.ok(library.normalizeDoc({ ...gym, logged: true }));
+  const open = { ...gym, exercises: [{ ...gym.exercises[0], sets: [set(), set({ weightKg: 40, reps: 8 })] }] };
+  assert.ok(library.normalizeDoc(open), "typed but unconfirmed values are allowed");
+  assert.equal(library.normalizeDoc({ ...open, logged: true }), null, "a workout without a confirmed set cannot be logged");
+  const bad = [
+    { id: "tom" }, { date: "2026-02-30" }, { kind: "swim" }, { deleted: "false" }, { updatedAt: 1e20 }, { distanceKm: 5 }, { runStep: 3 }, { title: "" }, { templateId: "Bad ID" },
+    { exercises: [...gym.exercises, ...gym.exercises] },
+    { exercises: [{ ...gym.exercises[0], sets: [set({ done: true })] }] },
+    { exercises: [{ ...gym.exercises[0], sets: [set({ weightKg: -5, reps: 5 })] }] },
+    { exercises: [{ ...gym.exercises[0], sets: [set({ reps: 1.5 })] }] },
+    { exercises: [{ ...gym.exercises[0], load: "kilo" }] },
+    { exercises: [{ ...gym.exercises[0], repMin: 12, repMax: 8 }] },
+    { exercises: [{ ...gym.exercises[0], exerciseId: "" }] },
+  ];
+  for (const patch of bad) assert.equal(library.normalizeDoc({ ...gym, ...patch }), null, json(patch));
+  assert.ok(library.normalizeDoc({ ...gym, exercises: [{ ...gym.exercises[0], repMin: null, repMax: null }] }), "an exercise added by hand has no rep target");
+
+  const run = runFixture({ distanceKm: 6.4, durationSeconds: 2400, runStep: 2 });
+  assert.ok(library.normalizeDoc({ ...run, logged: true }));
+  assert.equal(library.normalizeDoc(runFixture({ logged: true })), null, "a run needs distance and time before it is logged");
+  assert.equal(library.normalizeDoc({ ...run, testSeconds: 1700 }), null, "only the 5 km test has a test time");
+  const testRun = runFixture({ runStep: 12, distanceKm: 8, durationSeconds: 3000, testSeconds: 1650, logged: true });
+  assert.ok(library.normalizeDoc(testRun));
+  for (const patch of [{ testSeconds: null }, { distanceKm: 4.9 }, { testSeconds: 3001 }]) assert.equal(library.normalizeDoc({ ...testRun, ...patch }), null);
+  assert.equal(library.normalizeDoc({ ...run, exercises: gym.exercises }), null);
+
+  assert.ok(library.normalizeDoc({ type: "exercise", id: nodeCrypto.randomUUID(), name: "Leg press (schijven)", muscle: "benen-voor", load: "total", archived: false, updatedAt: 5 }));
+  for (const patch of [{ name: "  " }, { muscle: "nek" }, { load: "lbs" }, { archived: 0 }]) assert.equal(library.normalizeDoc({ ...library.SEED_EXERCISES[0], ...patch }), null);
+  const template = library.SEED_TEMPLATES[0];
+  for (const slots of [[{ ...template.slots[0], sets: 0 }], [{ ...template.slots[0], repMin: 12, repMax: 8 }], [{ ...template.slots[0], superset: "yes" }]]) assert.equal(library.normalizeDoc({ ...template, slots }), null);
+  assert.equal(library.normalizeDoc({ type: "note", id: "x" }), null);
+});
+
+test("the API keeps every document in its own row and leaves earlier data and other users alone", async () => {
+  const history = { original: true }, oldWorkout = { templateId: "upper" };
+  const store = new Map([["tom", history], ["denise", { private: true }], ["tom:workout-sessions-v1:abc", oldWorkout]]), { api, request } = trainingApi(store);
+  for (const key of ["", "bad", "test-other"]) {
+    assert.equal((await api.GET(request("GET", null, key))).status, 403);
+    assert.equal((await api.POST(request("POST", gymFixture(), key))).status, 403);
   }
-  const a=workoutFixture(),b={...workoutFixture(),date:'2026-11-04'};
-  assert.equal((await api.POST(request('POST',a))).status,200);assert.equal((await api.POST(request('POST',b))).status,200);
-  const result=await (await api.GET(request('GET'))).json();assert.equal(Object.keys(result.data.entries).length,2);
-  assert.equal(result.data.entries[a.id].exercises[0].sets[0].weightKg,42.5);assert.equal(store.get('tom'),history);
-  assert.equal((await api.POST(request('POST',{...a,deleted:true,updatedAt:a.updatedAt+1}))).status,200);
-  const deleted=await (await api.GET(request('GET'))).json();assert.equal(deleted.data.entries[a.id].deleted,true);
-  assert.equal(deleted.data.entries[a.id].exercises[0].name,'Bench press');assert.equal(deleted.data.entries[b.id].deleted,false);
-  assert.equal((await api.POST(request('POST',{...a,id:'raceplan:w1r1'}))).status,400);
-  assert.equal((await api.POST(request('POST','{'))).status,400);
-  assert.equal((await api.POST(request('POST','x'.repeat(512001)))).status,413);
+  const a = gymFixture(), b = runFixture({ date: "2026-11-08" }), exercise = { type: "exercise", id: nodeCrypto.randomUUID(), name: "Cable fly", muscle: "borst", load: "total", archived: false, updatedAt: 9 };
+  for (const doc of [a, b, exercise, { ...library.SEED_TEMPLATES[2], name: "Full body C kort", updatedAt: 10 }]) assert.equal((await api.POST(request("POST", doc))).status, 200);
+  const result = await (await api.GET(request("GET"))).json();
+  assert.equal(result.data.version, 2); assert.equal(Object.keys(result.data.docs).length, 4);
+  assert.equal(result.data.docs["workout:" + a.id].exercises[0].sets[0].weightKg, 42.5);
+  assert.equal(result.data.docs["template:full-body-c"].name, "Full body C kort");
+  assert.equal(store.get("tom"), history); assert.equal(store.get("tom:workout-sessions-v1:abc"), oldWorkout); assert.equal(store.size, 7);
+  assert.ok(store.has("tom:training-v2:workout:" + a.id));
+  assert.equal((await api.POST(request("POST", { ...a, deleted: true, updatedAt: a.updatedAt + 1 }))).status, 200);
+  const deleted = await (await api.GET(request("GET"))).json();
+  assert.equal(deleted.data.docs["workout:" + a.id].deleted, true); assert.equal(deleted.data.docs["workout:" + a.id].exercises[0].name, "Bench press");
+  assert.equal((await api.POST(request("POST", { ...a, id: "raceplan:w1r1" }))).status, 400);
+  assert.equal((await api.POST(request("POST", { ...a, logged: true, exercises: [] }))).status, 400);
+  assert.equal((await api.POST(request("POST", "{"))).status, 400);
+  assert.equal((await api.POST(request("POST", "x".repeat(512001)))).status, 413);
+  store.set("tom:training-v2:workout:broken", { type: "workout" });
+  assert.equal((await api.GET(request("GET"))).status, 500, "a damaged row is reported, never silently dropped");
 });
 
-test('templates are copied per session and calendar completion follows the date',async()=>{
-  const client=browserClient(new Map(),async()=>{throw Error('Preview must not fetch');},{preview:true});
-  const a=client.run('Planner.create("upper","2020-01-01",false)'),b=client.run('Planner.create("upper","2099-01-01",false)');
-  assert.equal(a.exercises[0].name,'Bench press');assert.equal(a.exercises[0].sets[0].weightKg,null);
-  client.run('Planner.update('+JSON.stringify(a.id)+',{exercises:[]})');
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(b.id)+'].exercises.length'),3);
-  assert.equal(workoutPlan.WORKOUT_TEMPLATES[0].exercises.length,3);
-  assert.equal(client.run('Planner.asTraining().find(e=>e.id==='+JSON.stringify(a.id)+').done'),true);
-  assert.equal(client.run('Planner.asTraining().find(e=>e.id==='+JSON.stringify(b.id)+').done'),false);
-
-  assert.equal(client.run('Planner.numberField("42,5",2000,false,true)'),42.5);
-  assert.equal(client.run('Planner.numberField("-5",2000,false,true)'),undefined);
-  assert.equal(client.run('parseTime("27,30")'),1650);
+test("scheduling copies the template into the workout and never logs anything", () => {
+  const client = browserClient(), today = client.today;
+  const a = client.run(`App.add("tpl:full-body-a", ${json(today)}, false)`);
+  assert.equal(a.logged, false); assert.equal(a.title, "Full body A"); assert.equal(a.templateId, "full-body-a");
+  assert.deepEqual(a.exercises.map(r => r.name), ["Leg press", "Bench press", "Seated row", "Leg curl", "Lateral raise", "Triceps pushdown"]);
+  assert.deepEqual(a.exercises.map(r => [r.targetSets, r.repMin, r.repMax]), [[3, 8, 12], [3, 6, 10], [3, 8, 12], [3, 10, 15], [3, 12, 15], [3, 10, 15]]);
+  assert.ok(a.exercises.every(r => r.sets.length === 3 && r.sets.every(s => s.reps === null && s.weightKg === null && !s.done)));
+  assert.equal(a.exercises[1].load, "total"); assert.equal(a.exercises[4].load, "per-dumbbell");
+  assert.ok(a.exercises[4].pair && a.exercises[4].pair === a.exercises[5].pair, "the last two exercises are a superset");
+  assert.equal(a.exercises[0].pair, null);
+  // Opening and rendering the workout changes nothing.
+  client.run(`App.open(${json(a.id)}); App.render()`);
+  assert.equal(client.get(a.id).logged, false); assert.equal(client.get(a.id).updatedAt, a.updatedAt);
+  assert.match(client.run(`App.finish(${json(a.id)})`), /Bevestig minstens één set/);
+  assert.deepEqual(client.run("App.weekStats()"), { gym: 0, run: 0 });
+  assert.deepEqual(client.run("App.types().map(t=>t.name)"), ["Full body A", "Full body B", "Full body C", "Run 1 van 12", "Losse run", "Lege workout"]);
+  const empty = client.run(`App.add("empty", ${json(today)}, false)`);
+  assert.equal(empty.exercises.length, 0); assert.equal(empty.templateId, null);
+  client.run(`App.addExercise(${json(empty.id)}, App.exercise("squat"))`);
+  assert.deepEqual(client.get(empty.id).exercises.map(r => [r.name, r.targetSets, r.repMin]), [["Squat", 3, null]]);
 });
 
-test('offline exercise edits survive reload, sync later and keep the final change during a save',async()=>{
-  let online=false,release;const server={},writes=[];
-  const hold=new Promise(resolve=>{release=resolve;});
-  let holdNext=false;
-  const plannerTransport=async(_url,options)=>{
-    if(!online)throw Error('Offline');
-    if(options.method==='POST'){const {entry}=JSON.parse(options.body);writes.push(structuredClone(entry));if(holdNext){holdNext=false;await hold;}server[entry.id]=entry;return {ok:true,json:async()=>({ok:true})};}
-    return {ok:true,json:async()=>({data:{version:1,entries:structuredClone(server),storage:'local'}})};
+test("previous performance is shown per set and a grey proposal only counts once it is confirmed", () => {
+  const client = browserClient(), today = client.today, lastWeek = shift(today, -7);
+  const first = client.run(`App.add("tpl:full-body-c", ${json(lastWeek)}, false)`), row = first.exercises[0];
+  assert.equal(row.name, "Dumbbell bench press");
+  assert.equal(client.run(`App.previous(App.workout(${json(first.id)}), App.workout(${json(first.id)}).exercises[0])`), null);
+  assert.equal(client.run(`App.tick(${json(first.id)}, ${json(row.id)}, ${json(row.sets[0].id)})`), false, "nothing to confirm without repetitions");
+  [[20, 12], [20, 11]].forEach(([weight, reps], i) => {
+    client.run(`App.setValue(${json(first.id)}, ${json(row.id)}, ${json(row.sets[i].id)}, "weightKg", ${weight}); App.setValue(${json(first.id)}, ${json(row.id)}, ${json(row.sets[i].id)}, "reps", ${reps})`);
+    assert.equal(client.get(first.id).exercises[0].sets[i].done, false, "typing a value is not confirming it");
+    assert.equal(client.run(`App.tick(${json(first.id)}, ${json(row.id)}, ${json(row.sets[i].id)})`), true);
+  });
+  // The third set was typed but never confirmed: it is not part of the record.
+  client.run(`App.setValue(${json(first.id)}, ${json(row.id)}, ${json(row.sets[2].id)}, "reps", 9)`);
+  assert.equal(client.run(`App.finish(${json(first.id)})`), "");
+  assert.equal(client.get(first.id).logged, true);
+
+  const second = client.run(`App.add("tpl:full-body-c", ${json(today)}, false)`), next = second.exercises[0];
+  const previous = client.run(`App.previous(App.workout(${json(second.id)}), App.workout(${json(second.id)}).exercises[0])`);
+  assert.equal(previous.same, true); assert.equal(previous.date, lastWeek);
+  assert.deepEqual(previous.sets.map(s => [s.weightKg, s.reps]), [[20, 12], [20, 11]]);
+  assert.equal(client.run(`App.prevText(App.previous(App.workout(${json(second.id)}), App.workout(${json(second.id)}).exercises[0]))`), "20 kg × 12 / 11");
+  // The proposal is not stored: the new workout is still empty.
+  assert.ok(client.get(second.id).exercises[0].sets.every(s => s.reps === null && s.weightKg === null && !s.done));
+  // One tap confirms the proposal for set 1.
+  assert.equal(client.run(`App.tick(${json(second.id)}, ${json(next.id)}, ${json(next.sets[0].id)})`), true);
+  assert.deepEqual(client.get(second.id).exercises[0].sets[0], { id: next.sets[0].id, weightKg: 20, reps: 12, done: true });
+  // A typed value wins over the proposal; the weight still comes from last time.
+  client.run(`App.setValue(${json(second.id)}, ${json(next.id)}, ${json(next.sets[1].id)}, "reps", 12)`);
+  client.run(`App.tick(${json(second.id)}, ${json(next.id)}, ${json(next.sets[1].id)})`);
+  assert.deepEqual([client.get(second.id).exercises[0].sets[1].weightKg, client.get(second.id).exercises[0].sets[1].reps], [20, 12]);
+  // There was no confirmed third set last time, so nothing is invented for it.
+  assert.equal(client.run(`App.tick(${json(second.id)}, ${json(next.id)}, ${json(next.sets[2].id)})`), false);
+  assert.equal(client.get(second.id).exercises[0].sets[2].reps, null);
+  // Tapping a confirmed set again takes the confirmation back but keeps the numbers.
+  client.run(`App.tick(${json(second.id)}, ${json(next.id)}, ${json(next.sets[0].id)})`);
+  assert.deepEqual([client.get(second.id).exercises[0].sets[0].done, client.get(second.id).exercises[0].sets[0].reps], [false, 12]);
+  // The earlier workout is untouched.
+  assert.deepEqual(client.get(first.id).exercises[0].sets.map(s => [s.weightKg, s.reps, s.done]), [[20, 12, true], [20, 11, true], [null, 9, false]]);
+  const html = client.run(`App.open(${json(second.id)}); activeView="workout"; App.render(); document.getElementById("plannerEditor").innerHTML`);
+  assert.match(html, /Vorige keer \([^)]*\): <b>20 kg × 12 \/ 11<\/b>/); assert.match(html, /placeholder="11"/); assert.match(html, /3 × 8–12/);
+  assert.ok(!/RIR|rust /i.test(html));
+});
+
+test("previous prefers the same template, falls back to the exercise and never merges by name", () => {
+  const client = browserClient(), today = client.today;
+  const confirm = (workout, index, weight, reps) => { const row = workout.exercises[index];
+    client.run(`App.setValue(${json(workout.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "weightKg", ${weight}); App.setValue(${json(workout.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "reps", ${reps}); App.tick(${json(workout.id)}, ${json(row.id)}, ${json(row.sets[0].id)})`); };
+  const prev = (workout, index) => client.run(`App.previous(App.workout(${json(workout.id)}), App.workout(${json(workout.id)}).exercises[${index}])`);
+  const oldA = client.run(`App.add("tpl:full-body-a", ${json(shift(today, -10))}, false)`); confirm(oldA, 0, 100, 10);
+  const recentB = client.run(`App.add("tpl:full-body-b", ${json(shift(today, -3))}, false)`); confirm(recentB, 3, 80, 15);
+  const future = client.run(`App.add("tpl:full-body-a", ${json(shift(today, 5))}, false)`); confirm(future, 0, 140, 8);
+  const now = client.run(`App.add("tpl:full-body-a", ${json(today)}, false)`);
+  // Leg press: the same template wins, even though B was more recent. Later workouts are ignored.
+  assert.deepEqual([prev(now, 0).same, prev(now, 0).sets[0].weightKg, prev(now, 0).title], [true, 100, "Full body A"]);
+  // In C there is no earlier C, so the last time anywhere is shown with its workout name.
+  const c = client.run(`App.add("tpl:full-body-c", ${json(today)}, false)`);
+  assert.deepEqual([prev(c, 3).same, prev(c, 3).sets[0].weightKg, prev(c, 3).title], [false, 80, "Full body B"]);
+  // A second machine is its own exercise: same word in the name, separate history.
+  const other = client.run(`App.saveExercise(null, {name:"Leg press (stapel)", muscle:"benen-voor", load:"total"})`);
+  assert.equal(client.run(`App.addExercise(${json(now.id)}, App.exercise(${json(other.id)}))`), true);
+  assert.equal(prev(client.get(now.id), 6), null);
+  assert.match(client.run(`App.saveExercise(null, {name:"leg press", muscle:"benen-voor", load:"total"})`), /bestaat al/);
+  // Renaming keeps the ID, so the history stays with the exercise.
+  const renamed = client.run(`App.saveExercise(App.exercise("leg-press"), {name:"Leg press (schijven)", muscle:"benen-voor", load:"total"})`);
+  assert.equal(renamed.id, "leg-press"); assert.equal(prev(now, 0).sets[0].weightKg, 100);
+  assert.equal(client.get(oldA.id).exercises[0].name, "Leg press", "the earlier workout keeps the name it was done under");
+  assert.equal(client.run(`App.add("tpl:full-body-a", ${json(today)}, false).exercises[0].name`), "Leg press (schijven)");
+});
+
+test("changing a template only reaches workouts added afterwards", () => {
+  const client = browserClient(), today = client.today;
+  const before = client.run(`App.add("tpl:full-body-b", ${json(shift(today, 2))}, false)`);
+  client.run(`(() => { const t = App.tpl("full-body-b"); App.saveTemplate({...t, slots: [{exerciseId:"squat", sets:4, repMin:5, repMax:8, superset:false}, ...t.slots.slice(1, 3)]}); })()`);
+  assert.equal(library.SEED_TEMPLATES[1].slots.length, 6, "the seed itself is not mutated");
+  assert.deepEqual(client.get(before.id).exercises.map(r => r.name).slice(0, 2), ["Romanian deadlift", "Incline dumbbell press"]);
+  assert.equal(client.get(before.id).exercises.length, 6);
+  const after = client.run(`App.add("tpl:full-body-b", ${json(shift(today, 9))}, false)`);
+  assert.deepEqual(after.exercises.map(r => [r.name, r.targetSets, r.repMin, r.repMax]), [["Squat", 4, 5, 8], ["Incline dumbbell press", 3, 8, 12], ["Lat pulldown", 3, 8, 12]]);
+  // A superset flag on the last exercise is dropped, and an archived template is no longer offered.
+  client.run(`(() => { const t = App.tpl("full-body-b"); App.saveTemplate({...t, slots: t.slots.map(s => ({...s, superset: true})), archived: true}); })()`);
+  assert.deepEqual(client.run(`App.tpl("full-body-b").slots.map(s=>s.superset)`), [true, true, false]);
+  assert.ok(!client.run("App.types().map(t=>t.name)").includes("Full body B"));
+  assert.equal(client.get(before.id).title, "Full body B");
+  const custom = client.run("App.newTemplate()");
+  assert.equal(custom.name, "Nieuwe template"); assert.equal(client.run("App.newTemplate().name"), "Nieuwe template 2");
+});
+
+test("the order can be changed during a workout; supersets move as one block and the template keeps its order", () => {
+  const client = browserClient(), today = client.today;
+  const w = client.run(`App.add("tpl:full-body-a", ${json(today)}, false)`), names = () => client.get(w.id).exercises.map(r => r.name);
+  assert.deepEqual(client.run(`App.blocks(App.workout(${json(w.id)})).map(b=>b.length)`), [1, 1, 1, 1, 2]);
+  // Leg press is taken: start with bench press.
+  assert.equal(client.run(`App.moveBlock(${json(w.id)}, ${json(w.exercises[1].id)}, -1)`), true);
+  assert.deepEqual(names().slice(0, 2), ["Bench press", "Leg press"]);
+  assert.equal(client.run(`App.moveBlock(${json(w.id)}, ${json(w.exercises[1].id)}, -1)`), false, "already first");
+  // The superset moves to the top as a pair.
+  const order = [w.exercises[4].id, w.exercises[1].id, w.exercises[0].id, w.exercises[2].id, w.exercises[3].id];
+  assert.equal(client.run(`App.reorder(${json(w.id)}, ${json(order)})`), true);
+  assert.deepEqual(names(), ["Lateral raise", "Triceps pushdown", "Bench press", "Leg press", "Seated row", "Leg curl"]);
+  assert.equal(client.run(`App.reorder(${json(w.id)}, ${json(order.slice(1))})`), false, "an incomplete order is refused");
+  assert.equal(client.get(w.id).exercises.length, 6);
+  assert.deepEqual(client.run(`App.tpl("full-body-a").slots.map(s=>s.exerciseId)`).slice(0, 2), ["leg-press", "bench-press"]);
+  assert.equal(client.run(`App.add("tpl:full-body-a", ${json(today)}, false).exercises[0].name`), "Leg press");
+});
+
+test("swapping, removing and finishing protect what was already confirmed", () => {
+  const client = browserClient(), today = client.today;
+  const w = client.run(`App.add("tpl:full-body-a", ${json(today)}, false)`), row = w.exercises[0];
+  assert.equal(client.run(`App.swapExercise(${json(w.id)}, ${json(row.id)}, App.exercise("squat"))`), true);
+  assert.deepEqual([client.get(w.id).exercises[0].name, client.get(w.id).exercises[0].exerciseId, client.get(w.id).exercises[0].repMax], ["Squat", "squat", 12]);
+  client.run(`App.setValue(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "reps", 8); App.tick(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)})`);
+  assert.equal(client.run(`App.swapExercise(${json(w.id)}, ${json(row.id)}, App.exercise("leg-press"))`), false, "confirmed sets keep their exercise");
+  assert.equal(client.get(w.id).exercises[0].name, "Squat");
+  assert.equal(client.run(`App.addSet(${json(w.id)}, ${json(row.id)})`), true); assert.equal(client.get(w.id).exercises[0].sets.length, 4);
+  assert.equal(client.run(`App.removeLastSet(${json(w.id)}, ${json(row.id)})`), true); assert.equal(client.get(w.id).exercises[0].sets.length, 3);
+  assert.equal(client.run(`App.finish(${json(w.id)})`), ""); assert.equal(client.get(w.id).logged, true);
+  assert.deepEqual(client.run("App.weekStats()"), { gym: 1, run: 0 });
+  // Clearing the only confirmed set, or moving the workout to the future, takes the log back.
+  client.run(`App.setValue(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "reps", null)`);
+  assert.deepEqual([client.get(w.id).exercises[0].sets[0].done, client.get(w.id).logged], [false, false]);
+  client.run(`App.setValue(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "reps", 8); App.tick(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}); App.finish(${json(w.id)})`);
+  client.run(`App.put({...App.workout(${json(w.id)}), date: ${json(shift(today, 3))}})`);
+  assert.equal(client.get(w.id).logged, false);
+  assert.match(client.run(`App.finish(${json(w.id)})`), /toekomst/);
+  for (const doc of Object.values(client.run("App.docs()"))) assert.ok(library.normalizeDoc(JSON.parse(json(doc))), "every stored document passes the server contract");
+});
+
+test("the run sequence offers the next run, the test needs its own time and the week counts two gym sessions and one run", () => {
+  const client = browserClient(), today = client.today, monday = shift(today, -((new Date(today + "T12:00:00Z").getUTCDay() + 6) % 7));
+  assert.equal(client.run("App.nextStep()"), 1);
+  const first = client.run(`App.add("run:next", ${json(monday)}, false)`);
+  assert.deepEqual([first.kind, first.runStep, first.title, first.logged], ["run", 1, "Run 1 · Rustig hervatten", false]);
+  assert.equal(client.run("App.nextStep()"), 2); assert.equal(client.run("App.nextOpen()"), 1);
+  assert.equal(client.run(`App.add("run:1", ${json(today)}, false).id`), first.id, "a run of the sequence exists only once");
+  assert.match(client.run(`App.finish(${json(first.id)})`), /afstand en totale tijd/);
+  client.run(`App.put({...App.workout(${json(first.id)}), distanceKm: 5, durationSeconds: 1950})`);
+  assert.equal(client.run(`App.finish(${json(first.id)})`), ""); assert.equal(client.run("App.nextOpen()"), 2);
+  assert.equal(client.run("App.paceLabel(CONFIG.run.runs[1])"), "5:30 per km");
+  assert.equal(client.run("App.paceLabel(CONFIG.run.runs[2])"), "6:05–6:15 per km");
+  assert.equal(client.run("App.paceLabel(CONFIG.run.runs[0])"), "praattempo");
+  const test12 = client.run(`App.add("run:12", ${json(monday)}, false)`);
+  client.run(`App.put({...App.workout(${json(test12.id)}), distanceKm: 8, durationSeconds: 3000})`);
+  assert.match(client.run(`App.finish(${json(test12.id)})`), /5 km-testtijd/);
+  client.run(`App.put({...App.workout(${json(test12.id)}), testSeconds: 1648})`);
+  assert.equal(client.run(`App.finish(${json(test12.id)})`), "");
+  const html = client.run(`App.render(); activeView="run"; App.render(); document.getElementById("runView").innerHTML`);
+  assert.match(html, /5 km in 27:30/); assert.match(html, /Eindtest<\/span><strong>27:28/); assert.match(html, /Nulmeting was 29:23/); assert.match(html, /2 \/ 12/);
+
+  // Week line: two gym sessions are the base, the third is extra and never missed.
+  assert.equal(client.run("App.weekText()"), "Deze week: gym 0 van 2 · run 1 van 1 (+1 extra)");
+  for (const id of ["full-body-a", "full-body-b", "full-body-c"]) {
+    const w = client.run(`App.add("tpl:${id}", ${json(monday)}, false)`), row = w.exercises[0];
+    client.run(`App.setValue(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "reps", 10); App.tick(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}); App.finish(${json(w.id)})`);
+  }
+  assert.equal(client.run("App.weekText()"), "Deze week: gym 2 van 2 (+1 extra) · run 1 van 1 (+1 extra)");
+  assert.deepEqual(client.run(`App.weekStats(${json(shift(monday, -1))})`), { gym: 0, run: 0 });
+});
+
+test("offline changes survive a reload, sync later and never reach the earlier calendar's storage", async () => {
+  let online = false; const server = {}, writes = [], cache = new Map();
+  const fetch = async (url, options) => {
+    assert.equal(url, "/test-api");
+    if (!online) throw Error("Offline");
+    if (options.method === "POST") { const { doc } = JSON.parse(options.body); assert.ok(library.normalizeDoc(doc), "the client only sends valid documents"); writes.push(doc); server[doc.type + ":" + doc.id] = doc; return { ok: true, json: async () => ({ ok: true }) }; }
+    return { ok: true, json: async () => ({ data: { version: 2, docs: structuredClone(server), storage: "cloud" } }) };
   };
-  const base=async()=>({ok:true,json:async()=>({data:{version:1,logs:{}}})}),cache=new Map();
-  const first=browserClient(cache,base,{plannerTransport});await settle();
-  const entry=first.run('Planner.create("upper","2026-11-03",false)');
-  first.run('Planner.update('+JSON.stringify(entry.id)+',{exercises:[{...Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0],sets:[{...Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets[0],weightKg:42.5}]}]})');
-  const second=browserClient(cache,base,{plannerTransport});await settle();
-  assert.equal(second.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets[0].weightKg'),42.5);
-  assert.equal(second.run('Planner.pending().size'),1);
-  online=true;await second.run('Planner.load()');await settle();
-  assert.equal(second.run('Planner.pending().size'),0);assert.equal(server[entry.id].exercises[0].sets[0].weightKg,42.5);
-  second.run('Planner.update('+JSON.stringify(entry.id)+',{note:"first"})');holdNext=true;
-  const saving=second.run('Planner.flush()');await settle();
-  second.run('Planner.update('+JSON.stringify(entry.id)+',{note:"latest"})');release();await saving;
-  assert.equal(server[entry.id].note,'latest');assert.equal(writes.at(-1).note,'latest');
-});
+  const config = { preview: false };
+  const client = browserClient(cache, { fetch, config });
+  await client.run("App.load()"); await settle();
+  const w = client.run(`App.add("tpl:full-body-a", ${json(client.today)}, false)`), row = w.exercises[0];
+  client.run(`App.setValue(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)}, "reps", 9); App.tick(${json(w.id)}, ${json(row.id)}, ${json(row.sets[0].id)})`);
+  await client.run("App.flush()"); await settle();
+  assert.equal(writes.length, 0); assert.equal(client.run("App.pending().size"), 1);
+  assert.deepEqual([...cache.keys()], ["training-v2-test-user"], "the earlier calendar cache key is not used");
 
-test('local prefix listing isolates flexible sessions from the original plan and other users',async()=>{
-  const directory=fs.mkdtempSync(path.join(os.tmpdir(),'flexible-training-'));
-  try{
-    const storage=loadModule('src/lib/workout-storage.ts',{'node:fs/promises':filePromises,'node:path':path,'node:crypto':nodeCrypto,'./supabase':{getSupabase(){throw Error('No cloud access in local test');}}},{process:{cwd:()=>directory,env:{NODE_ENV:'test'}}});
-    const entry=workoutFixture(),prefix='tom:workout-sessions-v1:';
-    await storage.writeTrainingRow(prefix+entry.id,entry);await storage.writeTrainingRow('denise:workout-sessions-v1:test',{private:true});await storage.writeTrainingRow('tom:kracht-5km-2026:old',{old:true});
-    const rows=await storage.readTrainingPrefix(prefix);assert.equal(rows.length,1);assert.equal(rows[0].data.id,entry.id);
-  }finally{fs.rmSync(directory,{recursive:true,force:true});}
-});
+  // Reload while still offline: the confirmed set is still there.
+  const reloaded = browserClient(cache, { fetch, config });
+  assert.equal(reloaded.get(w.id).exercises[0].sets[0].done, true);
+  online = true; await reloaded.run("App.load()"); await settle(); await settle();
+  assert.equal(writes.length, 1); assert.equal(server["workout:" + w.id].exercises[0].sets[0].reps, 9);
+  assert.equal(reloaded.run("App.pending().size"), 0);
 
-test('legacy compact exercise logs expand losslessly with stable set IDs',()=>{
-  const entry=workoutFixture(),original=JSON.stringify(entry);
-  const migrated=workoutPlan.normalizeWorkout(entry),row=migrated.exercises[0];
-  assert.equal(row.sets.length,3);assert.equal(new Set(row.sets.map(s=>s.id)).size,3);
-  assert.deepEqual(JSON.parse(JSON.stringify(row.sets.map(s=>({reps:s.reps,weightKg:s.weightKg})))),Array(3).fill({reps:10,weightKg:42.5}));
-  assert.deepEqual(JSON.parse(JSON.stringify(row.legacySummary)),{sets:3,reps:10,weightKg:42.5});
-  assert.equal(JSON.stringify(entry),original);
-  assert.equal(JSON.stringify(workoutPlan.normalizeWorkout(migrated)),JSON.stringify(migrated));
-});
-
-test('API preserves different reps and weights for every set and rejects invalid nested rows',async()=>{
-  const entry=workoutFixture();
-  entry.exercises=[{id:nodeCrypto.randomUUID(),name:'Bench press',sets:[{id:nodeCrypto.randomUUID(),reps:12,weightKg:40},{id:nodeCrypto.randomUUID(),reps:10,weightKg:45},{id:nodeCrypto.randomUUID(),reps:8,weightKg:50}]}];
-  const {api,request}=flexibleApi();
-  assert.equal((await api.POST(request('POST',entry))).status,200);
-  const result=await (await api.GET(request('GET'))).json();
-  assert.deepEqual(result.data.entries[entry.id].exercises,entry.exercises);
-  for(const sets of [
-    [entry.exercises[0].sets[0],entry.exercises[0].sets[0]],
-    [{id:nodeCrypto.randomUUID(),reps:1.5,weightKg:40}],
-    [{id:nodeCrypto.randomUUID(),reps:10,weightKg:-1}],
-    Array.from({length:101},()=>({id:nodeCrypto.randomUUID(),reps:null,weightKg:null})),
-  ])assert.equal((await api.POST(request('POST',{...entry,exercises:[{...entry.exercises[0],sets}]}))).status,400);
-  assert.ok(workoutPlan.normalizeWorkout({...entry,exercises:[{...entry.exercises[0],sets:[]}]}));
-});
-
-test('old browser values and incomplete drafts migrate without dropping recorded input',()=>{
-  const entry=workoutFixture(),row=entry.exercises[0],cache=new Map();
-  cache.set('workout-planner-v1-test-user-voorbeeld',JSON.stringify({version:1,entries:{[entry.id]:entry},pending:[entry.id],drafts:{[entry.id]:{[row.id+':weightKg']:'oops',[row.id+':sets']:'abc'}}}));
-  const client=browserClient(cache,async()=>{throw Error('Preview must not fetch')},{preview:true});
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets.length'),3);
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets[2].weightKg'),42.5);
-  assert.equal(client.run('Object.values(Planner.exportData().drafts['+JSON.stringify(entry.id)+']).filter(v=>v==="oops").length'),3);
-  assert.equal(client.run('Object.values(Planner.exportData().legacyDrafts['+JSON.stringify(entry.id)+'])[0]'),'abc');
-  const second=browserClient(cache,async()=>{throw Error('Preview must not fetch')},{preview:true});
-  assert.equal(second.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets.length'),3);
-});
-
-test('adding and removing set rows preserves neighbouring set values and other sessions',()=>{
-  const client=browserClient(new Map(),async()=>{throw Error('Preview must not fetch')},{preview:true});
-  const entry=client.run('Planner.create("upper","2026-11-03",false)'),other=client.run('Planner.create("upper","2026-11-03",false)'),row=entry.exercises[0];
-  const setId=client.run('Planner.addSet('+JSON.stringify(entry.id)+','+JSON.stringify(row.id)+')');
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets.length'),2);
-  client.run('Planner.update('+JSON.stringify(entry.id)+',{exercises:Planner.entries()['+JSON.stringify(entry.id)+'].exercises.map((r,i)=>i===0?{...r,sets:r.sets.map((s,n)=>({...s,reps:n?8:12,weightKg:n?50:40}))}:r)})');
-  client.run('Planner.removeSet('+JSON.stringify(entry.id)+','+JSON.stringify(row.id)+','+JSON.stringify(row.sets[0].id)+')');
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets[0].id'),setId);
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(entry.id)+'].exercises[0].sets[0].weightKg'),50);
-  assert.equal(client.run('Planner.entries()['+JSON.stringify(other.id)+'].exercises[0].sets.length'),1);
-});
-
-
-
-test('private page serves only the existing owner and contains no historical data',async()=>{
- const html=loadModule('src/app/l/[slug]/kracht-5km/training-html.ts');
- const page=loadModule('src/app/l/[slug]/kracht-5km/route.ts',{
-  '@/lib/loopschema':{profileForKey:key=>key==='test-tom'?{rowId:'tom',name:'Example'}:null},
-  '@/lib/workout-planner':workoutPlan,'@/lib/training-programme':programme,'./training-html':html,
- });
- const request=new Request('http://localhost/test?voorbeeld=1');
- assert.equal((await page.GET(request,{params:Promise.resolve({slug:'unknown'})})).status,404);
- const response=await page.GET(request,{params:Promise.resolve({slug:'test-tom'})}),text=await response.text();
- assert.equal(response.status,200);assert.equal(response.headers.get('cache-control'),'no-store');
- assert.ok(text.includes('"preview":true'));assert.ok(!text.includes('view-voortgang'));assert.ok(!text.includes('raceplanHistory'));
- new vm.Script(text.match(/<script>([\s\S]*?)<\/script>/)[1]);
-});
-
-test('clean calendar resets old examples once and preserves fresh input',async()=>{
- const entry=workoutFixture(),cache=new Map(),key='workout-planner-v1-test-user-voorbeeld';
- cache.set(key,JSON.stringify({version:1,entries:{[entry.id]:entry},pending:[entry.id],drafts:{}}));
- let requests=0;const transport=async()=>{requests++;throw Error('Preview must stay local')};
- const config={preview:true,resetId:'clean-2026-11-04'};
- const client=browserClient(cache,transport,config);await settle();
- assert.equal(client.run('Object.keys(Planner.entries()).length'),0);
- assert.equal(JSON.parse(cache.get(key)).resetId,config.resetId);
- const fresh=client.run('Planner.create("upper","2026-11-04",false)');
- const second=browserClient(cache,transport,config);await settle();
- assert.equal(second.run('Object.keys(Planner.entries()).length'),1);
- assert.equal(second.run('Planner.entries()["'+fresh.id+'"].date'),'2026-11-04');assert.equal(requests,0);
-});
-
-test('old hashes return to the calendar and workout deep links remain available',()=>{
- const client=browserClient(new Map(),async()=>{throw Error('Preview must stay local')},{preview:true});
- for(const hash of ['#voortgang','#week-4','#logboek','#unknown']){
-  client.run('window.location={hash:'+JSON.stringify(hash)+'};readView();renderView()');assert.equal(client.run('activeView'),'kalender');
- }
- const entry=client.run('Planner.create("upper","2026-11-04",false)');
- client.run('window.location={hash:"#workout/'+entry.id+'"};readView();renderView()');
- assert.equal(client.run('activeView'),'workout');assert.equal(client.element('view-kalender').hidden,true);
- assert.equal(client.run('parseTime("27:30")'),1650);assert.equal(client.run('parseTime("27,30")'),1650);
- assert.equal(client.run('parseTime("27:99")'),null);
-});
-
-test('run-plan API round-trips the linked week and separates 5 km time from total session time',async()=>{
- const {api,request}=flexibleApi();
- const entry={...workoutFixture(),templateId:'run',exercises:[],distanceKm:8,durationSeconds:3000,runPlan:{programId:'five-k-12-v1',week:2,logged:true,effort:8,asPlanned:true,testSeconds:1740}};
- assert.equal((await api.POST(request('POST',entry))).status,200);
- const result=await (await api.GET(request('GET'))).json();
- assert.equal(result.data.entries[entry.id].runPlan.testSeconds,1740);
- assert.equal(result.data.entries[entry.id].durationSeconds,3000);
- for(const runPlan of [{...entry.runPlan,week:13},{...entry.runPlan,effort:11},{...entry.runPlan,testSeconds:4000},{...entry.runPlan,asPlanned:null}])assert.equal((await api.POST(request('POST',{...entry,runPlan}))).status,400);
- assert.equal(workoutPlan.normalizeWorkout({...workoutFixture(),runPlan:entry.runPlan}),null);
-});
-
-test('run-plan pace uses only a confirmed baseline and past dates never complete linked runs',()=>{
- const client=browserClient(new Map(),()=>{} ,{preview:true});
- const id=client.run(`(()=>{const e=Planner.create('run','2020-01-01',false);Planner.update(e.id,{runPlan:{programId:'kracht-5k-12-v2',week:2,logged:false,effort:null,asPlanned:true,testSeconds:1740},distanceKm:8,durationSeconds:3000});return e.id;})()`);
- assert.equal(client.run('RunPlan.baseline()'),null);
- assert.equal(client.run('RunPlan.pace(RunPlan.weeks[4])'),'Tempo na nulmeting');
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${id}').done`),false);
- client.run(`Planner.update('${id}',{runPlan:{...Planner.entries()['${id}'].runPlan,logged:true}})`);
- assert.equal(client.run('RunPlan.baseline()'),348);
- assert.equal(client.run('RunPlan.pace(RunPlan.weeks[4])'),'5:38–5:43/km');
- client.run(`Planner.update('${id}',{date:'2099-01-01'})`);
- assert.equal(client.run('RunPlan.baseline()'),null);
-});
-
-test('the programme validates: 12 weeks, three gym sessions within an hour, one run, no invented loads or paces',()=>{
- assert.equal(programme.validateProgramme().join('; '),'');
- const weeks=programme.TRAINING_PROGRAMME.weeks;
- assert.equal(weeks.length,12);
- for(const week of weeks){
-  assert.equal(week.sessions.map(s=>s.key).join(''),'ABC');
-  for(const session of week.sessions)assert.ok(session.minutes<=60,`week ${week.week} ${session.key} takes ${session.minutes} min`);
-  assert.ok(week.run.steps.length>=3);
- }
- assert.equal(weeks.filter(w=>w.run.kind==='test').map(w=>w.week).join(),'2,12');
- assert.equal(weeks.filter(w=>w.light).map(w=>w.week).join(),'4,8,12');
- assert.ok(!/\d\s?kg/.test(JSON.stringify(weeks)));
- // A broken programme is reported, not silently accepted.
- const broken=structuredClone(programme.TRAINING_PROGRAMME);broken.weeks[0].sessions.pop();broken.weeks[4].run.kind='test';
- assert.ok(programme.validateProgramme(broken).length>=2);
-});
-
-test('earlier run-plan entries stay valid, keep their own title and never feed the new programme',async()=>{
- const {api,request}=flexibleApi();
- const old={...workoutFixture(),templateId:'run',date:'2020-01-01',exercises:[],distanceKm:8,durationSeconds:3000,runPlan:{programId:'five-k-12-v1',week:2,logged:true,effort:8,asPlanned:true,testSeconds:1740}};
- assert.equal((await api.POST(request('POST',old))).status,200);
- const stored=(await (await api.GET(request('GET'))).json()).data.entries[old.id];
- assert.deepEqual(stored.runPlan,old.runPlan);
- const cache=new Map([['workout-planner-v1-test-user-voorbeeld',JSON.stringify({version:1,resetId:null,entries:{[old.id]:stored},pending:[],drafts:{}})]]);
- const client=browserClient(cache,()=>{},{preview:true});
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${old.id}').title`),'W2 · Nulmeting');
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${old.id}').done`),true);
- assert.equal(client.run('RunPlan.baseline()'),null);
- assert.equal(client.run('RunPlan.entry(2)'),undefined);
- assert.equal(JSON.stringify(client.run(`Planner.entries()['${old.id}'].runPlan`)),JSON.stringify(old.runPlan));
-});
-
-test('gym programme links are validated and a session only counts as logged with recorded repetitions',async()=>{
- const {api,request}=flexibleApi();
- const row={id:nodeCrypto.randomUUID(),name:'Leg press',sets:[{id:nodeCrypto.randomUUID(),reps:null,weightKg:null}]};
- const entry={...workoutFixture(),templateId:'full',exercises:[row],gymPlan:{programId:'kracht-5k-12-v2',week:1,session:'A',logged:false,effort:null}};
- assert.equal((await api.POST(request('POST',entry))).status,200);
- assert.equal((await api.POST(request('POST',{...entry,gymPlan:{...entry.gymPlan,logged:true}}))).status,400);
- const done={...entry,exercises:[{...row,sets:[{...row.sets[0],reps:10,weightKg:80}]}],gymPlan:{...entry.gymPlan,logged:true,effort:7}};
- assert.equal((await api.POST(request('POST',done))).status,200);
- const result=await (await api.GET(request('GET'))).json();
- assert.deepEqual(result.data.entries[entry.id].gymPlan,done.gymPlan);
- for(const gymPlan of [{...entry.gymPlan,week:13},{...entry.gymPlan,session:'D'},{...entry.gymPlan,programId:'five-k-12-v1'},{...entry.gymPlan,effort:11}])assert.equal((await api.POST(request('POST',{...entry,gymPlan}))).status,400);
- assert.equal(workoutPlan.normalizeWorkout({...entry,templateId:'upper'}),null);
-});
-
-test('scheduling the programme is explicit, never duplicates and leaves existing and logged workouts alone',()=>{
- const client=browserClient(new Map(),async()=>{throw Error('Preview must not fetch')},{preview:true});
- assert.equal(client.run('Object.keys(Planner.entries()).length'),0);
- const own=client.run('Planner.create("upper","2099-01-07",false)');
- client.run('RunPlan.setPlan("2099-01-05",{A:1,B:3,C:5,run:7})');
- assert.equal(client.run('RunPlan.planSummary().fresh.length'),48);
- assert.equal(client.run('RunPlan.planSummary().others'),1);
- client.run('RunPlan.applyPlan()');
- assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length'),49);
- assert.equal(client.run('RunPlan.planSummary().fresh.length'),0);
- client.run('RunPlan.applyPlan()');
- assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length'),49);
- const first=client.run('RunPlan.gymEntry(1,"A")');
- assert.equal(first.date,'2099-01-05');assert.equal(first.templateId,'full');
- assert.equal(first.exercises[0].name,'Leg press');assert.equal(first.exercises[0].sets.length,2);
- assert.ok(first.exercises.every(r=>r.sets.every(s=>s.reps===null&&s.weightKg===null)));
- assert.equal(client.run('RunPlan.entry(12)').date,'2099-03-29');
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').done`),false);
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').title`),'W1 · Full body A');
- // Scheduling the same session again moves it instead of adding a second one.
- client.run('RunPlan.scheduleGym(1,"A","2099-01-06",false)');
- assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted&&e.gymPlan?.week===1&&e.gymPlan.session==="A").length'),1);
- // A logged session survives clearing the plan; so does the unrelated workout.
- client.run(`(()=>{const e=Planner.entries()['${first.id}'];Planner.update(e.id,{date:'2020-01-01',exercises:e.exercises.map((r,i)=>i?r:{...r,sets:r.sets.map(s=>({...s,reps:10,weightKg:80}))})});Planner.update(e.id,{gymPlan:{...Planner.entries()[e.id].gymPlan,logged:true}});})()`);
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').done`),true);
- assert.equal(client.run('RunPlan.clearTargets().length'),47);
- client.run('RunPlan.clearPlan();RunPlan.clearPlan()');
- const left=client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).map(e=>e.id)');
- assert.deepEqual([...left].sort(),[own.id,first.id].sort());
- assert.equal(client.run(`Planner.entries()['${first.id}'].exercises[0].sets[0].weightKg`),80);
- // Removing the repetitions or moving the date forward withdraws the logged state, never the data.
- client.run(`Planner.update('${first.id}',{date:'2099-01-05'})`);
- assert.equal(client.run(`Planner.entries()['${first.id}'].gymPlan.logged`),false);
- assert.equal(client.run(`Planner.entries()['${first.id}'].exercises[0].sets[0].reps`),10);
-});
-
-test('the pace check in week 7 only speeds up later paces after a controlled, as-planned log',()=>{
- const client=browserClient(new Map(),()=>{},{preview:true});
- const log=(week,extra)=>client.run(`(()=>{const e=RunPlan.schedule(${week},'2020-01-0${week}',false);Planner.update(e.id,{distanceKm:8,durationSeconds:3000,runPlan:{...Planner.entries()[e.id].runPlan,asPlanned:true,logged:true,...${JSON.stringify(extra)}}});return e.id;})()`);
- log(2,{testSeconds:1740});
- assert.equal(client.run('RunPlan.pace(RunPlan.weeks[8])'),'5:43–5:48/km');
- const check=log(7,{effort:9});
- assert.equal(client.run('RunPlan.paceBonus()'),0);
- client.run(`Planner.update('${check}',{runPlan:{...Planner.entries()['${check}'].runPlan,effort:8}})`);
- assert.equal(client.run('RunPlan.paceBonus()'),5);
- assert.equal(client.run('RunPlan.pace(RunPlan.weeks[8])'),'5:38–5:43/km');
- assert.equal(client.run('RunPlan.pace(RunPlan.weeks[4])'),'5:38–5:43/km');
-});
-
-test('calendar workout types match the programme sessions and link to a free programme week without duplicates',()=>{
- const client=browserClient(new Map(),async()=>{throw Error('Preview must not fetch')},{preview:true});
- assert.equal(client.run('Planner.types().map(t=>t.name).join("|")'),'Full body A|Full body B|Full body C|Upper body|Lower body|Run');
- assert.equal(client.run('Planner.types()[0].exercises.join("|")'),programme.TRAINING_PROGRAMME.weeks[0].sessions[0].exercises.map(x=>x.name).join('|'));
- // Nothing scheduled yet: the first Full body A becomes week 1, the next one week 2.
- const first=client.run('Planner.add("prog:A","2099-01-05",false)');
- assert.equal(first.templateId,'full');assert.equal(first.gymPlan.week,1);assert.equal(first.gymPlan.session,'A');assert.equal(first.gymPlan.logged,false);
- assert.equal(client.run(`Planner.asTraining().find(e=>e.id==='${first.id}').title`),'W1 · Full body A');
- assert.equal(client.run('Planner.add("prog:A","2099-01-06",false)').gymPlan.week,2);
- // With the programme in the calendar, a date in week 5 takes week 5 when that session is free.
- assert.equal(client.run('RunPlan.weekFor("B","2099-02-04")'),5);
- assert.equal(client.run('Planner.add("prog:B","2099-02-04",false)').gymPlan.week,5);
- assert.equal(client.run('RunPlan.weekFor("B","2099-02-05")'),1);
- // Free workouts stay unlinked.
- const upper=client.run('Planner.add("upper","2099-01-07",false)');
- assert.equal(upper.gymPlan,undefined);assert.equal(upper.templateId,'upper');
- // Once all twelve are in the calendar, nothing more is added.
- client.run('RunPlan.setPlan("2099-01-05");RunPlan.applyPlan()');
- const count=client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length');
- assert.equal(client.run('RunPlan.weekFor("A","2099-01-12")'),null);
- assert.equal(client.run('Planner.add("prog:A","2099-01-12",false)'),null);
- assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted).length'),count);
- assert.equal(client.run('Object.values(Planner.entries()).filter(e=>!e.deleted&&e.gymPlan?.session==="A").length'),12);
+  // A second device sees the workout; deleting is a tombstone that can be undone.
+  const second = browserClient(new Map(), { fetch, config });
+  await second.run("App.load()"); await settle();
+  assert.equal(second.get(w.id).title, "Full body A");
+  second.run(`App.remove(${json(w.id)})`); await second.run("App.flush()"); await settle();
+  assert.equal(server["workout:" + w.id].deleted, true); assert.equal(second.run("App.workouts().length"), 0);
+  assert.equal(server["workout:" + w.id].exercises[0].sets[0].reps, 9, "a removed workout keeps its record");
 });
