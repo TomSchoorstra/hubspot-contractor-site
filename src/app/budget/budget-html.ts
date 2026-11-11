@@ -1,6 +1,7 @@
 // The private budget page, in the same Nachtglas style as the training app.
 // Like that app, the page is one HTML string. Inside the String.raw blocks: no backticks and no template placeholders.
 import { BASE_CSS } from "../sport/training-html";
+import { SCENARIO_CSS, SCENARIO_SCRIPT, SCENARIO_VIEW } from "./scenario-html";
 
 const BUDGET_CSS = String.raw`
 .app{max-width:960px}
@@ -135,12 +136,14 @@ const APP_BODY = String.raw`<a class="skip" href="#mainContent">Naar inhoud</a><
 </section>
 
 <section class="view" id="view-huis" hidden aria-labelledby="houseTitle">
-<header class="page-heading"><div><div class="micro">Spaartracker</div><h1 id="houseTitle">Huis</h1></div></header>
+<header class="page-heading"><div><div class="micro">Spaartracker</div><h1 id="houseTitle">Huis</h1></div><a class="ghost" href="#scenario">Scenario</a></header>
 <section class="hero glass" aria-label="Stand van het huisbudget"><div class="hero-label" id="hLabel">Verwacht</div><div class="hero-number" id="hDiff">€ 0</div><p class="hero-note" id="hNote"></p><div class="bar" role="img" id="hBar" aria-label=""><i class="bar-plan" id="hBarPlan"></i><i class="bar-now" id="hBarNow"></i></div><div class="legend"><span><i class="l-now"></i>Nu gespaard</span><span><i class="l-plan"></i>Verwacht op de einddatum</span></div><div class="stats"><div><span>Nu gespaard</span><strong id="hNow">€ 0</strong></div><div><span>Nog te betalen</span><strong id="hBudget">€ 0</strong></div><div><span>Maanden te gaan</span><strong id="hMonths">0</strong></div></div><p class="hero-note" id="hAll" style="margin-top:14px"></p><label class="target" for="hTarget">Einddatum<input class="field" type="month" id="hTarget" required></label></section>
 <div class="two"><section class="section pane" aria-labelledby="itemsTitle"><div class="section-head"><h2 id="itemsTitle">Huisbudget</h2><button type="button" class="text-button" id="itemsEdit">Aanpassen</button></div><p class="hero-note" id="itemsPaid" style="margin-bottom:10px"></p><div id="itemsHost"></div></section>
 <div><section class="section pane" aria-labelledby="potsTitle"><div class="section-head"><h2 id="potsTitle">Potten</h2><button type="button" class="text-button" id="potsEdit">Aanpassen</button></div><div id="potsHost"></div></section>
 <section class="section pane" aria-labelledby="extrasTitle" style="margin-top:16px"><div class="section-head"><h2 id="extrasTitle">Eenmalig</h2><button type="button" class="text-button" id="extrasEdit">Aanpassen</button></div><p class="hero-note" style="margin-bottom:10px">Bedragen die nog binnenkomen of worden verrekend. Vul bij Aanpassen in wat al binnen is, of vink af als alles binnen is.</p><div id="extrasHost"></div></section></div></div>
 </section>
+
+/*__SCENARIO_VIEW__*/
 
 <footer class="page-footer planner-footer"><div class="planner-save" id="saveState" data-status="saving" role="status">Laden…</div><div class="foot-actions"><button class="text-button" id="exportData" type="button">Exporteren</button><form class="footer-form" method="post" action="/budget/logout"><button class="text-button" type="submit">Uitloggen</button></form></div></footer>
 <details class="import section pane" id="importPanel" style="margin-top:16px" hidden><summary>Importeren</summary><p class="hero-note">Een volledig bestand vervangt je hele budget. Een bestand met één onderdeel, zoals je huisposten, vervangt alleen dat onderdeel.</p><label for="laterImport" class="sr-only">Importbestand</label><textarea id="laterImport" spellcheck="false" autocomplete="off"></textarea><p class="notice" id="laterImportError" role="status"></p><button type="button" class="ghost" id="laterImportApply">Importeren</button></details>
@@ -340,13 +343,14 @@ const Budget = (() => {
     $('hAll').textContent='Met alle potten erbij: '+euro(Math.abs(h.diffAll))+(h.diffAll<0?' tekort.':' over.');
   }
   function render(){
-    for(const name of ['laden','leeg','maand','huis'])$('view-'+name).hidden=name!==(doc?view:CONFIG.loaded?'leeg':'laden');
-    document.querySelectorAll('[data-nav]').forEach(a=>{if(doc&&a.dataset.nav===view)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+    for(const name of ['laden','leeg','maand','huis','scenario'])$('view-'+name).hidden=name!==(doc?view:CONFIG.loaded?'leeg':'laden');
+    document.querySelectorAll('[data-nav]').forEach(a=>{if(doc&&a.dataset.nav===(view==='scenario'?'huis':view))a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
     $('importPanel').hidden=!doc;
     if(!doc)return;
     renderMonth();renderHouse();renderNumbers();status();
+    if(view==='scenario')Scenario.render();
   }
-  function readView(){view=(window.location.hash||'').slice(1)==='huis'?'huis':'maand';}
+  function readView(){const name=(window.location.hash||'').slice(1);view=name==='huis'||name==='scenario'?name:'maand';}
 
   function resetMonth(){
     const button=$('monthReset');
@@ -362,13 +366,14 @@ const Budget = (() => {
     // so this month's ticks and spending stay as they are.
     const partial=parsed.version===undefined&&Boolean(doc),previous=doc?JSON.parse(JSON.stringify(doc)):null;let next=parsed,label='Budget geïmporteerd';
     if(partial){
-      const names={costs:'posten',income:'inkomen',items:'huisposten',extras:'eenmalige bedragen',pots:'potten',target:'einddatum'},parts=[];
+      const names={costs:'posten',income:'inkomen',items:'huisposten',extras:'eenmalige bedragen',pots:'potten',target:'einddatum',scenario:'scenario'},parts=[];
       next=JSON.parse(JSON.stringify(doc));
       for(const key of ['income','costs'])if(Array.isArray(parsed[key])){next[key]=parsed[key];parts.push(names[key]);}
       if(parsed.house&&typeof parsed.house==='object'){
         for(const key of ['items','extras','pots'])if(Array.isArray(parsed.house[key])){next.house[key]=parsed.house[key];parts.push(names[key]);}
         if(typeof parsed.house.target==='string'){next.house.target=parsed.house.target;parts.push(names.target);}
       }
+      if(parsed.scenario&&typeof parsed.scenario==='object'){next.scenario=parsed.scenario;parts.push(names.scenario);}
       if(!parts.length){errorEl.textContent='Dit bestand bevat niets om te importeren.';return;}
       label='Bijgewerkt: '+parts.join(', ');
     }
@@ -408,18 +413,21 @@ const Budget = (() => {
     window.addEventListener('beforeunload',event=>{if(dirty||saving)event.preventDefault();});
     readView();render();load();
   }
-  return {initialize,summary,parseMoney,monthsUntil,importText,doc:()=>doc,setDoc:value=>{doc=value;}};
+  return {initialize,summary,parseMoney,monthsUntil,importText,doc:()=>doc,setDoc:value=>{doc=value;},
+    // What the scenario view borrows, so both views calculate and save in the same way.
+    tools:{round,sum,euro,parseMoney,moneyText,projectPots,today,monthName,newId,commit}};
 })();
-Budget.initialize();
 `;
 
 const page = (body: string) => (HEAD + body)
   .replace("/*__BASE_CSS__*/", () => BASE_CSS)
-  .replace("/*__BUDGET_CSS__*/", () => BUDGET_CSS)
+  .replace("/*__BUDGET_CSS__*/", () => BUDGET_CSS + SCENARIO_CSS)
   .replace("/*__BRAND_ICON__*/", () => BRAND_ICON);
 
 export const BUDGET_SETUP_HTML = page(SETUP_BODY);
-export const BUDGET_APP_HTML = page(APP_BODY).replace("/*__BUDGET_SCRIPT__*/", () => BUDGET_SCRIPT);
+export const BUDGET_APP_HTML = page(APP_BODY)
+  .replace("/*__SCENARIO_VIEW__*/", () => SCENARIO_VIEW)
+  .replace("/*__BUDGET_SCRIPT__*/", () => BUDGET_SCRIPT + SCENARIO_SCRIPT + "\nBudget.initialize();\n");
 
 const LOGIN_ERRORS: Record<string, string> = {
   "1": "Dat wachtwoord klopt niet.",

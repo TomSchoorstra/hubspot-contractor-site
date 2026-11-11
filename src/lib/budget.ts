@@ -10,12 +10,32 @@ export type HouseItem = BudgetLine & { paid: number };
 export type BudgetExtra = BudgetLine & { received: boolean; got: number };
 // A pot can stop at a maximum (`cap`, 0 = none). From then on its monthly deposit goes to another pot (`overflowTo`, "" = nowhere).
 export type BudgetPot = { id: string; name: string; balance: number; monthly: number; counts: boolean; cap: number; overflowTo: string };
+// The what-if plan for the months until the house is delivered. Every amount and rate in it is the owner's own
+// assumption and is stored with the budget; this repository only holds the rules that calculate with them.
+export type ScenarioPlace = { id: string; name: string; lines: BudgetLine[] };
+export type ScenarioDraw = BudgetLine & { month: string };
+export type ScenarioOneOff = BudgetLine & { on: boolean; income: boolean };
+export type BudgetScenario = {
+  delivery: string;
+  // Where the owner can live. The first place is today's situation; the others are compared with it.
+  places: ScenarioPlace[];
+  // Month -> place id. A month that is not listed is spent in the first place.
+  stay: Record<string, string>;
+  salary: number; netShare: number; raiseMonth: number; raises: Record<string, number>;
+  mortgageNow: number; mortgageFull: number; depotRate: number; depotStop: string; depotStopOn: boolean;
+  draws: ScenarioDraw[];
+  interestNow: number; taxRate: number; taxInBudget: number; taxFrom: string;
+  oneOffs: ScenarioOneOff[];
+  // Pots that do not count for the house on the tracker but are counted in this plan.
+  pots: string[];
+};
 export type BudgetDoc = {
   version: 1;
   updatedAt: number;
   income: BudgetLine[];
   costs: BudgetCost[];
   house: { target: string; items: HouseItem[]; extras: BudgetExtra[]; pots: BudgetPot[] };
+  scenario?: BudgetScenario;
 };
 
 export const BUDGET_ROW_ID = "budget:tom";
@@ -55,6 +75,50 @@ export function validTargetMonth(value: unknown): value is string {
   return typeof value === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(value) && Number(value.slice(0, 4)) >= 2020 && Number(value.slice(0, 4)) <= 2100;
 }
 
+const monthKey = (value: unknown): value is string => typeof value === "string" && /^\d{4}-(0[1-9]|1[0-2])$/.test(value);
+const percentage = (value: unknown): value is number => amount(value) && value <= 100;
+
+// Same contract as normalizeBudget: a clean copy, or null when anything is off.
+function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario | null {
+  if (!isRecord(value)) return null;
+  const { delivery, depotStop, depotStopOn, taxFrom, raiseMonth, salary, mortgageNow, mortgageFull, interestNow, taxInBudget, netShare, depotRate, taxRate } = value;
+  if (!validTargetMonth(delivery) || !monthKey(depotStop) || !monthKey(taxFrom) || typeof depotStopOn !== "boolean") return null;
+  if (!amount(salary) || !amount(mortgageNow) || !amount(mortgageFull) || !amount(interestNow) || !amount(taxInBudget)) return null;
+  if (!percentage(netShare) || !percentage(depotRate) || !percentage(taxRate)) return null;
+  if (typeof raiseMonth !== "number" || !Number.isInteger(raiseMonth) || raiseMonth < 1 || raiseMonth > 12) return null;
+  const places = list<ScenarioPlace>(value.places, (row, base) => {
+    const lines = list<BudgetLine>(row.lines, (line, lineBase) => (amount(line.amount) ? { ...lineBase, amount: line.amount } : null));
+    return lines && lines.length <= 30 ? { id: base.id, name: base.name, lines } : null;
+  });
+  const draws = list<ScenarioDraw>(value.draws, (row, base) => (amount(row.amount) && monthKey(row.month) ? { ...base, amount: row.amount, month: row.month } : null));
+  const oneOffs = list<ScenarioOneOff>(value.oneOffs, (row, base) =>
+    amount(row.amount) && typeof row.on === "boolean" && typeof row.income === "boolean" ? { ...base, amount: row.amount, on: row.on, income: row.income } : null);
+  if (!places || places.length < 1 || places.length > 6 || !draws || !oneOffs) return null;
+  if (!isRecord(value.stay) || !isRecord(value.raises) || !Array.isArray(value.pots) || value.pots.length > MAX_ROWS) return null;
+  // A month in a place that no longer exists, or in the first place, is simply not listed.
+  const placeIds = new Set(places.slice(1).map(place => place.id));
+  const stayEntries = Object.entries(value.stay);
+  if (stayEntries.length > 240) return null;
+  const stay: Record<string, string> = {};
+  for (const [month, place] of stayEntries) {
+    if (!monthKey(month) || typeof place !== "string") return null;
+    if (placeIds.has(place)) stay[month] = place;
+  }
+  const raiseEntries = Object.entries(value.raises);
+  if (raiseEntries.length > 40) return null;
+  const raises: Record<string, number> = {};
+  for (const [year, pct] of raiseEntries) {
+    if (!/^\d{4}$/.test(year) || !percentage(pct)) return null;
+    raises[year] = pct;
+  }
+  const pots: string[] = [];
+  for (const id of value.pots) {
+    if (typeof id !== "string") return null;
+    if (potIds.has(id) && !pots.includes(id)) pots.push(id);
+  }
+  return { delivery, places, stay, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, draws, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots };
+}
+
 // Returns a clean copy, or null when anything is off. Unknown fields are dropped.
 export function normalizeBudget(value: unknown): BudgetDoc | null {
   if (!isRecord(value) || value.version !== 1) return null;
@@ -85,5 +149,12 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
   // A pot that overflows into itself or into a pot that no longer exists overflows nowhere.
   const potIds = new Set(pots.map(pot => pot.id));
   for (const pot of pots) if (pot.overflowTo && (pot.overflowTo === pot.id || !potIds.has(pot.overflowTo))) pot.overflowTo = "";
-  return { version: 1, updatedAt: value.updatedAt, income, costs, house: { target: value.house.target, items, extras, pots } };
+  const doc: BudgetDoc = { version: 1, updatedAt: value.updatedAt, income, costs, house: { target: value.house.target, items, extras, pots } };
+  // The scenario was added later; documents saved before that simply have none.
+  if (value.scenario !== undefined && value.scenario !== null) {
+    const scenario = normalizeScenario(value.scenario, potIds);
+    if (!scenario) return null;
+    doc.scenario = scenario;
+  }
+  return doc;
 }

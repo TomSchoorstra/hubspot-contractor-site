@@ -36,6 +36,26 @@ const DEMO = {
       { id: "holiday", name: "Vakantie", balance: 300, monthly: 100, counts: false },
     ],
   },
+  scenario: {
+    delivery: "2028-10",
+    places: [
+      { id: "home", name: "Eigen huurhuis", lines: [{ id: "rent", name: "Huur", amount: 900 }, { id: "food", name: "Boodschappen", amount: 400 }, { id: "power", name: "Energie", amount: 100 }] },
+      { id: "abroad", name: "Buitenland", lines: [{ id: "rent", name: "Huur", amount: 600 }, { id: "food", name: "Boodschappen", amount: 300 }, { id: "flights", name: "Vluchten", amount: 60 }] },
+      { id: "partner", name: "Bij partner", lines: [{ id: "share", name: "Bijdrage", amount: 500 }, { id: "food", name: "Boodschappen", amount: 300 }] },
+    ],
+    stay: { "2027-09": "abroad", "2027-10": "abroad", "2027-11": "abroad", "2027-12": "abroad", "2028-01": "abroad", "2028-02": "abroad", "2028-06": "partner", "2028-07": "partner", "2028-08": "partner", "2028-09": "partner" },
+    salary: 50000, netShare: 55, raiseMonth: 4, raises: { "2027": 3, "2028": 3 },
+    mortgageNow: 700, mortgageFull: 1200, depotRate: 3, depotStop: "2028-07", depotStopOn: false,
+    draws: [
+      { id: "t2", name: "Termijn 2", amount: 30000, month: "2027-02" },
+      { id: "t3", name: "Termijn 3", amount: 40000, month: "2027-07" },
+      { id: "t4", name: "Termijn 4", amount: 40000, month: "2028-01" },
+      { id: "t5", name: "Termijn 5", amount: 30000, month: "2028-06" },
+    ],
+    interestNow: 300, taxRate: 37, taxInBudget: 150, taxFrom: "2027-01",
+    oneOffs: [{ id: "move", name: "Verhuizen en opslag", amount: 800, on: true, income: false }, { id: "bonus", name: "Bonus", amount: 1500, on: false, income: true }],
+    pots: [],
+  },
 };
 
 function app(config: object): Response {
