@@ -157,8 +157,14 @@ const Scenario = (() => {
 
   function emptyScenario(d){const year=Number(T.today().slice(0,4));
     return {delivery:d.house.target,places:[{id:'nu',name:'Zoals nu',lines:[]}],stay:{},riseMonth:7,salary:0,netShare:50,raiseMonth:4,raises:{},mortgageNow:0,mortgageFull:0,depotRate:0,depotStop:d.house.target,depotStopOn:false,depotEnd:d.house.target,depotEndOn:false,reloanRate:0,draws:[],buildStart:'',drawsBase:'',interestNow:0,taxRate:0,taxInBudget:0,taxFrom:ym(year+1,1),oneOffs:[],pots:[]};}
+  // Unsaved changes stay in this browser, so a refresh does not throw them away.
+  const KEEP='budget:scenario-draft'+(typeof location!=='undefined'&&location.search.includes('voorbeeld')?':demo':'');
+  function kept(stamp){try{const saved=JSON.parse(localStorage.getItem(KEEP)||'null');
+    if(saved&&saved.plan===stamp&&saved.draft&&Array.isArray(saved.draft.places)&&saved.draft.places.length)return saved.draft;localStorage.removeItem(KEEP);}catch(error){}
+    return null;}
+  function keep(dirty){try{if(dirty)localStorage.setItem(KEEP,JSON.stringify({plan:seen,draft}));else localStorage.removeItem(KEEP);}catch(error){}}
   function sync(){const d=Budget.doc(),stamp=d&&d.scenario?canon(d.scenario):'';
-    if(stamp!==seen){seen=stamp;draft=stamp?clone(d.scenario):null;}
+    if(stamp!==seen){seen=stamp;draft=stamp?kept(stamp)||clone(d.scenario):null;}
     if(draft&&!draft.places.some(p=>p.id===brush))brush=(draft.places[1]||draft.places[0]).id;}
   const tone=id=>'t'+Math.max(0,draft.places.findIndex(p=>p.id===id));
   function listOf(name){if(name==='places')return draft.places;if(name==='draws')return draft.draws;if(name==='oneOffs')return draft.oneOffs;
@@ -220,11 +226,11 @@ const Scenario = (() => {
   // ---- Result ----
   function renderResults(){
     const d=Budget.doc();sim=simulate(d,draft,T.today());plan=simulate(d,d.scenario,T.today());
-    const res=Math.round(sim.result),diff=Math.round(sim.result)-Math.round(plan.result),dirty=canon(draft)!==seen,word=res<0?'tekort':'over';
+    const res=Math.round(sim.result),diff=Math.round(sim.result)-Math.round(plan.result),dirty=canon(draft)!==seen,word=res<0?'tekort':'over';keep(dirty);
     $('scLabel').textContent='Bij oplevering in '+T.monthName(draft.delivery);
     $('scResult').innerHTML=E(res)+'<small>'+word+'</small>';$('scResult').className='hero-number '+(res<0?'short':'good');
     $('scNote').textContent='Met alle huisposten erin. Alles wat je hier wint, gaat in deze som naar het huis.';
-    $('scPlan').textContent=!dirty?'Dit is je opgeslagen plan.':diff===0?'Aangepast, zelfde uitkomst als je plan.':E(diff)+(diff>0?' beter':' slechter')+' dan je plan.';
+    $('scPlan').textContent=!dirty?'Dit is je opgeslagen plan.':diff===0?'Aangepast, zelfde uitkomst als je plan.':E(diff)+(diff>0?' beter':' slechter')+' dan je plan.';if(dirty)$('scPlan').textContent+=' Nog niet opgeslagen.';
     $('scSave').hidden=$('scReset').hidden=!dirty;
     const effect=sim.result-sim.parts.base;
     $('scBase').textContent=E(sim.parts.base)+(sim.parts.base<0?' tekort':' over');$('scEffect').textContent=signed(effect);$('scMonths').textContent=sim.n;
