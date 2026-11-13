@@ -46,7 +46,7 @@ const DEMO = {
     riseMonth: 7,
     stay: { "2027-09": "abroad", "2027-10": "abroad", "2027-11": "abroad", "2027-12": "abroad", "2028-01": "abroad", "2028-02": "abroad", "2028-06": "partner", "2028-07": "partner", "2028-08": "partner", "2028-09": "partner" },
     salary: 50000, netShare: 55, raiseMonth: 4, raises: { "2027": 3, "2028": 3 },
-    mortgageNow: 700, mortgageFull: 1200, depotRate: 3, depotStop: "2028-07", depotStopOn: false, depotEnd: "2028-12", depotEndOn: true, reloanRate: 4, buildStart: "2026-06", drawsBase: "2028-10", taxEnd: "2029-01", taxEndOn: false,
+    mortgageNow: 700, mortgageFull: 1200, depotRate: 3, depotStop: "2028-07", depotStopOn: false, depotEnd: "2028-12", depotEndOn: true, reloanRate: 4, buildStart: "2026-06", drawsBase: "2028-10",
     draws: [
       { id: "t2", name: "Termijn 2", amount: 30000, month: "2027-02" },
       { id: "t3", name: "Termijn 3", amount: 40000, month: "2027-07" },
@@ -54,7 +54,7 @@ const DEMO = {
       { id: "t5", name: "Termijn 5", amount: 30000, month: "2028-06" },
     ],
     interestNow: 300, taxRate: 37, taxInBudget: 150, taxFrom: "2027-01",
-    oneOffs: [{ id: "move", name: "Verhuizen en opslag", amount: 800, on: true, income: false }, { id: "bonus", name: "Bonus", amount: 1500, on: false, income: true }],
+    oneOffs: [{ id: "move", name: "Verhuizen en opslag", amount: 800, on: true, income: false, note: "Busje huren, dozen en twee maanden opslag." }, { id: "bonus", name: "Bonus", amount: 1500, on: false, income: true }],
     pots: [],
   },
 };
