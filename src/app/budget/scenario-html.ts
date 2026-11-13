@@ -19,6 +19,15 @@ export const SCENARIO_CSS = String.raw`
 .chip span{font-size:15px;font-weight:700;line-height:1.2}
 .chip small{display:block;font-size:12px;font-weight:500;color:var(--mut)}
 .chip[aria-checked=true]{border-color:var(--ink);background:rgba(255,255,255,.14)}
+/* The cost breakdown of a place appears while the pointer or the keyboard focus is on its chip. */
+.chip{position:relative}
+.chip .chip-tip{display:none;position:absolute;top:calc(100% + 8px);left:0;z-index:12;width:max-content;min-width:100%;max-width:min(320px,82vw);padding:12px 14px;border-radius:14px;background:#141b38;border:1px solid var(--edge);box-shadow:0 18px 40px -18px rgba(0,0,0,.9);font-size:14px;font-weight:500;line-height:1.35;cursor:default}
+.chip:focus-visible .chip-tip{display:grid;gap:6px}
+@media(hover:hover){.chip:hover .chip-tip{display:grid;gap:6px}}
+.chip-tip span{display:flex;justify-content:space-between;align-items:baseline;gap:18px;font-size:14px;font-weight:500;color:var(--mut)}
+.chip-tip b{color:var(--ink);font-weight:700;font-variant-numeric:tabular-nums;white-space:nowrap}
+.chip-tip small{display:inline;font-size:12px;color:var(--dim)}
+.chip-tip .sum{padding-top:6px;border-top:1px solid var(--edge-soft);color:var(--ink);font-weight:700}
 .t0{background:rgba(255,255,255,.16);color:var(--ink)}.t1{background:#74ecd0;color:#04261f}.t2{background:#b9a8ff;color:#160c40}.t3{background:#8fc2ff;color:#06203f}.t4{background:#ffcf7a;color:#2b1c00}.t5{background:#ff9c9c;color:#3d0a0a}
 
 /* The timeline: one row per year. A sideways drag paints; an up-down drag still scrolls the page. */
@@ -53,6 +62,7 @@ button.tl-cell{cursor:pointer;transition:transform .12s var(--ease)}button.tl-ce
 .sc-del{display:grid;place-items:center;width:44px;height:46px;border-radius:50%;color:var(--mut)}
 .sc-del:hover{color:var(--rose);background:rgba(255,156,156,.14)}
 
+.when{display:flex;align-items:center;gap:14px;margin-bottom:8px}.when strong{font-family:var(--display);font-size:26px;font-weight:800;min-width:9.5em;text-align:center}
 .slider{padding:12px 0;border-bottom:1px solid var(--edge-soft)}.slider:last-child{border-bottom:0}
 .slider-top{display:flex;align-items:baseline;justify-content:space-between;gap:12px}
 .slider-top label{font-size:16px;font-weight:600;color:var(--ink)}
@@ -108,17 +118,24 @@ const Scenario = (() => {
     const extraPots=d.house.pots.filter(p=>!p.counts&&sc.pots.includes(p.id));
     const potsAt=k=>{const f=T.projectPots(d.house.pots,k);return {own:sum(d.house.pots.filter(p=>p.counts),p=>f.get(p.id).total),extra:sum(extraPots,p=>f.get(p.id).total)};};
     const oneOffs=sum(sc.oneOffs,o=>o.on?(o.income?o.amount:-o.amount):0);
+    // The instalments were planned for one delivery month. When delivery moves, they stretch along with the build.
+    const span=(a,b)=>(Number(b.slice(0,4))-Number(a.slice(0,4)))*12+Number(b.slice(5,7))-Number(a.slice(5,7));
+    const add=(m,k)=>{const t=Number(m.slice(0,4))*12+Number(m.slice(5,7))-1+k;return ym(Math.floor(t/12),t%12+1);};
+    const stretch=sc.buildStart&&sc.drawsBase&&span(sc.buildStart,sc.drawsBase)>0?span(sc.buildStart,sc.delivery)/span(sc.buildStart,sc.drawsBase):1;
+    const draws=sc.draws.map(x=>({...x,when:stretch===1||x.month<=sc.buildStart?x.month:add(sc.buildStart,Math.round(span(sc.buildStart,x.month)*stretch))}));
     const parts={living:0,salary:0,mortgage:0,tax:0},rows=[],raises=[],series=[];
-    let gross=sc.salary,drawn=0,cum=0,rises=0;
+    let gross=sc.salary,drawn=0,reloan=0,cum=0,rises=0;
     months.forEach((m,k)=>{
       const p=potsAt(k);series.push(p.own+p.extra+cum);
       if(Number(m.slice(5,7))===sc.raiseMonth&&m>start){const before=gross,share=sc.raises[m.slice(0,4)]||0;gross*=1+share/100;raises.push({year:m.slice(0,4),month:m,pct:share,net:(gross-before)*sc.netShare/1200});}
-      for(const draw of sc.draws)if(draw.month===m)drawn+=draw.amount;
+      const closed=sc.depotEndOn&&m>=sc.depotEnd;
+      for(const draw of draws)if(draw.when===m){if(closed)reloan+=draw.amount;else drawn+=draw.amount;}
       if(Number(m.slice(5,7))===riseMonth&&m>start)rises++;
       const place=byId.get(sc.stay[m])||home,living=homeCost-cost(place,rises),salary=(gross-sc.salary)*sc.netShare/1200;
-      const extra=sc.depotStopOn&&m>=sc.depotStop?gap:Math.min(gap,drawn*rate);
+      // Once the depot has closed, what was left in it has paid off the loan: the payment stays where it was, plus interest on what is borrowed anew.
+      const extra=closed?Math.min(gap,drawn*rate)+reloan*(sc.reloanRate||0)/1200:sc.depotStopOn&&m>=sc.depotStop?gap:Math.min(gap,drawn*rate);
       // The tax refund in the budget is a fixed amount. From the month the provisional assessment is right, the real refund follows the interest.
-      const benefit=sc.taxRate/100*(sc.interestNow+extra),tax=m>=sc.taxFrom?benefit-sc.taxInBudget:0,total=living+salary-extra+tax;
+      const benefit=sc.taxEndOn&&m>=sc.taxEnd?0:sc.taxRate/100*(sc.interestNow+extra),tax=m>=sc.taxFrom?benefit-sc.taxInBudget:0,total=living+salary-extra+tax;
       parts.living+=living;parts.salary+=salary;parts.mortgage-=extra;parts.tax+=tax;cum+=total;
       rows.push({month:m,place,living,salary,mortgage:-extra,tax,total,gross:sc.mortgageNow+extra,benefit:m>=sc.taxFrom?benefit:sc.taxInBudget});
     });
@@ -126,11 +143,13 @@ const Scenario = (() => {
     const result=base+end.extra+parts.living+parts.salary+parts.mortgage+parts.tax+oneOffs;
     series.push(end.own+end.extra+cum+extras+oneOffs);
     const costs=new Map(sc.places.map(p=>[p.id,cost(p)]));
-    return {start,months,n,rows,raises,parts:{base,...parts,oneOffs,pots:end.extra},result,remaining,series,depot,homeCost,costs};
+    // Everything that falls after the depot has closed has to be borrowed anew, the last instalment at delivery included.
+    const reloanAll=sc.depotEndOn?sum(draws.filter(x=>x.when>=sc.depotEnd&&x.when>=start&&x.when<=sc.delivery),x=>x.amount):0;
+    return {start,months,n,rows,raises,draws,reloan:reloanAll,parts:{base,...parts,oneOffs,pots:end.extra},result,remaining,series,depot,homeCost,costs};
   }
 
   function emptyScenario(d){const year=Number(T.today().slice(0,4));
-    return {delivery:d.house.target,places:[{id:'nu',name:'Zoals nu',lines:[]}],stay:{},riseMonth:7,salary:0,netShare:50,raiseMonth:4,raises:{},mortgageNow:0,mortgageFull:0,depotRate:0,depotStop:d.house.target,depotStopOn:false,draws:[],interestNow:0,taxRate:0,taxInBudget:0,taxFrom:ym(year+1,1),oneOffs:[],pots:[]};}
+    return {delivery:d.house.target,places:[{id:'nu',name:'Zoals nu',lines:[]}],stay:{},riseMonth:7,salary:0,netShare:50,raiseMonth:4,raises:{},mortgageNow:0,mortgageFull:0,depotRate:0,depotStop:d.house.target,depotStopOn:false,depotEnd:d.house.target,depotEndOn:false,reloanRate:0,draws:[],buildStart:'',drawsBase:'',taxEnd:d.house.target,taxEndOn:false,interestNow:0,taxRate:0,taxInBudget:0,taxFrom:ym(year+1,1),oneOffs:[],pots:[]};}
   function sync(){const d=Budget.doc(),stamp=d&&d.scenario?canon(d.scenario):'';
     if(stamp!==seen){seen=stamp;draft=stamp?clone(d.scenario):null;}
     if(draft&&!draft.places.some(p=>p.id===brush))brush=(draft.places[1]||draft.places[0]).id;}
@@ -167,24 +186,26 @@ const Scenario = (() => {
   }
   function renderControls(){
     const d=Budget.doc(),s=draft;
-    const chips=s.places.map(p=>'<button type="button" class="chip" role="radio" aria-checked="'+(p.id===brush)+'"'+attr({act:'brush',id:p.id})+'><i class="'+tone(p.id)+'"></i><span>'+escapeHtml(p.name||'Naamloos')+'<small data-out="pc:'+p.id+'"></small></span></button>').join('');
+    const chips=s.places.map(p=>'<button type="button" class="chip" role="radio" aria-checked="'+(p.id===brush)+'"'+attr({act:'brush',id:p.id})+'><i class="'+tone(p.id)+'"></i><span>'+escapeHtml(p.name||'Naamloos')+'<small data-out="pc:'+p.id+'"></small></span><span class="chip-tip" data-tip="'+p.id+'"></span></button>').join('');
     const places=s.places.map((p,index)=>'<details class="place" data-place="'+p.id+'"'+(open.has(p.id)?' open':'')+'><summary><i class="'+tone(p.id)+'"></i><span>'+escapeHtml(p.name||'Naamloos')+(index?'':' · je situatie nu')+'</span><b data-out="pt:'+p.id+'"></b></summary><div class="place-body">'+fieldHtml('Naam',{sc:'cell',list:'places',id:p.id,key:'name'},p.name,'text')+linesHtml('place:'+p.id,p.lines,[{key:'name',label:'Kostenpost',type:'text'},{key:'amount',label:'Per maand',type:'step'},{key:'rise',label:'Stijgt per jaar (%)',type:'pct'}],'Kostenpost toevoegen')+(index?'<button type="button" class="text-button"'+attr({act:'del-place',id:p.id})+'>Deze woonsituatie verwijderen</button>':'')+'</div></details>').join('');
     const raiseYears=simulate(d,s,T.today()).raises;
     const sliders=raiseYears.length?raiseYears.map(r=>'<div class="slider"><div class="slider-top"><label for="raise-'+r.year+'">Verhoging '+T.monthName(r.month)+'</label><output for="raise-'+r.year+'" data-out="rp:'+r.year+'"></output></div><input type="range" id="raise-'+r.year+'" min="0" max="10" step="0.5" value="'+r.pct+'"'+attr({sc:'raise',year:r.year})+'><p class="hero-note" data-out="rn:'+r.year+'"></p></div>').join(''):'<p class="empty">Er valt geen verhoging meer voor de oplevering.</p>';
     const offs=s.oneOffs.map(o=>'<button type="button" class="row" role="checkbox" aria-checked="'+o.on+'"'+attr({act:'oneoff',id:o.id})+'><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(o.name||'Naamloos')+'<small>'+(o.income?'Komt binnen':'Kost geld')+'</small></span><span class="row-amount">'+(o.income?'+ ':'− ')+T.euro(o.amount)+'</span></button>').join('');
     const flow=T.projectPots(d.house.pots,monthsFrom(T.today().slice(0,7),s.delivery).length);
     const pots=d.house.pots.filter(p=>!p.counts).map(p=>'<button type="button" class="row" role="checkbox" aria-checked="'+s.pots.includes(p.id)+'"'+attr({act:'pot',id:p.id})+'><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(p.name||'Naamloos')+' inzetten<small>Telt op je Huis-pagina niet mee</small></span><span class="row-amount">+ '+E(flow.get(p.id).total)+'</span></button>').join('');
+    const sw=(act,on,title,note)=>'<button type="button" class="row" role="checkbox" aria-checked="'+on+'" data-act="'+act+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+title+'<small>'+note+'</small></span><span class="row-amount"></span></button>';
     $('scControls').innerHTML=
+      '<section class="section pane" aria-labelledby="scWhenTitle"><div class="section-head"><h2 id="scWhenTitle">Oplevering</h2></div><div class="when"><button type="button" class="icon-button" data-act="delivery" data-step="-1" aria-label="Een maand eerder">−</button><strong id="scWhen">'+T.monthName(s.delivery)+'</strong><button type="button" class="icon-button" data-act="delivery" data-step="1" aria-label="Een maand later">+</button></div><p class="hero-note" data-out="when"></p></section>'+
       '<section class="section pane" aria-labelledby="scLiveTitle"><div class="section-head"><h2 id="scLiveTitle">Waar je woont</h2><span class="section-total" data-out="fx:living"></span></div><p class="hero-note">Kies een woonsituatie en tik op de maanden, of sleep opzij over een rij.</p><div class="chips" role="radiogroup" aria-label="Woonsituatie om in te vullen">'+chips+'</div>'+timelineHtml()+'<p class="tl-note" data-out="tl"></p><div class="places">'+places+'</div>'+(s.places.length<6?'<button type="button" class="ghost edit-add" data-act="add-place">'+icon('plus')+'Woonsituatie toevoegen</button>':'')+'</section>'+
       '<section class="section pane" aria-labelledby="scPayTitle"><div class="section-head"><h2 id="scPayTitle">Salaris</h2><span class="section-total" data-out="fx:salary"></span></div>'+(s.salary?'':'<p class="hero-note">Vul je bruto jaarsalaris in bij Aannames, dan rekenen de verhogingen mee.</p>')+sliders+'</section>'+
-      '<section class="section pane" aria-labelledby="scSwitchTitle"><div class="section-head"><h2 id="scSwitchTitle">Aan of uit</h2><span class="section-total" data-out="fx:switch"></span></div>'+(offs?'<p class="group-label">Eenmalig</p><div class="rows">'+offs+'</div>':'')+(pots?'<p class="group-label">Potten</p><div class="rows">'+pots+'</div>':'')+'<p class="group-label">Hypotheek</p><div class="rows"><button type="button" class="row" role="checkbox" aria-checked="'+s.depotStopOn+'" data-act="depot"><span class="tick">'+icon('check')+'</span><span class="row-name">Depotvergoeding stopt in '+T.monthName(s.depotStop)+'<small>Vanaf dan betaal je het volle maandbedrag</small></span><span class="row-amount"></span></button></div></section>';
+      '<section class="section pane" aria-labelledby="scSwitchTitle"><div class="section-head"><h2 id="scSwitchTitle">Aan of uit</h2><span class="section-total" data-out="fx:switch"></span></div>'+(offs?'<p class="group-label">Eenmalig</p><div class="rows">'+offs+'</div>':'')+(pots?'<p class="group-label">Potten</p><div class="rows">'+pots+'</div>':'')+'<p class="group-label">Hypotheek en belasting</p><div class="rows">'+sw('depot',s.depotStopOn,'Depotvergoeding stopt in '+T.monthName(s.depotStop),'Vanaf dan betaal je het volle maandbedrag')+sw('depot-end',s.depotEndOn,'Bouwdepot eindigt in '+T.monthName(s.depotEnd),'Latere termijnen leen je bij tegen '+pct(s.reloanRate||0))+sw('tax-end',s.taxEndOn,'Renteaftrek vervalt vanaf '+T.monthName(s.taxEnd),'Onzeker: geldt mogelijk als je er dan nog niet woont')+'</div></section>';
     $('scAssume').innerHTML='<details class="section pane sc-assume" data-place="assume"'+(open.has('assume')?' open':'')+'><summary>Aannames</summary><p class="hero-note">Alle bedragen waar het scenario mee rekent. Pas ze aan als je iets beter weet.</p>'+
       '<h3>Oplevering</h3><div class="sc-grid">'+scalar('Maand van oplevering','delivery','month')+'</div>'+
       '<h3>Wonen</h3><div class="sc-grid"><label>Maand waarin stijgende kosten omhoog gaan<select class="field"'+attr({sc:'num',key:'riseMonth',type:'int'})+'>'+MONTHS.map((m,i)=>'<option value="'+(i+1)+'"'+((s.riseMonth||7)===i+1?' selected':'')+'>'+m+'</option>').join('')+'</select></label></div>'+
       '<h3>Salaris</h3><div class="sc-grid">'+scalar('Bruto per jaar','salary','money')+scalar('Netto van elke extra euro (%)','netShare','pct')+'<label>Maand van de verhoging<select class="field"'+attr({sc:'num',key:'raiseMonth',type:'int'})+'>'+MONTHS.map((m,i)=>'<option value="'+(i+1)+'"'+(s.raiseMonth===i+1?' selected':'')+'>'+m+'</option>').join('')+'</select></label></div>'+
-      '<h3>Hypotheek</h3><div class="sc-grid">'+scalar('Bruto per maand nu','mortgageNow','money')+scalar('Bruto per maand na oplevering','mortgageFull','money')+scalar('Depotvergoeding (%)','depotRate','pct')+scalar('Depotvergoeding stopt in','depotStop','month')+'</div><p class="hero-note" data-out="depot"></p>'+
-      '<h3>Renteaftrek</h3><div class="sc-grid">'+scalar('Aftrekbare rente per maand nu','interestNow','money')+scalar('Voordeel per euro aftrek (%)','taxRate','pct')+scalar('Teruggaaf per maand in je budget','taxInBudget','money')+scalar('Echte teruggaaf vanaf','taxFrom','month')+'</div>'+
-      '<h3>Bouwtermijnen</h3><p class="hero-note" style="margin-bottom:8px">Termijnen die nog uit het depot gaan. Haal een termijn weg zodra hij in je maandbedrag zit.</p>'+linesHtml('draws',s.draws,[{key:'name',label:'Termijn',type:'text'},{key:'month',label:'Maand',type:'month'},{key:'amount',label:'Bedrag',type:'money'}],'Termijn toevoegen')+
+      '<h3>Hypotheek</h3><div class="sc-grid">'+scalar('Bruto per maand nu','mortgageNow','money')+scalar('Bruto per maand na oplevering','mortgageFull','money')+scalar('Depotvergoeding (%)','depotRate','pct')+scalar('Depotvergoeding stopt in','depotStop','month')+scalar('Bouwdepot eindigt in','depotEnd','month')+scalar('Rente op bijlenen (%)','reloanRate','pct')+'</div><p class="hero-note" data-out="depot"></p>'+
+      '<h3>Renteaftrek</h3><div class="sc-grid">'+scalar('Aftrekbare rente per maand nu','interestNow','money')+scalar('Voordeel per euro aftrek (%)','taxRate','pct')+scalar('Teruggaaf per maand in je budget','taxInBudget','money')+scalar('Echte teruggaaf vanaf','taxFrom','month')+scalar('Aftrek vervalt mogelijk vanaf','taxEnd','month')+'</div>'+
+      '<h3>Bouwtermijnen</h3><p class="hero-note" style="margin-bottom:8px">Termijnen die nog uit het depot gaan. Haal een termijn weg zodra hij in je maandbedrag zit.</p><p class="hero-note" data-out="draws" style="margin-bottom:8px"></p>'+linesHtml('draws',s.draws,[{key:'name',label:'Termijn',type:'text'},{key:'month',label:'Maand',type:'month'},{key:'amount',label:'Bedrag',type:'money'}],'Termijn toevoegen')+
       '<h3>Eenmalig</h3>'+linesHtml('oneOffs',s.oneOffs,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'income',label:'Dit komt binnen',type:'check'}],'Bedrag toevoegen')+'</details>';
   }
 
@@ -210,10 +231,15 @@ const Scenario = (() => {
       out.set('pt:'+p.id,E(c)+' p/m');}
     for(const r of sim.raises){const value=draft.raises[r.year]||0;out.set('rp:'+r.year,pct(value));out.set('rn:'+r.year,value?E(r.net)+' netto per maand erbij':'Geen verhoging');}
     // What each block adds to or takes from the result, shown in its heading.
-    const fx=n=>Math.abs(n)<0.5?'€ 0':signed(n),depotFx=draft.depotStopOn?sim.result-simulate(Budget.doc(),{...draft,depotStopOn:false},T.today()).result:0;
+    const fx=n=>Math.abs(n)<0.5?'€ 0':signed(n),depotFx=draft.depotStopOn||draft.depotEndOn||draft.taxEndOn?sim.result-simulate(Budget.doc(),{...draft,depotStopOn:false,depotEndOn:false,taxEndOn:false},T.today()).result:0;
     out.set('fx:living',fx(sim.parts.living));out.set('fx:salary',fx(sim.parts.salary));out.set('fx:switch',fx(sim.parts.oneOffs+sim.parts.pots+depotFx));
     out.set('tl',draft.places.map(p=>({p,n:sim.rows.filter(r=>r.place===p).length})).filter(x=>x.n).map(x=>(x.p.name||'Naamloos')+' '+x.n+(x.n===1?' maand':' maanden')).join(' · '));
+    const moved=sim.draws.filter(x=>x.when!==x.month&&x.when>=sim.start);
+    out.set('when',(plan.n===sim.n?'Zoals in je plan.':Math.abs(sim.n-plan.n)+(Math.abs(sim.n-plan.n)===1?' maand ':' maanden ')+(sim.n>plan.n?'later':'eerder')+' dan je plan.')+(moved.length?' De bouwtermijnen schuiven mee.':'')+(sim.reloan>0?' Na het einde van het bouwdepot leen je '+E(sim.reloan)+' bij.':''));
+    out.set('draws',moved.length?'Bij oplevering in '+T.monthName(draft.delivery)+' vallen ze zo: '+sim.draws.filter(x=>x.when>=sim.start).map(x=>(x.name||'Termijn')+' '+MONTHS[Number(x.when.slice(5,7))-1]+' '+x.when.slice(0,4)).join(', ')+'.':'');
     out.set('depot','Daarmee zit er nu ongeveer '+E(Math.round(sim.depot/1000)*1000)+' in je bouwdepot.');
+    view().querySelectorAll('[data-tip]').forEach(el=>{const p=draft.places.find(x=>x.id===el.dataset.tip);if(!p)return;
+      el.innerHTML=(p.lines.length?p.lines.map(l=>'<span><span>'+escapeHtml(l.name||'Naamloos')+(l.rise?' <small>+'+pct(l.rise)+' per jaar</small>':'')+'</span><b>'+T.euro(l.amount)+'</b></span>').join(''):'<span>Nog geen kostenposten</span>')+'<span class="sum"><span>Per maand</span><b>'+T.euro(sim.costs.get(p.id))+'</b></span>';});
     view().querySelectorAll('[data-out]').forEach(el=>{if(out.has(el.dataset.out))el.textContent=out.get(el.dataset.out);});
   }
   const keyOf=el=>el.id||JSON.stringify(el.dataset);
@@ -259,6 +285,13 @@ const Scenario = (() => {
     else if(d.act==='oneoff'){const row=rowOf('oneOffs',d.id);if(row)row.on=!row.on;}
     else if(d.act==='pot'){const index=draft.pots.indexOf(d.id);if(index<0)draft.pots.push(d.id);else draft.pots.splice(index,1);}
     else if(d.act==='depot')draft.depotStopOn=!draft.depotStopOn;
+    else if(d.act==='depot-end')draft.depotEndOn=!draft.depotEndOn;
+    else if(d.act==='tax-end')draft.taxEndOn=!draft.taxEndOn;
+    else if(d.act==='delivery'){const months=monthsFrom(T.today().slice(0,7),draft.delivery),t=Number(draft.delivery.slice(0,4))*12+Number(draft.delivery.slice(5,7))-1+Number(d.step),next=ym(Math.floor(t/12),t%12+1);
+      if(next<=T.today().slice(0,7)||next>'2100-12')return;
+      // A month that is added continues where you lived in the last month.
+      const last=months.at(-1);if(Number(d.step)>0&&last&&draft.stay[last])draft.stay[draft.delivery]=draft.stay[last];
+      if(Number(d.step)<0)delete draft.stay[next];draft.delivery=next;}
     sync();redraw();
   }
   function bind(){

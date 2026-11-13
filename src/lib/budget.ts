@@ -27,8 +27,14 @@ export type BudgetScenario = {
   riseMonth: number;
   salary: number; netShare: number; raiseMonth: number; raises: Record<string, number>;
   mortgageNow: number; mortgageFull: number; depotRate: number; depotStop: string; depotStopOn: boolean;
+  // The depot has a last month. What is left then pays off the loan, and later instalments are borrowed anew at `reloanRate`.
+  depotEnd: string; depotEndOn: boolean; reloanRate: number;
   draws: ScenarioDraw[];
+  // The instalment months were planned for a build from `buildStart` to `drawsBase`. When delivery moves, they stretch along. "" = they stay put.
+  buildStart: string; drawsBase: string;
   interestNow: number; taxRate: number; taxInBudget: number; taxFrom: string;
+  // The month from which the interest may no longer be deductible while the home is still unfinished.
+  taxEnd: string; taxEndOn: boolean;
   oneOffs: ScenarioOneOff[];
   // Pots that do not count for the house on the tracker but are counted in this plan.
   pots: string[];
@@ -89,6 +95,13 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
   if (!validTargetMonth(delivery) || !monthKey(depotStop) || !monthKey(taxFrom) || typeof depotStopOn !== "boolean") return null;
   if (!amount(salary) || !amount(mortgageNow) || !amount(mortgageFull) || !amount(interestNow) || !amount(taxInBudget)) return null;
   if (!percentage(netShare) || !percentage(depotRate) || !percentage(taxRate)) return null;
+  // The delay settings were added later; plans saved before that have them switched off.
+  const depotEnd = value.depotEnd === undefined ? delivery : value.depotEnd, taxEnd = value.taxEnd === undefined ? delivery : value.taxEnd;
+  const depotEndOn = value.depotEndOn === undefined ? false : value.depotEndOn, taxEndOn = value.taxEndOn === undefined ? false : value.taxEndOn;
+  const reloanRate = value.reloanRate === undefined ? 0 : value.reloanRate;
+  const buildStart = value.buildStart === undefined ? "" : value.buildStart, drawsBase = value.drawsBase === undefined ? "" : value.drawsBase;
+  if (!monthKey(depotEnd) || !monthKey(taxEnd) || typeof depotEndOn !== "boolean" || typeof taxEndOn !== "boolean" || !percentage(reloanRate)) return null;
+  if ((buildStart !== "" && !monthKey(buildStart)) || (drawsBase !== "" && !monthKey(drawsBase))) return null;
   // `riseMonth` was added later; plans saved before that use July, when rents usually go up.
   const riseMonth = value.riseMonth === undefined ? 7 : value.riseMonth;
   if (typeof riseMonth !== "number" || !Number.isInteger(riseMonth) || riseMonth < 1 || riseMonth > 12) return null;
@@ -125,7 +138,7 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
     if (typeof id !== "string") return null;
     if (potIds.has(id) && !pots.includes(id)) pots.push(id);
   }
-  return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, draws, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots };
+  return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, depotEnd, depotEndOn, reloanRate, draws, buildStart, drawsBase, interestNow, taxRate, taxInBudget, taxFrom, taxEnd, taxEndOn, oneOffs, pots };
 }
 
 // Returns a clean copy, or null when anything is off. Unknown fields are dropped.
