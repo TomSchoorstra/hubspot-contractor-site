@@ -26,7 +26,7 @@ const DEMO = {
   house: {
     target: "2028-10",
     items: [
-      { id: "kitchen", name: "Keuken", amount: 9000, paid: 2250 },
+      { id: "kitchen", name: "Keuken", amount: 9000, paid: 2250, link: "https://example.com/offerte-keuken.pdf" },
       { id: "floor", name: "Vloer", amount: 4000 },
       { id: "bath", name: "Badkamer", amount: 6000 },
     ],

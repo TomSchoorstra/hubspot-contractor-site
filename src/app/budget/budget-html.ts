@@ -52,6 +52,9 @@ button.row:hover{background:rgba(255,255,255,.09)}button.row:active{transform:sc
 .row[aria-checked=true] .tick{border:0;background:var(--tide);color:#04261f}
 .row[aria-checked=true] .row-name,.row[aria-checked=true] .row-amount{color:var(--mut)}
 .row-name{min-width:0;font-size:16px;font-weight:600;overflow-wrap:anywhere}
+.row-link{display:inline-flex;align-items:center;justify-content:center;width:32px;height:32px;margin:-6px 0 -6px 4px;border-radius:10px;color:var(--tide);vertical-align:middle;transition:background .2s}
+.row-link:hover,.row-link:focus-visible{background:rgba(116,236,208,.14)}
+.row-link .icon{width:18px;height:18px}
 .row-name small{display:block;font-size:13px;font-weight:500;color:var(--mut)}
 .row-amount{font-family:var(--display);font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
 .row-amount small{display:block;font-family:var(--body);font-size:13px;font-weight:500;color:var(--mut)}
@@ -160,6 +163,7 @@ const ICONS = {
   home:'<path d="M3 11 12 3l9 8M5 9.5V21h14V9.5M10 21v-6h4v6"/>',
   check:'<path d="m5 12 4 4L19 6"/>', plus:'<path d="M12 5v14M5 12h14"/>',
   trash:'<path d="M3 6h18M9 6V3h6v3M5 6l1 15h12l1-15M10 10v7m4-7v7"/>',
+  doc:'<path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8zM14 3v5h5M9 13h6M9 17h6"/>',
   grip:'<circle cx="9" cy="6" r="1.4"/><circle cx="15" cy="6" r="1.4"/><circle cx="9" cy="12" r="1.4"/><circle cx="15" cy="12" r="1.4"/><circle cx="9" cy="18" r="1.4"/><circle cx="15" cy="18" r="1.4"/>'
 };
 function icon(name){ return '<svg class="icon" viewBox="0 0 24 24" aria-hidden="true">' + ICONS[name] + '</svg>'; }
@@ -234,12 +238,13 @@ const Budget = (() => {
       const id='e-'+host.id+'-'+row.id+'-'+col.key;
       if(col.type==='select')return '<label for="'+id+'">'+col.label+'<select class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'">'+col.options(row).map(o=>'<option value="'+escapeHtml(o.value)+'" '+(row[col.key]===o.value?'selected':'')+'>'+escapeHtml(o.label)+'</option>').join('')+'</select></label>';
       if(col.type==='check')return '<label class="check" for="'+id+'"><input type="checkbox" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" '+(row[col.key]?'checked':'')+'>'+col.label+'</label>';
-      return '<label for="'+id+'" class="'+(col.type==='text'?'wide':'')+'">'+col.label+'<input class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" data-type="'+col.type+'" type="text" '+(col.type==='money'?'inputmode="decimal"':'maxlength="80"')+' autocomplete="off" value="'+escapeHtml(col.type==='money'?moneyText(row[col.key]??0):row[col.key]??'')+'"></label>';
+      return '<label for="'+id+'" class="'+(col.type==='text'||col.type==='url'?'wide':'')+'">'+col.label+'<input class="field" id="'+id+'" data-row="'+row.id+'" data-key="'+col.key+'" data-type="'+col.type+'" type="text" '+(col.type==='money'?'inputmode="decimal"':col.type==='url'?'inputmode="url" maxlength="500" placeholder="https://"':'maxlength="80"')+' autocomplete="off" value="'+escapeHtml(col.type==='money'?moneyText(row[col.key]??0):row[col.key]??'')+'"></label>';
     }).join('')+'</div><button type="button" class="edit-remove" data-remove="'+row.id+'" aria-label="'+escapeHtml((row.name||'Regel '+(index+1))+' verwijderen')+'">'+icon('trash')+'</button></div>').join('')+'<button type="button" class="ghost edit-add">'+icon('plus')+escapeHtml(addLabel)+'</button>';
     host.querySelectorAll('input,select').forEach(input=>input.addEventListener(input.type==='checkbox'||input.tagName==='SELECT'?'change':'input',()=>{
       const row=rows.find(r=>r.id===input.dataset.row);if(!row)return;
       if(input.type==='checkbox')row[input.dataset.key]=input.checked;
       else if(input.dataset.type==='money'){const value=parseMoney(input.value);input.setAttribute('aria-invalid',String(value===undefined));if(value===undefined)return;row[input.dataset.key]=value;}
+      else if(input.dataset.type==='url'){const value=input.value.trim(),ok=value===''||isLink(value);input.setAttribute('aria-invalid',String(!ok));if(!ok)return;row[input.dataset.key]=value;}
       else row[input.dataset.key]=input.value;
       commit(false);
     }));
@@ -284,8 +289,10 @@ const Budget = (() => {
   function variableRow(c){const spent=spentOf(c),left=round(c.amount-spent),setting=settingTotal===c.id,share=c.amount?Math.min(100,spent/c.amount*100):spent?100:0;
     return '<div class="spend pane'+(left<0?' over':'')+'"><div class="spend-top"><span class="row-name">'+escapeHtml(c.name||'Naamloos')+'<small>'+euro(spent)+' van '+euro(c.amount)+' uitgegeven</small></span><span class="row-amount">'+euro(Math.abs(left))+'<small>'+(left<0?'over budget':'nog over')+'</small></span></div><div class="bar" role="img" aria-label="'+escapeHtml(euro(spent)+' van '+euro(c.amount)+' uitgegeven')+'"><i class="bar-now" style="width:'+share+'%"></i></div><form class="spend-form" data-spend="'+c.id+'" novalidate><label for="spend-'+c.id+'">'+(setting?'Totaal uitgegeven':'Uitgave toevoegen')+'<input class="field" id="spend-'+c.id+'" type="text" inputmode="decimal" autocomplete="off" placeholder="0,00" value="'+(setting?moneyText(spent):'')+'"></label><button type="submit" class="primary">'+(setting?'Opslaan':'Toevoegen')+'</button></form><button type="button" class="text-button" data-set-total="'+c.id+'">'+(setting?'Annuleren':'Totaal aanpassen')+'</button></div>';}
   // A house item shows what is still to pay; a deposit shows as a thin bar and the paid amount.
+  // Only a plain https address becomes a link; the document itself lives elsewhere.
+  const isLink=value=>typeof value==='string'&&value.length<=500&&/^https:\/\/[^\s<>"'\x60]+$/.test(value);
   function houseRow(i){const paid=i.paid||0,left=Math.max(0,round(i.amount-paid)),done=i.amount>0&&paid>=i.amount,share=i.amount?Math.min(100,paid/i.amount*100):0;
-    return '<div class="row static'+(done?' settled':'')+'"><span class="row-name">'+escapeHtml(i.name||'Naamloos')+(paid?'<small>'+euro(paid)+' van '+euro(i.amount)+' betaald'+(i.amount&&!done?' · '+Math.round(share)+'%':'')+'</small><span class="mini-bar" aria-hidden="true"><i style="width:'+share+'%"></i></span>':'')+'</span><span class="row-amount">'+euro(done?i.amount:left)+'<small>'+(done?'Betaald':paid?'nog te betalen':'')+'</small></span></div>';}
+    return '<div class="row static'+(done?' settled':'')+'"><span class="row-name">'+escapeHtml(i.name||'Naamloos')+(isLink(i.link)?'<a class="row-link" href="'+escapeHtml(i.link)+'" target="_blank" rel="noopener noreferrer" aria-label="'+escapeHtml('Open het document bij '+(i.name||'deze post'))+'">'+icon('doc')+'</a>':'')+(paid?'<small>'+euro(paid)+' van '+euro(i.amount)+' betaald'+(i.amount&&!done?' · '+Math.round(share)+'%':'')+'</small><span class="mini-bar" aria-hidden="true"><i style="width:'+share+'%"></i></span>':'')+'</span><span class="row-amount">'+euro(done?i.amount:left)+'<small>'+(done?'Betaald':paid?'nog te betalen':'')+'</small></span></div>';}
   // An expected one-off amount: tick it when all of it is in; a part that already arrived shows as a thin bar.
   function extraRow(e){const got=e.received?e.amount:Math.min(e.got||0,e.amount),left=Math.max(0,round(e.amount-got)),share=e.amount?got/e.amount*100:0;
     return '<button type="button" class="row" role="checkbox" aria-checked="'+e.received+'" data-extra="'+e.id+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(e.name||'Naamloos')+(!e.received&&got?'<small>'+euro(got)+' van '+euro(e.amount)+' ontvangen</small><span class="mini-bar" aria-hidden="true"><i style="width:'+share+'%"></i></span>':'')+'</span><span class="row-amount">'+euro(e.received?e.amount:left)+'<small>'+(e.received?'Binnen':got?'nog te ontvangen':'Verwacht')+'</small></span></button>';}
@@ -314,7 +321,7 @@ const Budget = (() => {
     const months=summary(doc).house.months;
     $('hTarget').value=doc.house.target;
     const items=$('itemsHost');
-    if(editing.items)editor(items,doc.house.items,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'paid',label:'Al betaald',type:'money'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0,paid:0}));
+    if(editing.items)editor(items,doc.house.items,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag',type:'money'},{key:'paid',label:'Al betaald',type:'money'},{key:'link',label:'Link naar document',type:'url'}],'Post toevoegen',()=>({id:newId(),name:'',amount:0,paid:0,link:''}));
     else items.innerHTML=doc.house.items.length?'<div class="rows">'+doc.house.items.map(houseRow).join('')+'</div>':'<p class="empty">Nog geen posten.</p>';
     const pots=$('potsHost');$('potsHint').hidden=editing.pots||!doc.house.pots.length;
     if(editing.pots)editor(pots,doc.house.pots,[{key:'name',label:'Naam',type:'text'},{key:'balance',label:'Saldo nu',type:'money'},{key:'monthly',label:'Inleg per maand',type:'money'},{key:'cap',label:'Maximum (0 = geen)',type:'money'},{key:'overflowTo',label:'Daarna inleg naar',type:'select',options:row=>[{value:'',label:'Nergens, inleg stopt'},...doc.house.pots.filter(o=>o.id!==row.id).map(o=>({value:o.id,label:o.name||'Naamloos'}))]}],'Pot toevoegen',()=>({id:newId(),name:'',balance:0,monthly:0,counts:true,cap:0,overflowTo:''}));

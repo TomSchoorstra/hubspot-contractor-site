@@ -5,7 +5,7 @@ export type BudgetLine = { id: string; name: string; amount: number };
 // A variable cost is spent bit by bit through the month (groceries); `spent` is what has gone out so far.
 export type BudgetCost = BudgetLine & { paid: boolean; saving: boolean; variable: boolean; spent: number };
 // A house item can be partly paid already (a deposit); `paid` is what has gone out for it so far.
-export type HouseItem = BudgetLine & { paid: number };
+export type HouseItem = BudgetLine & { paid: number; link: string };
 // An expected one-off amount can arrive in parts (an allowance settled per invoice); `got` is what has arrived so far.
 export type BudgetExtra = BudgetLine & { received: boolean; got: number };
 // A pot can stop at a maximum (`cap`, 0 = none). From then on its monthly deposit goes to another pot (`overflowTo`, "" = nowhere).
@@ -141,6 +141,11 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
   return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, depotEnd, depotEndOn, reloanRate, draws, buildStart, drawsBase, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots };
 }
 
+// A link to a document kept elsewhere: empty, or a plain https address. The document itself is never stored here.
+function documentLink(value: unknown): value is string {
+  return typeof value === "string" && value.length <= 500 && (value === "" || /^https:\/\/[^\s<>"'`]+$/.test(value));
+}
+
 // Returns a clean copy, or null when anything is off. Unknown fields are dropped.
 export function normalizeBudget(value: unknown): BudgetDoc | null {
   if (!isRecord(value) || value.version !== 1) return null;
@@ -153,9 +158,10 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
       ? { ...base, amount: row.amount, paid: row.paid, saving: row.saving, variable: row.variable === true, spent: (row.spent as number | undefined) ?? 0 }
       : null);
   if (!income || !costs || !isRecord(value.house) || !validTargetMonth(value.house.target)) return null;
-  // `paid` was added later; items saved before that count as nothing paid yet.
+  // `paid` and `link` were added later; items saved before that have nothing paid and no document.
   const items = list<HouseItem>(value.house.items, (row, base) =>
-    amount(row.amount) && (row.paid === undefined || amount(row.paid)) ? { ...base, amount: row.amount, paid: (row.paid as number | undefined) ?? 0 } : null);
+    amount(row.amount) && (row.paid === undefined || amount(row.paid)) && (row.link === undefined || documentLink(row.link))
+      ? { ...base, amount: row.amount, paid: (row.paid as number | undefined) ?? 0, link: (row.link as string | undefined) ?? "" } : null);
   const extras = list<BudgetExtra>(value.house.extras, (row, base) =>
     // `got` was added later; amounts saved before that count as nothing received yet.
     amount(row.amount) && typeof row.received === "boolean" && (row.got === undefined || amount(row.got))
