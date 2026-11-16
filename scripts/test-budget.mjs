@@ -376,9 +376,12 @@ test("living together: the owner repays, interest and costs are shared, and the 
   const base = calc();
   assert.equal(base.principal, 400); assert.equal(base.costs, 340); assert.equal(base.costsMe, 180); assert.equal(base.benefit, 360);
   assert.equal(base.me, 400 + 400 + 180 - 360); assert.equal(base.partner, 400 + 160); assert.equal(base.all, 1200 + 340 - 360);
-  // Shared, the benefit follows the interest: both pay the net interest.
+  // Shared, the partner gets the refund on the interest the partner pays (40% of 400), so both pay net interest.
+  // The deduction on the ground lease and the notional rental value stay with the owner.
   const shared = calc(l => { l.taxShared = true; });
-  assert.equal(shared.me, base.me + 180); assert.equal(shared.partner, base.partner - 180); assert.equal(shared.all, base.all);
+  assert.equal(shared.me, base.me + 160); assert.equal(shared.partner, base.partner - 160); assert.equal(shared.all, base.all);
+  assert.equal(calc(l => { l.taxShared = true; l.interestShare = 75; }).benefitMe, 360 - 80);
+  assert.equal(calc(l => { l.taxShared = true; l.taxOn = false; }).benefitMe, 0);
   // Other shares, a line switched off, and no tax at all.
   const skewed = calc(l => { l.interestShare = 75; l.costShare = 25; });
   assert.equal(skewed.me, 400 + 600 + 80 + 20 - 360); assert.equal(skewed.partner, 200 + 240);
@@ -394,7 +397,7 @@ test("living together: the owner repays, interest and costs are shared, and the 
   assert.equal(base.income, 3000); assert.equal(base.left, 3000 - 620);
   // The refund counts as income and the mortgage as what leaves the account: the same amount is left either way.
   assert.equal(base.mortgageMe, 800); assert.equal(base.incomeAll, 3360); assert.equal(base.out, 980); assert.equal(base.outAll, 1540);
-  assert.equal(base.incomeAll - base.out, base.left); assert.equal(shared.incomeAll, 3180); assert.equal(shared.incomeAll - shared.out, shared.left);
+  assert.equal(base.incomeAll - base.out, base.left); assert.equal(shared.incomeAll, 3200); assert.equal(shared.incomeAll - shared.out, shared.left);
   // What is left adds up month by month, starting in the month of delivery. Without income nothing is shown.
   const house = { house: { target: "2028-11" } }, grown = context.L.growth(house, living());
   assert.equal(grown.each, 2380); assert.equal(grown.months.length, 12);

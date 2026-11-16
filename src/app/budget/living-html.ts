@@ -58,13 +58,16 @@ const Living = (() => {
 
   // Everything per month, net. Repayment builds the owner's own equity, so the owner pays it. Interest and the
   // lines are shared when living together, unless a line is the owner's alone. The tax benefit belongs to the
-  // owner unless it is shared too. What is left is the owner's income minus the owner's part of everything.
+  // owner, unless the refund on the interest is shared. What is left is the owner's income minus the owner's part of everything.
   function calc(l){
     const sum=T.sum,on=l.lines.filter(x=>x.on),costLines=on.filter(x=>!x.saving),saveLines=on.filter(x=>x.saving),principal=Math.max(0,T.round(l.payment-l.interest));
     const interestShare=l.together?l.interestShare/100:1,costShare=l.together?l.costShare/100:1,part=x=>x.mine?x.amount:x.amount*costShare;
     const costs=sum(costLines,x=>x.amount),costsMe=sum(costLines,part),savings=sum(saveLines,x=>x.amount),savingsMe=sum(saveLines,part);
     const deductible=T.round(l.interest+sum(on.filter(x=>x.deduct),x=>x.amount));
-    const benefit=l.taxOn?T.round(l.taxRate/100*deductible-l.forfait):0,benefitMe=T.round(benefit*(l.taxShared?interestShare:1)),interestMe=T.round(l.interest*interestShare);
+    const benefit=l.taxOn?T.round(l.taxRate/100*deductible-l.forfait):0,interestMe=T.round(l.interest*interestShare);
+    // Shared, the partner gets back the refund on the interest the partner pays, so both pay their part of the net interest.
+    // The deduction on other lines and the notional rental value stay with the owner.
+    const benefitPartner=l.taxOn&&l.together&&l.taxShared?T.round(l.taxRate/100*l.interest*(1-interestShare)):0,benefitMe=T.round(benefit-benefitPartner);
     const rows=[{key:'principal',name:'Aflossing',me:principal,all:principal},{key:'interest',name:'Rente',me:interestMe,all:l.interest},{key:'costs',name:'Vaste lasten',me:costsMe,all:costs}];
     if(savings>0)rows.push({key:'savings',name:'Sparen',me:savingsMe,all:savings});
     if(l.taxOn)rows.push({key:'tax',name:'Belasting',me:-benefitMe,all:-benefit});
@@ -122,7 +125,7 @@ const Living = (() => {
     $('lvControls').innerHTML=
       '<section class="section pane" aria-labelledby="lvWhoTitle"><div class="section-head"><h2 id="lvWhoTitle">Samen of alleen</h2></div><div class="rows">'+sw('together',l.together,'Samen met '+name,'Uit: je woont er alleen en betaalt alles zelf')+'</div>'+(l.together?slider('interestShare','Jouw deel van de rente')+slider('costShare','Jouw deel van gedeelde posten'):'')+'</section>'+
       '<section class="section pane" aria-labelledby="lvWhoPaysTitle"><div class="section-head"><h2 id="lvWhoPaysTitle">Wie betaalt wat</h2></div><p class="hero-note" style="margin-bottom:12px">Per maand, per post. Staat er bij je partner € 0, dan betaal jij die post helemaal. De aflossing is altijd van jou. De renteaftrek staat eronder: die komt binnen en is geen kostenpost.</p><div data-split></div></section>'+
-      '<section class="section pane" aria-labelledby="lvTaxTitle"><div class="section-head"><h2 id="lvTaxTitle">Belasting</h2><span class="section-total" data-out="tax"></span></div><div class="rows">'+sw('tax',l.taxOn,'Renteaftrek meerekenen','Wat je via de belasting terugkrijgt, min het eigenwoningforfait')+(l.together?sw('tax-shared',l.taxShared,'Voordeel delen met '+name,'Uit: de teruggaaf is helemaal voor jou'):'')+'</div></section>'+
+      '<section class="section pane" aria-labelledby="lvTaxTitle"><div class="section-head"><h2 id="lvTaxTitle">Belasting</h2><span class="section-total" data-out="tax"></span></div><div class="rows">'+sw('tax',l.taxOn,'Renteaftrek meerekenen','Wat je via de belasting terugkrijgt, min het eigenwoningforfait')+(l.together?sw('tax-shared',l.taxShared,'Netto rente delen met '+name,'Uit: '+name+' betaalt de rente voor aftrek, jij houdt de hele teruggaaf'):'')+'</div></section>'+
       '<section class="section pane" aria-labelledby="lvKeepTitle"><div class="section-head"><h2 id="lvKeepTitle">Wat je overhoudt</h2><span class="section-total" data-out="keep"></span></div><p class="hero-note" data-out="keepNote"></p><div data-chart></div></section>';
     $('lvAssume').innerHTML='<details class="section pane sc-assume" data-place="assume"'+(open.has('assume')?' open':'')+'><summary>Aannames</summary><p class="hero-note">De bedragen van de hypotheek en de belasting, per maand. Pas ze aan als je iets beter weet.</p>'+
       '<h3>Samen</h3><div class="sc-grid">'+U.fieldHtml('Naam van je partner',{sc:'num',key:'partner'},l.partner,'text')+'</div>'+
@@ -171,7 +174,7 @@ const Living = (() => {
     const why=new Map();
     why.set('together','Samen deel je de rente en de gedeelde posten. De aflossing blijft van jou.'+effect(l.together,flip(x=>{x.together=!x.together;})));
     why.set('tax','Rente en erfpacht zijn aftrekbaar. Daar gaat het eigenwoningforfait vanaf. Wat overblijft krijg je terug.'+effect(l.taxOn,flip(x=>{x.taxOn=!x.taxOn;})));
-    why.set('tax-shared','De teruggaaf komt op jouw naam binnen. Aan: je verdeelt hem in dezelfde verhouding als de rente, zodat jullie allebei de netto rente betalen. Uit: '+escapeHtml(name)+' betaalt de bruto rente en jij houdt de teruggaaf.'+effect(l.taxShared,flip(x=>{x.taxShared=!x.taxShared;})));
+    why.set('tax-shared','De teruggaaf komt op jouw naam binnen. Aan: '+escapeHtml(name)+' krijgt de teruggaaf over het deel van de rente dat zij of hij betaalt, zodat jullie allebei netto rente betalen. De aftrek op andere posten en het eigenwoningforfait blijven bij jou. Uit: '+escapeHtml(name)+' betaalt de rente voor aftrek en jij houdt de hele teruggaaf.'+effect(l.taxShared,flip(x=>{x.taxShared=!x.taxShared;})));
     view().querySelectorAll('[data-why]').forEach(el=>{el.innerHTML=why.get(el.dataset.why)||'';});
     view().querySelectorAll('[data-out]').forEach(el=>{if(out.has(el.dataset.out))el.textContent=out.get(el.dataset.out);});
   }
