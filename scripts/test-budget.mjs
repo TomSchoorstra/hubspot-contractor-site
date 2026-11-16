@@ -418,3 +418,56 @@ test("living together: the owner repays, interest and costs are shared, and the 
   // More interest than payment means no repayment, never a negative one.
   assert.equal(calc(l => { l.interest = 1500; }).principal, 0);
 });
+
+// Exercise the living view's delegated interactions without a database or a real budget.
+function livingViewWorld(plan = living()) {
+  const { context } = scenarioWorld(), elements = new Map();
+  const element = id => {
+    if (!elements.has(id)) elements.set(id, { id, dataset: {}, textContent: "", innerHTML: "", hidden: false,
+      handlers: {}, details: [], addEventListener(type, fn) { this.handlers[type] = fn; },
+      contains: el => Boolean(el), querySelectorAll(selector) { return selector === "details[data-place]" ? this.details : []; },
+    });
+    return elements.get(id);
+  };
+  context.document.getElementById = element;
+  const doc = { ...fixture(), living: structuredClone(plan) };
+  context.B.setDoc(doc);
+  context.B.tools.commit = redraw => redraw === false ? context.L.numbers() : context.L.render();
+  context.L.render();
+  const root = element("view-wonen");
+  const click = dataset => root.handlers.click({ target: { closest: () => ({ dataset }) } });
+  return { context, doc, root, element, click };
+}
+
+test("living categories retain their open state through payment changes and reveal a switched-off post", () => {
+  const { doc, root, element, click } = livingViewWorld();
+  const otherViews = JSON.stringify({ income: doc.income, costs: doc.costs, house: doc.house });
+  // Simulate opening costs and leaving savings collapsed before changing a payment choice.
+  root.details = [{ dataset: { place: "costs" }, open: true }, { dataset: { place: "savings" }, open: false }];
+  click({ act: "pay", id: "vve", mine: "1" });
+  assert.equal(doc.living.lines[0].mine, true);
+  assert.match(element("lvCostsHost").innerHTML, /data-place="costs" open/);
+  assert.doesNotMatch(element("lvCostsHost").innerHTML, /data-place="savings" open/);
+  click({ act: "line", id: "vve" });
+  assert.equal(doc.living.lines[0].on, false);
+  assert.match(element("lvCostsHost").innerHTML, /data-place="off" open/);
+  assert.equal(JSON.stringify({ income: doc.income, costs: doc.costs, house: doc.house }), otherViews);
+});
+
+test("living mortgage inputs update the result without replacing the active fields, and refuse invalid amounts", () => {
+  const { context, doc, root, element } = livingViewWorld();
+  const beforeMarkup = element("lvCostsHost").innerHTML;
+  const field = { dataset: { sc: "num", key: "payment", type: "money" }, value: "1.400", setAttribute(key, value) { this[key] = value; } };
+  root.handlers.input({ target: field });
+  assert.equal(doc.living.payment, 1400);
+  assert.equal(context.L.calc(doc.living).left, 2180);
+  assert.equal(element("lvCostsHost").innerHTML, beforeMarkup);
+  field.value = "-100";
+  root.handlers.input({ target: field });
+  assert.equal(field["aria-invalid"], "true");
+  assert.equal(doc.living.payment, 1400);
+  field.dataset.key = "taxRate"; field.dataset.type = "pct"; field.value = "101";
+  root.handlers.input({ target: field });
+  assert.equal(field["aria-invalid"], "true");
+  assert.equal(doc.living.taxRate, 40);
+});

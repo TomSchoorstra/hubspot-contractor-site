@@ -4,17 +4,53 @@
 // No amounts live here: every number comes from the stored budget document.
 
 export const LIVING_CSS = String.raw`
-.lv-split{display:grid;grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr));gap:12px 10px;align-items:baseline;font-variant-numeric:tabular-nums}
-.lv-split.solo{grid-template-columns:minmax(0,1fr) auto}
-.lv-split span{font-size:15px;font-weight:600;overflow-wrap:anywhere}
-.lv-split .h{font-size:13px;font-weight:700;color:var(--mut);text-align:right}
-.lv-split b{font-family:var(--display);font-size:17px;font-weight:800;text-align:right;white-space:nowrap}
+.lv-layout{display:grid;gap:16px;align-items:start}
+#view-wonen .page-heading{align-items:center;flex-wrap:wrap;gap:8px 12px}
+#view-wonen .page-heading h1{font-size:clamp(30px,8vw,40px)}
+#view-wonen .page-heading>.ghost{min-height:40px;padding:6px 12px;font-size:13px;white-space:nowrap}
+.lv-layout .section{margin-bottom:0;min-width:0}
+.lv-side{display:grid;gap:12px;min-width:0}
+#view-wonen .section-head{flex-wrap:wrap;gap:4px 12px}
+.lv-fold{border-top:1px solid var(--edge-soft)}
+.lv-fold>summary{display:grid;grid-template-columns:minmax(0,1fr) auto 16px;align-items:center;gap:10px;min-height:74px;padding:14px 0;cursor:pointer;list-style:none}
+.lv-fold>summary::-webkit-details-marker{display:none}
+.lv-fold>summary:hover .lv-fold-title{color:var(--tide)}
+.lv-fold-title{display:block;font-family:var(--display);font-size:18px;font-weight:700;overflow-wrap:anywhere}
+.lv-fold small{display:block;font-family:var(--body);font-size:13px;font-weight:500;color:var(--mut);overflow-wrap:anywhere}
+.lv-fold-total{font-family:var(--display);font-size:19px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+.lv-chevron{width:9px;height:9px;border-right:2px solid var(--mut);border-bottom:2px solid var(--mut);transform:rotate(45deg);transition:transform .15s}
+.lv-fold[open]>summary .lv-chevron{transform:rotate(225deg)}
+.lv-fold-body{padding:0 0 16px}
+.lv-fold-body>.hero-note{margin-bottom:12px}
+.lv-fold-body .sc-grid{margin-top:12px}
+.lv-fold-body .sc-grid>label{display:grid;gap:4px;min-width:0}
+.lv-fold-body .section-foot{gap:6px 12px}
+.lv-settings{padding:0;border-top:1px solid var(--edge-soft)}
+.lv-settings>summary{padding:16px}
+.lv-settings>.lv-fold-body{padding:0 16px 16px}
+.lv-settings .lv-fold-title{font-size:17px}
+.lv-settings .lv-fold-total{font-size:17px}
+.lv-income-lines{margin-bottom:10px}
+.lv-income-lines>div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;color:var(--mut);font-size:14px}
+.lv-income-lines b{color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
+.lv-income-lines span{min-width:0;overflow-wrap:anywhere}
+.lv-breakdown{overflow-x:auto}
+.lv-split{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
+.lv-split th,.lv-split td{padding:9px 6px;text-align:right;vertical-align:top;white-space:nowrap}
+.lv-split th:first-child{padding-left:0;text-align:left;white-space:normal;overflow-wrap:anywhere;min-width:90px}
+.lv-split thead th{color:var(--mut);font-weight:600;white-space:normal;max-width:110px;overflow-wrap:anywhere}
+.lv-split tbody th{font-weight:500}
+.lv-split td{font-weight:700}
 .lv-split .dim{color:var(--mut)}
-.lv-split span small{font-size:12px;font-weight:500;color:var(--mut)}
-.lv-split .t{padding-top:12px;border-top:1px solid var(--edge-soft)}
-.lv-split b.t{font-size:19px}
-/* The income lines that add up to the income total. */
-#lvSplitHost .sub span,#lvSplitHost .sub b{font-size:15px;font-weight:500;color:var(--mut)}
+.lv-split .t>*{padding-top:12px;border-top:1px solid var(--edge-soft);font-weight:800}
+.lv-split small{font-size:12px}
+.lv-sticky{position:fixed;top:calc(10px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);z-index:25;display:flex;align-items:center;justify-content:space-between;gap:16px;width:min(380px,calc(100% - 24px));padding:10px 18px;border-radius:999px;text-align:left}
+.lv-sticky span{font-size:13px;color:var(--mut)}
+.lv-sticky b{font-family:var(--display);font-size:21px;font-weight:800;white-space:nowrap}
+.lv-sticky .short{color:var(--amber)}.lv-sticky .good{color:var(--tide)}
+#view-wonen .lv-overview-stats>div:last-child{grid-column:1/-1;display:flex;justify-content:space-between;align-items:baseline;gap:12px}
+#view-wonen .lv-overview-stats strong{font-size:22px}
+@media(min-width:840px){.lv-layout{grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:18px}#view-wonen .lv-overview-stats>div:last-child{grid-column:auto;display:block}}
 /* Keep the cost toggle and its compact payment options in one card, as sibling buttons. */
 .lv-line{border-radius:var(--r-sm)}
 .lv-line.is-on{background:rgba(116,236,208,.12)}
@@ -45,18 +81,17 @@ export const LIVING_VIEW = String.raw`<section class="view" id="view-wonen" hidd
 <header class="page-heading"><div><div class="micro">Maandbudget · na de bouw</div><h1 id="lvTitle">Na de bouw</h1></div><a class="ghost" href="#huis">Terug naar Huis</a></header>
 <div class="section pane" id="lvEmpty" hidden><h2 style="font-size:22px;font-weight:700">Nog niets ingevuld</h2><p class="hero-note" style="margin:8px 0 16px">Maak je maandbudget voor als je in je huis woont: wat er binnenkomt, wat het kost en wie welk deel betaalt. Deze maand en je Huis-pagina veranderen hier niet door.</p><button type="button" class="primary" data-act="start">Beginnen</button></div>
 <div id="lvBody" hidden>
-<section class="hero glass" aria-label="Je maand na de bouw"><div class="hero-label" id="lvLabel"></div><div class="hero-number" id="lvResult">€ 0</div><p class="hero-note" id="lvNote"></p><div class="stats"><div><span>Jouw kosten</span><strong id="lvMe">€ 0</strong></div><div><span id="lvPartnerLabel"></span><strong id="lvPartner">€ 0</strong></div><div><span>Waarvan aflossing</span><strong id="lvPrincipal">€ 0</strong></div></div></section>
-<div class="two"><section class="section pane" aria-labelledby="lvCostsTitle"><div class="section-head"><h2 id="lvCostsTitle">Posten</h2><button type="button" class="text-button" id="lvCostsEdit" data-act="edit-costs">Aanpassen</button></div><p class="hero-note" id="lvCostsHint" style="margin-bottom:10px"></p><div id="lvCostsHost"></div><div class="section-foot" id="lvCopyFoot"><button type="button" class="ghost" data-act="copy">Neem over van Deze maand</button><span class="hero-note">Kopieert je posten en inkomen. Deze maand verandert niet.</span></div></section>
-<section class="section pane" aria-labelledby="lvSplitTitle"><div class="section-head"><h2 id="lvSplitTitle">Verdeling</h2><button type="button" class="text-button" id="lvIncomeEdit" data-act="edit-income">Inkomen aanpassen</button></div><div id="lvIncomeHost"></div><div class="split" id="lvSplitHost"></div><p class="hero-note" id="lvSplitHint" style="margin-top:10px"></p></section></div>
-<div id="lvControls"></div>
-<div id="lvAssume"></div>
+<section class="hero glass" id="lvOverview" aria-label="Je maand na de bouw"><div class="hero-label" id="lvLabel"></div><div class="hero-number" id="lvResult">€ 0</div><p class="hero-note" id="lvNote"></p><div class="stats lv-overview-stats"><div><span id="lvIncomeLabel">Inkomen incl. renteaftrek</span><strong id="lvIncome">€ 0</strong></div><div><span>Jouw uitgaven + sparen</span><strong id="lvMe">€ 0</strong></div><div><span id="lvPartnerLabel"></span><strong id="lvPartner">€ 0</strong></div></div></section>
+<button type="button" class="lv-sticky glass" id="lvSticky" data-act="overview" aria-label="Terug naar het maandoverzicht" hidden><span id="lvStickyLabel"></span><b id="lvStickyAmount"></b></button>
+<div class="lv-layout"><section class="section pane" aria-labelledby="lvCostsTitle"><div class="section-head"><h2 id="lvCostsTitle">Maandbedragen</h2><button type="button" class="text-button" id="lvCostsEdit" data-act="edit-costs">Posten aanpassen</button></div><p class="hero-note" id="lvCostsHint" style="margin-bottom:10px"></p><div id="lvIncomeSection"></div><div id="lvCostsHost"></div><div class="section-foot" id="lvCopyFoot" hidden><button type="button" class="ghost" data-act="copy">Neem over van Deze maand</button><span class="hero-note">Kopieert je posten en inkomen.</span></div></section>
+<aside class="lv-side" id="lvControls" aria-label="Verdeling en vooruitblik"></aside></div>
 </div>
 </section>`;
 
 export const LIVING_SCRIPT = String.raw`
 const Living = (() => {
   const T=Budget.tools,U=Scenario.ui;
-  let bound=false;const editing={costs:false,income:false},open=new Set(),view=()=>$('view-wonen'),plan=()=>Budget.doc().living;
+  let bound=false,observer=null,reveal=null,editReturn=null;const editing={costs:false,income:false},open=new Set(),view=()=>$('view-wonen'),plan=()=>Budget.doc().living;
   const E=n=>T.euro(Math.abs(Math.round(n))),money=n=>(Math.round(n)<0?'− ':'')+E(n),signed=n=>(Math.round(n)<0?'− ':'+ ')+E(n),pct=n=>String(n).replace('.',',')+'%';
   const who=l=>l.partner.trim()||'je partner',cap=text=>text.charAt(0).toUpperCase()+text.slice(1);
 
@@ -111,66 +146,76 @@ const Living = (() => {
   }
 
   function lineRow(l,x){
-    const pay=(mine,label)=>'<button type="button" role="radio" aria-checked="'+(x.mine===mine)+'"'+U.attr({act:'pay',id:x.id,mine:mine?'1':'0'})+'>'+label+'</button>';
+    const pay=(mine,label)=>'<button type="button" role="radio" aria-checked="'+(x.mine===mine)+'" tabindex="'+(x.mine===mine?'0':'-1')+'"'+U.attr({act:'pay',id:x.id,mine:mine?'1':'0'})+'>'+label+'</button>';
     return '<div class="lv-line'+(x.on?' is-on':'')+'"><button type="button" class="row" role="checkbox" aria-checked="'+x.on+'"'+U.attr({act:'line',id:x.id})+'><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(x.name||'Naamloos')+'<small data-out="ln:'+x.id+'"></small></span><span class="row-amount">'+T.euro(x.amount)+'</span></button>'+(l.together&&x.on?'<div class="seg" role="radiogroup" aria-label="'+escapeHtml('Wie betaalt '+(x.name||'deze post'))+'">'+pay(false,'Samen delen')+pay(true,'Ik betaal alles')+'</div>':'')+'</div>';
+  }
+  // Native details keep every category one action away without rendering the whole budget as a long list.
+  function fold(key,title,body,settings=false){
+    return '<details class="lv-fold'+(settings?' lv-settings section pane':'')+'" data-place="'+key+'"'+(open.has(key)?' open':'')+'><summary id="lv-summary-'+key+'"><span><span class="lv-fold-title">'+title+'</span><small data-out="note:'+key+'"></small></span><b class="lv-fold-total" data-out="total:'+key+'"></b><span class="lv-chevron" aria-hidden="true"></span></summary><div class="lv-fold-body">'+body+'</div></details>';
   }
   function renderControls(){
     const l=plan(),name=escapeHtml(who(l));
-    $('lvCostsEdit').textContent=editing.costs?'Klaar':'Aanpassen';$('lvIncomeEdit').textContent=editing.income?'Klaar':'Inkomen aanpassen';$('lvCopyFoot').hidden=editing.costs;
+    $('lvCostsEdit').textContent=editing.costs?'Klaar':'Posten aanpassen';$('lvCopyFoot').hidden=!editing.costs;
+    const field=(label,key,type)=>U.fieldHtml(label,{sc:'num',key},l[key],type);
+    $('lvIncomeSection').innerHTML=fold('income','Inkomen','<div data-income-lines class="lv-income-lines"'+(editing.income?' hidden':'')+'></div><div id="lvIncomeHost"></div><button type="button" class="text-button" id="lvIncomeEdit" data-act="edit-income">'+(editing.income?'Klaar':'Inkomen aanpassen')+'</button><p class="hero-note">De renteaftrek wordt berekend bij Belasting en telt hier mee als inkomen.</p>');
+    if(editing.income)T.editor($('lvIncomeHost'),l.income,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'}],'Inkomen toevoegen',()=>({id:T.newId(),name:'',amount:0}));
     const host=$('lvCostsHost');
     if(editing.costs)T.editor(host,l.lines,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'},{key:'saving',label:'Dit is sparen',type:'check'},{key:'mine',label:'Ik betaal alles',type:'check'},{key:'deduct',label:'Aftrekbaar voor de belasting',type:'check'}],'Post toevoegen',()=>({id:T.newId(),name:'',amount:0,on:true,mine:false,deduct:false,saving:false}));
-    else{const on=l.lines.filter(x=>x.on),costs=on.filter(x=>!x.saving),saving=on.filter(x=>x.saving),off=l.lines.filter(x=>!x.on),still=(label,amount,note)=>'<div class="row static"><span class="row-name">'+label+'<small data-out="'+note+'"></small></span><span class="row-amount" data-out="'+amount+'"></span></div>';
-      const group=(label,rows,total)=>rows.length?'<p class="group-label">'+label+' · '+rows.length+(total?' · <span data-out="'+total+'"></span>':'')+'</p><div class="rows">'+rows.map(x=>lineRow(l,x)).join('')+'</div>':'';
-      host.innerHTML='<p class="group-label">Hypotheek · <span data-out="gt:mortgage"></span></p><div class="rows">'+still('Aflossing','hy:principal','hn:principal')+still('Rente','hy:interest','hn:interest')+'</div>'+group('Vaste lasten',costs,'gt:costs')+group('Sparen',saving,'gt:savings')+group('Telt niet mee',off)+(l.lines.length?'':'<p class="empty">Nog geen posten. Neem ze over van Deze maand, of kies Aanpassen.</p>');}
-    const income=$('lvIncomeHost');
-    if(editing.income)T.editor(income,l.income,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'}],'Inkomen toevoegen',()=>({id:T.newId(),name:'',amount:0}));else income.innerHTML='';
+    else{
+      const on=l.lines.filter(x=>x.on),costs=on.filter(x=>!x.saving),saving=on.filter(x=>x.saving),off=l.lines.filter(x=>!x.on);
+      const still=(label,amount,note)=>'<div class="row static"><span class="row-name">'+label+'<small data-out="'+note+'"></small></span><span class="row-amount" data-out="'+amount+'"></span></div>';
+      const group=(key,label,rows)=>fold(key,label,(rows.length?'<div class="rows">'+rows.map(x=>lineRow(l,x)).join('')+'</div>':'<p class="empty">Nog geen posten in dit onderdeel.</p>')+'<button type="button" class="text-button" data-act="edit-costs" data-group="'+key+'">Alle posten aanpassen</button>');
+      host.innerHTML=fold('mortgage','Hypotheek','<div class="rows">'+still('Aflossing','hy:principal','hn:principal')+still('Rente','hy:interest','hn:interest')+'</div><div class="sc-grid">'+field('Bruto per maand','payment','money')+field('Waarvan rente','interest','money')+'</div>')+
+        group('costs','Vaste lasten',costs)+group('savings','Sparen',saving)+(off.length?group('off','Uitgeschakeld',off):'');
+    }
     const sw=(act,on,title,note)=>'<button type="button" class="row" role="checkbox" aria-checked="'+on+'" data-act="'+act+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+title+'<small>'+note+'</small></span><span class="row-amount"></span><span class="row-tip" data-why="'+act+'"></span></button>';
     const slider=(key,label)=>'<div class="slider"><div class="slider-top"><label for="lv-'+key+'">'+label+'</label><output for="lv-'+key+'" data-out="sp:'+key+'"></output></div><input type="range" id="lv-'+key+'" min="0" max="100" step="5" value="'+l[key]+'"'+U.attr({lv:'share',key})+'><p class="hero-note" data-out="sn:'+key+'"></p></div>';
     $('lvControls').innerHTML=
-      '<section class="section pane" aria-labelledby="lvWhoTitle"><div class="section-head"><h2 id="lvWhoTitle">Samen of alleen</h2></div><div class="rows">'+sw('together',l.together,'Samen met '+name,'Uit: je woont er alleen en betaalt alles zelf')+'</div>'+(l.together?slider('interestShare','Jouw deel van de rente')+slider('costShare','Jouw deel van gedeelde posten'):'')+'</section>'+
-      '<section class="section pane" aria-labelledby="lvWhoPaysTitle"><div class="section-head"><h2 id="lvWhoPaysTitle">Wie betaalt wat</h2></div><p class="hero-note" style="margin-bottom:12px">Per maand, per post. Staat er bij je partner € 0, dan betaal jij die post helemaal. De aflossing is altijd van jou. De renteaftrek staat eronder: die komt binnen en is geen kostenpost.</p><div data-split></div></section>'+
-      '<section class="section pane" aria-labelledby="lvTaxTitle"><div class="section-head"><h2 id="lvTaxTitle">Belasting</h2><span class="section-total" data-out="tax"></span></div><div class="rows">'+sw('tax',l.taxOn,'Renteaftrek meerekenen','Wat je via de belasting terugkrijgt, min het eigenwoningforfait')+(l.together?sw('tax-shared',l.taxShared,'Netto rente delen met '+name,'Uit: '+name+' betaalt de rente voor aftrek, jij houdt de hele teruggaaf'):'')+'</div></section>'+
-      '<section class="section pane" aria-labelledby="lvKeepTitle"><div class="section-head"><h2 id="lvKeepTitle">Wat je overhoudt</h2><span class="section-total" data-out="keep"></span></div><p class="hero-note" data-out="keepNote"></p><div data-chart></div></section>';
-    $('lvAssume').innerHTML='<details class="section pane sc-assume" data-place="assume"'+(open.has('assume')?' open':'')+'><summary>Aannames</summary><p class="hero-note">De bedragen van de hypotheek en de belasting, per maand. Pas ze aan als je iets beter weet.</p>'+
-      '<h3>Samen</h3><div class="sc-grid">'+U.fieldHtml('Naam van je partner',{sc:'num',key:'partner'},l.partner,'text')+'</div>'+
-      '<h3>Hypotheek</h3><div class="sc-grid">'+U.fieldHtml('Bruto per maand',{sc:'num',key:'payment'},l.payment,'money')+U.fieldHtml('Waarvan rente',{sc:'num',key:'interest'},l.interest,'money')+'</div><p class="hero-note" data-out="principal"></p>'+
-      '<h3>Belasting</h3><div class="sc-grid">'+U.fieldHtml('Voordeel per euro aftrek (%)',{sc:'num',key:'taxRate'},l.taxRate,'pct')+U.fieldHtml('Eigenwoningforfait kost per maand',{sc:'num',key:'forfait'},l.forfait,'money')+'</div><p class="hero-note" data-out="deduct"></p></details>';
+      fold('division','Verdeling instellen','<div class="rows">'+sw('together',l.together,'Samen met '+name,'Uit: je woont er alleen en betaalt alles zelf')+'</div>'+(l.together?'<div class="sc-grid">'+field('Naam van je partner','partner','text')+'</div>'+slider('interestShare','Jouw deel van de rente')+slider('costShare','Jouw deel van gedeelde posten'):'')+'<p class="hero-note">De aflossing betaal jij zelf: daarmee bouw je vermogen op in je huis.</p>',true)+
+      fold('tax','Belasting','<div class="rows">'+sw('tax',l.taxOn,'Renteaftrek meerekenen','Teruggaaf min het eigenwoningforfait')+(l.together?sw('tax-shared',l.taxShared,'Netto rente delen met '+name,'Deel de teruggaaf over de rente die ieder betaalt'):'')+'</div><div class="sc-grid">'+field('Voordeel per euro aftrek (%)','taxRate','pct')+field('Eigenwoningforfait kost per maand','forfait','money')+'</div><p class="hero-note" data-out="deduct" style="margin-top:10px"></p>',true)+
+      fold('breakdown','Wie betaalt wat','<p class="hero-note">Per maand, per post. De renteaftrek staat apart onder de uitgaven.</p><div class="lv-breakdown" role="region" aria-label="Verdeling per post" tabindex="0" data-split></div>',true)+
+      fold('growth','Na 12 maanden','<p class="hero-note" data-out="keepNote"></p><div data-chart></div>',true);
   }
   // Every number on the page, refreshed without redrawing the inputs themselves.
   function numbers(){
     const d=Budget.doc(),l=plan();if(!l)return;const c=calc(l),name=who(l),out=new Map(),has=c.income>0,nowLeft=T.summary(d).month.left,more=T.round(c.left-nowLeft);
     $('lvLabel').textContent=has?'Over per maand na de bouw, netto':'Jouw kosten per maand, netto';
     $('lvResult').innerHTML=has?E(c.left)+'<small>'+(c.left<0?'tekort':'over')+'</small>':E(c.me)+'<small>per maand</small>';$('lvResult').className='hero-number'+(has?c.left<0?' short':' good':'');
-    $('lvNote').textContent=(l.together?'Samen met '+name+'. ':'Je woont er alleen. ')+(has?Math.abs(more)<0.5?'Evenveel als je nu overhoudt.':E(more)+(more>0?' meer':' minder')+' dan de '+money(nowLeft)+' die je nu per maand overhoudt.':'Vul je inkomen in bij Verdeling om te zien wat je overhoudt.');
-    $('lvMe').textContent=money(c.out);$('lvPrincipal').textContent=E(c.principal);$('lvPartnerLabel').textContent=l.together?cap(name)+' betaalt':'Partner betaalt';$('lvPartner').textContent=l.together?money(c.partner):'€ 0';
-    $('lvCostsHint').textContent=editing.costs?'Pas namen en bedragen aan, of sleep om de volgorde te wijzigen.':l.lines.length?'Tik een post uit om te zien wat er zonder gebeurt'+(l.together?', en kies per post wie hem betaalt.':'.'):'';
-    // The same block as on the month view, with the mortgage as its own line.
-    const part=(label,amount,cls)=>'<div'+(cls?' class="'+cls+'"':'')+'><span>'+label+'<small>'+T.percent(Math.abs(amount),c.incomeAll)+'</small></span><b>'+money(amount)+'</b></div>';
-    const sub=(label,amount,note)=>'<div class="sub"><span>'+escapeHtml(label||'Naamloos')+(note?'<small>'+note+'</small>':'')+'</span><b>'+money(amount)+'</b></div>';
-    const incomeLines=l.income.map(x=>sub(x.name,x.amount)).join('')+(l.taxOn?sub('Hypotheekrenteaftrek',c.benefitMe,'berekend'):'');
-    $('lvSplitHost').innerHTML=(l.income.length+(l.taxOn?1:0)>1?incomeLines:'')+'<div><span>Inkomen</span><b>'+money(c.incomeAll)+'</b></div>'+part('Hypotheek',c.mortgageMe)+part('Vaste lasten',c.costsMe)+part('Sparen',c.savingsMe)+part(c.left<0?'Tekort':'Over',Math.abs(c.left),'is-left'+(c.left<0?' is-short':''));
-    $('lvSplitHint').textContent=has?'Jouw deel van alles, netto. Hypotheek is aflossing plus jouw deel van de rente.'+(l.taxOn?' De renteaftrek krijg je terug van de belasting en telt daarom als inkomen.':''):'Kies Inkomen aanpassen, of neem je inkomen over van Deze maand.';
-    // Each group shows the same amount as its line under Verdeling, so the two blocks can be checked against each other.
-    out.set('gt:mortgage','jouw deel '+E(c.mortgageMe));out.set('gt:costs','jouw deel '+E(c.costsMe));out.set('gt:savings','jouw deel '+E(c.savingsMe));
+    $('lvNote').textContent=(l.together?'Samen met '+name+'. ':'Je woont er alleen. ')+(has?Math.abs(more)<0.5?'Evenveel als je nu overhoudt.':E(more)+(more>0?' meer':' minder')+' dan de '+money(nowLeft)+' die je nu per maand overhoudt.':'Vul je inkomen in bij Inkomen om te zien wat je overhoudt.');
+    $('lvIncomeLabel').textContent=l.taxOn?'Inkomen incl. renteaftrek':'Netto inkomen';$('lvIncome').textContent=money(c.incomeAll);$('lvMe').textContent=money(c.out);
+    $('lvPartnerLabel').textContent=l.together?cap(name)+' betaalt netto':'Waarvan aflossing';$('lvPartner').textContent=money(l.together?c.partner:c.principal);
+    $('lvStickyLabel').textContent=has?c.left<0?'Tekort per maand':'Over per maand':'Jouw kosten, netto';
+    $('lvStickyAmount').textContent=E(has?c.left:c.me);$('lvStickyAmount').className=has?(c.left<0?'short':'good'):'';
+    $('lvCostsHint').textContent=editing.costs?'Pas namen en bedragen aan, of sleep om de volgorde te wijzigen.':'Jouw deel per maand. Open een onderdeel om het te bekijken of aan te passen.';
+    const incomeLine=(label,amount)=>'<div><span>'+escapeHtml(label||'Naamloos')+'</span><b>'+money(amount)+'</b></div>';
+    view().querySelectorAll('[data-income-lines]').forEach(el=>{el.innerHTML=l.income.map(x=>incomeLine(x.name,x.amount)).join('')+(l.taxOn?incomeLine('Hypotheekrenteaftrek',c.benefitMe):'')+(l.income.length?'':'<p class="empty">Voeg je inkomen toe om te zien wat je overhoudt.</p>');});
+    out.set('total:income',money(c.incomeAll));out.set('note:income',l.taxOn?'Netto inkomen + jouw renteaftrek':'Netto inkomen');
+    out.set('total:mortgage',money(c.mortgageMe));out.set('note:mortgage','Jouw aflossing + '+(l.together?'jouw deel van de rente':'rente'));
+    const costs=l.lines.filter(x=>x.on&&!x.saving),savings=l.lines.filter(x=>x.on&&x.saving),off=l.lines.filter(x=>!x.on);
+    for(const [key,rows,me,all] of [['costs',costs,c.costsMe,c.costs],['savings',savings,c.savingsMe,c.savings]]){
+      out.set('total:'+key,money(me));out.set('note:'+key,rows.length+(rows.length===1?' post':' posten')+(l.together?' · samen '+money(all):''));
+    }
+    out.set('total:off',String(off.length));out.set('note:off','Tellen niet mee in je maandbudget');
+    out.set('total:division',l.together?'Samen':'Alleen');out.set('note:division',l.together?'Jouw deel: rente '+pct(l.interestShare)+' · posten '+pct(l.costShare):'Je betaalt alles zelf');
+    out.set('total:tax',l.taxOn?money(c.benefitMe):'Uit');out.set('note:tax',!l.taxOn?'Renteaftrek telt niet mee':l.together&&l.taxShared?'Jouw teruggaaf · netto rente gedeeld':'De teruggaaf is voor jou');
+    out.set('total:breakdown',money(l.together?c.outAll:c.out));out.set('note:breakdown',l.together?'Alle uitgaven samen, vóór renteaftrek':'Jouw uitgaven, vóór renteaftrek');
     out.set('hy:principal',E(c.principal));out.set('hn:principal','Betaal jij: jouw vermogen in het huis');
     out.set('hy:interest',E(c.interestMe));out.set('hn:interest',l.together?'Jouw deel van '+E(l.interest):'Betaal je zelf');
-    const cell=(n,cls)=>'<b class="'+cls+'">'+money(n)+'</b>',head=l.together?'<span></span><span class="h">Jij</span><span class="h">'+escapeHtml(cap(name))+'</span><span class="h">Samen</span>':'';
-    const line=(label,me,all,cls)=>'<span class="'+cls+'">'+label+'</span>'+cell(me,cls)+(l.together?cell(all-me,cls+(Math.abs(all-me)<0.5?' dim':''))+cell(all,cls+' dim'):'');
-    // Every post on its own line, costs first and saving after, so it is clear who pays what.
+    const head='<thead><tr><th scope="col">Post</th><th scope="col">Jij</th>'+(l.together?'<th scope="col">'+escapeHtml(cap(name))+'</th><th scope="col">Samen</th>':'')+'</tr></thead>';
+    const line=(label,me,all,cls)=>'<tr class="'+cls+'"><th scope="row">'+label+'</th><td>'+money(me)+'</td>'+(l.together?'<td'+(Math.abs(all-me)<0.5?' class="dim"':'')+'>'+money(all-me)+'</td><td class="dim">'+money(all)+'</td>':'')+'</tr>';
     const active=l.lines.filter(x=>x.on),own=x=>({name:escapeHtml(x.name||'Naamloos')+(x.saving?' <small>sparen</small>':''),me:x.mine||!l.together?x.amount:x.amount*c.costShare,all:x.amount});
     const detail=[c.rows[0],c.rows[1],...active.filter(x=>!x.saving).map(own),...active.filter(x=>x.saving).map(own)];
-    view().querySelectorAll('[data-split]').forEach(el=>{el.className='lv-split'+(l.together?'':' solo');el.innerHTML=head+detail.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Totaal',c.out,c.outAll,'t')+(l.taxOn?line('Renteaftrek terug',-c.benefitMe,-c.benefit,'dim'):'');});
-    out.set('tax',l.taxOn?signed(c.benefit):'€ 0');
+    view().querySelectorAll('[data-split]').forEach(el=>{el.innerHTML='<table class="lv-split"><caption class="sr-only">Wie betaalt wat per maand</caption>'+head+'<tbody>'+detail.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Uitgaven + sparen',c.out,c.outAll,'t')+(l.taxOn?line('Renteaftrek terug',-c.benefitMe,-c.benefit,'dim'):'')+line('Netto',c.me,c.all,'t')+'</tbody></table>';});
     out.set('sp:interestShare',pct(l.interestShare));out.set('sp:costShare',pct(l.costShare));
     out.set('sn:interestShare',E(l.interest*l.interestShare/100)+' voor jou, '+E(l.interest*(1-l.interestShare/100))+' voor '+name);
     const shared=T.sum(l.lines.filter(x=>x.on&&!x.mine),x=>x.amount);
     out.set('sn:costShare','Van de '+E(shared)+' die jullie delen: '+E(shared*c.costShare)+' voor jou, '+E(shared*(1-c.costShare))+' voor '+name);
     for(const x of l.lines)out.set('ln:'+x.id,(!x.on?'Telt nu niet mee':!l.together?'Betaal je zelf':x.mine?'Betaal jij helemaal':'Jouw deel '+E(x.amount*c.costShare))+(x.deduct?' · aftrekbaar':''));
     const g=growth(d,l),end=g.months[g.months.length-1];
-    out.set('keep',has?signed(g.each):'');
-    out.set('keepNote',!has?'Vul je inkomen in bij Verdeling. Dan zie je hier wat je elke maand overhoudt en hoe dat oploopt.':Math.abs(g.each)<0.5?'Je houdt niets over en komt niets tekort, dus er loopt niets op.':g.each>0?'Zoveel houd je per maand over. Elke maand komt het overschot bij dat van de maanden ervoor: na '+g.months.length+' maanden is dat '+E(end.total)+'.':'Je komt elke maand tekort. Na '+g.months.length+' maanden is dat opgelopen tot '+E(end.total)+'.');
+    out.set('total:growth',has?money(end.total):'—');
+    out.set('note:growth',has?(g.each<0?'Tekort loopt op':'Wat je overhoudt, opgeteld')+' · vanaf '+T.monthName(g.months[0].month):'Vul eerst je inkomen in');
+    out.set('keepNote',!has?'Vul je inkomen in bij Inkomen. Dan zie je hier wat je elke maand overhoudt en hoe dat oploopt.':Math.abs(g.each)<0.5?'Je houdt niets over en komt niets tekort, dus er loopt niets op.':g.each>0?'Zoveel houd je per maand over. Elke maand komt het overschot bij dat van de maanden ervoor: na '+g.months.length+' maanden is dat '+E(end.total)+'.':'Je komt elke maand tekort. Na '+g.months.length+' maanden is dat opgelopen tot '+E(end.total)+'.');
     view().querySelectorAll('[data-chart]').forEach(el=>{el.innerHTML=has&&Math.abs(g.each)>=0.5?chartHtml(g):'';});
-    out.set('principal','Aflossing: '+E(c.principal)+' per maand. Dat deel betaal jij.');
     out.set('deduct','Aftrekbaar per maand: '+E(c.deductible)+' (rente en aangevinkte posten). Voordeel: '+money(l.taxRate/100*c.deductible-l.forfait)+'.');
     // What each switch does to the owner's monthly amount, shown while the pointer is on it.
     const flip=change=>{const copy=JSON.parse(JSON.stringify(l));change(copy);return calc(copy).me-c.me;};
@@ -185,6 +230,8 @@ const Living = (() => {
   const keyOf=el=>el.id||JSON.stringify(el.dataset);
   function redraw(){
     const active=document.activeElement,key=active&&view().contains(active)?keyOf(active):null;
+    view().querySelectorAll('details[data-place]').forEach(el=>{if(el.open)open.add(el.dataset.place);else open.delete(el.dataset.place);});
+    if(reveal){open.add(reveal);reveal=null;}
     renderControls();numbers();
     if(key&&key!=='{}'&&!view().contains(document.activeElement))[...view().querySelectorAll('button,input,select,summary')].find(el=>keyOf(el)===key)?.focus({preventScroll:true});
   }
@@ -200,29 +247,40 @@ const Living = (() => {
   }
   function onClick(event){
     const button=event.target.closest('[data-act]');if(!button)return;const d=button.dataset,doc=Budget.doc();
-    if(d.act==='start'){if(doc&&!doc.living){doc.living=empty(doc);open.add('assume');T.commit();}return;}
+    if(d.act==='start'){if(doc&&!doc.living){doc.living=empty(doc);open.add('income');open.add('mortgage');T.commit();}return;}
     const l=plan();if(!l)return;
+    if(d.act==='overview'){$('lvOverview').scrollIntoView({block:'start'});return;}
     // Opening or closing an editor changes nothing in the budget itself.
-    if(d.act==='edit-costs'){editing.costs=!editing.costs;redraw();return;}
-    if(d.act==='edit-income'){editing.income=!editing.income;redraw();return;}
+    if(d.act==='edit-costs'){
+      const closing=editing.costs;if(!closing)editReturn=d.group||null;else reveal=editReturn;
+      editing.costs=!editing.costs;redraw();$(closing&&editReturn?'lv-summary-'+editReturn:'lvCostsEdit')?.focus();return;
+    }
+    if(d.act==='edit-income'){editing.income=!editing.income;reveal='income';redraw();return;}
     if(d.act==='copy'){const before=JSON.stringify(l),done=copyMonth(doc,l);
       if(!done.lines&&!done.income){toast('Alles van Deze maand staat er al');return;}
       T.commit();toastAction(done.lines+(done.lines===1?' post':' posten')+' overgenomen'+(done.off?', '+done.off+' uitgezet':''),'Ongedaan maken',()=>{Budget.doc().living=JSON.parse(before);T.commit();});return;}
     if(d.act==='together')l.together=!l.together;
     else if(d.act==='tax')l.taxOn=!l.taxOn;
     else if(d.act==='tax-shared')l.taxShared=!l.taxShared;
-    else if(d.act==='line'){const row=l.lines.find(x=>x.id===d.id);if(row)row.on=!row.on;}
+    else if(d.act==='line'){const row=l.lines.find(x=>x.id===d.id);if(row){row.on=!row.on;reveal=row.on?(row.saving?'savings':'costs'):'off';}}
     else if(d.act==='pay'){const row=l.lines.find(x=>x.id===d.id);if(row)row.mine=d.mine==='1';}
     else return;
     T.commit();
   }
   function bind(){
     if(bound)return;bound=true;const root=view();
+    if(window.IntersectionObserver){observer=new window.IntersectionObserver(entries=>{$('lvSticky').hidden=entries[0].isIntersecting||!plan();});observer.observe($('lvOverview'));}
     root.addEventListener('input',onInput);
     // The partner's name shows up in several places, so the page is redrawn once the field is left.
     root.addEventListener('change',event=>{if(event.target.dataset.sc==='num'&&event.target.dataset.type==='text'&&plan())redraw();});
     root.addEventListener('click',onClick);
-    root.addEventListener('toggle',event=>{const key=event.target.dataset?.place;if(!key)return;if(event.target.open)open.add(key);else open.delete(key);},true);
+    root.addEventListener('keydown',event=>{
+      const button=event.target.closest('[role="radio"]');if(button?.dataset.act!=='pay'||!['ArrowLeft','ArrowRight','ArrowUp','ArrowDown','Home','End'].includes(event.key))return;
+      event.preventDefault();const buttons=[...button.parentElement.querySelectorAll('[role="radio"]')],index=buttons.indexOf(button);
+      const next=event.key==='Home'?0:event.key==='End'?buttons.length-1:(index+(['ArrowLeft','ArrowUp'].includes(event.key)?-1:1)+buttons.length)%buttons.length;
+      buttons[next].focus({preventScroll:true});buttons[next].click();
+    });
+    root.addEventListener('toggle',event=>{const key=event.target.dataset?.place;if(!key||!root.contains(event.target))return;if(event.target.open)open.add(key);else open.delete(key);},true);
   }
   function render(){
     bind();const l=Budget.doc().living;
