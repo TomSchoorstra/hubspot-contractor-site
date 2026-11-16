@@ -18,6 +18,8 @@ export type ScenarioPlace = { id: string; name: string; lines: ScenarioLine[] };
 export type ScenarioDraw = BudgetLine & { month: string };
 // `note` is the owner's own one-line reason for the amount, shown when hovering the switch.
 export type ScenarioOneOff = BudgetLine & { on: boolean; income: boolean; note: string };
+// A trip takes its amount out of the holiday pot in its month. Switched off, it is not taken.
+export type ScenarioTrip = BudgetLine & { month: string; on: boolean };
 export type BudgetScenario = {
   delivery: string;
   // Where the owner can live. The first place is today's situation; the others are compared with it.
@@ -37,6 +39,9 @@ export type BudgetScenario = {
   oneOffs: ScenarioOneOff[];
   // Pots that do not count for the house on the tracker but are counted in this plan.
   pots: string[];
+  // Trips are paid from the pot `tripPot`. What that pot lacks is borrowed from `tripLend`, and the monthly
+  // deposit of the first pot then goes to the second one until the loan is back. "" = no pot chosen.
+  trips: ScenarioTrip[]; tripPot: string; tripLend: string;
 };
 export type BudgetDoc = {
   version: 1;
@@ -115,7 +120,15 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
   const oneOffs = list<ScenarioOneOff>(value.oneOffs, (row, base) =>
     amount(row.amount) && typeof row.on === "boolean" && typeof row.income === "boolean" && (row.note === undefined || (typeof row.note === "string" && row.note.length <= 200))
       ? { ...base, amount: row.amount, on: row.on, income: row.income, note: (row.note as string | undefined) ?? "" } : null);
-  if (!places || places.length < 1 || places.length > 6 || !draws || !oneOffs) return null;
+  // Trips were added later; plans saved before that have none.
+  const trips = value.trips === undefined ? [] : list<ScenarioTrip>(value.trips, (row, base) =>
+    amount(row.amount) && monthKey(row.month) && typeof row.on === "boolean" ? { ...base, amount: row.amount, month: row.month, on: row.on } : null);
+  if (!places || places.length < 1 || places.length > 6 || !draws || !oneOffs || !trips || trips.length > 20) return null;
+  // A pot that no longer exists is simply not chosen. Borrowing from the paying pot itself means not borrowing.
+  const potChoice = (id: unknown) => (id === undefined ? "" : typeof id === "string" ? (potIds.has(id) ? id : "") : null);
+  const tripPot = potChoice(value.tripPot), lender = potChoice(value.tripLend);
+  if (tripPot === null || lender === null) return null;
+  const tripLend = lender === tripPot ? "" : lender;
   if (!isRecord(value.stay) || !isRecord(value.raises) || !Array.isArray(value.pots) || value.pots.length > MAX_ROWS) return null;
   // A month in a place that no longer exists, or in the first place, is simply not listed.
   const placeIds = new Set(places.slice(1).map(place => place.id));
@@ -138,7 +151,7 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
     if (typeof id !== "string") return null;
     if (potIds.has(id) && !pots.includes(id)) pots.push(id);
   }
-  return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, depotEnd, depotEndOn, reloanRate, draws, buildStart, drawsBase, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots };
+  return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, depotEnd, depotEndOn, reloanRate, draws, buildStart, drawsBase, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots, trips, tripPot, tripLend };
 }
 
 // A link to a document kept elsewhere: empty, or a plain https address. The document itself is never stored here.

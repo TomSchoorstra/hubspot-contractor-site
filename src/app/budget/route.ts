@@ -34,6 +34,7 @@ const DEMO = {
     pots: [
       { id: "house", name: "Spaarrekening huis", balance: 1500, monthly: 500, counts: true },
       { id: "holiday", name: "Vakantie", balance: 300, monthly: 100, counts: false },
+      { id: "buffer", name: "Buffer", balance: 1000, monthly: 100, counts: false, cap: 2000, overflowTo: "house" },
     ],
   },
   scenario: {
@@ -56,6 +57,8 @@ const DEMO = {
     interestNow: 300, taxRate: 37, taxInBudget: 150, taxFrom: "2027-01",
     oneOffs: [{ id: "move", name: "Verhuizen en opslag", amount: 800, on: true, income: false, note: "Busje huren, dozen en twee maanden opslag." }, { id: "bonus", name: "Bonus", amount: 1500, on: false, income: true }],
     pots: [],
+    trips: [{ id: "far", name: "Verre reis", amount: 2000, month: "2027-02", on: true }, { id: "weekend", name: "Weekend weg", amount: 400, month: "2027-05", on: true }],
+    tripPot: "holiday", tripLend: "buffer",
   },
 };
 

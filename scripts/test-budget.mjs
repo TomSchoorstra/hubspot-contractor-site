@@ -274,3 +274,68 @@ test("a real browser on this page sends Origin: null; same-site requests pass an
   assert.equal((await login.POST(request("/budget/login", { method: "POST", origin: "https://site.test", site: "cross-site", form: { password: PASSWORD } }))).status, 403);
   assert.equal((await data.PUT(request("/budget/data", { method: "PUT", cookie, origin: "null", site: "same-site", body: { doc: fixture() } }))).status, 403);
 });
+
+// The scenario script runs in the browser; here it runs in a bare context with invented pots.
+function scenarioWorld() {
+  const grab = (file, name) => fs.readFileSync(file, "utf8").match(new RegExp("const " + name + " = String\\.raw`([\\s\\S]*?)`;"))[1];
+  const context = { window: { __BUDGET__: {} }, document: {}, Intl, Math, JSON, Map, Set, Number, String, Object, Array, Date, console };
+  context.globalThis = context;
+  vm.runInNewContext(grab("src/app/budget/budget-html.ts", "BUDGET_SCRIPT") + grab("src/app/budget/scenario-html.ts", "SCENARIO_SCRIPT") + "\nglobalThis.S=Scenario;globalThis.B=Budget;", context);
+  const doc = () => ({ house: { target: "2028-01", items: [{ id: "a", name: "Alles", amount: 20000, paid: 0 }], extras: [], pots: [
+    { id: "house", name: "Huis", balance: 1000, monthly: 500, counts: true, cap: 0, overflowTo: "" },
+    { id: "buffer", name: "Buffer", balance: 1000, monthly: 100, counts: false, cap: 2000, overflowTo: "house" },
+    { id: "holiday", name: "Vakantie", balance: 0, monthly: 100, counts: false, cap: 0, overflowTo: "" },
+  ] } });
+  const plan = (trips = [], more = {}) => ({ ...context.S.emptyScenario(doc()), delivery: "2028-01", trips, tripPot: "holiday", tripLend: "buffer", ...more });
+  // Twelve months: January up to and including December 2027.
+  const run = (scenario, house = doc()) => context.S.simulate(house, scenario, "2027-01-10");
+  return { context, doc, plan, run };
+}
+
+test("scenario trips are validated, and plans saved before trips existed get none", () => {
+  const { normalizeBudget } = world().load("src/lib/budget.ts"), { context, doc } = scenarioWorld();
+  const full = (change = () => {}) => { const d = { ...fixture(), scenario: JSON.parse(JSON.stringify(context.S.emptyScenario(doc()))) }; change(d.scenario); return normalizeBudget(d); };
+  const old = full(s => { delete s.trips; delete s.tripPot; delete s.tripLend; });
+  assert.equal(old.scenario.trips.length, 0); assert.equal(old.scenario.tripPot, ""); assert.equal(old.scenario.tripLend, "");
+  const trip = { id: "far", name: "Verre reis", amount: 2000, month: "2027-02", on: true };
+  const kept = full(s => { s.trips = [{ ...trip, secret: 1 }]; s.tripPot = "holiday"; s.tripLend = "savings"; });
+  assert.equal(JSON.stringify(kept.scenario.trips), JSON.stringify([trip])); assert.equal(kept.scenario.tripPot, "holiday"); assert.equal(kept.scenario.tripLend, "savings");
+  // A pot that does not exist is not chosen, and a pot cannot lend to itself.
+  assert.equal(full(s => { s.tripPot = "gone"; }).scenario.tripPot, "");
+  assert.equal(full(s => { s.tripPot = "holiday"; s.tripLend = "holiday"; }).scenario.tripLend, "");
+  assert.equal(full(s => { s.trips = [{ ...trip, amount: -1 }]; }), null);
+  assert.equal(full(s => { s.trips = [{ ...trip, month: "2027-13" }]; }), null);
+  assert.equal(full(s => { s.trips = [{ ...trip, on: "yes" }]; }), null);
+  assert.equal(full(s => { s.trips = Array.from({ length: 21 }, (_, i) => ({ ...trip, id: "t" + i })); }), null);
+  assert.equal(full(s => { s.tripPot = 5; }), null);
+});
+
+test("a trip borrows from the second pot, is paid back from the holiday deposits and only then costs the house", () => {
+  const { context, doc, plan, run } = scenarioWorld();
+  // Without trips the monthly pots are exactly the tracker's own projection, at every month.
+  const months = Array.from({ length: 12 }, (_, i) => "2027-" + String(i + 1).padStart(2, "0"));
+  const plain = context.S.potSeries(doc().house.pots, plan(), months, true).flows;
+  for (const k of [0, 5, 12]) { const flow = context.B.tools.projectPots(doc().house.pots, k); for (const pot of doc().house.pots) assert.equal(plain[k].get(pot.id), flow.get(pot.id).total); }
+  const none = run(plan());
+  assert.equal(none.parts.trips, 0); assert.equal(none.trips.payEnd, 1200);
+  // March: the holiday pot holds 300, so 500 of an 800 trip is borrowed. The buffer drops to 800 and is repaid in five months.
+  const trip = { id: "far", name: "Verre reis", amount: 800, month: "2027-03", on: true };
+  const small = run(plan([trip]));
+  assert.equal(small.trips.borrowed, 500); assert.equal(small.trips.low, 800); assert.equal(small.trips.lowMonth, "2027-03");
+  assert.equal(small.trips.repaid, "2027-08"); assert.equal(small.trips.debt, 0);
+  assert.equal(small.trips.payEnd, 400); assert.equal(small.trips.lendEnd, 2000);
+  assert.equal(small.parts.trips, 0); assert.equal(small.result, none.result);
+  // Switched off, or outside the months of the scenario, a trip does nothing.
+  assert.equal(run(plan([{ ...trip, on: false }])).trips.spent, 0);
+  assert.equal(run(plan([{ ...trip, month: "2028-01" }])).trips.spent, 0);
+  // Too expensive to repay in time: 600 is still open at delivery. The buffer ends 400 short of its maximum,
+  // and the 200 it would have passed on never reached the house pot.
+  const big = run(plan([{ ...trip, amount: 1800 }]));
+  assert.equal(big.trips.borrowed, 1500); assert.equal(big.trips.low, -200); assert.equal(big.trips.debt, 600);
+  assert.equal(big.trips.payEnd, 0); assert.equal(big.trips.lendEnd, 1600); assert.equal(big.parts.trips, -200); assert.equal(big.result, none.result - 200);
+  // Without a lender the holiday pot itself goes below zero, and the house is left alone.
+  const alone = run(plan([{ ...trip, amount: 1800 }], { tripLend: "" }));
+  assert.equal(alone.trips.borrowed, 0); assert.equal(alone.trips.low, -1500); assert.equal(alone.trips.payEnd, -600); assert.equal(alone.parts.trips, 0);
+  // Without a paying pot the trips are not taken from anywhere.
+  assert.equal(run(plan([trip], { tripPot: "" })).trips.spent, 0);
+});
