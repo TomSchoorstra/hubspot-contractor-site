@@ -394,6 +394,7 @@ const Scenario = (() => {
     $('scEmpty').hidden=Boolean(draft);$('scBody').hidden=!draft;
     if(draft)redraw();
   }
-  return {render,simulate,emptyScenario,potSeries};
+  // The field builders are shared with the living view, so both look and behave the same.
+  return {render,simulate,emptyScenario,potSeries,ui:{attr,fieldHtml,linesHtml}};
 })();
 `;

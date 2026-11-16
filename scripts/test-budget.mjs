@@ -280,7 +280,7 @@ function scenarioWorld() {
   const grab = (file, name) => fs.readFileSync(file, "utf8").match(new RegExp("const " + name + " = String\\.raw`([\\s\\S]*?)`;"))[1];
   const context = { window: { __BUDGET__: {} }, document: {}, Intl, Math, JSON, Map, Set, Number, String, Object, Array, Date, console };
   context.globalThis = context;
-  vm.runInNewContext(grab("src/app/budget/budget-html.ts", "BUDGET_SCRIPT") + grab("src/app/budget/scenario-html.ts", "SCENARIO_SCRIPT") + "\nglobalThis.S=Scenario;globalThis.B=Budget;", context);
+  vm.runInNewContext(grab("src/app/budget/budget-html.ts", "BUDGET_SCRIPT") + grab("src/app/budget/scenario-html.ts", "SCENARIO_SCRIPT") + grab("src/app/budget/living-html.ts", "LIVING_SCRIPT") + "\nglobalThis.S=Scenario;globalThis.B=Budget;globalThis.L=Living;", context);
   const doc = () => ({ house: { target: "2028-01", items: [{ id: "a", name: "Alles", amount: 20000, paid: 0 }], extras: [], pots: [
     { id: "house", name: "Huis", balance: 1000, monthly: 500, counts: true, cap: 0, overflowTo: "" },
     { id: "buffer", name: "Buffer", balance: 1000, monthly: 100, counts: false, cap: 2000, overflowTo: "house" },
@@ -338,4 +338,59 @@ test("a trip borrows from the second pot, is paid back from the holiday deposits
   assert.equal(alone.trips.borrowed, 0); assert.equal(alone.trips.low, -1500); assert.equal(alone.trips.payEnd, -600); assert.equal(alone.parts.trips, 0);
   // Without a paying pot the trips are not taken from anywhere.
   assert.equal(run(plan([trip], { tripPot: "" })).trips.spent, 0);
+});
+
+const living = () => ({
+  partner: "Sam", together: true, payment: 1200, interest: 800, interestShare: 50, costShare: 50, taxOn: true, taxRate: 40, forfait: 40, taxShared: false, now: 1400,
+  lines: [
+    { id: "vve", name: "VvE", amount: 120, on: true, mine: false, deduct: false },
+    { id: "ground", name: "Erfpacht", amount: 200, on: true, mine: false, deduct: true },
+    { id: "cover", name: "Verzekering", amount: 20, on: true, mine: true, deduct: false },
+    { id: "off", name: "Uit", amount: 500, on: false, mine: false, deduct: true },
+  ],
+});
+
+test("living after delivery is validated and budgets saved before it existed have none", () => {
+  const { normalizeBudget } = world().load("src/lib/budget.ts");
+  assert.equal(normalizeBudget(fixture()).living, undefined);
+  const full = (change = () => {}) => { const d = { ...fixture(), living: living() }; change(d.living); return normalizeBudget(d); };
+  assert.equal(JSON.stringify(full(l => { l.secret = 1; l.lines[0].secret = 1; }).living), JSON.stringify(living()));
+  assert.equal(full(l => { l.interestShare = 101; }), null);
+  assert.equal(full(l => { l.payment = -1; }), null);
+  assert.equal(full(l => { l.together = "yes"; }), null);
+  assert.equal(full(l => { l.partner = "x".repeat(81); }), null);
+  assert.equal(full(l => { delete l.now; }), null);
+  assert.equal(full(l => { l.lines[0].mine = 1; }), null);
+  assert.equal(full(l => { l.lines[1].id = "vve"; }), null);
+  assert.equal(full(l => { l.lines = Array.from({ length: 41 }, (_, i) => ({ ...l.lines[0], id: "l" + i })); }), null);
+});
+
+test("living together: the owner repays, interest and costs are shared, and the tax benefit is the owner's unless shared", () => {
+  const { context } = scenarioWorld(), calc = change => { const l = living(); change?.(l); return context.L.calc(l); };
+  // Repayment 400. Interest 400 each. Costs: 320 shared plus 20 of the owner's own. Benefit: 40% of (800 + 200) minus 40.
+  const base = calc();
+  assert.equal(base.principal, 400); assert.equal(base.costs, 340); assert.equal(base.costsMe, 180); assert.equal(base.benefit, 360);
+  assert.equal(base.me, 400 + 400 + 180 - 360); assert.equal(base.partner, 400 + 160); assert.equal(base.all, 1200 + 340 - 360);
+  // Shared, the benefit follows the interest: both pay the net interest.
+  const shared = calc(l => { l.taxShared = true; });
+  assert.equal(shared.me, base.me + 180); assert.equal(shared.partner, base.partner - 180); assert.equal(shared.all, base.all);
+  // Other shares, a line switched off, and no tax at all.
+  const skewed = calc(l => { l.interestShare = 75; l.costShare = 25; });
+  assert.equal(skewed.me, 400 + 600 + 80 + 20 - 360); assert.equal(skewed.partner, 200 + 240);
+  assert.equal(calc(l => { l.lines[1].on = false; }).benefit, 280);
+  const plain = calc(l => { l.taxOn = false; });
+  assert.equal(plain.rows.length, 3); assert.equal(plain.me, 980); assert.equal(plain.all, 1540);
+  // Alone, the owner pays everything, whatever the shares say.
+  const alone = calc(l => { l.together = false; l.taxShared = true; });
+  assert.equal(alone.me, alone.all); assert.equal(alone.partner, 0); assert.equal(alone.all, base.all);
+  // What is left compared with today adds up month by month, starting in the month of delivery.
+  const house = { house: { target: "2028-11" } }, grown = context.L.growth(house, living());
+  assert.equal(grown.each, 1400 - base.me); assert.equal(grown.months.length, 12);
+  assert.equal(grown.months[0].month, "2028-11"); assert.equal(grown.months[0].total, 780);
+  assert.equal(grown.months[2].month, "2029-01"); assert.equal(grown.months[11].total, 780 * 12);
+  assert.equal(context.L.growth({ ...house, scenario: { delivery: "2029-06" } }, living()).months[0].month, "2029-06");
+  assert.equal(context.L.growth(house, { ...living(), now: 0 }).each, 0);
+  assert.equal(context.L.growth(house, { ...living(), now: 500 }).months[1].total, -240);
+  // More interest than payment means no repayment, never a negative one.
+  assert.equal(calc(l => { l.interest = 1500; }).principal, 0);
 });

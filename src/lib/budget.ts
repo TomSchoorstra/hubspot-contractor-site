@@ -43,6 +43,22 @@ export type BudgetScenario = {
   // deposit of the first pot then goes to the second one until the loan is back. "" = no pot chosen.
   trips: ScenarioTrip[]; tripPot: string; tripLend: string;
 };
+// What living in the house costs per month once it is delivered, and who pays which part when it is shared.
+// A cost line can be switched off, paid by the owner alone (`mine`) or count for the tax deduction (`deduct`).
+export type LivingLine = BudgetLine & { on: boolean; mine: boolean; deduct: boolean };
+export type BudgetLiving = {
+  partner: string; together: boolean;
+  // The gross monthly mortgage payment and the interest in it. The rest is repayment, which the owner pays.
+  payment: number; interest: number;
+  // The owner's share, in percent, of the interest and of the shared cost lines.
+  interestShare: number; costShare: number;
+  // The benefit is `taxRate` percent of what is deductible, minus `forfait` (what the notional rental value costs per month).
+  // Shared, it is split like the interest; otherwise it is the owner's.
+  taxOn: boolean; taxRate: number; forfait: number; taxShared: boolean;
+  // What the owner pays for housing today, to compare with. 0 = not compared.
+  now: number;
+  lines: LivingLine[];
+};
 export type BudgetDoc = {
   version: 1;
   updatedAt: number;
@@ -50,6 +66,7 @@ export type BudgetDoc = {
   costs: BudgetCost[];
   house: { target: string; items: HouseItem[]; extras: BudgetExtra[]; pots: BudgetPot[] };
   scenario?: BudgetScenario;
+  living?: BudgetLiving;
 };
 
 export const BUDGET_ROW_ID = "budget:tom";
@@ -154,6 +171,20 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
   return { delivery, places, stay, riseMonth, salary, netShare, raiseMonth, raises, mortgageNow, mortgageFull, depotRate, depotStop, depotStopOn, depotEnd, depotEndOn, reloanRate, draws, buildStart, drawsBase, interestNow, taxRate, taxInBudget, taxFrom, oneOffs, pots, trips, tripPot, tripLend };
 }
 
+function normalizeLiving(value: unknown): BudgetLiving | null {
+  if (!isRecord(value)) return null;
+  const { partner, together, payment, interest, interestShare, costShare, taxOn, taxRate, forfait, taxShared, now } = value;
+  if (typeof partner !== "string" || partner.length > 80) return null;
+  if (typeof together !== "boolean" || typeof taxOn !== "boolean" || typeof taxShared !== "boolean") return null;
+  if (!amount(payment) || !amount(interest) || !amount(forfait) || !amount(now)) return null;
+  if (!percentage(interestShare) || !percentage(costShare) || !percentage(taxRate)) return null;
+  const lines = list<LivingLine>(value.lines, (row, base) =>
+    amount(row.amount) && typeof row.on === "boolean" && typeof row.mine === "boolean" && typeof row.deduct === "boolean"
+      ? { ...base, amount: row.amount, on: row.on, mine: row.mine, deduct: row.deduct } : null);
+  if (!lines || lines.length > 40) return null;
+  return { partner, together, payment, interest, interestShare, costShare, taxOn, taxRate, forfait, taxShared, now, lines };
+}
+
 // A link to a document kept elsewhere: empty, or a plain https address. The document itself is never stored here.
 function documentLink(value: unknown): value is string {
   return typeof value === "string" && value.length <= 500 && (value === "" || /^https:\/\/[^\s<>"'`]+$/.test(value));
@@ -196,6 +227,12 @@ export function normalizeBudget(value: unknown): BudgetDoc | null {
     const scenario = normalizeScenario(value.scenario, potIds);
     if (!scenario) return null;
     doc.scenario = scenario;
+  }
+  // Living after delivery was added later still.
+  if (value.living !== undefined && value.living !== null) {
+    const living = normalizeLiving(value.living);
+    if (!living) return null;
+    doc.living = living;
   }
   return doc;
 }

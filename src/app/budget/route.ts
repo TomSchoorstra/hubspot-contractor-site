@@ -60,6 +60,16 @@ const DEMO = {
     trips: [{ id: "far", name: "Verre reis", amount: 2000, month: "2027-02", on: true }, { id: "weekend", name: "Weekend weg", amount: 400, month: "2027-05", on: true }],
     tripPot: "holiday", tripLend: "buffer",
   },
+  living: {
+    partner: "Sam", together: true, payment: 1200, interest: 800, interestShare: 50, costShare: 50, taxOn: true, taxRate: 37, forfait: 40, taxShared: false, now: 1400,
+    lines: [
+      { id: "vve", name: "Vereniging van eigenaren", amount: 120, on: true, mine: false, deduct: false },
+      { id: "ground", name: "Erfpacht", amount: 200, on: true, mine: true, deduct: true },
+      { id: "power", name: "Energie", amount: 110, on: true, mine: false, deduct: false },
+      { id: "net", name: "Internet", amount: 50, on: true, mine: false, deduct: false },
+      { id: "cover", name: "Verzekering op mijn naam", amount: 20, on: true, mine: true, deduct: false },
+    ],
+  },
 };
 
 function app(config: object): Response {
