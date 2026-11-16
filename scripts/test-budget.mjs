@@ -391,7 +391,10 @@ test("living together: the owner repays, interest and costs are shared, and the 
   // Saving is its own line, shared like a cost unless it is the owner's alone. What is left is income minus the owner's part.
   const saving = calc(l => { l.lines.push({ id: "pot", name: "Sparen", amount: 300, on: true, mine: true, deduct: false, saving: true }); });
   assert.equal(saving.savings, 300); assert.equal(saving.savingsMe, 300); assert.equal(saving.costs, 340); assert.equal(saving.me, base.me + 300); assert.equal(saving.partner, base.partner);
-  assert.equal(base.income, 3000); assert.equal(base.left, 3000 - 620); assert.equal(base.mortgageMe, 400 + 400 - 360);
+  assert.equal(base.income, 3000); assert.equal(base.left, 3000 - 620);
+  // The refund counts as income and the mortgage as what leaves the account: the same amount is left either way.
+  assert.equal(base.mortgageMe, 800); assert.equal(base.incomeAll, 3360); assert.equal(base.out, 980); assert.equal(base.outAll, 1540);
+  assert.equal(base.incomeAll - base.out, base.left); assert.equal(shared.incomeAll, 3180); assert.equal(shared.incomeAll - shared.out, shared.left);
   // What is left adds up month by month, starting in the month of delivery. Without income nothing is shown.
   const house = { house: { target: "2028-11" } }, grown = context.L.growth(house, living());
   assert.equal(grown.each, 2380); assert.equal(grown.months.length, 12);
@@ -402,11 +405,11 @@ test("living together: the owner repays, interest and costs are shared, and the 
   assert.equal(context.L.growth(house, { ...living(), income: [{ id: "s", name: "", amount: 500 }] }).months[1].total, -240);
   // Copying this month: posts of the current home come in switched off, everything is the owner's alone,
   // the tax refund is not income here, and a second copy adds nothing.
-  const month = { costs: [{ id: "rent", name: "Huur", amount: 900, saving: false }, { id: "phone", name: "Telefoon", amount: 20, saving: false }, { id: "pot", name: "Sparen", amount: 300, saving: true }, { id: "vve", name: "Dubbel", amount: 1, saving: false }],
+  const month = { costs: [{ id: "rent", name: "Huur", amount: 900, saving: false }, { id: "phone", name: "Telefoon", amount: 20, saving: false }, { id: "pot", name: "Sparen", amount: 300, saving: true }, { id: "vve", name: "Dubbel", amount: 1, saving: false }, { id: "zero", name: "Leeg", amount: 0, saving: false }, { id: "lease", name: "Erfpacht (canon)", amount: 5, saving: false }],
     income: [{ id: "salary", name: "Salaris", amount: 3100 }, { id: "refund", name: "Teruggaaf belasting", amount: 200 }] };
   const target = { ...living(), income: [] }, copied = context.L.copyMonth(month, target);
-  assert.equal(JSON.stringify(copied), JSON.stringify({ lines: 3, off: 1, income: 1 }));
-  assert.equal(JSON.stringify(target.lines.slice(-3).map(x => [x.id, x.on, x.mine, x.saving])), JSON.stringify([["rent", false, true, false], ["phone", true, true, false], ["pot", true, true, true]]));
+  assert.equal(JSON.stringify(copied), JSON.stringify({ lines: 4, off: 2, income: 1 }));
+  assert.equal(JSON.stringify(target.lines.slice(-4).map(x => [x.id, x.on, x.mine, x.saving])), JSON.stringify([["rent", false, true, false], ["phone", true, true, false], ["pot", true, true, true], ["lease", false, true, false]]));
   assert.equal(JSON.stringify(target.income), JSON.stringify([{ id: "salary", name: "Salaris", amount: 3100 }]));
   assert.equal(JSON.stringify(context.L.copyMonth(month, target)), JSON.stringify({ lines: 0, off: 0, income: 0 }));
   // More interest than payment means no repayment, never a negative one.

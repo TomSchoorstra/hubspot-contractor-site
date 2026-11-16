@@ -10,8 +10,11 @@ export const LIVING_CSS = String.raw`
 .lv-split .h{font-size:13px;font-weight:700;color:var(--mut);text-align:right}
 .lv-split b{font-family:var(--display);font-size:17px;font-weight:800;text-align:right;white-space:nowrap}
 .lv-split .dim{color:var(--mut)}
+.lv-split span small{font-size:12px;font-weight:500;color:var(--mut)}
 .lv-split .t{padding-top:12px;border-top:1px solid var(--edge-soft)}
 .lv-split b.t{font-size:19px}
+/* The income lines that add up to the income total. */
+#lvSplitHost .sub span,#lvSplitHost .sub b{font-size:15px;font-weight:500;color:var(--mut)}
 /* Under a shared cost line: who pays it. */
 .seg{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}
 .seg button{min-height:40px;padding:4px 14px;border-radius:999px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.04);font-size:13px;font-weight:700;color:var(--mut);transition:background .2s,border-color .2s}
@@ -66,7 +69,9 @@ const Living = (() => {
     if(savings>0)rows.push({key:'savings',name:'Sparen',me:savingsMe,all:savings});
     if(l.taxOn)rows.push({key:'tax',name:'Belasting',me:-benefitMe,all:-benefit});
     const me=sum(rows,r=>r.me),all=sum(rows,r=>r.all),income=sum(l.income||[],x=>x.amount);
-    return {rows,me,all,partner:T.round(all-me),principal,interestMe,benefit,benefitMe,costs,costsMe,savings,savingsMe,deductible,costShare,mortgageMe:T.round(principal+interestMe-benefitMe),income,left:T.round(income-me)};
+    // The refund is money coming in: it is shown as income, and the mortgage as what really leaves the account.
+    const out=T.round(me+benefitMe),outAll=T.round(all+benefit);
+    return {rows,me,all,partner:T.round(all-me),principal,interestMe,benefit,benefitMe,costs,costsMe,savings,savingsMe,deductible,costShare,mortgageMe:T.round(principal+interestMe),out,outAll,income,incomeAll:T.round(income+benefitMe),left:T.round(income-me)};
   }
   // What is left each month, added up: a month keeps what the months before it left.
   function growth(d,l,count=12){
@@ -87,10 +92,12 @@ const Living = (() => {
   function empty(d){const sc=d.scenario;
     return {partner:'',together:true,payment:sc?sc.mortgageFull:0,interest:0,interestShare:50,costShare:50,taxOn:true,taxRate:sc?sc.taxRate:0,forfait:0,taxShared:false,income:[],lines:[]};}
   // Posts that belong to where you live now are copied switched off: the house has its own. The tax refund is
+  // A post the plan already has under the same first word comes in switched off too, and an empty post is not copied.
   // calculated here, so an income line for it is left out. Lines that were copied before are skipped.
   const OLD_HOME=/huur|hypothe|energie|stroom|gas|internet|water|inboedel|huis/i,REFUND=/teruggaaf|renteaftrek|belasting/i;
   function copyMonth(d,l){
-    const have=new Set(l.lines.map(x=>x.id)),lines=d.costs.filter(c=>!have.has(c.id)).map(c=>({id:c.id,name:c.name,amount:c.amount,on:!OLD_HOME.test(c.name),mine:true,deduct:false,saving:c.saving}));
+    const first=name=>(name.toLowerCase().match(/[a-z]{3,}/)||[''])[0],known=new Set(l.lines.map(x=>first(x.name)).filter(Boolean));
+    const have=new Set(l.lines.map(x=>x.id)),lines=d.costs.filter(c=>!have.has(c.id)&&c.amount>0).map(c=>({id:c.id,name:c.name,amount:c.amount,on:!OLD_HOME.test(c.name)&&!known.has(first(c.name)),mine:true,deduct:false,saving:c.saving}));
     const income=l.income.length?[]:d.income.filter(i=>!REFUND.test(i.name)).map(i=>({id:i.id,name:i.name,amount:i.amount}));
     l.lines.push(...lines);l.income.push(...income);
     return {lines:lines.length,off:lines.filter(x=>!x.on).length,income:income.length};
@@ -106,15 +113,15 @@ const Living = (() => {
     const host=$('lvCostsHost');
     if(editing.costs)T.editor(host,l.lines,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'},{key:'saving',label:'Dit is sparen',type:'check'},{key:'mine',label:'Ik betaal alles',type:'check'},{key:'deduct',label:'Aftrekbaar voor de belasting',type:'check'}],'Post toevoegen',()=>({id:T.newId(),name:'',amount:0,on:true,mine:false,deduct:false,saving:false}));
     else{const on=l.lines.filter(x=>x.on),costs=on.filter(x=>!x.saving),saving=on.filter(x=>x.saving),off=l.lines.filter(x=>!x.on),still=(label,amount,note)=>'<div class="row static"><span class="row-name">'+label+'<small data-out="'+note+'"></small></span><span class="row-amount" data-out="'+amount+'"></span></div>';
-      const group=(label,rows)=>rows.length?'<p class="group-label">'+label+' · '+rows.length+'</p><div class="rows">'+rows.map(x=>lineRow(l,x)).join('')+'</div>':'';
-      host.innerHTML='<p class="group-label">Hypotheek</p><div class="rows">'+still('Aflossing','hy:principal','hn:principal')+still('Rente','hy:interest','hn:interest')+(l.taxOn?still('Belastingvoordeel','hy:tax','hn:tax'):'')+'</div>'+group('Vaste lasten',costs)+group('Sparen',saving)+group('Telt niet mee',off)+(l.lines.length?'':'<p class="empty">Nog geen posten. Neem ze over van Deze maand, of kies Aanpassen.</p>');}
+      const group=(label,rows,total)=>rows.length?'<p class="group-label">'+label+' · '+rows.length+(total?' · <span data-out="'+total+'"></span>':'')+'</p><div class="rows">'+rows.map(x=>lineRow(l,x)).join('')+'</div>':'';
+      host.innerHTML='<p class="group-label">Hypotheek · <span data-out="gt:mortgage"></span></p><div class="rows">'+still('Aflossing','hy:principal','hn:principal')+still('Rente','hy:interest','hn:interest')+'</div>'+group('Vaste lasten',costs,'gt:costs')+group('Sparen',saving,'gt:savings')+group('Telt niet mee',off)+(l.lines.length?'':'<p class="empty">Nog geen posten. Neem ze over van Deze maand, of kies Aanpassen.</p>');}
     const income=$('lvIncomeHost');
     if(editing.income)T.editor(income,l.income,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'}],'Inkomen toevoegen',()=>({id:T.newId(),name:'',amount:0}));else income.innerHTML='';
     const sw=(act,on,title,note)=>'<button type="button" class="row" role="checkbox" aria-checked="'+on+'" data-act="'+act+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+title+'<small>'+note+'</small></span><span class="row-amount"></span><span class="row-tip" data-why="'+act+'"></span></button>';
     const slider=(key,label)=>'<div class="slider"><div class="slider-top"><label for="lv-'+key+'">'+label+'</label><output for="lv-'+key+'" data-out="sp:'+key+'"></output></div><input type="range" id="lv-'+key+'" min="0" max="100" step="5" value="'+l[key]+'"'+U.attr({lv:'share',key})+'><p class="hero-note" data-out="sn:'+key+'"></p></div>';
     $('lvControls').innerHTML=
       '<section class="section pane" aria-labelledby="lvWhoTitle"><div class="section-head"><h2 id="lvWhoTitle">Samen of alleen</h2></div><div class="rows">'+sw('together',l.together,'Samen met '+name,'Uit: je woont er alleen en betaalt alles zelf')+'</div>'+(l.together?slider('interestShare','Jouw deel van de rente')+slider('costShare','Jouw deel van gedeelde posten'):'')+'</section>'+
-      '<section class="section pane" aria-labelledby="lvWhoPaysTitle"><div class="section-head"><h2 id="lvWhoPaysTitle">Wie betaalt wat</h2></div><p class="hero-note" style="margin-bottom:12px">Per maand, netto. De aflossing betaal jij: dat is jouw eigen vermogen in het huis.</p><div data-split></div></section>'+
+      '<section class="section pane" aria-labelledby="lvWhoPaysTitle"><div class="section-head"><h2 id="lvWhoPaysTitle">Wie betaalt wat</h2></div><p class="hero-note" style="margin-bottom:12px">Per maand, per post. Staat er bij je partner € 0, dan betaal jij die post helemaal. De aflossing is altijd van jou. De renteaftrek staat eronder: die komt binnen en is geen kostenpost.</p><div data-split></div></section>'+
       '<section class="section pane" aria-labelledby="lvTaxTitle"><div class="section-head"><h2 id="lvTaxTitle">Belasting</h2><span class="section-total" data-out="tax"></span></div><div class="rows">'+sw('tax',l.taxOn,'Renteaftrek meerekenen','Wat je via de belasting terugkrijgt, min het eigenwoningforfait')+(l.together?sw('tax-shared',l.taxShared,'Voordeel delen met '+name,'Uit: de teruggaaf is helemaal voor jou'):'')+'</div></section>'+
       '<section class="section pane" aria-labelledby="lvKeepTitle"><div class="section-head"><h2 id="lvKeepTitle">Wat je overhoudt</h2><span class="section-total" data-out="keep"></span></div><p class="hero-note" data-out="keepNote"></p><div data-chart></div></section>';
     $('lvAssume').innerHTML='<details class="section pane sc-assume" data-place="assume"'+(open.has('assume')?' open':'')+'><summary>Aannames</summary><p class="hero-note">De bedragen van de hypotheek en de belasting, per maand. Pas ze aan als je iets beter weet.</p>'+
@@ -128,18 +135,24 @@ const Living = (() => {
     $('lvLabel').textContent=has?'Over per maand na de bouw, netto':'Jouw kosten per maand, netto';
     $('lvResult').innerHTML=has?E(c.left)+'<small>'+(c.left<0?'tekort':'over')+'</small>':E(c.me)+'<small>per maand</small>';$('lvResult').className='hero-number'+(has?c.left<0?' short':' good':'');
     $('lvNote').textContent=(l.together?'Samen met '+name+'. ':'Je woont er alleen. ')+(has?Math.abs(more)<0.5?'Evenveel als je nu overhoudt.':E(more)+(more>0?' meer':' minder')+' dan de '+money(nowLeft)+' die je nu per maand overhoudt.':'Vul je inkomen in bij Verdeling om te zien wat je overhoudt.');
-    $('lvMe').textContent=money(c.me);$('lvPrincipal').textContent=E(c.principal);$('lvPartnerLabel').textContent=l.together?cap(name)+' betaalt':'Partner betaalt';$('lvPartner').textContent=l.together?money(c.partner):'€ 0';
+    $('lvMe').textContent=money(c.out);$('lvPrincipal').textContent=E(c.principal);$('lvPartnerLabel').textContent=l.together?cap(name)+' betaalt':'Partner betaalt';$('lvPartner').textContent=l.together?money(c.partner):'€ 0';
     $('lvCostsHint').textContent=editing.costs?'Pas namen en bedragen aan, of sleep om de volgorde te wijzigen.':l.lines.length?'Tik een post uit om te zien wat er zonder gebeurt'+(l.together?', en kies per post wie hem betaalt.':'.'):'';
     // The same block as on the month view, with the mortgage as its own line.
-    const part=(label,amount,cls)=>'<div'+(cls?' class="'+cls+'"':'')+'><span>'+label+'<small>'+T.percent(Math.abs(amount),c.income)+'</small></span><b>'+money(amount)+'</b></div>';
-    $('lvSplitHost').innerHTML='<div><span>Inkomen</span><b>'+T.euro(c.income)+'</b></div>'+part('Hypotheek',c.mortgageMe)+part('Vaste lasten',c.costsMe)+part('Sparen',c.savingsMe)+part(c.left<0?'Tekort':'Over',Math.abs(c.left),'is-left'+(c.left<0?' is-short':''));
-    $('lvSplitHint').textContent=has?'Jouw deel van alles, netto. Hypotheek is aflossing plus jouw rente'+(l.taxOn?', min het belastingvoordeel.':'.'):'Kies Inkomen aanpassen, of neem je inkomen over van Deze maand.';
+    const part=(label,amount,cls)=>'<div'+(cls?' class="'+cls+'"':'')+'><span>'+label+'<small>'+T.percent(Math.abs(amount),c.incomeAll)+'</small></span><b>'+money(amount)+'</b></div>';
+    const sub=(label,amount,note)=>'<div class="sub"><span>'+escapeHtml(label||'Naamloos')+(note?'<small>'+note+'</small>':'')+'</span><b>'+money(amount)+'</b></div>';
+    const incomeLines=l.income.map(x=>sub(x.name,x.amount)).join('')+(l.taxOn?sub('Hypotheekrenteaftrek',c.benefitMe,'berekend'):'');
+    $('lvSplitHost').innerHTML=(l.income.length+(l.taxOn?1:0)>1?incomeLines:'')+'<div><span>Inkomen</span><b>'+money(c.incomeAll)+'</b></div>'+part('Hypotheek',c.mortgageMe)+part('Vaste lasten',c.costsMe)+part('Sparen',c.savingsMe)+part(c.left<0?'Tekort':'Over',Math.abs(c.left),'is-left'+(c.left<0?' is-short':''));
+    $('lvSplitHint').textContent=has?'Jouw deel van alles, netto. Hypotheek is aflossing plus jouw deel van de rente.'+(l.taxOn?' De renteaftrek krijg je terug van de belasting en telt daarom als inkomen.':''):'Kies Inkomen aanpassen, of neem je inkomen over van Deze maand.';
+    // Each group shows the same amount as its line under Verdeling, so the two blocks can be checked against each other.
+    out.set('gt:mortgage','jouw deel '+E(c.mortgageMe));out.set('gt:costs','jouw deel '+E(c.costsMe));out.set('gt:savings','jouw deel '+E(c.savingsMe));
     out.set('hy:principal',E(c.principal));out.set('hn:principal','Betaal jij: jouw vermogen in het huis');
     out.set('hy:interest',E(c.interestMe));out.set('hn:interest',l.together?'Jouw deel van '+E(l.interest):'Betaal je zelf');
-    out.set('hy:tax','− '+E(c.benefitMe));out.set('hn:tax',l.together&&l.taxShared?'Jouw deel van '+E(c.benefit)+' teruggaaf':'Krijg je terug via de belasting');
     const cell=(n,cls)=>'<b class="'+cls+'">'+money(n)+'</b>',head=l.together?'<span></span><span class="h">Jij</span><span class="h">'+escapeHtml(cap(name))+'</span><span class="h">Samen</span>':'';
     const line=(label,me,all,cls)=>'<span class="'+cls+'">'+label+'</span>'+cell(me,cls)+(l.together?cell(all-me,cls+(Math.abs(all-me)<0.5?' dim':''))+cell(all,cls+' dim'):'');
-    view().querySelectorAll('[data-split]').forEach(el=>{el.className='lv-split'+(l.together?'':' solo');el.innerHTML=head+c.rows.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Totaal',c.me,c.all,'t');});
+    // Every post on its own line, costs first and saving after, so it is clear who pays what.
+    const active=l.lines.filter(x=>x.on),own=x=>({name:escapeHtml(x.name||'Naamloos')+(x.saving?' <small>sparen</small>':''),me:x.mine||!l.together?x.amount:x.amount*c.costShare,all:x.amount});
+    const detail=[c.rows[0],c.rows[1],...active.filter(x=>!x.saving).map(own),...active.filter(x=>x.saving).map(own)];
+    view().querySelectorAll('[data-split]').forEach(el=>{el.className='lv-split'+(l.together?'':' solo');el.innerHTML=head+detail.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Totaal',c.out,c.outAll,'t')+(l.taxOn?line('Renteaftrek terug',-c.benefitMe,-c.benefit,'dim'):'');});
     out.set('tax',l.taxOn?signed(c.benefit):'€ 0');
     out.set('sp:interestShare',pct(l.interestShare));out.set('sp:costShare',pct(l.costShare));
     out.set('sn:interestShare',E(l.interest*l.interestShare/100)+' voor jou, '+E(l.interest*(1-l.interestShare/100))+' voor '+name);
