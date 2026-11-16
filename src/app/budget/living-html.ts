@@ -15,9 +15,13 @@ export const LIVING_CSS = String.raw`
 .lv-split b.t{font-size:19px}
 /* The income lines that add up to the income total. */
 #lvSplitHost .sub span,#lvSplitHost .sub b{font-size:15px;font-weight:500;color:var(--mut)}
-/* Under a shared cost line: who pays it. */
-.seg{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}
-.seg button{min-height:40px;padding:4px 14px;border-radius:999px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.04);font-size:13px;font-weight:700;color:var(--mut);transition:background .2s,border-color .2s}
+/* Keep the cost toggle and its compact payment options in one card, as sibling buttons. */
+.lv-line{border-radius:var(--r-sm)}
+.lv-line.is-on{background:rgba(116,236,208,.12)}
+.lv-line.is-on .row[aria-checked=true]{background:transparent}
+.lv-line .row{min-height:56px;padding:8px 12px;gap:10px}
+.seg{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:4px;padding:0 12px 8px}
+.seg button{min-height:28px;padding:3px 9px;border-radius:999px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.04);font-size:12px;font-weight:700;line-height:1.25;color:var(--mut);transition:background .2s,border-color .2s}
 .seg button[aria-checked=true]{border-color:var(--ink);background:rgba(255,255,255,.14);color:var(--ink)}
 /* What is left over, added up month by month: one bar per month, the amount on hover or focus. */
 .lv-chart{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));margin-top:14px}
@@ -108,7 +112,7 @@ const Living = (() => {
 
   function lineRow(l,x){
     const pay=(mine,label)=>'<button type="button" role="radio" aria-checked="'+(x.mine===mine)+'"'+U.attr({act:'pay',id:x.id,mine:mine?'1':'0'})+'>'+label+'</button>';
-    return '<div><button type="button" class="row" role="checkbox" aria-checked="'+x.on+'"'+U.attr({act:'line',id:x.id})+'><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(x.name||'Naamloos')+'<small data-out="ln:'+x.id+'"></small></span><span class="row-amount">'+T.euro(x.amount)+'</span></button>'+(l.together&&x.on?'<div class="seg" role="radiogroup" aria-label="'+escapeHtml('Wie betaalt '+(x.name||'deze post'))+'">'+pay(false,'Samen delen')+pay(true,'Ik betaal alles')+'</div>':'')+'</div>';
+    return '<div class="lv-line'+(x.on?' is-on':'')+'"><button type="button" class="row" role="checkbox" aria-checked="'+x.on+'"'+U.attr({act:'line',id:x.id})+'><span class="tick">'+icon('check')+'</span><span class="row-name">'+escapeHtml(x.name||'Naamloos')+'<small data-out="ln:'+x.id+'"></small></span><span class="row-amount">'+T.euro(x.amount)+'</span></button>'+(l.together&&x.on?'<div class="seg" role="radiogroup" aria-label="'+escapeHtml('Wie betaalt '+(x.name||'deze post'))+'">'+pay(false,'Samen delen')+pay(true,'Ik betaal alles')+'</div>':'')+'</div>';
   }
   function renderControls(){
     const l=plan(),name=escapeHtml(who(l));
