@@ -4,14 +4,14 @@
 // No amounts live here: every number comes from the stored budget document.
 
 export const LIVING_CSS = String.raw`
-.split{display:grid;grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr));gap:12px 10px;align-items:baseline;font-variant-numeric:tabular-nums}
-.split.solo{grid-template-columns:minmax(0,1fr) auto}
-.split span{font-size:15px;font-weight:600;overflow-wrap:anywhere}
-.split .h{font-size:13px;font-weight:700;color:var(--mut);text-align:right}
-.split b{font-family:var(--display);font-size:17px;font-weight:800;text-align:right;white-space:nowrap}
-.split .dim{color:var(--mut)}
-.split .t{padding-top:12px;border-top:1px solid var(--edge-soft)}
-.split b.t{font-size:19px}
+.lv-split{display:grid;grid-template-columns:minmax(0,1.25fr) repeat(3,minmax(0,1fr));gap:12px 10px;align-items:baseline;font-variant-numeric:tabular-nums}
+.lv-split.solo{grid-template-columns:minmax(0,1fr) auto}
+.lv-split span{font-size:15px;font-weight:600;overflow-wrap:anywhere}
+.lv-split .h{font-size:13px;font-weight:700;color:var(--mut);text-align:right}
+.lv-split b{font-family:var(--display);font-size:17px;font-weight:800;text-align:right;white-space:nowrap}
+.lv-split .dim{color:var(--mut)}
+.lv-split .t{padding-top:12px;border-top:1px solid var(--edge-soft)}
+.lv-split b.t{font-size:19px}
 /* Under a shared cost line: who pays it. */
 .seg{display:flex;justify-content:flex-end;gap:6px;margin-top:6px}
 .seg button{min-height:40px;padding:4px 14px;border-radius:999px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.04);font-size:13px;font-weight:700;color:var(--mut);transition:background .2s,border-color .2s}
@@ -110,7 +110,7 @@ const Living = (() => {
     $('lvPrincipal').textContent=E(c.principal);$('lvPartnerLabel').textContent=l.together?name.charAt(0).toUpperCase()+name.slice(1)+' betaalt':'Partner betaalt';$('lvPartner').textContent=l.together?money(c.partner):'€ 0';$('lvAll').textContent=money(c.all);
     const cell=(n,cls)=>'<b class="'+cls+'">'+money(n)+'</b>',head=l.together?'<span></span><span class="h">Jij</span><span class="h">'+escapeHtml(name.charAt(0).toUpperCase()+name.slice(1))+'</span><span class="h">Samen</span>':'';
     const line=(label,me,all,cls)=>'<span class="'+cls+'">'+label+'</span>'+cell(me,cls)+(l.together?cell(all-me,cls+(Math.abs(all-me)<0.5?' dim':''))+cell(all,cls+' dim'):'');
-    view().querySelectorAll('[data-split]').forEach(el=>{el.className='split'+(l.together?'':' solo');el.innerHTML=head+c.rows.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Totaal',c.me,c.all,'t');});
+    view().querySelectorAll('[data-split]').forEach(el=>{el.className='lv-split'+(l.together?'':' solo');el.innerHTML=head+c.rows.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Totaal',c.me,c.all,'t');});
     out.set('costs',editing?'Pas namen en bedragen aan. Tik op Klaar als je tevreden bent.':l.lines.length?'Samen '+E(c.costs)+' per maand'+(l.together?', waarvan '+E(c.costsMe)+' voor jou':'')+'. Tik een post uit om te zien wat er zonder gebeurt'+(l.together?', en kies per post wie hem betaalt.':'.'):'');
     out.set('tax',l.taxOn?signed(c.benefit):'€ 0');
     out.set('sp:interestShare',pct(l.interestShare));out.set('sp:costShare',pct(l.costShare));
