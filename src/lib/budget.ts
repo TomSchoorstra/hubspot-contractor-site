@@ -43,9 +43,9 @@ export type BudgetScenario = {
   // deposit of the first pot then goes to the second one until the loan is back. "" = no pot chosen.
   trips: ScenarioTrip[]; tripPot: string; tripLend: string;
 };
-// What living in the house costs per month once it is delivered, and who pays which part when it is shared.
-// A cost line can be switched off, paid by the owner alone (`mine`) or count for the tax deduction (`deduct`).
-export type LivingLine = BudgetLine & { on: boolean; mine: boolean; deduct: boolean };
+// The monthly budget once the house is delivered: income, every cost line, and who pays which part when it is shared.
+// A line can be switched off, paid by the owner alone (`mine`), count for the tax deduction (`deduct`) or be saving.
+export type LivingLine = BudgetLine & { on: boolean; mine: boolean; deduct: boolean; saving: boolean };
 export type BudgetLiving = {
   partner: string; together: boolean;
   // The gross monthly mortgage payment and the interest in it. The rest is repayment, which the owner pays.
@@ -55,8 +55,8 @@ export type BudgetLiving = {
   // The benefit is `taxRate` percent of what is deductible, minus `forfait` (what the notional rental value costs per month).
   // Shared, it is split like the interest; otherwise it is the owner's.
   taxOn: boolean; taxRate: number; forfait: number; taxShared: boolean;
-  // What the owner pays for housing today, to compare with. 0 = not compared.
-  now: number;
+  // The owner's own monthly income by then. The tax benefit is calculated, so it is not listed here.
+  income: BudgetLine[];
   lines: LivingLine[];
 };
 export type BudgetDoc = {
@@ -173,16 +173,20 @@ function normalizeScenario(value: unknown, potIds: Set<string>): BudgetScenario 
 
 function normalizeLiving(value: unknown): BudgetLiving | null {
   if (!isRecord(value)) return null;
-  const { partner, together, payment, interest, interestShare, costShare, taxOn, taxRate, forfait, taxShared, now } = value;
+  const { partner, together, payment, interest, interestShare, costShare, taxOn, taxRate, forfait, taxShared } = value;
   if (typeof partner !== "string" || partner.length > 80) return null;
   if (typeof together !== "boolean" || typeof taxOn !== "boolean" || typeof taxShared !== "boolean") return null;
-  if (!amount(payment) || !amount(interest) || !amount(forfait) || !amount(now)) return null;
+  if (!amount(payment) || !amount(interest) || !amount(forfait)) return null;
   if (!percentage(interestShare) || !percentage(costShare) || !percentage(taxRate)) return null;
   const lines = list<LivingLine>(value.lines, (row, base) =>
+    // `saving` was added later; lines saved before that are costs.
     amount(row.amount) && typeof row.on === "boolean" && typeof row.mine === "boolean" && typeof row.deduct === "boolean"
-      ? { ...base, amount: row.amount, on: row.on, mine: row.mine, deduct: row.deduct } : null);
-  if (!lines || lines.length > 40) return null;
-  return { partner, together, payment, interest, interestShare, costShare, taxOn, taxRate, forfait, taxShared, now, lines };
+      && (row.saving === undefined || typeof row.saving === "boolean")
+      ? { ...base, amount: row.amount, on: row.on, mine: row.mine, deduct: row.deduct, saving: row.saving === true } : null);
+  // Income was added later too; plans saved before that have none.
+  const income = value.income === undefined ? [] : list<BudgetLine>(value.income, (row, base) => (amount(row.amount) ? { ...base, amount: row.amount } : null));
+  if (!lines || !income) return null;
+  return { partner, together, payment, interest, interestShare, costShare, taxOn, taxRate, forfait, taxShared, income, lines };
 }
 
 // A link to a document kept elsewhere: empty, or a plain https address. The document itself is never stored here.

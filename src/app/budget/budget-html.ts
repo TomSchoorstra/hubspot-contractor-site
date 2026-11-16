@@ -352,6 +352,8 @@ const Budget = (() => {
     $('hBar').setAttribute('aria-label','Nu gespaard '+euro(h.now)+', verwacht '+euro(h.expected)+', nog te betalen '+euro(h.remaining));
     $('hNow').textContent=euro(h.now);$('hBudget').textContent=euro(h.remaining);$('itemsPaid').textContent=h.paid?euro(h.paid)+' van '+euro(h.budget)+' al betaald':'Totaal '+euro(h.budget);$('hMonths').textContent=h.months;
     $('hAll').textContent='Met alle potten erbij: '+euro(Math.abs(h.diffAll))+(h.diffAll<0?' tekort.':' over.');
+    // The living view shows its own totals; they follow every change, also while typing in its editors.
+    if(view==='wonen'&&doc.living)Living.numbers();
   }
   function render(){
     for(const name of ['laden','leeg','maand','huis','scenario','wonen'])$('view-'+name).hidden=name!==(doc?view:CONFIG.loaded?'leeg':'laden');
@@ -428,7 +430,7 @@ const Budget = (() => {
   }
   return {initialize,summary,parseMoney,monthsUntil,importText,doc:()=>doc,setDoc:value=>{doc=value;},
     // What the scenario view borrows, so both views calculate and save in the same way.
-    tools:{round,sum,euro,parseMoney,moneyText,projectPots,today,monthName,newId,commit}};
+    tools:{round,sum,euro,percent,parseMoney,moneyText,projectPots,today,monthName,newId,commit,editor,summary}};
 })();
 `;
 

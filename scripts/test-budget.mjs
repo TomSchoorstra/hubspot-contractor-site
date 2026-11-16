@@ -341,12 +341,13 @@ test("a trip borrows from the second pot, is paid back from the holiday deposits
 });
 
 const living = () => ({
-  partner: "Sam", together: true, payment: 1200, interest: 800, interestShare: 50, costShare: 50, taxOn: true, taxRate: 40, forfait: 40, taxShared: false, now: 1400,
+  partner: "Sam", together: true, payment: 1200, interest: 800, interestShare: 50, costShare: 50, taxOn: true, taxRate: 40, forfait: 40, taxShared: false,
+  income: [{ id: "salary", name: "Salaris", amount: 3000 }],
   lines: [
-    { id: "vve", name: "VvE", amount: 120, on: true, mine: false, deduct: false },
-    { id: "ground", name: "Erfpacht", amount: 200, on: true, mine: false, deduct: true },
-    { id: "cover", name: "Verzekering", amount: 20, on: true, mine: true, deduct: false },
-    { id: "off", name: "Uit", amount: 500, on: false, mine: false, deduct: true },
+    { id: "vve", name: "VvE", amount: 120, on: true, mine: false, deduct: false, saving: false },
+    { id: "ground", name: "Erfpacht", amount: 200, on: true, mine: false, deduct: true, saving: false },
+    { id: "cover", name: "Verzekering", amount: 20, on: true, mine: true, deduct: false, saving: false },
+    { id: "off", name: "Uit", amount: 500, on: false, mine: false, deduct: true, saving: false },
   ],
 });
 
@@ -359,10 +360,14 @@ test("living after delivery is validated and budgets saved before it existed hav
   assert.equal(full(l => { l.payment = -1; }), null);
   assert.equal(full(l => { l.together = "yes"; }), null);
   assert.equal(full(l => { l.partner = "x".repeat(81); }), null);
-  assert.equal(full(l => { delete l.now; }), null);
+  // Plans saved before income and saving existed get none; an old comparison amount is dropped.
+  const old = full(l => { delete l.income; l.lines.forEach(x => delete x.saving); l.now = 1400; }).living;
+  assert.equal(old.income.length, 0); assert.equal(old.lines[0].saving, false); assert.equal(old.now, undefined);
+  assert.equal(full(l => { l.income[0].amount = -1; }), null);
+  assert.equal(full(l => { l.lines[0].saving = "yes"; }), null);
   assert.equal(full(l => { l.lines[0].mine = 1; }), null);
   assert.equal(full(l => { l.lines[1].id = "vve"; }), null);
-  assert.equal(full(l => { l.lines = Array.from({ length: 41 }, (_, i) => ({ ...l.lines[0], id: "l" + i })); }), null);
+  assert.equal(full(l => { l.lines = Array.from({ length: 101 }, (_, i) => ({ ...l.lines[0], id: "l" + i })); }), null);
 });
 
 test("living together: the owner repays, interest and costs are shared, and the tax benefit is the owner's unless shared", () => {
@@ -383,14 +388,27 @@ test("living together: the owner repays, interest and costs are shared, and the 
   // Alone, the owner pays everything, whatever the shares say.
   const alone = calc(l => { l.together = false; l.taxShared = true; });
   assert.equal(alone.me, alone.all); assert.equal(alone.partner, 0); assert.equal(alone.all, base.all);
-  // What is left compared with today adds up month by month, starting in the month of delivery.
+  // Saving is its own line, shared like a cost unless it is the owner's alone. What is left is income minus the owner's part.
+  const saving = calc(l => { l.lines.push({ id: "pot", name: "Sparen", amount: 300, on: true, mine: true, deduct: false, saving: true }); });
+  assert.equal(saving.savings, 300); assert.equal(saving.savingsMe, 300); assert.equal(saving.costs, 340); assert.equal(saving.me, base.me + 300); assert.equal(saving.partner, base.partner);
+  assert.equal(base.income, 3000); assert.equal(base.left, 3000 - 620); assert.equal(base.mortgageMe, 400 + 400 - 360);
+  // What is left adds up month by month, starting in the month of delivery. Without income nothing is shown.
   const house = { house: { target: "2028-11" } }, grown = context.L.growth(house, living());
-  assert.equal(grown.each, 1400 - base.me); assert.equal(grown.months.length, 12);
-  assert.equal(grown.months[0].month, "2028-11"); assert.equal(grown.months[0].total, 780);
-  assert.equal(grown.months[2].month, "2029-01"); assert.equal(grown.months[11].total, 780 * 12);
+  assert.equal(grown.each, 2380); assert.equal(grown.months.length, 12);
+  assert.equal(grown.months[0].month, "2028-11"); assert.equal(grown.months[0].total, 2380);
+  assert.equal(grown.months[2].month, "2029-01"); assert.equal(grown.months[11].total, 2380 * 12);
   assert.equal(context.L.growth({ ...house, scenario: { delivery: "2029-06" } }, living()).months[0].month, "2029-06");
-  assert.equal(context.L.growth(house, { ...living(), now: 0 }).each, 0);
-  assert.equal(context.L.growth(house, { ...living(), now: 500 }).months[1].total, -240);
+  assert.equal(context.L.growth(house, { ...living(), income: [] }).each, 0);
+  assert.equal(context.L.growth(house, { ...living(), income: [{ id: "s", name: "", amount: 500 }] }).months[1].total, -240);
+  // Copying this month: posts of the current home come in switched off, everything is the owner's alone,
+  // the tax refund is not income here, and a second copy adds nothing.
+  const month = { costs: [{ id: "rent", name: "Huur", amount: 900, saving: false }, { id: "phone", name: "Telefoon", amount: 20, saving: false }, { id: "pot", name: "Sparen", amount: 300, saving: true }, { id: "vve", name: "Dubbel", amount: 1, saving: false }],
+    income: [{ id: "salary", name: "Salaris", amount: 3100 }, { id: "refund", name: "Teruggaaf belasting", amount: 200 }] };
+  const target = { ...living(), income: [] }, copied = context.L.copyMonth(month, target);
+  assert.equal(JSON.stringify(copied), JSON.stringify({ lines: 3, off: 1, income: 1 }));
+  assert.equal(JSON.stringify(target.lines.slice(-3).map(x => [x.id, x.on, x.mine, x.saving])), JSON.stringify([["rent", false, true, false], ["phone", true, true, false], ["pot", true, true, true]]));
+  assert.equal(JSON.stringify(target.income), JSON.stringify([{ id: "salary", name: "Salaris", amount: 3100 }]));
+  assert.equal(JSON.stringify(context.L.copyMonth(month, target)), JSON.stringify({ lines: 0, off: 0, income: 0 }));
   // More interest than payment means no repayment, never a negative one.
   assert.equal(calc(l => { l.interest = 1500; }).principal, 0);
 });

@@ -61,13 +61,17 @@ const DEMO = {
     tripPot: "holiday", tripLend: "buffer",
   },
   living: {
-    partner: "Sam", together: true, payment: 1200, interest: 800, interestShare: 50, costShare: 50, taxOn: true, taxRate: 37, forfait: 40, taxShared: false, now: 1400,
+    partner: "Sam", together: true, payment: 1200, interest: 800, interestShare: 50, costShare: 50, taxOn: true, taxRate: 37, forfait: 40, taxShared: false,
+    income: [{ id: "salary", name: "Salaris", amount: 3000 }],
     lines: [
-      { id: "vve", name: "Vereniging van eigenaren", amount: 120, on: true, mine: false, deduct: false },
-      { id: "ground", name: "Erfpacht", amount: 200, on: true, mine: true, deduct: true },
-      { id: "power", name: "Energie", amount: 110, on: true, mine: false, deduct: false },
-      { id: "net", name: "Internet", amount: 50, on: true, mine: false, deduct: false },
-      { id: "cover", name: "Verzekering op mijn naam", amount: 20, on: true, mine: true, deduct: false },
+      { id: "vve", name: "Vereniging van eigenaren", amount: 120, on: true, mine: false, deduct: false, saving: false },
+      { id: "ground", name: "Erfpacht", amount: 200, on: true, mine: true, deduct: true, saving: false },
+      { id: "power", name: "Energie", amount: 110, on: true, mine: false, deduct: false, saving: false },
+      { id: "net", name: "Internet", amount: 50, on: true, mine: false, deduct: false, saving: false },
+      { id: "cover", name: "Verzekering op mijn naam", amount: 20, on: true, mine: true, deduct: false, saving: false },
+      { id: "phone", name: "Telefoon", amount: 20, on: true, mine: true, deduct: false, saving: false },
+      { id: "pot", name: "Sparen", amount: 300, on: true, mine: true, deduct: false, saving: true },
+      { id: "rent", name: "Huur", amount: 900, on: false, mine: true, deduct: false, saving: false },
     ],
   },
 };
