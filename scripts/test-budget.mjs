@@ -471,3 +471,44 @@ test("living mortgage inputs update the result without replacing the active fiel
   assert.equal(field["aria-invalid"], "true");
   assert.equal(doc.living.taxRate, 40);
 });
+
+test("mortgage cash flow shows the full bank payment and subtracts the partner's refund only once", () => {
+  const { context } = scenarioWorld(), l = living();
+  l.taxShared = true;
+  const c = context.L.calc(l), f = context.L.cashflow(l);
+  assert.equal(f.mortgage, 1200);
+  assert.equal(f.interestPartner, 400);
+  assert.equal(f.refundPartner, 160);
+  assert.equal(f.contribution, 240);
+  assert.equal(f.taxReceived, 360);
+  assert.equal(f.incoming, 3000 + 240 + 360);
+  assert.equal(f.outgoing, 1200 + 180);
+  assert.equal(f.left, c.left);
+  // When the refund stays with the owner, the partner pays gross interest.
+  l.taxShared = false;
+  assert.equal(context.L.cashflow(l).contribution, 400);
+  assert.equal(context.L.cashflow(l).left, context.L.calc(l).left);
+});
+
+test("mortgage cash flow preserves the result for solo budgets, savings, shares and net tax payments", () => {
+  const { context } = scenarioWorld();
+  const changes = [
+    l => { l.together = false; l.taxShared = true; },
+    l => { l.taxOn = false; l.taxShared = true; },
+    l => { l.interestShare = 0; l.costShare = 100; l.taxShared = true; },
+    l => { l.interestShare = 100; l.costShare = 0; l.taxShared = true; },
+    l => { l.interestShare = 35; l.costShare = 65; l.interest = 823.17; l.taxRate = 37.5; l.taxShared = true; },
+    l => { l.forfait = 1000; l.taxShared = true; },
+    l => { l.interest = 1500; },
+    l => { l.lines[1].on = false; l.lines.push({ id: "save", name: "Saving", amount: 300, on: true, mine: false, deduct: false, saving: true }); },
+  ];
+  for (const change of changes) {
+    const l = living(); change(l);
+    const c = context.L.calc(l), f = context.L.cashflow(l);
+    assert.equal(f.left, c.left);
+    assert.equal(Math.round((f.incoming - f.outgoing) * 100), Math.round(c.left * 100));
+    assert.ok(f.taxReceived >= 0); assert.ok(f.taxPaid >= 0);
+    if (!l.together) assert.equal(f.contribution, 0);
+    if (c.benefit < 0) { assert.equal(f.taxReceived, 0); assert.equal(f.taxPaid, -c.benefit); }
+  }
+});

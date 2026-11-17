@@ -34,6 +34,14 @@ export const LIVING_CSS = String.raw`
 .lv-income-lines>div{display:flex;justify-content:space-between;gap:12px;padding:8px 0;color:var(--mut);font-size:14px}
 .lv-income-lines b{color:var(--ink);white-space:nowrap;font-variant-numeric:tabular-nums}
 .lv-income-lines span{min-width:0;overflow-wrap:anywhere}
+.lv-cash-note{font-size:13px;color:var(--mut);margin-top:8px;line-height:1.5}
+.lv-info{display:inline-grid;place-items:center;min-width:28px;min-height:28px;margin-left:3px;border:1px solid var(--edge);border-radius:50%;font-size:13px;font-weight:800;color:var(--tide);vertical-align:middle}
+.lv-info[aria-expanded=true]{background:rgba(116,236,208,.12)}
+.lv-explain{margin-top:12px;padding:14px;border:1px solid var(--edge-soft);border-radius:var(--r-sm);background:rgba(116,236,208,.06);font-size:14px;color:var(--mut);line-height:1.5;overflow-wrap:anywhere}
+.lv-explain h3{font-size:16px;color:var(--ink);margin-bottom:8px}
+.lv-explain p+p{margin-top:8px}
+.lv-explain dl{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:6px 12px;margin:10px 0}
+.lv-explain dd{white-space:nowrap;text-align:right;font-weight:700;color:var(--ink);font-variant-numeric:tabular-nums}
 .lv-breakdown{overflow-x:auto}
 .lv-split{width:100%;border-collapse:collapse;font-size:13px;font-variant-numeric:tabular-nums}
 .lv-split th,.lv-split td{padding:9px 6px;text-align:right;vertical-align:top;white-space:nowrap}
@@ -60,16 +68,20 @@ export const LIVING_CSS = String.raw`
 .seg button{min-height:28px;padding:3px 9px;border-radius:999px;border:1px solid var(--edge-soft);background:rgba(255,255,255,.04);font-size:12px;font-weight:700;line-height:1.25;color:var(--mut);transition:background .2s,border-color .2s}
 .seg button[aria-checked=true]{border-color:var(--ink);background:rgba(255,255,255,.14);color:var(--ink)}
 /* What is left over, added up month by month: one bar per month, the amount on hover or focus. */
-.lv-chart{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));margin-top:14px}
-.lv-bar{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:216px;outline:0}
+.lv-chart-labels,.lv-chart-period{display:flex;justify-content:space-between;gap:10px 16px;flex-wrap:wrap}
+.lv-chart-labels{margin-top:14px;font-family:var(--display);font-size:17px;font-weight:800;font-variant-numeric:tabular-nums}
+.lv-chart-labels>span{white-space:nowrap}
+.lv-chart-labels>span:last-child{text-align:right;margin-left:auto}
+.lv-chart-labels small{font-size:12px;line-height:1.4;font-weight:500}
+.lv-chart-period{margin-top:4px;font-size:12px;color:var(--mut)}
+.lv-chart-period span{white-space:nowrap;overflow-wrap:normal}
+.lv-chart{display:grid;grid-template-columns:repeat(12,minmax(0,1fr));margin-top:8px}
+.lv-bar{position:relative;display:flex;flex-direction:column;justify-content:flex-end;align-items:center;height:182px;outline:0}
 .lv-bar i{display:block;width:62%;max-width:26px;border-radius:4px 4px 0 0;background:var(--tide);transition:filter .15s}
 .lv-bar.neg i{background:var(--amber)}
 .lv-bar:hover i,.lv-bar:focus i{filter:brightness(1.25)}
 .lv-bar:focus-visible i{outline:2px solid var(--ink);outline-offset:2px}
-.lv-bar small{width:100%;height:36px;padding-top:6px;border-top:1px solid var(--edge);font-size:12px;font-weight:700;line-height:1.25;color:var(--mut);text-align:center;text-transform:uppercase}
-.lv-bar small em{display:block;font-style:normal;font-weight:500;text-transform:none;color:var(--dim)}
-.lv-val{position:absolute;font-family:var(--display);font-size:15px;font-weight:800;font-variant-numeric:tabular-nums;white-space:nowrap}
-.lv-val.first{left:0}.lv-val.last{right:0}
+.lv-bar small{width:100%;height:28px;padding-top:6px;border-top:1px solid var(--edge);font-size:12px;font-weight:700;line-height:1.25;color:var(--mut);text-align:center;text-transform:uppercase;white-space:nowrap;overflow-wrap:normal}
 .lv-tip{display:none;position:absolute;top:0;z-index:12;width:max-content;padding:10px 12px;border-radius:14px;background:#141b38;border:1px solid var(--edge);box-shadow:0 18px 40px -18px rgba(0,0,0,.9);font-size:13px;font-weight:500;line-height:1.4;color:var(--mut);text-align:left;pointer-events:none}
 .lv-tip.l{left:0}.lv-tip.r{right:0}.lv-tip.c{left:50%;transform:translateX(-50%)}
 .lv-tip b{display:block;font-family:var(--display);font-size:17px;font-weight:800;color:var(--ink);font-variant-numeric:tabular-nums}
@@ -81,9 +93,9 @@ export const LIVING_VIEW = String.raw`<section class="view" id="view-wonen" hidd
 <header class="page-heading"><div><div class="micro">Maandbudget · na de bouw</div><h1 id="lvTitle">Na de bouw</h1></div><a class="ghost" href="#huis">Terug naar Huis</a></header>
 <div class="section pane" id="lvEmpty" hidden><h2 style="font-size:22px;font-weight:700">Nog niets ingevuld</h2><p class="hero-note" style="margin:8px 0 16px">Maak je maandbudget voor als je in je huis woont: wat er binnenkomt, wat het kost en wie welk deel betaalt. Deze maand en je Huis-pagina veranderen hier niet door.</p><button type="button" class="primary" data-act="start">Beginnen</button></div>
 <div id="lvBody" hidden>
-<section class="hero glass" id="lvOverview" aria-label="Je maand na de bouw"><div class="hero-label" id="lvLabel"></div><div class="hero-number" id="lvResult">€ 0</div><p class="hero-note" id="lvNote"></p><div class="stats lv-overview-stats"><div><span id="lvIncomeLabel">Inkomen incl. renteaftrek</span><strong id="lvIncome">€ 0</strong></div><div><span>Jouw uitgaven + sparen</span><strong id="lvMe">€ 0</strong></div><div><span id="lvPartnerLabel"></span><strong id="lvPartner">€ 0</strong></div></div></section>
+<section class="hero glass" id="lvOverview" aria-label="Je maand na de bouw"><div class="hero-label" id="lvLabel"></div><div class="hero-number" id="lvResult">€ 0</div><p class="hero-note" id="lvNote"></p><div class="stats lv-overview-stats"><div><span id="lvIncomeLabel">Binnen op je rekening</span><strong id="lvIncome">€ 0</strong></div><div><span>Uitgaven + sparen</span><strong id="lvMe">€ 0</strong></div><div><span id="lvPartnerLabel"></span><strong id="lvPartner">€ 0</strong></div></div></section>
 <button type="button" class="lv-sticky glass" id="lvSticky" data-act="overview" aria-label="Terug naar het maandoverzicht" hidden><span id="lvStickyLabel"></span><b id="lvStickyAmount"></b></button>
-<div class="lv-layout"><section class="section pane" aria-labelledby="lvCostsTitle"><div class="section-head"><h2 id="lvCostsTitle">Maandbedragen</h2><button type="button" class="text-button" id="lvCostsEdit" data-act="edit-costs">Posten aanpassen</button></div><p class="hero-note" id="lvCostsHint" style="margin-bottom:10px"></p><div id="lvIncomeSection"></div><div id="lvCostsHost"></div><div class="section-foot" id="lvCopyFoot" hidden><button type="button" class="ghost" data-act="copy">Neem over van Deze maand</button><span class="hero-note">Kopieert je posten en inkomen.</span></div></section>
+<div class="lv-layout"><section class="section pane" aria-labelledby="lvCostsTitle"><div class="section-head"><h2 id="lvCostsTitle">Maandbedragen</h2><button type="button" class="text-button" id="lvCostsEdit" data-act="edit-costs">Posten aanpassen</button></div><p class="hero-note" id="lvCostsHint" style="margin-bottom:10px"></p><div id="lvIncomeSection"></div><div id="lvCostsHost"></div><div class="row static" id="lvTaxPayment" hidden><span class="row-name">Belasting<small>Te betalen volgens je belastinginstellingen</small></span><span class="row-amount" data-out="cash:tax-paid"></span></div><div class="section-foot" id="lvCopyFoot" hidden><button type="button" class="ghost" data-act="copy">Neem over van Deze maand</button><span class="hero-note">Kopieert je posten en inkomen.</span></div></section>
 <aside class="lv-side" id="lvControls" aria-label="Verdeling en vooruitblik"></aside></div>
 </div>
 </section>`;
@@ -91,7 +103,7 @@ export const LIVING_VIEW = String.raw`<section class="view" id="view-wonen" hidd
 export const LIVING_SCRIPT = String.raw`
 const Living = (() => {
   const T=Budget.tools,U=Scenario.ui;
-  let bound=false,observer=null,reveal=null,editReturn=null;const editing={costs:false,income:false},open=new Set(),view=()=>$('view-wonen'),plan=()=>Budget.doc().living;
+  let bound=false,observer=null,reveal=null,editReturn=null,taxInfoOpen=false;const editing={costs:false,income:false},open=new Set(),view=()=>$('view-wonen'),plan=()=>Budget.doc().living;
   const E=n=>T.euro(Math.abs(Math.round(n))),money=n=>(Math.round(n)<0?'− ':'')+E(n),signed=n=>(Math.round(n)<0?'− ':'+ ')+E(n),pct=n=>String(n).replace('.',',')+'%';
   const who=l=>l.partner.trim()||'je partner',cap=text=>text.charAt(0).toUpperCase()+text.slice(1);
 
@@ -115,6 +127,26 @@ const Living = (() => {
     const out=T.round(me+benefitMe),outAll=T.round(all+benefit);
     return {rows,me,all,partner:T.round(all-me),principal,interestMe,benefit,benefitMe,costs,costsMe,savings,savingsMe,deductible,costShare,mortgageMe:T.round(principal+interestMe),out,outAll,income,incomeAll:T.round(income+benefitMe),left:T.round(income-me)};
   }
+  // Only the mortgage is advanced in full by the owner. Other posts stay at the owner's own share.
+  // Sharing the interest refund reduces the partner's mortgage transfer, not the refund received from tax.
+  function cashflow(l,c=calc(l)){
+    const interestPartner=l.together?T.round(l.interest-c.interestMe):0,refundPartner=l.together?T.round(c.benefit-c.benefitMe):0;
+    const contribution=T.round(interestPartner-refundPartner),mortgage=T.round(c.principal+l.interest);
+    const taxReceived=Math.max(0,c.benefit),taxPaid=Math.max(0,-c.benefit);
+    const incoming=T.round(c.income+contribution+taxReceived),outgoing=T.round(mortgage+c.costsMe+c.savingsMe+taxPaid);
+    return {interestPartner,refundPartner,contribution,mortgage,taxReceived,taxPaid,incoming,outgoing,left:T.round(incoming-outgoing)};
+  }
+  function taxExplanation(l,c){
+    if(!l.taxOn)return '<h3>Renteaftrek staat uit</h3><p>Er wordt nu geen teruggaaf of verrekening meegerekend.</p>';
+    const f=cashflow(l,c),other=T.sum(l.lines.filter(x=>x.on&&x.deduct),x=>x.amount);
+    const item=(label,amount)=>'<dt>'+label+'</dt><dd>'+(amount<0?'− ':'')+T.euro(Math.abs(amount))+'</dd>';
+    return '<h3>Zo rekent dit budget</h3><p>De volledige berekende teruggaaf komt bij jou binnen.'+(l.together?' De tabel verdeelt het voordeel tussen jullie.':'')+'</p><dl>'+
+      item('Voordeel op de rente ('+pct(l.taxRate)+')',T.round(l.taxRate/100*l.interest))+
+      item('Voordeel op overige aftrekbare posten',T.round(l.taxRate/100*other))+
+      item('Eigenwoningforfait',-l.forfait)+item('Totale teruggaaf',c.benefit)+
+      (l.together?item('Voordeel voor '+escapeHtml(who(l)),f.refundPartner):'')+item('Voordeel voor jou',c.benefitMe)+'</dl><p>'+
+      (l.together&&l.taxShared?escapeHtml(cap(who(l)))+' deelt alleen in de aftrek over het eigen renteaandeel. Het voordeel op andere aftrekbare posten en het eigenwoningforfait blijven bij jou. Het deel van '+escapeHtml(who(l))+' wordt verrekend met de hypotheekbijdrage.':l.together?'Netto rente delen staat uit. De volledige teruggaaf blijft daarom bij jou.':'Je woont alleen; de volledige teruggaaf blijft bij jou.')+'</p><p>Dit is een schatting op basis van de ingevulde belastinginstellingen.</p>';
+  }
   // What is left each month, added up: a month keeps what the months before it left.
   function growth(d,l,count=12){
     const c=calc(l),each=c.income>0?c.left:0,start=d.scenario?d.scenario.delivery:d.house.target,months=[];
@@ -124,12 +156,11 @@ const Living = (() => {
   }
   function chartHtml(g){
     const top=Math.max(...g.months.map(x=>Math.abs(x.total)),1),neg=g.each<0,last=g.months.length-1;
-    return '<div class="lv-chart" role="list" aria-label="Wat je overhoudt, opgeteld per maand">'+g.months.map((x,k)=>{
-      const h=Math.max(3,Math.round(Math.abs(x.total)/top*150)),name=T.monthName(x.month),letter=name.slice(0,1),jan=x.month.slice(5,7)==='01'||k===0;
+    return '<div class="lv-chart-labels" aria-hidden="true"><span>'+money(g.months[0].total)+'<small>Eerste maand</small></span><span>'+money(g.months[last].total)+'<small>Na '+g.months.length+' maanden</small></span></div><div class="lv-chart" role="list" aria-label="Wat je overhoudt, opgeteld per maand">'+g.months.map((x,k)=>{
+      const h=Math.max(3,Math.round(Math.abs(x.total)/top*150)),name=T.monthName(x.month),letter=name.slice(0,1);
       return '<div class="lv-bar'+(neg?' neg':'')+'" role="listitem" tabindex="0" aria-label="'+escapeHtml(name+': '+money(x.total))+'">'+
-        (k===0||k===last?'<span class="lv-val '+(k===0?'first':'last')+'" style="bottom:'+(h+42)+'px">'+money(x.total)+'</span>':'')+
-        '<i style="height:'+h+'px"></i><small>'+letter+(jan?'<em>'+x.month.slice(0,4)+'</em>':'')+'</small>'+
-        '<span class="lv-tip '+(k<4?'l':k>7?'r':'c')+'">'+escapeHtml(name)+'<b>'+money(x.total)+'</b>'+signed(g.each)+' deze maand</span></div>';}).join('')+'</div>';
+        '<i style="height:'+h+'px"></i><small aria-hidden="true">'+letter+'</small>'+
+        '<span class="lv-tip '+(k<4?'l':k>7?'r':'c')+'">'+escapeHtml(name)+'<b>'+money(x.total)+'</b>'+signed(g.each)+' deze maand</span></div>';}).join('')+'</div><div class="lv-chart-period" aria-hidden="true"><span>'+escapeHtml(T.monthName(g.months[0].month))+'</span><span>'+escapeHtml(T.monthName(g.months[last].month))+'</span></div>';
   }
   function empty(d){const sc=d.scenario;
     return {partner:'',together:true,payment:sc?sc.mortgageFull:0,interest:0,interestShare:50,costShare:50,taxOn:true,taxRate:sc?sc.taxRate:0,forfait:0,taxShared:false,income:[],lines:[]};}
@@ -157,7 +188,7 @@ const Living = (() => {
     const l=plan(),name=escapeHtml(who(l));
     $('lvCostsEdit').textContent=editing.costs?'Klaar':'Posten aanpassen';$('lvCopyFoot').hidden=!editing.costs;
     const field=(label,key,type)=>U.fieldHtml(label,{sc:'num',key},l[key],type);
-    $('lvIncomeSection').innerHTML=fold('income','Inkomen','<div data-income-lines class="lv-income-lines"'+(editing.income?' hidden':'')+'></div><div id="lvIncomeHost"></div><button type="button" class="text-button" id="lvIncomeEdit" data-act="edit-income">'+(editing.income?'Klaar':'Inkomen aanpassen')+'</button><p class="hero-note">De renteaftrek wordt berekend bij Belasting en telt hier mee als inkomen.</p>');
+    $('lvIncomeSection').innerHTML=fold('income','Inkomsten','<div data-income-lines class="lv-income-lines"'+(editing.income?' hidden':'')+'></div><p class="lv-cash-note" data-cash-note></p><div id="lvIncomeHost"></div><button type="button" class="text-button" id="lvIncomeEdit" data-act="edit-income">'+(editing.income?'Klaar':'Inkomen aanpassen')+'</button><p class="hero-note">Bijdrage en teruggaaf worden berekend uit je instellingen.</p>');
     if(editing.income)T.editor($('lvIncomeHost'),l.income,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'}],'Inkomen toevoegen',()=>({id:T.newId(),name:'',amount:0}));
     const host=$('lvCostsHost');
     if(editing.costs)T.editor(host,l.lines,[{key:'name',label:'Naam',type:'text'},{key:'amount',label:'Bedrag per maand',type:'money'},{key:'saving',label:'Dit is sparen',type:'check'},{key:'mine',label:'Ik betaal alles',type:'check'},{key:'deduct',label:'Aftrekbaar voor de belasting',type:'check'}],'Post toevoegen',()=>({id:T.newId(),name:'',amount:0,on:true,mine:false,deduct:false,saving:false}));
@@ -165,7 +196,7 @@ const Living = (() => {
       const on=l.lines.filter(x=>x.on),costs=on.filter(x=>!x.saving),saving=on.filter(x=>x.saving),off=l.lines.filter(x=>!x.on);
       const still=(label,amount,note)=>'<div class="row static"><span class="row-name">'+label+'<small data-out="'+note+'"></small></span><span class="row-amount" data-out="'+amount+'"></span></div>';
       const group=(key,label,rows)=>fold(key,label,(rows.length?'<div class="rows">'+rows.map(x=>lineRow(l,x)).join('')+'</div>':'<p class="empty">Nog geen posten in dit onderdeel.</p>')+'<button type="button" class="text-button" data-act="edit-costs" data-group="'+key+'">Alle posten aanpassen</button>');
-      host.innerHTML=fold('mortgage','Hypotheek','<div class="rows">'+still('Aflossing','hy:principal','hn:principal')+still('Rente','hy:interest','hn:interest')+'</div><div class="sc-grid">'+field('Bruto per maand','payment','money')+field('Waarvan rente','interest','money')+'</div>')+
+      host.innerHTML=fold('mortgage','Hypotheek','<div class="rows">'+still('Aflossing','hy:principal','hn:principal')+still('Rente','hy:interest','hn:interest')+'</div><p class="lv-cash-note" data-mortgage-note></p><div class="sc-grid">'+field('Bruto per maand','payment','money')+field('Waarvan rente','interest','money')+'</div>')+
         group('costs','Vaste lasten',costs)+group('savings','Sparen',saving)+(off.length?group('off','Uitgeschakeld',off):'');
     }
     const sw=(act,on,title,note)=>'<button type="button" class="row" role="checkbox" aria-checked="'+on+'" data-act="'+act+'"><span class="tick">'+icon('check')+'</span><span class="row-name">'+title+'<small>'+note+'</small></span><span class="row-amount"></span><span class="row-tip" data-why="'+act+'"></span></button>';
@@ -173,39 +204,47 @@ const Living = (() => {
     $('lvControls').innerHTML=
       fold('division','Verdeling instellen','<div class="rows">'+sw('together',l.together,'Samen met '+name,'Uit: je woont er alleen en betaalt alles zelf')+'</div>'+(l.together?'<div class="sc-grid">'+field('Naam van je partner','partner','text')+'</div>'+slider('interestShare','Jouw deel van de rente')+slider('costShare','Jouw deel van gedeelde posten'):'')+'<p class="hero-note">De aflossing betaal jij zelf: daarmee bouw je vermogen op in je huis.</p>',true)+
       fold('tax','Belasting','<div class="rows">'+sw('tax',l.taxOn,'Renteaftrek meerekenen','Teruggaaf min het eigenwoningforfait')+(l.together?sw('tax-shared',l.taxShared,'Netto rente delen met '+name,'Deel de teruggaaf over de rente die ieder betaalt'):'')+'</div><div class="sc-grid">'+field('Voordeel per euro aftrek (%)','taxRate','pct')+field('Eigenwoningforfait kost per maand','forfait','money')+'</div><p class="hero-note" data-out="deduct" style="margin-top:10px"></p>',true)+
-      fold('breakdown','Wie betaalt wat','<p class="hero-note">Per maand, per post. De renteaftrek staat apart onder de uitgaven.</p><div class="lv-breakdown" role="region" aria-label="Verdeling per post" tabindex="0" data-split></div>',true)+
+      fold('breakdown','Wie betaalt wat','<p class="hero-note" data-allocation-note></p><div class="lv-breakdown" role="region" aria-label="Verdeling per post" tabindex="0" data-split></div>',true)+
       fold('growth','Na 12 maanden','<p class="hero-note" data-out="keepNote"></p><div data-chart></div>',true);
   }
   // Every number on the page, refreshed without redrawing the inputs themselves.
   function numbers(){
-    const d=Budget.doc(),l=plan();if(!l)return;const c=calc(l),name=who(l),out=new Map(),has=c.income>0,nowLeft=T.summary(d).month.left,more=T.round(c.left-nowLeft);
+    const d=Budget.doc(),l=plan();if(!l)return;const c=calc(l),f=cashflow(l,c),name=who(l),out=new Map(),has=c.income>0,nowLeft=T.summary(d).month.left,more=T.round(c.left-nowLeft);
     $('lvLabel').textContent=has?'Over per maand na de bouw, netto':'Jouw kosten per maand, netto';
     $('lvResult').innerHTML=has?E(c.left)+'<small>'+(c.left<0?'tekort':'over')+'</small>':E(c.me)+'<small>per maand</small>';$('lvResult').className='hero-number'+(has?c.left<0?' short':' good':'');
-    $('lvNote').textContent=(l.together?'Samen met '+name+'. ':'Je woont er alleen. ')+(has?Math.abs(more)<0.5?'Evenveel als je nu overhoudt.':E(more)+(more>0?' meer':' minder')+' dan de '+money(nowLeft)+' die je nu per maand overhoudt.':'Vul je inkomen in bij Inkomen om te zien wat je overhoudt.');
-    $('lvIncomeLabel').textContent=l.taxOn?'Inkomen incl. renteaftrek':'Netto inkomen';$('lvIncome').textContent=money(c.incomeAll);$('lvMe').textContent=money(c.out);
-    $('lvPartnerLabel').textContent=l.together?cap(name)+' betaalt netto':'Waarvan aflossing';$('lvPartner').textContent=money(l.together?c.partner:c.principal);
+    $('lvNote').textContent=(l.together?'Samen met '+name+'. ':'Je woont er alleen. ')+(has?Math.abs(more)<0.5?'Evenveel als je nu overhoudt.':E(more)+(more>0?' meer':' minder')+' dan de '+money(nowLeft)+' die je nu per maand overhoudt.':'Vul je inkomen in bij Inkomsten om te zien wat je overhoudt.');
+    $('lvIncomeLabel').textContent='Binnen op je rekening';$('lvIncome').textContent=money(f.incoming);$('lvMe').textContent=money(f.outgoing);
+    $('lvPartnerLabel').textContent=l.together?'Hypotheekbijdrage '+name:'Waarvan aflossing';$('lvPartner').textContent=money(l.together?f.contribution:c.principal);
     $('lvStickyLabel').textContent=has?c.left<0?'Tekort per maand':'Over per maand':'Jouw kosten, netto';
     $('lvStickyAmount').textContent=E(has?c.left:c.me);$('lvStickyAmount').className=has?(c.left<0?'short':'good'):'';
-    $('lvCostsHint').textContent=editing.costs?'Pas namen en bedragen aan, of sleep om de volgorde te wijzigen.':'Jouw deel per maand. Open een onderdeel om het te bekijken of aan te passen.';
-    const incomeLine=(label,amount)=>'<div><span>'+escapeHtml(label||'Naamloos')+'</span><b>'+money(amount)+'</b></div>';
-    view().querySelectorAll('[data-income-lines]').forEach(el=>{el.innerHTML=l.income.map(x=>incomeLine(x.name,x.amount)).join('')+(l.taxOn?incomeLine('Hypotheekrenteaftrek',c.benefitMe):'')+(l.income.length?'':'<p class="empty">Voeg je inkomen toe om te zien wat je overhoudt.</p>');});
-    out.set('total:income',money(c.incomeAll));out.set('note:income',l.taxOn?'Netto inkomen + jouw renteaftrek':'Netto inkomen');
-    out.set('total:mortgage',money(c.mortgageMe));out.set('note:mortgage','Jouw aflossing + '+(l.together?'jouw deel van de rente':'rente'));
+    $('lvCostsHint').textContent=editing.costs?'Pas namen en bedragen aan, of sleep om de volgorde te wijzigen.':'Hypotheek: de volledige betaling. Overige posten: jouw deel. Open een onderdeel om het aan te passen.';
+    const incomeLine=(label,amount)=>'<div><span>'+escapeHtml(label||'Naamloos')+'</span><b>'+T.euro(amount)+'</b></div>';
+    view().querySelectorAll('[data-income-lines]').forEach(el=>{el.innerHTML=l.income.map(x=>incomeLine(x.name,x.amount)).join('')+(l.together?incomeLine('Hypotheekbijdrage '+name,f.contribution):'')+(l.taxOn&&c.benefit>=0?incomeLine('Teruggaaf Belastingdienst',f.taxReceived):'')+(l.income.length?'':'<p class="empty">Voeg je inkomen toe om te zien wat je overhoudt.</p>');});
+    const contributionNote=l.together?cap(name)+' betaalt '+T.euro(f.interestPartner)+' van de bruto rente.'+(f.refundPartner>0?' Daar gaat '+T.euro(f.refundPartner)+' gedeelde renteaftrek vanaf: netto '+T.euro(f.contribution)+' naar jou.':' Die bijdrage komt bij jou binnen.'):'Je betaalt de hypotheek volledig zelf.';
+    view().querySelectorAll('[data-cash-note]').forEach(el=>{el.textContent=contributionNote;});
+    view().querySelectorAll('[data-mortgage-note]').forEach(el=>{el.textContent='Jij betaalt '+T.euro(f.mortgage)+' aan de bank. '+contributionNote;});
+    $('lvTaxPayment').hidden=f.taxPaid===0;
+    out.set('cash:tax-paid',money(f.taxPaid));
+    out.set('total:income',money(f.incoming));out.set('note:income','Netto inkomen'+(l.together?' + hypotheekbijdrage':'')+(f.taxReceived>0?' + teruggaaf':''));
+    out.set('total:mortgage',money(f.mortgage));out.set('note:mortgage','Volledig van jouw rekening · aflossing + rente');
     const costs=l.lines.filter(x=>x.on&&!x.saving),savings=l.lines.filter(x=>x.on&&x.saving),off=l.lines.filter(x=>!x.on);
     for(const [key,rows,me,all] of [['costs',costs,c.costsMe,c.costs],['savings',savings,c.savingsMe,c.savings]]){
       out.set('total:'+key,money(me));out.set('note:'+key,rows.length+(rows.length===1?' post':' posten')+(l.together?' · samen '+money(all):''));
     }
     out.set('total:off',String(off.length));out.set('note:off','Tellen niet mee in je maandbudget');
     out.set('total:division',l.together?'Samen':'Alleen');out.set('note:division',l.together?'Jouw deel: rente '+pct(l.interestShare)+' · posten '+pct(l.costShare):'Je betaalt alles zelf');
-    out.set('total:tax',l.taxOn?money(c.benefitMe):'Uit');out.set('note:tax',!l.taxOn?'Renteaftrek telt niet mee':l.together&&l.taxShared?'Jouw teruggaaf · netto rente gedeeld':'De teruggaaf is voor jou');
+    out.set('total:tax',l.taxOn?money(c.benefitMe):'Uit');out.set('note:tax',!l.taxOn?'Renteaftrek telt niet mee':l.together&&l.taxShared?'Jouw voordeel · netto rente gedeeld':'De teruggaaf is voor jou');
     out.set('total:breakdown',money(l.together?c.outAll:c.out));out.set('note:breakdown',l.together?'Alle uitgaven samen, vóór renteaftrek':'Jouw uitgaven, vóór renteaftrek');
     out.set('hy:principal',E(c.principal));out.set('hn:principal','Betaal jij: jouw vermogen in het huis');
-    out.set('hy:interest',E(c.interestMe));out.set('hn:interest',l.together?'Jouw deel van '+E(l.interest):'Betaal je zelf');
+    out.set('hy:interest',E(l.interest));out.set('hn:interest',l.together?'Jouw bruto aandeel '+T.euro(c.interestMe)+' · '+name+' '+T.euro(f.interestPartner):'Betaal je zelf');
     const head='<thead><tr><th scope="col">Post</th><th scope="col">Jij</th>'+(l.together?'<th scope="col">'+escapeHtml(cap(name))+'</th><th scope="col">Samen</th>':'')+'</tr></thead>';
     const line=(label,me,all,cls)=>'<tr class="'+cls+'"><th scope="row">'+label+'</th><td>'+money(me)+'</td>'+(l.together?'<td'+(Math.abs(all-me)<0.5?' class="dim"':'')+'>'+money(all-me)+'</td><td class="dim">'+money(all)+'</td>':'')+'</tr>';
     const active=l.lines.filter(x=>x.on),own=x=>({name:escapeHtml(x.name||'Naamloos')+(x.saving?' <small>sparen</small>':''),me:x.mine||!l.together?x.amount:x.amount*c.costShare,all:x.amount});
     const detail=[c.rows[0],c.rows[1],...active.filter(x=>!x.saving).map(own),...active.filter(x=>x.saving).map(own)];
-    view().querySelectorAll('[data-split]').forEach(el=>{el.innerHTML='<table class="lv-split"><caption class="sr-only">Wie betaalt wat per maand</caption>'+head+'<tbody>'+detail.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Uitgaven + sparen',c.out,c.outAll,'t')+(l.taxOn?line('Renteaftrek terug',-c.benefitMe,-c.benefit,'dim'):'')+line('Netto',c.me,c.all,'t')+'</tbody></table>';});
+    view().querySelectorAll('[data-allocation-note]').forEach(el=>{el.textContent=(l.together?'Dit is de verdeling van de kosten tussen jullie.':'Dit zijn jouw kosten per maand.')+' Je volledige hypotheekbetaling staat bij Maandbedragen; de '+(l.together?'bijdrage en teruggaaf staan':'teruggaaf staat')+' bij Inkomsten.';});
+    const info='<button type="button" class="lv-info" id="lvTaxInfoButton" data-act="tax-info" aria-expanded="'+taxInfoOpen+'" aria-controls="lvTaxInfo" aria-label="Uitleg over de verdeling van de renteaftrek">i</button>';
+    const explain='<div class="lv-explain" id="lvTaxInfo" role="note"'+(taxInfoOpen?'':' hidden')+'>'+taxExplanation(l,c)+'</div>';
+    view().querySelectorAll('[data-split]').forEach(el=>{el.innerHTML='<table class="lv-split"><caption class="sr-only">Wie betaalt wat per maand</caption>'+head+'<tbody>'+detail.map(r=>line(r.name,r.me,r.all,'')).join('')+line('Uitgaven + sparen',c.out,c.outAll,'t')+(l.taxOn?line('Renteaftrek terug '+info,-c.benefitMe,-c.benefit,'dim'):'')+line('Netto',c.me,c.all,'t')+'</tbody></table>'+explain;});
     out.set('sp:interestShare',pct(l.interestShare));out.set('sp:costShare',pct(l.costShare));
     out.set('sn:interestShare',E(l.interest*l.interestShare/100)+' voor jou, '+E(l.interest*(1-l.interestShare/100))+' voor '+name);
     const shared=T.sum(l.lines.filter(x=>x.on&&!x.mine),x=>x.amount);
@@ -214,7 +253,7 @@ const Living = (() => {
     const g=growth(d,l),end=g.months[g.months.length-1];
     out.set('total:growth',has?money(end.total):'—');
     out.set('note:growth',has?(g.each<0?'Tekort loopt op':'Wat je overhoudt, opgeteld')+' · vanaf '+T.monthName(g.months[0].month):'Vul eerst je inkomen in');
-    out.set('keepNote',!has?'Vul je inkomen in bij Inkomen. Dan zie je hier wat je elke maand overhoudt en hoe dat oploopt.':Math.abs(g.each)<0.5?'Je houdt niets over en komt niets tekort, dus er loopt niets op.':g.each>0?'Zoveel houd je per maand over. Elke maand komt het overschot bij dat van de maanden ervoor: na '+g.months.length+' maanden is dat '+E(end.total)+'.':'Je komt elke maand tekort. Na '+g.months.length+' maanden is dat opgelopen tot '+E(end.total)+'.');
+    out.set('keepNote',!has?'Vul je inkomen in bij Inkomsten. Dan zie je hier wat je elke maand overhoudt en hoe dat oploopt.':Math.abs(g.each)<0.5?'Je houdt niets over en komt niets tekort, dus er loopt niets op.':g.each>0?'Zoveel houd je per maand over. Elke maand komt het overschot bij dat van de maanden ervoor: na '+g.months.length+' maanden is dat '+E(end.total)+'.':'Je komt elke maand tekort. Na '+g.months.length+' maanden is dat opgelopen tot '+E(end.total)+'.');
     view().querySelectorAll('[data-chart]').forEach(el=>{el.innerHTML=has&&Math.abs(g.each)>=0.5?chartHtml(g):'';});
     out.set('deduct','Aftrekbaar per maand: '+E(c.deductible)+' (rente en aangevinkte posten). Voordeel: '+money(l.taxRate/100*c.deductible-l.forfait)+'.');
     // What each switch does to the owner's monthly amount, shown while the pointer is on it.
@@ -249,6 +288,7 @@ const Living = (() => {
     const button=event.target.closest('[data-act]');if(!button)return;const d=button.dataset,doc=Budget.doc();
     if(d.act==='start'){if(doc&&!doc.living){doc.living=empty(doc);open.add('income');open.add('mortgage');T.commit();}return;}
     const l=plan();if(!l)return;
+    if(d.act==='tax-info'){taxInfoOpen=!taxInfoOpen;$('lvTaxInfo').hidden=!taxInfoOpen;button.setAttribute('aria-expanded',String(taxInfoOpen));return;}
     if(d.act==='overview'){$('lvOverview').scrollIntoView({block:'start'});return;}
     // Opening or closing an editor changes nothing in the budget itself.
     if(d.act==='edit-costs'){
@@ -287,6 +327,6 @@ const Living = (() => {
     $('lvEmpty').hidden=Boolean(l);$('lvBody').hidden=!l;
     if(l)redraw();
   }
-  return {render,numbers,calc,empty,growth,copyMonth};
+  return {render,numbers,calc,cashflow,empty,growth,copyMonth};
 })();
 `;
